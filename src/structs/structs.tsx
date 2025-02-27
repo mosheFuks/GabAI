@@ -11,12 +11,12 @@ export interface VisitorUser {
     direccion?: string,
     minian?: string,
     numeroSocio?: string,
-    grupo?: Grupo
+    grupo?: string
 
     fechaBarMitzvaGregoriano?: string,
     fechaBarMitzvaHebreo?: string,
     perashaBarMitzva?:  string,
-    habilidades?: string, //Leer tora, haftara, ser jazan
+    habilidades?: Ability[], //Leer tora, haftara, ser jazan
     nombreMadreEspañol?: string,
     nombreMadreHebreo?: string,
     nombrePadreEspañol?: string,
@@ -25,22 +25,15 @@ export interface VisitorUser {
     estadoCivil?: string,
     nombreEsposaEspañol?: string,
     nombreEsposaHebreo?: string,
-    numeroSociaEsposa?: string,
 
-    hijos?: Hijo[]
+    hijos?: Son[]
 }
 
-export interface Grupo {
-    Cohen: string,
-    Levi: string,
-    Israel: string
-}
-
-export interface Hijo {
+export interface Son {
     nombre?: string,
     nombreHebreo?: string,
     apellido?: string,
-    sexo?: string,
+    genero?: string,
     fechaNacimiento?: string,
     fechaNacimientoHebreo?: string,
     fechaBarMitzva?: string,
@@ -48,5 +41,9 @@ export interface Hijo {
     perashaBarMitzva?: string,
     fechaBatMitzva?: string,
     fechaBatMitzvaHebreo?: string,
-    habilidades?: string
+    habilidades?: Ability[]
 }
+
+export type Ability = "Leer Torah" | "Jazan" | "Leer Haftara" | "Leer Meguila";
+
+export type Grupo = "Cohen" | "Levi" | "Israel";
