@@ -38,7 +38,7 @@ const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
       value={{
         choosedUserLanguage,
         setChoosedUserLanguage,
-        strings,
+        strings
       }}
     >
       {children}

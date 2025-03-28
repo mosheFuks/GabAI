@@ -1,26 +1,26 @@
 import React, { CSSProperties } from "react";
-import { Son } from "../../../../structs/structs";
-import { CircleUser } from "lucide-react"
+import { Aniversary } from "../../../../../structs/structs";
+import { CalendarRange  } from "lucide-react"
 
-interface ChildCardProps {
-  setModalIsOpen: (modalIsOpen: boolean) => void;
-  setChildSelected: (childSelected: Son) => void;
-  hijo: Son;
+interface AniversaryCardProps {
+  setModalAniversaryIsOpen: (modalIsOpen: boolean) => void;
+  setAniversarySelected: (aniversarySelected: Aniversary) => void;
+  aniversario: Aniversary;
 }
 
-export const ChildCard = ({hijo, setModalIsOpen, setChildSelected}: ChildCardProps) => {
+export const AniversaryCard = ({aniversario, setModalAniversaryIsOpen, setAniversarySelected}: AniversaryCardProps) => {
 
-    const handleChildSelection = (child: Son) => {
-      setChildSelected(child);
-      setModalIsOpen(true);
-      console.log("Hijo seleccionado", hijo)
+    const handleChildSelection = (aniversary: Aniversary) => {
+      setAniversarySelected(aniversary);
+      setModalAniversaryIsOpen(true);
+      console.log("Hijo seleccionado", aniversario)
     }
     return (
-        <div style={styles.card} onClick={() => handleChildSelection(hijo)}>
+        <div style={styles.card} onClick={() => handleChildSelection(aniversario)}>
           <div style={styles.iconContainer}>
-            <CircleUser size={30} color="white" />
+            <CalendarRange size={25} color="white" />
           </div>
-          <h3 style={styles.title}>{hijo.nombre}</h3>
+          <h3 style={styles.title}>{aniversario.motivo}</h3>
         </div>
     )
 };
