@@ -4,9 +4,8 @@ import { ToastContext } from '../../StoreInfo/ToastContext'; // Adjust the path 
 import { Bounce, ToastContainer } from 'react-toastify';
 
 export const  ToastNotification = () => {
-    const { toastData }  = useContext(ToastContext);
-
-    const typeBackgroundColor = toastData?.type === 'error' ? 'red' : toastData?.type === 'success' ? 'green' : 'yellow'
+    const toastContext = useContext(ToastContext);
+    const typeBackgroundColor = toastContext?.toastData?.type === 'error' ? 'red' : toastContext?.toastData?.type === 'success' ? 'green' : 'yellow'
 
     return (
         <div>

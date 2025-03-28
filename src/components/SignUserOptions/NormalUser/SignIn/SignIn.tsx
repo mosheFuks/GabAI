@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { CSSProperties } from "react";
 import { AtSign, Eye, EyeOff } from "lucide-react"
 
-import { colors } from "../../assets/colors";
-import { esp_strings } from "../../assets/strings";
+import { colors } from "../../../../assets/colors";
+import { esp_strings } from "../../../../assets/strings";
 
 export const SignIn = () => {
     const [formData, setFormData] = useState({ "email": "", "password": "" });

@@ -9,7 +9,6 @@ import { FormFamilyInfoData } from "./UserComponents/Forms/FormFamilyInfoData";
 import { CreateAniversaryModalComponent } from "./AniversaryComponents/AniversaryModal";
 import { CreateRealSignInfoModalComponent } from "./UserComponents/CreateRealSignInfoModalComponent";
 import { CreateChildModalComponent } from "./ChildComponents/ChildModal";
-import { ToastNotification } from "../../../ToastNotification/ToastNotification";
 
 const NormalUserSignUp = () => {
   const [step, setStep] = useState<number>(1);

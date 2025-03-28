@@ -1,6 +1,6 @@
 import React from 'react'
 import { CSSProperties } from 'react';
-import { Aniversary, Son, VisitorUser } from '../../../../../structs/structs';
+import { Aniversary, Son, VisitorUser } from '../../../../../../structs/structs';
 import { ChildCard } from '../../ChildComponents/ChildCard';
 import { AniversaryCard } from '../../AniversaryComponents/AniversaryCard';
 

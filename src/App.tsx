@@ -10,7 +10,7 @@ function App() {
 
   return (
     <>
-      <ToastProvider toastDataProps={{ type: 'success', message: '' }}>
+      <ToastProvider>
         <ToastNotification />
         <Navbar />
         {/*<FirstPage />*/}
