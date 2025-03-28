@@ -3,9 +3,10 @@ import { CSSProperties } from "react";
 
 import { colors } from "../../assets/colors";
 import { esp_strings } from "../../assets/strings";
+import { useNavigate } from 'react-router-dom';
 
-export default function AuthCard() {
-
+export default function HomePage() {
+    const navigate = useNavigate();
     return (
       <div style={styles.container}>
         <h2 style={styles.title}>
@@ -16,6 +17,7 @@ export default function AuthCard() {
             style={styles.button}
             onMouseOver={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = styles.buttonHover.transform || "scale(1.1)")}
             onMouseOut={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = "scale(1)")}
+            onClick={() => navigate("/sign-in")}
           >{esp_strings.btn_signin}</button>
           <button 
             style={styles.button}
