@@ -7,7 +7,7 @@ import { FormPersonalInfoData } from "./UserComponents/Forms/FormPersonalInfoDat
 import { FormKehilaInfoData } from "./UserComponents/Forms/FormKehilaInfoData";
 import { FormFamilyInfoData } from "./UserComponents/Forms/FormFamilyInfoData";
 import { CreateAniversaryModalComponent } from "./AniversaryComponents/AniversaryModal";
-import { CreateRealSignInfoModalComponent } from "./UserComponents/CreateRealSignInfoModalComponent";
+import { CreateNormalUserSignInfoModal } from "./UserComponents/CreateNormalUserSignInfoModal";
 import { CreateChildModalComponent } from "./ChildComponents/ChildModal";
 
 const NormalUserSignUp = () => {
@@ -149,7 +149,7 @@ const NormalUserSignUp = () => {
        null
     }
     {modalRealSignInfo ?
-      <CreateRealSignInfoModalComponent
+      <CreateNormalUserSignInfoModal
        modalRealSignInfo={modalRealSignInfo}
        setModalRealSignInfo={setModalRealSignInfo}
        user={user} />

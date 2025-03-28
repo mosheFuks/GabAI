@@ -14,7 +14,7 @@ interface RealSignModalProps {
   user: VisitorUser;
 }
 
-export const CreateRealSignInfoModalComponent = ({modalRealSignInfo, setModalRealSignInfo, user}: RealSignModalProps) => {
+export const CreateNormalUserSignInfoModal = ({modalRealSignInfo, setModalRealSignInfo, user}: RealSignModalProps) => {
 
   const toastContext = useContext(ToastContext);
   const [formUserSignData, setFormUserSignData] = useState<SignInfo>({

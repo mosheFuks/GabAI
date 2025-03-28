@@ -2,7 +2,7 @@ import './App.css'
 import FirstPage from './components/FirstPage/FirstPage'
 import { Navbar } from './components/Navbar/Navbar'
 import NormalUserSignUp from './components/SignUserOptions/NormalUser/SignUp/NormalUserSignUp'
-import { SignIn } from './components/SignUserOptions/SignIn'
+import { SignIn } from './components/SignUserOptions/NormalUser/SignIn/SignIn'
 import { ToastNotification } from './components/ToastNotification/ToastNotification'
 import { ToastProvider } from './StoreInfo/ToastContext'
 
@@ -13,9 +13,9 @@ function App() {
       <ToastProvider>
         <ToastNotification />
         <Navbar />
-        {/*<FirstPage />*/}
+        <FirstPage />
         {/*<SignIn />*/}
-        <NormalUserSignUp />
+        {/*<NormalUserSignUp />*/}
       </ToastProvider>
     </>
   )
