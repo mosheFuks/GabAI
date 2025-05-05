@@ -84,7 +84,7 @@ const NormalUserSignUp = () => {
     <>
     <div style={styles.container}>
       <h2 style={styles.title}>{esp_strings.btn_create_user}</h2>
-      <NavigationButtonSignUp step={step} setStep={setStep} setModalRealSignInfo={setModalRealSignInfo}/>
+      <NavigationButtonSignUp step={step} setStep={setStep} setModalRealSignInfo={setModalRealSignInfo} fromPage={"SignUp"}/>
       <form style={{ width: "100%" }}>
         {step === 1 && (
           <FormPersonalInfoData 

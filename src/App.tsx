@@ -6,6 +6,7 @@ import { SignIn } from './components/SignUserOptions/NormalUser/SignIn/SignIn'
 import { ToastNotification } from './components/ToastNotification/ToastNotification'
 import { ToastProvider } from './StoreInfo/ToastContext'
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { HomeVisitorUserComponent } from './components/VisitorUserComponents/HomeVisitorUserCompo'
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/sign-in" element={<SignIn />} />
             <Route path="/create-normal-user" element={<NormalUserSignUp />} />
+            <Route path='/visitor-user-info' element={<HomeVisitorUserComponent />} />
           </Routes>
       </ToastProvider>
     </Router>

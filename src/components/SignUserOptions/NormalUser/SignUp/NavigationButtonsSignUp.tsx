@@ -4,19 +4,21 @@ import { colors } from '../../../../assets/colors';
 interface NavigationButtonProps {
   step: number;
   setStep: (step: number) => void;
-  setModalRealSignInfo: (modalRealSignInfo: boolean) => void;
+  setModalRealSignInfo?: (modalRealSignInfo: boolean) => void;
+  fromPage: string;
 }
 
-export const NavigationButtonSignUp = ({step, setStep, setModalRealSignInfo}: NavigationButtonProps) => {
+export const NavigationButtonSignUp = ({step, setStep, setModalRealSignInfo, fromPage}: NavigationButtonProps) => {
     const nextStep = () => setStep(step + 1);
     const prevStep = () => setStep(step - 1);
     
     return (
-        <div style={{ display: "flex", justifyContent: "space-between", width: "100%", flexDirection: "row" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", width: "100%", flexDirection: "row", alignItems: "center"}}>
             <div style={{ display: "flex", flexDirection: "row", width: "100%", alignContent: "center", justifyContent: "center" }}>
                 <h3 onClick={() => setStep(1)} style={{...styles.sectionTitle, color: step === 1 ? colors.btn_background : "black", textDecoration: step === 1 ? "underline" : "none"}}>Datos Personales</h3>
                 <h3 onClick={() => setStep(2)} style={{...styles.sectionTitle, color: step === 2 ? colors.btn_background : "black", textDecoration: step === 2 ? "underline" : "none"}}>Datos de Kehila</h3>
                 <h3 onClick={() => setStep(3)} style={{...styles.sectionTitle, color: step === 3 ? colors.btn_background : "black", textDecoration: step === 3 ? "underline" : "none"}}>Datos de Familia</h3>
+                {fromPage === "homeVisitorUser" && (<h3 onClick={() => setStep(4)} style={{...styles.sectionTitle, color: step === 4 ? colors.btn_background : "black", textDecoration: step === 4 ? "underline" : "none"}}>Cuenta</h3>)}
             </div>
             <div style={{ display: "flex", flexDirection: "row", width: "100%", alignContent: "center", justifyContent: "flex-end" }}>
                 {step === 1 && (<button type="button" onClick={nextStep} style={styles.button}>Siguiente</button>)}
@@ -29,7 +31,12 @@ export const NavigationButtonSignUp = ({step, setStep, setModalRealSignInfo}: Na
                 {step === 3 && (
                     <div>
                         <button type="button" style={styles.button} onClick={prevStep}>Atrás</button>
-                        <button type="submit" style={styles.button} onClick={() => setModalRealSignInfo(true)}>Registrarse</button>
+                        {fromPage == "signUp" && (<button type="submit" style={styles.button} onClick={() => setModalRealSignInfo(true)}>Registrarse</button>)}
+                    </div>
+                )}
+                {step === 4 && (
+                    <div>
+                        <button type="button" style={styles.button} onClick={prevStep}>Atrás</button>
                     </div>
                 )}
             </div>

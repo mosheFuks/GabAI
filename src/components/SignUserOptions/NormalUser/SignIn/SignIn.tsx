@@ -13,23 +13,23 @@ export const SignIn = () => {
     const navigate = useNavigate();
     
     const handleEmailChange = (inputEmail: string) => {
-        setFormData({ 
-            ...formData,
-            email: inputEmail
-        });
+      setFormData({ 
+        ...formData,
+        email: inputEmail
+      });
     };
 
     const handlePassChange = (inputPassword: string) => {
-        setFormData({ 
-            ...formData,
-            password: inputPassword
-        });
+      setFormData({ 
+        ...formData,
+        password: inputPassword
+      });
     };
 
     const handleSubmit = (e: any) => {
       e.preventDefault();
       console.log("User data on Sign In is:", formData);
-      navigate("/");
+      navigate("/visitor-user-info");
     };
 
     return (
@@ -39,17 +39,17 @@ export const SignIn = () => {
         </h2>
         <form onSubmit={handleSubmit} style={{ marginBottom: "20px" }}>
             <div>
-                <label style={{ fontSize: 20}}>{esp_strings.sign_email}</label>
-                <div style={styles.inputContainer}>
-                    <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        style={styles.input}
-                        onChange={(email) => handleEmailChange(email.target.value)}
-                    />
-                    <AtSign size={25} style={styles.icon}/>  
-                </div>
+              <label style={{ fontSize: 20}}>{esp_strings.sign_email}</label>
+              <div style={styles.inputContainer}>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  style={styles.input}
+                  onChange={(email) => handleEmailChange(email.target.value)}
+                />
+                <AtSign size={25} style={styles.icon}/>  
+              </div>
             </div>
             <div>
                 <label style={{ fontSize: 20}}>{esp_strings.sign_password}</label>

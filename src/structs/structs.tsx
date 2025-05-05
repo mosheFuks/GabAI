@@ -28,6 +28,8 @@ export interface VisitorUser {
 
     hijos?: Son[]
     aniversarios?: Aniversary[]
+
+    cuenta?: Donacion[]
 }
 
 export interface Son {
@@ -65,6 +67,16 @@ export interface ToastData {
     message: string,
     type: "error" | "success" | "info",
     show: boolean
+}
+
+export interface Donacion {
+    monto?: number,
+    tipoMoneda?: "USD" | "ARS",
+    motivo?: string,
+    fecha?: CustomDate,
+    perasha?: string,
+    aclaracion?: string,
+    status?: "Pendiente" | "Pagado",
 }
 
 export type Ability = "Leer Torah" | "Jazan" | "Leer Haftara" | "Leer Meguila";

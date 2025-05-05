@@ -15,7 +15,6 @@ interface RealSignModalProps {
 }
 
 export const CreateNormalUserSignInfoModal = ({modalRealSignInfo, setModalRealSignInfo, user}: RealSignModalProps) => {
-
   const toastContext = useContext(ToastContext);
   const [formUserSignData, setFormUserSignData] = useState<SignInfo>({
     nombre: user.nombreEspañol != null ? user.nombreEspañol : "",
@@ -63,7 +62,7 @@ export const CreateNormalUserSignInfoModal = ({modalRealSignInfo, setModalRealSi
 
           <div style={styles.pass_container}>
             <label htmlFor="userPassword" style={{ display: "block" }}>
-                Contraseña
+              Contraseña
             </label>
 
             {/* Si showPassword es true => type="text", sino => "password" */}

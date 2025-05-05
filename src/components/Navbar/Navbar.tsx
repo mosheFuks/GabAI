@@ -2,10 +2,12 @@ import React, { useState } from "react";
 
 import { esp_strings } from '../../assets/strings';
 import { colors } from "../../assets/colors";
+import { useNavigate } from 'react-router-dom';
 
 
 export const Navbar = () => {
   const [] = useState();
+  const navigate = useNavigate();
 
   return (
     <nav style={styles.container}>
@@ -17,6 +19,7 @@ export const Navbar = () => {
           style={styles.button}
           onMouseOver={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = styles.buttonHover.transform)}
           onMouseOut={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = "scale(1)")}
+          onClick={() => navigate("/create-normal-user")}
         >
           {esp_strings.btn_create_user}
         </button>
