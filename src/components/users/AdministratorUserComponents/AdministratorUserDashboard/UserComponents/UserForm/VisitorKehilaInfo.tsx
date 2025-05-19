@@ -1,13 +1,13 @@
 import React from 'react'
 import { CSSProperties } from 'react';
-import { VisitorUser } from '../../../structs/structs';
-import { colors } from '../../../assets/colors';
+import { colors } from '../../../../../../assets/colors';
+
 
 interface FormPersonalDataProps {
   logedVisitorUser: any
 }
 
-export const VisitorKehilaForm = ({logedVisitorUser}: FormPersonalDataProps) => {
+export const VisitorKehilaInfo = ({logedVisitorUser}: FormPersonalDataProps) => {
     return (
       <div style={{ height: "400px", overflowY: "auto", padding: "10px", borderRadius: "5px" }}>
         <div>

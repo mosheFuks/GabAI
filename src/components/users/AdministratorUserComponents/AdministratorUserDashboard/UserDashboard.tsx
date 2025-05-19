@@ -1,16 +1,25 @@
 import React, { CSSProperties, useEffect, useState } from "react";
-import { colors } from "../../assets/colors";
-import { esp_strings } from "../../assets/strings";
-import { VisitorUser, Son, Aniversary, Grupo, Ability } from '../../structs/structs';
-import { NavigationButtonSignUp } from "../SignUserOptions/NormalUser/SignUp/NavigationButtonsSignUp";
-import { VisitorPersonalForm } from "./VisitorUserForm/VisitorPersonalForm";
-import { VisitorKehilaForm } from "./VisitorUserForm/VisitorKehilaForm";
-import { VisitorFamilyForm } from "./VisitorUserForm/VisitorFamilyForm";
-import { VisitorAccountForm } from "./VisitorUserForm/VisitorAccountForm";
+import { VisitorUser, Son, Aniversary, Grupo, Ability } from '../../../../structs/structs';
 
-export const HomeVisitorUserComponent = () => {
+import { useNavigate, useParams } from "react-router-dom";
+import { VisitorPersonalInfo } from "./UserComponents/UserForm/VisitorPersonalInfo";
+import { VisitorKehilaInfo } from "./UserComponents/UserForm/VisitorKehilaInfo";
+import { VisitorFamilyInfo } from "./UserComponents/UserForm/VisitorFamilyInfo";
+import { VisitorAccountInfo } from "./UserComponents/UserForm/VisitorAccountInfo";
+
+import {FaArrowLeft } from "react-icons/fa";
+import { VisitorPerashiotInfo } from "./UserComponents/UserForm/VisitorPerashiotInfo";
+import { colors } from "../../../../assets/colors";
+import { NavigationButtonSignUp } from "../../../SignUserOptions/NormalUser/SignUp/NavigationButtonsSignUp";
+
+export const UserDashboard = () => {
   const [step, setStep] = useState<number>(1);
   const [user, setUser] = useState<VisitorUser>({})
+
+  const { id } = useParams();
+  console.log("id", id);
+
+  const navigate = useNavigate();
 
   const mockLogedVisitorUser = {
     nombreKehila: "Kehila Agudat Israel",
@@ -86,7 +95,7 @@ export const HomeVisitorUserComponent = () => {
           año: "5788",
         },
         perashaBarMitzva: "Vayakhel",
-        habilidades: ["Leer Haftara"] as Ability[],
+        habilidades: ["Leer Torah", "Jazan", "Leer Haftara", "Leer Meguila"] as Ability[],
       },
       {
         nombre: "Noam",
@@ -134,7 +143,64 @@ export const HomeVisitorUserComponent = () => {
           mes: "Av",
           año: "5782",
         },
-      }
+      },
+      {
+        motivo: "Iortzai",
+        nombreDelAniversario: "Iortzai de mi padre",
+        fecha: {
+          dia: "15",
+          mes: "10",
+          año: "2020",
+        },
+        fechaHebreo: {
+          dia: "7",
+          mes: "Cheshvan",
+          año: "5781",
+        },
+      },
+      {
+        motivo: "Iortzai",
+        nombreDelAniversario: "Iortzai de mi madre",
+        fecha: {
+          dia: "22",
+          mes: "03",
+          año: "2018",
+        },
+        fechaHebreo: {
+          dia: "6",
+          mes: "Nisan",
+          año: "5778",
+        },
+      },
+      {
+        motivo: "Iortzai",
+        nombreDelAniversario: "Iortzai de mi abuelo",
+        fecha: {
+          dia: "01",
+          mes: "07",
+          año: "1995",
+        },
+        fechaHebreo: {
+          dia: "3",
+          mes: "Tammuz",
+          año: "5755",
+        },
+      },
+      {
+        motivo: "Iortzai",
+        nombreDelAniversario: "Iortzai de mi hermano",
+        fecha: {
+          dia: "09",
+          mes: "12",
+          año: "2005",
+        },
+        fechaHebreo: {
+          dia: "8",
+          mes: "Kislev",
+          año: "5766",
+        },
+      },
+      
     ] as Aniversary[],
 
     cuenta: [
@@ -142,6 +208,19 @@ export const HomeVisitorUserComponent = () => {
         monto: 1000,
         tipoMoneda: "USD",
         motivo: "Alia",
+        perasha: "Vayikra",
+        fecha: {
+          dia: "01",
+          mes: "01",
+          año: "2023",
+        },
+        status: "PENDIENTE",
+      },
+      {
+        monto: 123,
+        tipoMoneda: "USD",
+        motivo: "Escuela",
+        aclaracion: "Solo para el colegio",
         perasha: "Vayikra",
         fecha: {
           dia: "01",
@@ -188,8 +267,17 @@ export const HomeVisitorUserComponent = () => {
       }
     ] as any[],
   };
-  
 
+  const searchPropertyByName = (key: string) => {
+    const properties = Object.entries(mockLogedVisitorUser); // Convierte a array de [clave, valor]
+    
+    const filtered = properties.filter(([propName, _]) =>
+      propName.startsWith(key.toLowerCase()) || propName.includes(key.toLowerCase())
+    );
+  
+    console.log("Propiedades que coinciden:", filtered);
+  };
+  
   useEffect(() => {
     console.log("User data on Sign UP is:", user);
   }, [user])
@@ -197,28 +285,39 @@ export const HomeVisitorUserComponent = () => {
   return (
     <>
     <div style={styles.container}>
-      <h2 style={styles.title}>
-        Juan Perez Iglesias de America II
-      </h2>
-      <NavigationButtonSignUp step={step} setStep={setStep} fromPage="homeVisitorUser"/>
+      <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%", height: "70px" }}>
+        <button style={{...styles.button, backgroundColor: "green"}} onClick={() => navigate("/administrator-dashboard")}>
+          <FaArrowLeft className="text-black" /> Lista de usuarios
+        </button>
+        <h2 style={styles.title}>
+         {id?.replace(/([a-z])([A-Z])/g, '$1 $2')}
+        </h2>
+        <div style={{...styles.button, backgroundColor: colors.main_background, color: colors.main_background, cursor: '-moz-grab'}}></div>
+      </div>
+      <NavigationButtonSignUp step={step} setStep={setStep} fromPage="userDashboardPage"/>
       <form style={{ width: "100%" }}>
         {step === 1 && (
-          <VisitorPersonalForm 
+          <VisitorPersonalInfo 
             logedVisitorUser={mockLogedVisitorUser}
           />
         )}
         {step === 2 && (
-          <VisitorKehilaForm 
+          <VisitorKehilaInfo 
             logedVisitorUser={mockLogedVisitorUser}
           />
         )}
-        {step === 3 && (    
-          <VisitorFamilyForm 
+        {step === 3 && ( 
+          <VisitorFamilyInfo
             logedVisitorUser={mockLogedVisitorUser} 
           />
         )}
         {step === 4 && (    
-          <VisitorAccountForm 
+          <VisitorAccountInfo 
+            logedVisitorUser={mockLogedVisitorUser} 
+          />
+        )}
+        {step === 5 && (    
+          <VisitorPerashiotInfo 
             logedVisitorUser={mockLogedVisitorUser} 
           />
         )}
@@ -235,7 +334,7 @@ const styles: { [key: string]: CSSProperties }= {
     borderRadius: "25px",
     width: "80%",
     minHeight: "75vh",
-    maxHeight: "80vh",
+    maxHeight: "90vh",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -251,7 +350,8 @@ const styles: { [key: string]: CSSProperties }= {
     borderColor: colors.btn_background,
     borderRadius: 20,
     paddingLeft: 10,
-    paddingRight: 10
+    paddingRight: 10,
+    marginRight: 100
   },
   button: {
     backgroundColor: colors.btn_background,
@@ -262,5 +362,22 @@ const styles: { [key: string]: CSSProperties }= {
     cursor: "pointer",
     fontSize: "1rem",
     border: "none",
-  }
+    justifyContent: "center"
+  },
+  rightGroup: {
+    display: "flex",
+    alignItems: "center",
+    gap: "10px",
+  },
+  input: {
+    backgroundColor: colors.btn_background,
+    padding: "10px 16px",
+    borderRadius: "8px",
+    fontWeight: "bold",
+    border: "none",
+    outline: "none",
+    width: "180px",
+    color: "white",
+    fontSize: "16px",
+  },
 };

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 
-import { esp_strings } from '../../assets/strings';
-import { colors } from "../../assets/colors";
 import { useNavigate } from 'react-router-dom';
+import { esp_strings } from "../../../assets/strings";
+import { colors } from "../../../assets/colors";
+import { FaUser } from "react-icons/fa";
 
 
 export const Navbar = () => {
@@ -27,15 +28,23 @@ export const Navbar = () => {
           style={styles.button}
           onMouseOver={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = styles.buttonHover.transform)}
           onMouseOut={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = "scale(1)")}
+           onClick={() => navigate("/create-operator-user")}
+        >
+          {esp_strings.btn_add_admin_user}
+        </button>
+        <button
+          style={styles.button}
+          onMouseOver={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = styles.buttonHover.transform)}
+          onMouseOut={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = "scale(1)")}
         >
           {esp_strings.btn_close_sesion}
         </button>
         <button
-          style={styles.button}
+          style={{...styles.button, borderRadius: '50px'}}
           onMouseOver={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = styles.iconButtonHover.transform)}
           onMouseOut={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = "scale(1)")}
         >
-          ⚫
+          <FaUser className="text-orange" />
         </button>
       </div>
     </nav>

@@ -1,6 +1,7 @@
 import React, { CSSProperties } from "react";
-import { Son } from "../../../structs/structs";
 import { CircleUser } from "lucide-react"
+import { Son } from "../../../../../../structs/structs";
+
 
 interface ChildCardProps {
   setChildModalIsOpen: (modalIsOpen: boolean) => void;

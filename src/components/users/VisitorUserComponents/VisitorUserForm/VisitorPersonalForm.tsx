@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { CSSProperties } from 'react';
-import { colors } from '../../../assets/colors';
-import { VisitorUser } from '../../../structs/structs';
+import { colors } from '../../../../assets/colors';
 
 interface VisitorPersonalDataProps {
   logedVisitorUser: any

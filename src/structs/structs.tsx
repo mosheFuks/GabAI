@@ -71,12 +71,12 @@ export interface ToastData {
 
 export interface Donacion {
     monto?: number,
-    tipoMoneda?: "USD" | "ARS",
+    tipoMoneda?: "USD" | "ARS" | any,
     motivo?: string,
     fecha?: CustomDate,
     perasha?: string,
     aclaracion?: string,
-    status?: "Pendiente" | "Pagado",
+    status?: "PENDIENTE" | "PAGADO" | any,
 }
 
 export type Ability = "Leer Torah" | "Jazan" | "Leer Haftara" | "Leer Meguila";

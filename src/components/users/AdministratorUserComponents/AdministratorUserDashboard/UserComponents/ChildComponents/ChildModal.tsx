@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
-import { colors } from '../../../assets/colors';
-import { Ability, Son } from '../../../structs/structs';
+import { Ability, Son } from '../../../../../../structs/structs';
+import { colors } from '../../../../../../assets/colors';
+
 
 Modal.setAppElement('#root');
 
@@ -27,7 +28,7 @@ export const UserChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen, 
         style={{ content: styles.container }}
         contentLabel="Example Modal"
       >
-        <h2 style={{ textAlign: 'center'}}>{son!.nombre}</h2>
+        <h2 style={{ textAlign: 'center', color: 'blue'}}>{son!.nombre}</h2>
         <div>
           <label htmlFor="userChildNameHeb" style={{ display: "block"}}>Nombre Hebreo</label>
           <h5 id="userChildNameHeb" style={styles.input}>

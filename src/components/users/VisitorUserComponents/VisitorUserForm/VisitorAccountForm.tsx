@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { CSSProperties } from 'react';
-import { CustomDate, Grupo, Son, VisitorUser } from '../../../structs/structs';
-import { colors } from '../../../assets/colors';
+import { CustomDate } from '../../../../structs/structs';
+import { colors } from '../../../../assets/colors';
 
 interface FormPersonalDataProps {
   logedVisitorUser: any
@@ -82,16 +82,16 @@ export const VisitorAccountForm = ({ logedVisitorUser }: FormPersonalDataProps) 
 
             <div>
               <div style={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
-                <button type='button' style={styles.filterButton} onClick={() => setStatusFilter("All")}>
-                  {statusFilter == "All" ? `🟢 Todas` : `Todas`}
+                <button type='button' style={{...styles.filterButton, fontWeight: statusFilter == "All" ? "bolder" : "normal"}} onClick={() => setStatusFilter("All")}>
+                  {statusFilter == "All" ? `🟠 Todas` : `Todas`}
                 </button>
 
-                <button type='button' style={styles.filterButton} onClick={() => setStatusFilter("PAGADA")}>
-                  {statusFilter == "PAGADA"? `🟢 Pagadas` : `Pagadas`}
+                <button type='button' style={{...styles.filterButton, fontWeight: statusFilter == "PAGADA" ? "bolder" : "normal"}} onClick={() => setStatusFilter("PAGADA")}>
+                  {statusFilter == "PAGADA"? `🟠 Pagadas` : `Pagadas`}
                 </button>
 
-                <button type='button' style={styles.filterButton} onClick={() => setStatusFilter("PENDIENTE")}>
-                  {statusFilter == "PENDIENTE"? `🟢 Pendientes` : `Pendientes`}
+                <button type='button' style={{...styles.filterButton, fontWeight: statusFilter == "PENDIENTE" ? "bolder" : "normal"}} onClick={() => setStatusFilter("PENDIENTE")}>
+                  {statusFilter == "PENDIENTE"? `🟠 Pendientes` : `Pendientes`}
                 </button>
               </div>
             </div>
@@ -111,7 +111,8 @@ export const VisitorAccountForm = ({ logedVisitorUser }: FormPersonalDataProps) 
               {filteredDonations.map((donacion, index) => {
                 const monto = donacion.monto;
                 const moneda = donacion.tipoMoneda;
-                const esOtro = donacion.motivo === 'Otro';
+                const aclaracion = donacion.aclaracion;
+                const motivo = donacion.motivo;
 
                 return (
                   <tr key={index}>
@@ -119,20 +120,21 @@ export const VisitorAccountForm = ({ logedVisitorUser }: FormPersonalDataProps) 
                       {formatDate(donacion.fecha)}
                     </td>
                     <td style={styles.td} data-label="Motivo">
-                      {esOtro ? (
+                      {aclaracion ? (
                         <span
                           style={styles.cellPopover}
                           onClick={() =>
                             setExpandedIndex(expandedIndex === index ? null : index)
                           }
                         >
-                          Otro <span style={{ marginLeft: '5px' }}>&#9660;</span>
-                          {expandedIndex === index && donacion.aclaracion && (
-                            <div style={styles.popover}>{donacion.aclaracion}</div>
+                          {motivo}
+                          <span style={{ marginLeft: '5px' }}>&#9660;</span>
+                          {expandedIndex === index && (
+                            <div style={styles.popover}>{aclaracion}</div>
                           )}
                         </span>
                       ) : (
-                        donacion.motivo || '-'
+                        motivo || '-'
                       )}
                     </td>
                     <td style={styles.td} data-label="Monto">{monto}</td>
@@ -214,6 +216,7 @@ const styles = {
   td: {
     border: '1px solid #ccc',
     padding: '8px',
+    textAlign: "center"
   } as CSSProperties,
   cellPopover: {
     position: 'relative',
@@ -240,7 +243,7 @@ const styles = {
     alignItems: 'center'
   },
   filterButton: {
-    border: "1px solid blue",
+    border: "1px solid orange",
     color: 'black',
     padding: '10px 15px',
     borderRadius: '20px',

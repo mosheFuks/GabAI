@@ -1,6 +1,7 @@
 import React, { CSSProperties } from "react";
-import { Aniversary } from "../../../structs/structs"
+
 import { CalendarRange  } from "lucide-react"
+import { Aniversary } from "../../../../../../structs/structs";
 
 interface AniversaryCardProps {
   setModalAniversaryIsOpen: (modalIsOpen: boolean) => void;

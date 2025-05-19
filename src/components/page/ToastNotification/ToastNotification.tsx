@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
-import { ToastContext } from '../../StoreInfo/ToastContext'; // Adjust the path as needed
+// Adjust the path as needed
 
 import { Bounce, ToastContainer } from 'react-toastify';
+import { ToastContext } from '../../../StoreInfo/ToastContext';
 
 export const  ToastNotification = () => {
     const toastContext = useContext(ToastContext);

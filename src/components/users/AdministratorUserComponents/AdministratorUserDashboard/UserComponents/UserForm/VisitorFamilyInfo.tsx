@@ -1,17 +1,18 @@
 import React from 'react'
 import { CSSProperties } from 'react';
-import { Aniversary, Grupo, Son, VisitorUser } from '../../../structs/structs';
-import { colors } from '../../../assets/colors';
 import { ChildCard } from '../ChildComponents/ChildCard';
 import { AniversaryCard } from '../AniversaryComponents/AniversaryCard';
 import { UserChildModalComponent } from '../ChildComponents/ChildModal';
 import { CreateAniversaryModalComponent } from '../AniversaryComponents/AniversaryModal';
+import { Aniversary, Son } from '../../../../../../structs/structs';
+import { colors } from '../../../../../../assets/colors';
+
 
 interface FormPersonalDataProps {
   logedVisitorUser: any
 }
 
-export const VisitorFamilyForm = ({logedVisitorUser}: FormPersonalDataProps) => {
+export const VisitorFamilyInfo = ({logedVisitorUser}: FormPersonalDataProps) => {
     const [modalChildIsOpen, setChildModalIsOpen] = React.useState<boolean>(false);
     const [modalAniversaryIsOpen, setModalAniversaryIsOpen] = React.useState<boolean>(false);
     const [aniversarySelected, setAniversarySelected] = React.useState<Aniversary>();

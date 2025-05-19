@@ -1,9 +1,9 @@
 import React from "react";
 import { CSSProperties } from "react";
 
-import { colors } from "../../assets/colors";
-import { esp_strings } from "../../assets/strings";
 import { useNavigate } from 'react-router-dom';
+import { colors } from "../../../assets/colors";
+import { esp_strings } from "../../../assets/strings";
 
 export default function HomePage() {
     const navigate = useNavigate();

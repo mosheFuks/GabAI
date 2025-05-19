@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
-import { HDate } from "@hebcal/core";
-import { Aniversary, CustomDate, HEBREW_MONTHS, VisitorUser } from '../../../structs/structs';
-import { colors } from '../../../assets/colors';
+import { Aniversary } from '../../../../../../structs/structs';
+import { colors } from '../../../../../../assets/colors';
 
 Modal.setAppElement('#root');
 
@@ -27,7 +26,7 @@ export const CreateAniversaryModalComponent = ({modalAniversaryIsOpen, setModalA
         style={{ content: styles.container }}
         contentLabel="Example Modal"
       >
-        <h2 style={{ textAlign: 'center'}}>{aniversary?.nombreDelAniversario}</h2>
+        <h2 style={{ textAlign: 'center', color: 'blue'}}>{aniversary?.nombreDelAniversario}</h2>
         <div>
           <label htmlFor="userAniversaryMotive" style={{ display: "block" }}>Motivo</label>
           <h5 id="userAniversaryMotive" style={styles.input}>
