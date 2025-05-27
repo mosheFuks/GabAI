@@ -1,4 +1,4 @@
-import React, { CSSProperties, useEffect, useState } from "react";
+import React, { CSSProperties, useContext, useEffect, useState } from "react";
 import { colors } from "../../../../assets/colors";
 import { esp_strings } from "../../../../assets/strings";
 import { VisitorUser, Son, Aniversary } from '../../../../structs/structs';
@@ -9,33 +9,29 @@ import { FormFamilyInfoData } from "./UserComponents/Forms/FormFamilyInfoData";
 import { CreateAniversaryModalComponent } from "./AniversaryComponents/AniversaryModal";
 import { CreateNormalUserSignInfoModal } from "./UserComponents/CreateNormalUserSignInfoModal";
 import { CreateChildModalComponent } from "./ChildComponents/ChildModal";
+import { addAVisitorUserInTheKehila } from "../../../../apis/requests";
+import { ToastContext } from "../../../../StoreInfo/ToastContext";
+import { PageContext } from "../../../../StoreInfo/page-storage";
+import { toast } from "react-toastify";
 
 const NormalUserSignUp = () => {
+  const { logedUser } = useContext(PageContext) as any;
+  const toastContext = useContext(ToastContext);
   const [step, setStep] = useState<number>(1);
-  const [user, setUser] = useState<VisitorUser>({})
-  const [modalChildIsOpen, setChildModalIsOpen] = useState<boolean>(false);
-  const [modalAniversaryIsOpen, setModalAniversaryIsOpen] = useState<boolean>(false);
-  const [modalRealSignInfo, setModalRealSignInfo] = useState<boolean>(false);
-  const [childSelected, setChildSelected] = useState<Son>({});
-  const [aniversarySelected, setAniversarySelected] = useState<Aniversary>();
-
-  useEffect(() => {
-    console.log("User data on Sign UP is:", user);
-  }, [user])
-
   const [formUserPersonalData, setFormUserPersonalData] = useState<VisitorUser>({
+    tipoUsuario: "",
     nombreKehila: "",
-    nombreEspañol: "",
+    nombreEspanol: "",
     nombreHebreo: "",
     fechaNacimientoGregoriano: {
       dia: "",
       mes: "",
-      año: ""
+      ano: ""
     },
     fechaNacimientoHebreo: {
       dia: "",
       mes: "",
-      año: ""
+      ano: ""
     },
     minian: "",
     apellido: "",
@@ -48,24 +44,36 @@ const NormalUserSignUp = () => {
     fechaBarMitzvaGregoriano: {
       dia: "",
       mes: "",
-      año: ""
+      ano: ""
     },
     fechaBarMitzvaHebreo: {
       dia: "",
       mes: "",
-      año: ""
+      ano: ""
     },
     perashaBarMitzva: "",
     habilidades: [], //Leer tora, haftara, ser jazan
     aniversarios: [],
-    nombreMadreEspañol: "",
+    cuenta: [],
+    hijos: [],
+    nombreMadreEspanol: "",
     nombreMadreHebreo: "",
-    nombrePadreEspañol: "",
+    nombrePadreEspanol: "",
     nombrePadreHebreo: "",
     estadoCivil: "",
-    nombreEsposaEspañol: "",
+    nombreEsposaEspanol: "",
     nombreEsposaHebreo: "",
   });
+  const [user, setUser] = useState<VisitorUser>(formUserPersonalData)
+  const [modalChildIsOpen, setChildModalIsOpen] = useState<boolean>(false);
+  const [modalAniversaryIsOpen, setModalAniversaryIsOpen] = useState<boolean>(false);
+  const [modalRealSignInfo, setModalRealSignInfo] = useState<boolean>(false);
+  const [childSelected, setChildSelected] = useState<Son>({});
+  const [aniversarySelected, setAniversarySelected] = useState<Aniversary>();
+
+  useEffect(() => {
+    console.log("User data on Sign UP is:", user);
+  }, [user])
 
   const handleChangePersonalData = (e: any) => {
     setFormUserPersonalData({ ...formUserPersonalData, [e.target.name]: e.target.value });
@@ -80,11 +88,23 @@ const NormalUserSignUp = () => {
     setModalAniversaryIsOpen(true)
   }
 
+  const addVisitorUser = addAVisitorUserInTheKehila();
+  const saveNewVisitorUserOnUsersList = () => {
+    toastContext?.setToastData({type: 'success', message: 'Usuario registrado correctamente', show: true});
+
+    console.log("Toast data: ", toastContext?.toastData);
+    if (toastContext?.toastData.show) {
+      toast(toastContext.toastData.message);
+    }
+    addVisitorUser(logedUser.kehila, user)
+    console.log("Full user info: ", user);
+  }
+
   return (
     <>
     <div style={styles.container}>
       <h2 style={styles.title}>{esp_strings.btn_create_user}</h2>
-      <NavigationButtonSignUp step={step} setStep={setStep} setModalRealSignInfo={setModalRealSignInfo} fromPage={"SignUp"}/>
+      <NavigationButtonSignUp step={step} setStep={setStep} setModalRealSignInfo={setModalRealSignInfo} fromPage={"SignUp"} saveNewVisitorUserOnUsersList={saveNewVisitorUserOnUsersList}/>
       <form style={{ width: "100%" }}>
         {step === 1 && (
           <FormPersonalInfoData 

@@ -1,10 +1,12 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import Modal from 'react-modal';
 import { colors } from '../../../../../assets/colors';
-import { SignInfo, VisitorUser } from '../../../../../structs/structs';
+import { LogedUserData, SignInfo, VisitorUser } from '../../../../../structs/structs';
 import { Eye, EyeOff } from "lucide-react"
 import { toast } from 'react-toastify';
-import { ToastContext } from '../../../../../StoreInfo/ToastContext';
+import { addAUserToTheUsuariosList, addAVisitorUserInTheKehila } from '../../../../../apis/requests';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../../../../firebase-config';
 
 Modal.setAppElement('#root');
 
@@ -15,9 +17,8 @@ interface RealSignModalProps {
 }
 
 export const CreateNormalUserSignInfoModal = ({modalRealSignInfo, setModalRealSignInfo, user}: RealSignModalProps) => {
-  const toastContext = useContext(ToastContext);
   const [formUserSignData, setFormUserSignData] = useState<SignInfo>({
-    nombre: user.nombreEspañol != null ? user.nombreEspañol : "",
+    nombre: user.nombreEspanol != null ? user.nombreEspanol : "",
     email:  user.emailPersonal != null ? user.emailPersonal : "",
     password: ""
   });
@@ -25,23 +26,57 @@ export const CreateNormalUserSignInfoModal = ({modalRealSignInfo, setModalRealSi
 
   const setPassword = (e: any) => {
     setFormUserSignData({...formUserSignData, ['password']: e.target.value})
+    console.log("Password: ", formUserSignData.password);
   }
+
+  const addVisitorUser = addAVisitorUserInTheKehila();
+  const addVisitorUserToUsersList = addAUserToTheUsuariosList();
  
   const closeModal = () => {
     setModalRealSignInfo(false);
     console.log("Form user child data", formUserSignData?.nombre);
-    
-    if (formUserSignData?.password != "") {
-      console.log("Password Selected: ", formUserSignData.password);
-    }
-    toastContext?.setToastData({type: 'success', message: 'Usuario registrado correctamente', show: true});
+  }
 
-    console.log("Toast data: ", toastContext?.toastData);
-    if (toastContext?.toastData.show) {
-      toast(toastContext.toastData.message);
+  const registerUser = async () => {
+    console.log("Registering user with data:");
+    try {
+      /*ADD THE USER ON FIREBASE */
+      const userCredential = await createUserWithEmailAndPassword(auth, formUserSignData.email!, formUserSignData.password!);
+      console.log("Usuario registrado:", userCredential.user.email);
+      /*ADD THE USER ON THE BACKEND */
+      const newVisitorUser: LogedUserData = {
+        nombre: formUserSignData.nombre!,
+        email: formUserSignData.email!,
+        rol: "VISITANTE",
+        kehila: user.nombreKehila!,
+      }
+      await addVisitorUser(user.nombreKehila!, user)
+      await addVisitorUserToUsersList(newVisitorUser);
+      toast.success('Usuario registrado correctamente', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        style: { backgroundColor: 'green', color: 'white' },
+      });
+    } catch (err: any) {
+      console.error("Error al registrar usuario:", err);
+      toast.error('Error al registrar el usuario', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+        style: { backgroundColor: 'red', color: 'white' },
+      });
     }
-
-    console.log("Full user info: ", user);
   }
 
   return (
@@ -52,10 +87,10 @@ export const CreateNormalUserSignInfoModal = ({modalRealSignInfo, setModalRealSi
         style={{ content: styles.container }}
         contentLabel="Sign Info Modal"
       >
-        <h2 style={{ textAlign: 'center'}}>Ingresa los datos para el inicio de sesion</h2>
+        <h2 style={{ textAlign: 'center', color: 'blue'}}>Ingresa los datos para el inicio de sesion</h2>
         <div>
           <label htmlFor="userNameEsp" style={{ display: "block"}}>Nombre</label>
-          <input id="userNameEsp" type="text" name="nombreEspañol" placeholder="Nombre (Español)" style={styles.input} value={formUserSignData.nombre} disabled/>
+          <input id="userNameEsp" type="text" name="nombreEspanol" placeholder="Nombre (Español)" style={styles.input} value={formUserSignData.nombre} disabled/>
 
           <label htmlFor="userEmal" style={{ display: "block"}}>Email</label>
           <input id="userEmal" type="email" name="emailPersonal" placeholder="Email" style={styles.input} value={formUserSignData.email} disabled/>
@@ -73,7 +108,7 @@ export const CreateNormalUserSignInfoModal = ({modalRealSignInfo, setModalRealSi
                   name="password"
                   placeholder="Contraseña"
                   style={styles.input}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => setPassword(e)}
                 />
 
                 {/* Botón para mostrar/ocultar */}
@@ -87,7 +122,7 @@ export const CreateNormalUserSignInfoModal = ({modalRealSignInfo, setModalRealSi
             </div>
           </div>
 
-          <button onClick={() => closeModal()} style={{...styles.button, backgroundColor: formUserSignData.password == "" ? 'gray' : colors.btn_background}} disabled={formUserSignData.password == ""}>
+          <button onClick={registerUser} style={{...styles.button, backgroundColor: formUserSignData.password == "" ? 'gray' : colors.btn_background}} disabled={formUserSignData.password == ""}>
             Registrarse
           </button>
         </div>

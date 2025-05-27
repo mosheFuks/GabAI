@@ -27,7 +27,7 @@ export const VisitorFamilyForm = ({logedVisitorUser}: FormPersonalDataProps) => 
 
             <label htmlFor="userWifeNameEsp" style={{ display: "block"}}>Nombre Esposa Español</label>
             <h5 id="userWifeNameEsp" style={styles.input}>
-                {logedVisitorUser.nombreEsposaEspañol}
+                {logedVisitorUser.nombreEsposaEspanol}
             </h5>
 
             <label htmlFor="userWifeNameHeb" style={{ display: "block"}}>Nombre Esposa Hebreo</label>

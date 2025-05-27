@@ -1,5 +1,5 @@
-import React, { CSSProperties, useEffect, useState } from "react";
-import { VisitorUser, Son, Aniversary, Grupo, Ability } from '../../../../structs/structs';
+import React, { CSSProperties, useContext, useEffect, useState } from "react";
+import { Son, Aniversary, Grupo, Ability, VisitorUser } from '../../../../structs/structs';
 
 import { useNavigate, useParams } from "react-router-dom";
 import { VisitorPersonalInfo } from "./UserComponents/UserForm/VisitorPersonalInfo";
@@ -11,31 +11,46 @@ import {FaArrowLeft } from "react-icons/fa";
 import { VisitorPerashiotInfo } from "./UserComponents/UserForm/VisitorPerashiotInfo";
 import { colors } from "../../../../assets/colors";
 import { NavigationButtonSignUp } from "../../../SignUserOptions/NormalUser/SignUp/NavigationButtonsSignUp";
+import { getVisitorUserInfo } from "../../../../apis/requests";
+import { PageContext } from "../../../../StoreInfo/page-storage";
 
 export const UserDashboard = () => {
-  const [step, setStep] = useState<number>(1);
-  const [user, setUser] = useState<VisitorUser>({})
-
+  const { logedUser } = useContext(PageContext) as any;
   const { id } = useParams();
+  const [step, setStep] = useState<number>(1);
+  const [visitorUser, setVisitorUser] = useState<VisitorUser>()
+
+  const [userName, userSurname] = id!.split("-");
   console.log("id", id);
+  
+  console.log("id splited", userName, userSurname);
 
   const navigate = useNavigate();
 
-  const mockLogedVisitorUser = {
+  const user = getVisitorUserInfo(logedUser.kehila, userName, userSurname)
+  console.log("Info del usuario de AI desde el back: ", user);
+  
+  useEffect(() => {
+    setVisitorUser(user)
+    console.log("Found user: ", user);
+  }, [user])
+  
+  
+  const mockUser = {
     nombreKehila: "Kehila Agudat Israel",
-    nombreEspañol: "Ariel",
+    nombreEspanol: "Ariel",
     nombreHebreo: "אריאל",
     apellido: "Levy",
   
     fechaNacimientoGregoriano: {
       dia: "12",
       mes: "06",
-      año: "1988",
+      ano: "1988",
     },
     fechaNacimientoHebreo: {
       dia: "9",
       mes: "Sivan",
-      año: "5748",
+      ano: "5748",
     },
   
     emailPersonal: "ariel.levy@gmail.com",
@@ -49,23 +64,23 @@ export const UserDashboard = () => {
     fechaBarMitzvaGregoriano: {
       dia: "20",
       mes: "06",
-      año: "2001",
+      ano: "2001",
     },
     fechaBarMitzvaHebreo: {
       dia: "29",
       mes: "Sivan",
-      año: "5761",
+      ano: "5761",
     },
     perashaBarMitzva: "Koraj",
     habilidades: ["Leer Torah", "Jazan"],
   
-    nombreMadreEspañol: "Débora",
+    nombreMadreEspanol: "Débora",
     nombreMadreHebreo: "דבורה",
-    nombrePadreEspañol: "Shlomo",
+    nombrePadreEspanol: "Shlomo",
     nombrePadreHebreo: "שלמה",
   
     estadoCivil: "Casado",
-    nombreEsposaEspañol: "Esther",
+    nombreEsposaEspanol: "Esther",
     nombreEsposaHebreo: "אסתר",
   
     hijos: [
@@ -77,22 +92,22 @@ export const UserDashboard = () => {
         fechaNacimiento: {
           dia: "05",
           mes: "03",
-          año: "2015",
+          ano: "2015",
         },
         fechaNacimientoHebreo: {
           dia: "14",
           mes: "Adar",
-          año: "5775",
+          ano: "5775",
         },
         fechaBarMitzva: {
           dia: "18",
           mes: "03",
-          año: "2028",
+          ano: "2028",
         },
         fechaBarMitzvaHebreo: {
           dia: "17",
           mes: "Adar II",
-          año: "5788",
+          ano: "5788",
         },
         perashaBarMitzva: "Vayakhel",
         habilidades: ["Leer Torah", "Jazan", "Leer Haftara", "Leer Meguila"] as Ability[],
@@ -105,12 +120,12 @@ export const UserDashboard = () => {
         fechaNacimiento: {
           dia: "11",
           mes: "08",
-          año: "2018",
+          ano: "2018",
         },
         fechaNacimientoHebreo: {
           dia: "30",
           mes: "Av",
-          año: "5778",
+          ano: "5778",
         },
       }
     ] as Son[],
@@ -122,12 +137,12 @@ export const UserDashboard = () => {
         fecha: {
           dia: "15",
           mes: "09",
-          año: "2010",
+          ano: "2010",
         },
         fechaHebreo: {
           dia: "7",
           mes: "Tishrei",
-          año: "5771",
+          ano: "5771",
         },
       },
       {
@@ -136,12 +151,12 @@ export const UserDashboard = () => {
         fecha: {
           dia: "01",
           mes: "08",
-          año: "2022",
+          ano: "2022",
         },
         fechaHebreo: {
           dia: "4",
           mes: "Av",
-          año: "5782",
+          ano: "5782",
         },
       },
       {
@@ -150,12 +165,12 @@ export const UserDashboard = () => {
         fecha: {
           dia: "15",
           mes: "10",
-          año: "2020",
+          ano: "2020",
         },
         fechaHebreo: {
           dia: "7",
           mes: "Cheshvan",
-          año: "5781",
+          ano: "5781",
         },
       },
       {
@@ -164,12 +179,12 @@ export const UserDashboard = () => {
         fecha: {
           dia: "22",
           mes: "03",
-          año: "2018",
+          ano: "2018",
         },
         fechaHebreo: {
           dia: "6",
           mes: "Nisan",
-          año: "5778",
+          ano: "5778",
         },
       },
       {
@@ -178,12 +193,12 @@ export const UserDashboard = () => {
         fecha: {
           dia: "01",
           mes: "07",
-          año: "1995",
+          ano: "1995",
         },
         fechaHebreo: {
           dia: "3",
           mes: "Tammuz",
-          año: "5755",
+          ano: "5755",
         },
       },
       {
@@ -192,12 +207,12 @@ export const UserDashboard = () => {
         fecha: {
           dia: "09",
           mes: "12",
-          año: "2005",
+          ano: "2005",
         },
         fechaHebreo: {
           dia: "8",
           mes: "Kislev",
-          año: "5766",
+          ano: "5766",
         },
       },
       
@@ -212,7 +227,7 @@ export const UserDashboard = () => {
         fecha: {
           dia: "01",
           mes: "01",
-          año: "2023",
+          ano: "2023",
         },
         status: "PENDIENTE",
       },
@@ -225,7 +240,7 @@ export const UserDashboard = () => {
         fecha: {
           dia: "01",
           mes: "01",
-          año: "2023",
+          ano: "2023",
         },
         status: "PENDIENTE",
       },
@@ -236,7 +251,7 @@ export const UserDashboard = () => {
         fecha: {
           dia: "15",
           mes: "02",
-          año: "2023",
+          ano: "2023",
         },
         aclaracion: "Donación para la Kehila",
         status: "PENDIENTE",
@@ -248,7 +263,7 @@ export const UserDashboard = () => {
         fecha: {
           dia: "15",
           mes: "02",
-          año: "2023",
+          ano: "2023",
         },
         aclaracion: "Donación para la Kehila",
         status: "PENDIENTE",
@@ -260,7 +275,7 @@ export const UserDashboard = () => {
         fecha: {
           dia: "15",
           mes: "02",
-          año: "2023",
+          ano: "2023",
         },
         aclaracion: "Donación para la Kehila",
         status: "PAGADA",
@@ -269,7 +284,7 @@ export const UserDashboard = () => {
   };
 
   const searchPropertyByName = (key: string) => {
-    const properties = Object.entries(mockLogedVisitorUser); // Convierte a array de [clave, valor]
+    const properties = Object.entries(user); // Convierte a array de [clave, valor]
     
     const filtered = properties.filter(([propName, _]) =>
       propName.startsWith(key.toLowerCase()) || propName.includes(key.toLowerCase())
@@ -277,10 +292,6 @@ export const UserDashboard = () => {
   
     console.log("Propiedades que coinciden:", filtered);
   };
-  
-  useEffect(() => {
-    console.log("User data on Sign UP is:", user);
-  }, [user])
 
   return (
     <>
@@ -290,38 +301,44 @@ export const UserDashboard = () => {
           <FaArrowLeft className="text-black" /> Lista de usuarios
         </button>
         <h2 style={styles.title}>
-         {id?.replace(/([a-z])([A-Z])/g, '$1 $2')}
+         {userName} {userSurname}
         </h2>
         <div style={{...styles.button, backgroundColor: colors.main_background, color: colors.main_background, cursor: '-moz-grab'}}></div>
       </div>
       <NavigationButtonSignUp step={step} setStep={setStep} fromPage="userDashboardPage"/>
-      <form style={{ width: "100%" }}>
+      {user != undefined ? (
+        <form style={{ width: "100%" }}>
         {step === 1 && (
           <VisitorPersonalInfo 
-            logedVisitorUser={mockLogedVisitorUser}
+            logedVisitorUser={user}
           />
         )}
         {step === 2 && (
           <VisitorKehilaInfo 
-            logedVisitorUser={mockLogedVisitorUser}
+            logedVisitorUser={user}
           />
         )}
         {step === 3 && ( 
           <VisitorFamilyInfo
-            logedVisitorUser={mockLogedVisitorUser} 
+            logedVisitorUser={user} 
           />
         )}
         {step === 4 && (    
           <VisitorAccountInfo 
-            logedVisitorUser={mockLogedVisitorUser} 
+            logedVisitorUser={user} 
           />
         )}
         {step === 5 && (    
           <VisitorPerashiotInfo 
-            logedVisitorUser={mockLogedVisitorUser} 
+            logedVisitorUser={user} 
           />
         )}
       </form>
+      ) : (
+        <div style={{ textAlign: 'center', marginTop: '20px', fontSize: '3rem' }}>
+          <h5 style={{ color: colors.btn_background }}>No se encontro informacion de ese usuario</h5>
+        </div>
+      )}
     </div>
     </>
   );

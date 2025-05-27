@@ -1,45 +1,57 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Modal from 'react-modal';
 import { colors } from '../../../../assets/colors'
-
+import { Alia, Donacion } from '../../../../structs/structs';
+import { addADonationToUser, addAnAliaInAPerasha } from '../../../../apis/requests';
+import { PageContext } from '../../../../StoreInfo/page-storage';
 
 Modal.setAppElement('#root');
-
-interface Alia {
-  alia: string,
-  nombre: string,
-  nombreHebreo: string,
-  monto: number,
-  moneda: string
-}
 
 interface AliaModalProps {
   openAliaModal: boolean;
   setOpenAliaModal: (openAliaModal: boolean) => void;
   setAliotList: (aliotList: Alia[]) => void;
   aliotList: Alia[];
+  perashaName: string;
+  formAliaData: Alia;
+  setFormAliaData: (formAliaData: Alia) => void;
 }
 
-export const AliaModal = ({setOpenAliaModal, openAliaModal, setAliotList, aliotList}: AliaModalProps) => {
+export const AliaModal = ({setOpenAliaModal, openAliaModal, setAliotList, aliotList, perashaName, formAliaData, setFormAliaData}: AliaModalProps) => {
+  const {logedUser, logedVisitorUser} = useContext(PageContext) as any;
+  const [agregarDonacion, setAgregarDonacion] = useState<boolean>(false);
+  
+  const addAlia = addAnAliaInAPerasha();
+  const addDonation = addADonationToUser(); 
 
-  const [formAliaData, setFormAliaData] = useState<Alia>({
-    alia: "",
-    nombre: "",
-    nombreHebreo: "",
-    monto: 0,
-    moneda: ""
-  });
-
-  const closeModal = () => {
-    setOpenAliaModal(false);
-    formAliaData.moneda != "" && setAliotList([...aliotList, formAliaData]);
+  const closeModal = async () => {
+    if (formAliaData.moneda !== "") {
+      await addAlia(logedUser.kehila, perashaName, formAliaData);
+      setAliotList([...aliotList, formAliaData]);
+      if (agregarDonacion) {
+        const newDonation: Donacion = {
+          monto: formAliaData.monto,
+          tipoMoneda: formAliaData.moneda,
+          motivo: `Alia`,
+          fecha: {
+            dia: new Date().getDate().toString(),
+            mes: (new Date().getMonth() + 1).toString(), // Meses en JavaScript son 0-indexados
+            ano: new Date().getFullYear().toString()
+          },
+          perasha: perashaName,
+          aclaracion: `Alia ${formAliaData.alia} en ${perashaName}`,
+          status: "PENDIENTE"
+        };
+        await addDonation(logedUser.kehila, formAliaData.nombre, formAliaData.apellido!, newDonation);
+      }
+    }
   }
   
   return (
     <div>
       <Modal
         isOpen={openAliaModal}
-        onRequestClose={closeModal}
+        onRequestClose={() => setOpenAliaModal(false)}
         style={{ content: styles.container }}
         contentLabel="Example Modal"
       >
@@ -60,6 +72,15 @@ export const AliaModal = ({setOpenAliaModal, openAliaModal, setAliotList, aliotL
             id="aliaNombre"
             value={formAliaData.nombre}
             onChange={(e) => setFormAliaData({ ...formAliaData, nombre: e.target.value })}
+            style={styles.input}
+          />
+
+          <label htmlFor="aliaApellido" style={{ display: "block"}}>Apellido</label>
+          <input
+            type="text"
+            id="aliaApellido"
+            value={formAliaData.apellido}
+            onChange={(e) => setFormAliaData({ ...formAliaData, apellido: e.target.value })}
             style={styles.input}
           />
 
@@ -92,6 +113,18 @@ export const AliaModal = ({setOpenAliaModal, openAliaModal, setAliotList, aliotL
             <option value="USD">USD</option>
             <option value="ARS">ARS</option>
           </select>
+
+          <div style={styles.switchContainer}>
+            <label style={{ display: "block"}}>
+              ¿Querés agregar esta donación a la lista de donaciones de {formAliaData.nombre}?
+            </label>
+            <input
+              type="checkbox"
+              checked={agregarDonacion}
+              onChange={(e) => setAgregarDonacion(e.target.checked)}
+              style={styles.switch}
+            />
+          </div>
 
           <button onClick={closeModal} style={{...styles.button, backgroundColor: formAliaData.moneda == "" ? 'gray' : colors.btn_background}} disabled={formAliaData.moneda == ""}>
             Guardar
@@ -135,5 +168,17 @@ const styles = {
     cursor: "pointer",
     fontSize: "1rem",
     border: "none",
+  },
+  switchContainer: {
+    display: "flex",
+    //justifyContent: "center",
+    marginTop: "20px",
+    marginBottom: "20px",
+  },
+  switch: {
+    width: "25px",
+    height: "25px",
+    accentColor: colors.btn_background, // o el azul de tu estilo
+    cursor: "pointer",
   },
 };

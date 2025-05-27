@@ -16,7 +16,7 @@ export const VisitorAccountForm = ({ logedVisitorUser }: FormPersonalDataProps) 
 
   const formatDate = (date?: CustomDate) => {
     if (!date) return '';
-    return `${date.dia}/${date.mes}/${date.año}`;
+    return `${date.dia}/${date.mes}/${date.ano}`;
   };
 
   const filterDonations = () => {

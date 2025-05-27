@@ -22,7 +22,7 @@ interface LanguageProviderProps {
 }
 
 const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
-  const [choosedUserLanguage, setChoosedUserLanguage] = useState("Español");
+  const [choosedUserLanguage, setChoosedUserLanguage] = useState("Espanol");
 
   const changeUserLanguage = (): LanguageStrings => {
     if (choosedUserLanguage === "English" || choosedUserLanguage === "Inglés") {

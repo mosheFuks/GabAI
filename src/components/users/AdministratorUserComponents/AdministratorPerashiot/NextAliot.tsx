@@ -12,7 +12,7 @@ interface DaysOfThisWeek {
 }
 
 interface NextAliotProps {
-  peopleList: VisitorUser[]
+  peopleList?: VisitorUser[]
 }
 
 interface AniversariesList {
@@ -27,12 +27,12 @@ interface AniversariesList {
   fechaAniGreg: {
     dia: string,
     mes: string,
-    año: string
+    ano: string
   },
   fechaAniHeb: {
     dia: string,
     mes: string,
-    año: string
+    ano: string
   }
 }
 
@@ -97,7 +97,7 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
         .filter((ani) => ani.fechaHebreo!.mes === currentMonth)
         .map((ani) => ({
           motivo: ani.motivo,
-          nombre: persona.nombreEspañol,
+          nombre: persona.nombreEspanol,
           apellido: persona.apellido,
           nombreHebreo: persona.nombreHebreo,
           numeroSocio: persona.numeroSocio,
@@ -107,12 +107,12 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
           fechaAniGreg: {
             dia: ani.fecha?.dia,
             mes: ani.fecha?.mes,
-            año: ani.fecha?.año,
+            ano: ani.fecha?.ano,
           },
           fechaAniHeb: {
             dia: ani.fechaHebreo?.dia,
             mes: ani.fechaHebreo?.mes,
-            año: ani.fechaHebreo?.año,
+            ano: ani.fechaHebreo?.ano,
           },
         } as AniversariesList))
       );
@@ -120,8 +120,8 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
     const monthBirthdates = peopleList
       .filter(persona => persona.fechaNacimientoHebreo?.mes === currentMonth)
       .map(per => ({
-        motivo: "Cumpleaños",
-        nombre: per.nombreEspañol,
+        motivo: "Cumpleanos",
+        nombre: per.nombreEspanol,
         apellido: per.apellido,
         nombreHebreo: per.nombreHebreo,
         numeroSocio: per.numeroSocio,
@@ -131,12 +131,12 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
         fechaAniGreg: {
           dia: per.fechaNacimientoGregoriano?.dia,
           mes: per.fechaNacimientoGregoriano?.mes,
-          año: per.fechaNacimientoGregoriano?.año,
+          ano: per.fechaNacimientoGregoriano?.ano,
         },
         fechaAniHeb: {
           dia: per.fechaNacimientoHebreo?.dia,
           mes: per.fechaNacimientoHebreo?.mes,
-          año: per.fechaNacimientoHebreo?.año,
+          ano: per.fechaNacimientoHebreo?.ano,
         },
       } as AniversariesList));
 
@@ -144,7 +144,7 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
       .filter(persona => persona.fechaBarMitzvaHebreo?.mes === currentMonth)
       .map(per => ({
         motivo: "Bar Mitzva",
-        nombre: per.nombreEspañol,
+        nombre: per.nombreEspanol,
         apellido: per.apellido,
         nombreHebreo: per.nombreHebreo,
         numeroSocio: per.numeroSocio,
@@ -154,12 +154,12 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
         fechaAniGreg: {
           dia: per.fechaBarMitzvaGregoriano?.dia,
           mes: per.fechaBarMitzvaGregoriano?.mes,
-          año: per.fechaBarMitzvaGregoriano?.año,
+          ano: per.fechaBarMitzvaGregoriano?.ano,
         },
         fechaAniHeb: {
           dia: per.fechaBarMitzvaHebreo?.dia,
           mes: per.fechaBarMitzvaHebreo?.mes,
-          año: per.fechaBarMitzvaHebreo?.año,
+          ano: per.fechaBarMitzvaHebreo?.ano,
         },
       } as AniversariesList));
 
@@ -175,7 +175,7 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
 
   /*const getCurrentYearAniversaries = (currentWeekAniversaries: AniversariesList[], currentYear: number) => {
     const thisYearAniversaries = currentWeekAniversaries.filter((ani) => {
-      return +ani.fechaAniHeb.año === currentYear
+      return +ani.fechaAniHeb.ano === currentYear
     })
 
     console.log("This Year Aniversaries: ", thisYearAniversaries);
@@ -258,8 +258,8 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
                   const grupo = ani.grupo;
                   const minian = ani.minian
                   const habilidades = ani.habilidades
-                  const fechaAniGreg = `${ani.fechaAniGreg.dia}/${ani.fechaAniGreg.mes}/${ani.fechaAniGreg.año}`;
-                  const fechaAniHeb = `${ani.fechaAniHeb.dia} ${ani.fechaAniHeb.mes} ${ani.fechaAniHeb.año}`;
+                  const fechaAniGreg = `${ani.fechaAniGreg.dia}/${ani.fechaAniGreg.mes}/${ani.fechaAniGreg.ano}`;
+                  const fechaAniHeb = `${ani.fechaAniHeb.dia} ${ani.fechaAniHeb.mes} ${ani.fechaAniHeb.ano}`;
 
                   return (
                     <tr key={index}>

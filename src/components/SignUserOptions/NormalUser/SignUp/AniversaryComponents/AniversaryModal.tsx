@@ -21,12 +21,12 @@ export const CreateAniversaryModalComponent = ({modalAniversaryIsOpen, setModalA
     fecha: {
       dia:  aniversarySelected?.fecha?.dia != null ? aniversarySelected.fecha.dia : "",
       mes:  aniversarySelected?.fecha?.mes != null ? aniversarySelected.fecha.mes : "",
-      año:  aniversarySelected?.fecha?.año != null ? aniversarySelected.fecha.año : "",
+      ano:  aniversarySelected?.fecha?.ano != null ? aniversarySelected.fecha.ano : "",
     },
     fechaHebreo: {
       dia:  aniversarySelected?.fechaHebreo?.dia != null ? aniversarySelected.fechaHebreo.dia : "",
       mes:  aniversarySelected?.fechaHebreo?.mes != null ? aniversarySelected.fechaHebreo.mes : "",
-      año:  aniversarySelected?.fechaHebreo?.año != null ? aniversarySelected.fechaHebreo.año : "",
+      ano:  aniversarySelected?.fechaHebreo?.ano != null ? aniversarySelected.fechaHebreo.ano : "",
     },
     motivo: aniversarySelected?.motivo != null ? aniversarySelected?.motivo : "",
     nombreDelAniversario: aniversarySelected?.nombreDelAniversario != null ? aniversarySelected?.nombreDelAniversario : "",
@@ -79,7 +79,7 @@ export const CreateAniversaryModalComponent = ({modalAniversaryIsOpen, setModalA
   /*const calculateHebrewDate = (date: string, parameterToSave: string) => {
     console.log("Date to calculate is:", date); // Devuelve "2001-10-18"
 
-    // Extraer el año, mes y día manualmente
+    // Extraer el ano, mes y día manualmente
     const [year, month, day] = date.split("-").map(Number);
 
     // Crear la fecha sin que JavaScript la convierta automáticamente a UTC
@@ -110,7 +110,7 @@ export const CreateAniversaryModalComponent = ({modalAniversaryIsOpen, setModalA
           ...formUserAniversaryData[aniversaryType],
           dia: e[0],
           mes: e[1],
-          año: e[2]
+          ano: e[2]
         },
       });
     }
@@ -122,7 +122,7 @@ export const CreateAniversaryModalComponent = ({modalAniversaryIsOpen, setModalA
     console.log("Date to calculate is:", date);
     const day = +date.dia!
     const month = +date.mes!
-    const year = +date.año!
+    const year = +date.ano!
 
     const gregorianDate = new Date(year, month - 1, day, 12)
     console.log("Gregorian date is:", gregorianDate);
@@ -136,10 +136,10 @@ export const CreateAniversaryModalComponent = ({modalAniversaryIsOpen, setModalA
   
   const calculateGregorianAniversaryDate = (date: CustomDate) => {
     console.log("Date to calculate is:", date); // Devuelve "2001-10-18"
-    // Extraer el año, mes y día manualmente
+    // Extraer el ano, mes y día manualmente
     const hebDay = +date.dia!
     const hebMonth = date.mes
-    const hebYear = +date.año!
+    const hebYear = +date.ano!
 
     const hdate = new HDate(hebDay, hebMonth, hebYear);
     const gregDate: Date = hdate.greg();
@@ -182,10 +182,10 @@ export const CreateAniversaryModalComponent = ({modalAniversaryIsOpen, setModalA
               <input id="userAniversaryDateGregMes" type="number" name="fecha" placeholder="Mes" onChange={(e: any) => saveBirthDateParams("mes", "fecha", false, e)} style={{...styles.input}} value={formUserAniversaryData.fecha?.mes}/>
             </div>
             <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-              <label htmlFor="userAniversaryDateGregAño" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
-              <input id="userAniversaryDateGregAño" type="number" name="fecha" placeholder="Año" onChange={(e: any) => saveBirthDateParams("año", "fecha", false, e)} style={{...styles.input}} value={formUserAniversaryData.fecha?.año}/>
+              <label htmlFor="userAniversaryDateGregAno" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
+              <input id="userAniversaryDateGregAno" type="number" name="fecha" placeholder="Ano" onChange={(e: any) => saveBirthDateParams("ano", "fecha", false, e)} style={{...styles.input}} value={formUserAniversaryData.fecha?.ano}/>
             </div>
-            {calculateAniversaryDateBtn("fecha", formUserAniversaryData.fechaHebreo!, formUserAniversaryData.fechaHebreo?.dia! == "" || formUserAniversaryData.fechaHebreo?.mes! == "" || formUserAniversaryData.fechaHebreo?.año! == "" )}
+            {calculateAniversaryDateBtn("fecha", formUserAniversaryData.fechaHebreo!, formUserAniversaryData.fechaHebreo?.dia! == "" || formUserAniversaryData.fechaHebreo?.mes! == "" || formUserAniversaryData.fechaHebreo?.ano! == "" )}
           </div>
 
           <label htmlFor="userFechaNacHeb" style={{ display: "block"}}>Fecha Nacimiento Hebreo</label>
@@ -217,11 +217,11 @@ export const CreateAniversaryModalComponent = ({modalAniversaryIsOpen, setModalA
                 </select>
               </div>
               <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                <label htmlFor="userFechaNacHebAño" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
-                <input id="userFechaNacHebAño" type="number" name="fechaHebreo" placeholder="Año" onChange={(e: any) => saveBirthDateParams("año", "fechaHebreo", false, e)} style={{...styles.input}} value={formUserAniversaryData.fechaHebreo?.año}/>
+                <label htmlFor="userFechaNacHebAno" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
+                <input id="userFechaNacHebAno" type="number" name="fechaHebreo" placeholder="Añso" onChange={(e: any) => saveBirthDateParams("ano", "fechaHebreo", false, e)} style={{...styles.input}} value={formUserAniversaryData.fechaHebreo?.ano}/>
               </div>
             </div>
-            {calculateAniversaryDateBtn("fechaHebreo", formUserAniversaryData.fecha!, formUserAniversaryData.fecha?.dia! == "" || formUserAniversaryData.fecha?.mes! == "" || formUserAniversaryData.fecha?.año! == "" )}
+            {calculateAniversaryDateBtn("fechaHebreo", formUserAniversaryData.fecha!, formUserAniversaryData.fecha?.dia! == "" || formUserAniversaryData.fecha?.mes! == "" || formUserAniversaryData.fecha?.ano! == "" )}
           </div>
 
           <button onClick={closeModal} style={{...styles.button, backgroundColor: formUserAniversaryData.motivo == "" ? 'gray' : colors.btn_background}} disabled={formUserAniversaryData.motivo == ""}>

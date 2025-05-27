@@ -1,4 +1,4 @@
-import { CSSProperties, useEffect, useState } from "react";
+import { CSSProperties, use, useContext, useEffect, useState } from "react";
 import { colors } from "../../../assets/colors";
 import { Aniversary, Grupo, VisitorUser } from "../../../structs/structs";
 import { FaArrowAltCircleRight } from "react-icons/fa";
@@ -7,24 +7,28 @@ import { NavigationDashboardButtons } from "./NavigationDahboardButtons";
 import { NextAliot } from "./AdministratorPerashiot/NextAliot";
 import { OldPerashiotList } from "./AdministratorPerashiot/OldPerashiotList";
 
+import { getUsersList } from "../../../apis/requests";
+import { PageContext } from "../../../StoreInfo/page-storage";
+
 export const AdministratorDefaultDashboard = () => {
   const navigate = useNavigate();
+  const { logedUser } = useContext(PageContext) as any;
   const personas: VisitorUser[] = [
     {
       nombreKehila: "Kehila Or Hatora",
-      nombreEspañol: "Nahuel",
+      nombreEspanol: "Nahuel",
       nombreHebreo: "נהואל",
       apellido: "Szwarc",
   
       fechaNacimientoGregoriano: {
         dia: "18",
         mes: "04",
-        año: "1993",
+        ano: "1993",
       },
       fechaNacimientoHebreo: {
         dia: "20",
         mes: "Iyyar",
-        año: "5735",
+        ano: "5735",
       },
   
       emailPersonal: "nahuel.sz@gmail.com",
@@ -38,23 +42,23 @@ export const AdministratorDefaultDashboard = () => {
       fechaBarMitzvaGregoriano: {
         dia: "29",
         mes: "04",
-        año: "2006",
+        ano: "2006",
       },
       fechaBarMitzvaHebreo: {
         dia: "1",
         mes: "Iyar",
-        año: "5766",
+        ano: "5766",
       },
       perashaBarMitzva: "Ajarei Mot",
       habilidades: ["Tefilá", "Cantar Zemirot"],
   
-      nombreMadreEspañol: "Estela",
+      nombreMadreEspanol: "Estela",
       nombreMadreHebreo: "אסתר",
-      nombrePadreEspañol: "Rubén",
+      nombrePadreEspanol: "Rubén",
       nombrePadreHebreo: "ראובן",
   
       estadoCivil: "Casado",
-      nombreEsposaEspañol: "Yael",
+      nombreEsposaEspanol: "Yael",
       nombreEsposaHebreo: "יעל",
 
       aniversarios: [
@@ -64,12 +68,12 @@ export const AdministratorDefaultDashboard = () => {
           fecha: {
             dia: "15",
             mes: "09",
-            año: "2010",
+            ano: "2010",
           },
           fechaHebreo: {
             dia: "7",
             mes: "Iyyar",
-            año: "5771",
+            ano: "5771",
           },
         },
         {
@@ -78,12 +82,12 @@ export const AdministratorDefaultDashboard = () => {
           fecha: {
             dia: "01",
             mes: "08",
-            año: "2022",
+            ano: "2022",
           },
           fechaHebreo: {
             dia: "14",
             mes: "Iyyar",
-            año: "5785",
+            ano: "5785",
           },
         },
         {
@@ -92,12 +96,12 @@ export const AdministratorDefaultDashboard = () => {
           fecha: {
             dia: "01",
             mes: "08",
-            año: "2022",
+            ano: "2022",
           },
           fechaHebreo: {
             dia: "14",
             mes: "Iyyar",
-            año: "5785",
+            ano: "5785",
           },
         },  
         {
@@ -106,12 +110,12 @@ export const AdministratorDefaultDashboard = () => {
           fecha: {
             dia: "15",
             mes: "10",
-            año: "2020",
+            ano: "2020",
           },
           fechaHebreo: {
             dia: "7",
             mes: "Cheshvan",
-            año: "5781",
+            ano: "5781",
           },
         },
         {
@@ -120,12 +124,12 @@ export const AdministratorDefaultDashboard = () => {
           fecha: {
             dia: "22",
             mes: "03",
-            año: "2018",
+            ano: "2018",
           },
           fechaHebreo: {
             dia: "6",
             mes: "Nisan",
-            año: "5778",
+            ano: "5778",
           },
         },
         {
@@ -134,12 +138,12 @@ export const AdministratorDefaultDashboard = () => {
           fecha: {
             dia: "01",
             mes: "07",
-            año: "1995",
+            ano: "1995",
           },
           fechaHebreo: {
             dia: "3",
             mes: "Iyyar",
-            año: "5784",
+            ano: "5784",
           },
         },
         {
@@ -148,12 +152,12 @@ export const AdministratorDefaultDashboard = () => {
           fecha: {
             dia: "09",
             mes: "12",
-            año: "2005",
+            ano: "2005",
           },
           fechaHebreo: {
             dia: "8",
             mes: "Kislev",
-            año: "5766",
+            ano: "5766",
           },
         }
       ] as Aniversary[]
@@ -161,19 +165,19 @@ export const AdministratorDefaultDashboard = () => {
   
     {
       nombreKehila: "Kehila Shomer Emunim",
-      nombreEspañol: "Matías",
+      nombreEspanol: "Matías",
       nombreHebreo: "מתתיהו",
       apellido: "Benlolo",
   
       fechaNacimientoGregoriano: {
         dia: "02",
         mes: "07",
-        año: "1991",
+        ano: "1991",
       },
       fechaNacimientoHebreo: {
         dia: "20",
         mes: "Tamuz",
-        año: "5751",
+        ano: "5751",
       },
   
       emailPersonal: "matias.benlolo@gmail.com",
@@ -187,23 +191,23 @@ export const AdministratorDefaultDashboard = () => {
       fechaBarMitzvaGregoriano: {
         dia: "13",
         mes: "07",
-        año: "2004",
+        ano: "2004",
       },
       fechaBarMitzvaHebreo: {
         dia: "17",
         mes: "Iyyar",
-        año: "5764",
+        ano: "5764",
       },
       perashaBarMitzva: "Pinjas",
       habilidades: ["Leer Torah"],
   
-      nombreMadreEspañol: "Claudia",
+      nombreMadreEspanol: "Claudia",
       nombreMadreHebreo: "חיה",
-      nombrePadreEspañol: "Yosef",
+      nombrePadreEspanol: "Yosef",
       nombrePadreHebreo: "יוסף",
   
       estadoCivil: "Soltero",
-      nombreEsposaEspañol: "",
+      nombreEsposaEspanol: "",
       nombreEsposaHebreo: "",
 
       aniversarios: [
@@ -213,12 +217,12 @@ export const AdministratorDefaultDashboard = () => {
               fecha: {
                 dia: "15",
                 mes: "09",
-                año: "2010",
+                ano: "2010",
               },
               fechaHebreo: {
                 dia: "7",
                 mes: "Tishrei",
-                año: "5771",
+                ano: "5771",
               },
             },
             {
@@ -227,12 +231,12 @@ export const AdministratorDefaultDashboard = () => {
               fecha: {
                 dia: "01",
                 mes: "08",
-                año: "2022",
+                ano: "2022",
               },
               fechaHebreo: {
                 dia: "14",
                 mes: "Iyyar",
-                año: "5782",
+                ano: "5782",
               },
             },
             {
@@ -241,12 +245,12 @@ export const AdministratorDefaultDashboard = () => {
               fecha: {
                 dia: "15",
                 mes: "10",
-                año: "2020",
+                ano: "2020",
               },
               fechaHebreo: {
                 dia: "17",
                 mes: "Iyyar",
-                año: "5781",
+                ano: "5781",
               },
             },
             {
@@ -255,12 +259,12 @@ export const AdministratorDefaultDashboard = () => {
               fecha: {
                 dia: "22",
                 mes: "03",
-                año: "2018",
+                ano: "2018",
               },
               fechaHebreo: {
                 dia: "6",
                 mes: "Nisan",
-                año: "5778",
+                ano: "5778",
               },
             },
             {
@@ -269,12 +273,12 @@ export const AdministratorDefaultDashboard = () => {
               fecha: {
                 dia: "01",
                 mes: "07",
-                año: "1995",
+                ano: "1995",
               },
               fechaHebreo: {
                 dia: "3",
                 mes: "Tammuz",
-                año: "5755",
+                ano: "5755",
               },
             },
             {
@@ -283,12 +287,12 @@ export const AdministratorDefaultDashboard = () => {
               fecha: {
                 dia: "09",
                 mes: "12",
-                año: "2005",
+                ano: "2005",
               },
               fechaHebreo: {
                 dia: "8",
                 mes: "Kislev",
-                año: "5766",
+                ano: "5766",
               },
             },
             
@@ -296,19 +300,19 @@ export const AdministratorDefaultDashboard = () => {
     },
     {
       nombreKehila: "Kehila Neve Shalom",
-      nombreEspañol: "Samuel",
+      nombreEspanol: "Samuel",
       nombreHebreo: "שמואל",
       apellido: "Serfaty",
   
       fechaNacimientoGregoriano: {
         dia: "23",
         mes: "09",
-        año: "1987",
+        ano: "1987",
       },
       fechaNacimientoHebreo: {
         dia: "1",
         mes: "Tishrei",
-        año: "5748",
+        ano: "5748",
       },
   
       emailPersonal: "samuel.serfaty@yahoo.com",
@@ -322,23 +326,23 @@ export const AdministratorDefaultDashboard = () => {
       fechaBarMitzvaGregoriano: {
         dia: "06",
         mes: "10",
-        año: "2000",
+        ano: "2000",
       },
       fechaBarMitzvaHebreo: {
         dia: "7",
         mes: "Tishrei",
-        año: "5761",
+        ano: "5761",
       },
       perashaBarMitzva: "Haazinu",
       habilidades: ["Dar Shiur", "Liderar Tefilá"],
   
-      nombreMadreEspañol: "Rina",
+      nombreMadreEspanol: "Rina",
       nombreMadreHebreo: "רינה",
-      nombrePadreEspañol: "Yehuda",
+      nombrePadreEspanol: "Yehuda",
       nombrePadreHebreo: "יהודה",
   
       estadoCivil: "Casado",
-      nombreEsposaEspañol: "Tamar",
+      nombreEsposaEspanol: "Tamar",
       nombreEsposaHebreo: "תמר",
 
       aniversarios: [
@@ -348,12 +352,12 @@ export const AdministratorDefaultDashboard = () => {
           fecha: {
             dia: "15",
             mes: "09",
-            año: "2010",
+            ano: "2010",
           },
           fechaHebreo: {
             dia: "7",
             mes: "Tishrei",
-            año: "5771",
+            ano: "5771",
           },
         },
         {
@@ -362,12 +366,12 @@ export const AdministratorDefaultDashboard = () => {
           fecha: {
             dia: "01",
             mes: "08",
-            año: "2022",
+            ano: "2022",
           },
           fechaHebreo: {
             dia: "4",
             mes: "Av",
-            año: "5782",
+            ano: "5782",
           },
         },
         {
@@ -376,12 +380,12 @@ export const AdministratorDefaultDashboard = () => {
           fecha: {
             dia: "15",
             mes: "10",
-            año: "2020",
+            ano: "2020",
           },
           fechaHebreo: {
             dia: "17",
             mes: "Iyyar",
-            año: "5785",
+            ano: "5785",
           },
         },
         {
@@ -390,12 +394,12 @@ export const AdministratorDefaultDashboard = () => {
           fecha: {
             dia: "22",
             mes: "03",
-            año: "2018",
+            ano: "2018",
           },
           fechaHebreo: {
             dia: "6",
             mes: "Nisan",
-            año: "5778",
+            ano: "5778",
           },
         },
         {
@@ -404,12 +408,12 @@ export const AdministratorDefaultDashboard = () => {
           fecha: {
             dia: "01",
             mes: "07",
-            año: "1995",
+            ano: "1995",
           },
           fechaHebreo: {
             dia: "3",
             mes: "Tammuz",
-            año: "5755",
+            ano: "5755",
           },
         },
         {
@@ -418,12 +422,12 @@ export const AdministratorDefaultDashboard = () => {
           fecha: {
             dia: "09",
             mes: "12",
-            año: "2005",
+            ano: "2005",
           },
           fechaHebreo: {
             dia: "8",
             mes: "Kislev",
-            año: "5766",
+            ano: "5766",
           },
         },
             
@@ -432,19 +436,19 @@ export const AdministratorDefaultDashboard = () => {
     },
     {
       nombreKehila: "Kehila Tikvá",
-      nombreEspañol: "Jonathan",
+      nombreEspanol: "Jonathan",
       nombreHebreo: "יונתן",
       apellido: "Benchimol",
   
       fechaNacimientoGregoriano: {
         dia: "08",
         mes: "02",
-        año: "1996",
+        ano: "1996",
       },
       fechaNacimientoHebreo: {
         dia: "19",
         mes: "Shevat",
-        año: "5756",
+        ano: "5756",
       },
   
       emailPersonal: "jon.benchimol@gmail.com",
@@ -458,42 +462,42 @@ export const AdministratorDefaultDashboard = () => {
       fechaBarMitzvaGregoriano: {
         dia: "20",
         mes: "02",
-        año: "2009",
+        ano: "2009",
       },
       fechaBarMitzvaHebreo: {
         dia: "25",
         mes: "Shevat",
-        año: "5769",
+        ano: "5769",
       },
       perashaBarMitzva: "Mishpatim",
       habilidades: ["Tocar Shofar"],
   
-      nombreMadreEspañol: "Verónica",
+      nombreMadreEspanol: "Verónica",
       nombreMadreHebreo: "ורד",
-      nombrePadreEspañol: "Isaac",
+      nombrePadreEspanol: "Isaac",
       nombrePadreHebreo: "יצחק",
   
       estadoCivil: "Soltero",
-      nombreEsposaEspañol: "",
+      nombreEsposaEspanol: "",
       nombreEsposaHebreo: "",
 
       aniversarios: []
     },
     {
       nombreKehila: "Kehila Mishkan David",
-      nombreEspañol: "Daniel",
+      nombreEspanol: "Daniel",
       nombreHebreo: "דניאל",
       apellido: "Saada",
   
       fechaNacimientoGregoriano: {
         dia: "14",
         mes: "05",
-        año: "1989",
+        ano: "1989",
       },
       fechaNacimientoHebreo: {
         dia: "9",
         mes: "Iyar",
-        año: "5749",
+        ano: "5749",
       },
   
       emailPersonal: "daniel.saada@gmail.com",
@@ -507,42 +511,42 @@ export const AdministratorDefaultDashboard = () => {
       fechaBarMitzvaGregoriano: {
         dia: "23",
         mes: "05",
-        año: "2002",
+        ano: "2002",
       },
       fechaBarMitzvaHebreo: {
         dia: "12",
         mes: "Iyar",
-        año: "5762",
+        ano: "5762",
       },
       perashaBarMitzva: "Behar",
       habilidades: ["Liderar Tefilá"],
   
-      nombreMadreEspañol: "Judith",
+      nombreMadreEspanol: "Judith",
       nombreMadreHebreo: "יהודית",
-      nombrePadreEspañol: "Ezra",
+      nombrePadreEspanol: "Ezra",
       nombrePadreHebreo: "עזריה",
   
       estadoCivil: "Casado",
-      nombreEsposaEspañol: "Débora",
+      nombreEsposaEspanol: "Débora",
       nombreEsposaHebreo: "דבורה",
 
       aniversarios: []
     },
     {
       nombreKehila: "Kehila Beit Israel",
-      nombreEspañol: "David",
+      nombreEspanol: "David",
       nombreHebreo: "דוד",
       apellido: "Cohen",
   
       fechaNacimientoGregoriano: {
         dia: "05",
         mes: "11",
-        año: "1990",
+        ano: "1990",
       },
       fechaNacimientoHebreo: {
         dia: "17",
         mes: "Cheshvan",
-        año: "5751",
+        ano: "5751",
       },
   
       emailPersonal: "david.cohen@gmail.com",
@@ -556,42 +560,42 @@ export const AdministratorDefaultDashboard = () => {
       fechaBarMitzvaGregoriano: {
         dia: "28",
         mes: "10",
-        año: "2003",
+        ano: "2003",
       },
       fechaBarMitzvaHebreo: {
         dia: "2",
         mes: "Cheshvan",
-        año: "5764",
+        ano: "5764",
       },
       perashaBarMitzva: "Lej Lejá",
       habilidades: ["Shofar", "Dar Dvar Torah"],
   
-      nombreMadreEspañol: "Raquel",
+      nombreMadreEspanol: "Raquel",
       nombreMadreHebreo: "רחל",
-      nombrePadreEspañol: "Itzjak",
+      nombrePadreEspanol: "Itzjak",
       nombrePadreHebreo: "יצחק",
   
       estadoCivil: "Soltero",
-      nombreEsposaEspañol: "",
+      nombreEsposaEspanol: "",
       nombreEsposaHebreo: "",
 
       aniversarios: []
     },
     {
       nombreKehila: "Kehila Beit Israel",
-      nombreEspañol: "Daniel",
+      nombreEspanol: "Daniel",
       nombreHebreo: "דוד",
       apellido: "Cohen",
   
       fechaNacimientoGregoriano: {
         dia: "05",
         mes: "11",
-        año: "1990",
+        ano: "1990",
       },
       fechaNacimientoHebreo: {
         dia: "17",
         mes: "Cheshvan",
-        año: "5751",
+        ano: "5751",
       },
   
       emailPersonal: "david.cohen@gmail.com",
@@ -605,23 +609,23 @@ export const AdministratorDefaultDashboard = () => {
       fechaBarMitzvaGregoriano: {
         dia: "28",
         mes: "10",
-        año: "2003",
+        ano: "2003",
       },
       fechaBarMitzvaHebreo: {
         dia: "2",
         mes: "Cheshvan",
-        año: "5764",
+        ano: "5764",
       },
       perashaBarMitzva: "Lej Lejá",
       habilidades: ["Shofar", "Dar Dvar Torah"],
   
-      nombreMadreEspañol: "Raquel",
+      nombreMadreEspanol: "Raquel",
       nombreMadreHebreo: "רחל",
-      nombrePadreEspañol: "Itzjak",
+      nombrePadreEspanol: "Itzjak",
       nombrePadreHebreo: "יצחק",
   
       estadoCivil: "Soltero",
-      nombreEsposaEspañol: "",
+      nombreEsposaEspanol: "",
       nombreEsposaHebreo: "",
 
       aniversarios: []
@@ -629,19 +633,19 @@ export const AdministratorDefaultDashboard = () => {
   
     {
       nombreKehila: "Kehila Magen David",
-      nombreEspañol: "Gabriel",
+      nombreEspanol: "Gabriel",
       nombreHebreo: "גבריאל",
       apellido: "Bitton",
   
       fechaNacimientoGregoriano: {
         dia: "15",
         mes: "03",
-        año: "1985",
+        ano: "1985",
       },
       fechaNacimientoHebreo: {
         dia: "22",
         mes: "Adar",
-        año: "5745",
+        ano: "5745",
       },
   
       emailPersonal: "gabriel.bitton@hotmail.com",
@@ -655,23 +659,23 @@ export const AdministratorDefaultDashboard = () => {
       fechaBarMitzvaGregoriano: {
         dia: "25",
         mes: "03",
-        año: "1998",
+        ano: "1998",
       },
       fechaBarMitzvaHebreo: {
         dia: "27",
         mes: "Adar",
-        año: "5758",
+        ano: "5758",
       },
       perashaBarMitzva: "Tzav",
       habilidades: ["Leer Haftará"],
   
-      nombreMadreEspañol: "Sara",
+      nombreMadreEspanol: "Sara",
       nombreMadreHebreo: "שרה",
-      nombrePadreEspañol: "Moshé",
+      nombrePadreEspanol: "Moshé",
       nombrePadreHebreo: "משה",
   
       estadoCivil: "Casado",
-      nombreEsposaEspañol: "Noa",
+      nombreEsposaEspanol: "Noa",
       nombreEsposaHebreo: "נעה",
 
       aniversarios: []
@@ -679,19 +683,19 @@ export const AdministratorDefaultDashboard = () => {
   
     {
       nombreKehila: "Kehila Sefaradí",
-      nombreEspañol: "Isaac",
+      nombreEspanol: "Isaac",
       nombreHebreo: "יצחק",
       apellido: "Toledano",
   
       fechaNacimientoGregoriano: {
         dia: "30",
         mes: "08",
-        año: "1992",
+        ano: "1992",
       },
       fechaNacimientoHebreo: {
         dia: "2",
         mes: "Elul",
-        año: "5752",
+        ano: "5752",
       },
   
       emailPersonal: "isaac.t92@gmail.com",
@@ -705,23 +709,23 @@ export const AdministratorDefaultDashboard = () => {
       fechaBarMitzvaGregoriano: {
         dia: "12",
         mes: "09",
-        año: "2005",
+        ano: "2005",
       },
       fechaBarMitzvaHebreo: {
         dia: "8",
         mes: "Elul",
-        año: "5765",
+        ano: "5765",
       },
       perashaBarMitzva: "Ki Tetzé",
       habilidades: ["Tocar Shofar", "Liderar Tefilá"],
   
-      nombreMadreEspañol: "Miriam",
+      nombreMadreEspanol: "Miriam",
       nombreMadreHebreo: "מרים",
-      nombrePadreEspañol: "Eliyahu",
+      nombrePadreEspanol: "Eliyahu",
       nombrePadreHebreo: "אליהו",
   
       estadoCivil: "Soltero",
-      nombreEsposaEspañol: "",
+      nombreEsposaEspanol: "",
       nombreEsposaHebreo: "",
 
       cuenta: [
@@ -733,7 +737,7 @@ export const AdministratorDefaultDashboard = () => {
           fecha: {
             dia: "01",
             mes: "01",
-            año: "2023",
+            ano: "2023",
           },
           status: "PENDIENTE",
         },
@@ -744,7 +748,7 @@ export const AdministratorDefaultDashboard = () => {
           fecha: {
             dia: "15",
             mes: "02",
-            año: "2023",
+            ano: "2023",
           },
           aclaracion: "Donación para la Kehila",
           status: "PENDIENTE",
@@ -756,7 +760,7 @@ export const AdministratorDefaultDashboard = () => {
           fecha: {
             dia: "15",
             mes: "02",
-            año: "2023",
+            ano: "2023",
           },
           aclaracion: "Donación para la Kehila",
           status: "PENDIENTE",
@@ -768,7 +772,7 @@ export const AdministratorDefaultDashboard = () => {
           fecha: {
             dia: "15",
             mes: "02",
-            año: "2023",
+            ano: "2023",
           },
           aclaracion: "Donación para la Kehila",
           status: "PAGADA",
@@ -780,19 +784,19 @@ export const AdministratorDefaultDashboard = () => {
   
     {
       nombreKehila: "Kehila Etz Jaim",
-      nombreEspañol: "Elías",
+      nombreEspanol: "Elías",
       nombreHebreo: "אליהו",
       apellido: "Nahón",
   
       fechaNacimientoGregoriano: {
         dia: "21",
         mes: "01",
-        año: "1982",
+        ano: "1982",
       },
       fechaNacimientoHebreo: {
         dia: "26",
         mes: "Tevet",
-        año: "5742",
+        ano: "5742",
       },
   
       emailPersonal: "elias.nahon@gmail.com",
@@ -806,23 +810,23 @@ export const AdministratorDefaultDashboard = () => {
       fechaBarMitzvaGregoriano: {
         dia: "03",
         mes: "02",
-        año: "1995",
+        ano: "1995",
       },
       fechaBarMitzvaHebreo: {
         dia: "2",
         mes: "Shevat",
-        año: "5755",
+        ano: "5755",
       },
       perashaBarMitzva: "Beshalaj",
       habilidades: ["Jazan", "Dar Shiur"],
   
-      nombreMadreEspañol: "Lea",
+      nombreMadreEspanol: "Lea",
       nombreMadreHebreo: "לאה",
-      nombrePadreEspañol: "Abraham",
+      nombrePadreEspanol: "Abraham",
       nombrePadreHebreo: "אברהם",
   
       estadoCivil: "Casado",
-      nombreEsposaEspañol: "Rivka",
+      nombreEsposaEspanol: "Rivka",
       nombreEsposaHebreo: "רבקה",
 
       aniversarios: []
@@ -830,25 +834,25 @@ export const AdministratorDefaultDashboard = () => {
   
     {
       nombreKehila: "Kehila Benei Torah",
-      nombreEspañol: "Yonatan",
+      nombreEspanol: "Yonatan",
       nombreHebreo: "יונתן",
       apellido: "Mizrahi",
   
       fechaNacimientoGregoriano: {
         dia: "10",
         mes: "12",
-        año: "1995",
+        ano: "1995",
       },
       fechaNacimientoHebreo: {
         dia: "18",
         mes: "Kislev",
-        año: "5756",
+        ano: "5756",
       },
   
       emailPersonal: "yonatan.mizrahi@gmail.com",
       emailComercial: "yonatan@mizrahicorp.com",
       telefono: "+59898765432",
-      direccion: "Br. España 3210, Montevideo",
+      direccion: "Br. Espana 3210, Montevideo",
       minian: "Minian Shajarit",
       numeroSocio: "76543",
       grupo: "Israel" as Grupo,
@@ -856,32 +860,35 @@ export const AdministratorDefaultDashboard = () => {
       fechaBarMitzvaGregoriano: {
         dia: "22",
         mes: "12",
-        año: "2008",
+        ano: "2008",
       },
       fechaBarMitzvaHebreo: {
         dia: "25",
         mes: "Kislev",
-        año: "5769",
+        ano: "5769",
       },
       perashaBarMitzva: "Miketz",
       habilidades: ["Leer Torah", "Tocar Shofar"],
   
-      nombreMadreEspañol: "Esther",
+      nombreMadreEspanol: "Esther",
       nombreMadreHebreo: "אסתר",
-      nombrePadreEspañol: "Daniel",
+      nombrePadreEspanol: "Daniel",
       nombrePadreHebreo: "דניאל",
   
       estadoCivil: "Soltero",
-      nombreEsposaEspañol: "",
+      nombreEsposaEspanol: "",
       nombreEsposaHebreo: "",
 
       aniversarios: []
     },
   ];
 
+  const usuarios = getUsersList(logedUser.kehila)
+  console.log("Info de Aniversarios de AI desde el back: ", usuarios);
+  
   const [step, setStep] = useState(1)
   const [oldPerashaInfo, setOldPerashaInfo] = useState(false)
-  const [peopleList, setPeopleList] = useState<VisitorUser[]>(personas);
+  const [peopleList, setPeopleList] = useState<VisitorUser[]>();
   const [peopleFilter, setPeopleFilter] = useState(peopleList);
 
   const getEstadoDeCuenta = (cuenta: any[]) => {
@@ -890,28 +897,30 @@ export const AdministratorDefaultDashboard = () => {
       hasPendingDonation = "SIN MOVIMIENTOS"
     } else {
       const pendingDonation = cuenta.some((movimiento) => movimiento.status === "PENDIENTE");
-      hasPendingDonation = pendingDonation && "PENDIENTE";
+      hasPendingDonation = pendingDonation ? "PENDIENTE" : "PAGADA";
     }
     return hasPendingDonation
   };
-
-  useEffect(() => {
-    oldPerashaInfo ? setStep(3) : setStep(1)
-  }, [oldPerashaInfo])
   
+  useEffect(() => {
+    setPeopleList(usuarios)
+    setPeopleFilter(usuarios)
+    //console.log("Lista de usuarios: ", peopleFilter);
+    oldPerashaInfo ? setStep(3) : setStep(1)
+  }, [usuarios])
   
   return (
     <div style={styles.container}>     
       <NavigationDashboardButtons 
         peopleList={peopleList} 
-        peopleFilter={peopleFilter} 
-        step={step} 
         setPeopleFilter={setPeopleFilter} 
-        setStep={setStep} />
+        peopleFilter={peopleFilter} 
+        setStep={setStep}
+        step={step}  />
 
       {step == 1 ? (
         <div style={{ height: "400px", overflowY: "auto", padding: "10px", borderRadius: "5px" }}>
-          {peopleFilter.length > 0 ? (
+          {peopleFilter != undefined && peopleFilter!.length > 0 ? (
             <table style={styles.table}>
               <thead>
                 <tr>
@@ -922,17 +931,16 @@ export const AdministratorDefaultDashboard = () => {
                   <th style={styles.th}>Fecha Nacimiento Gregoriano</th>
                   <th style={styles.th}>Fecha Nacimiento Hebreo</th>
                   <th style={styles.th}>Estado Cuenta</th>
-                  <th style={styles.th}></th>
                 </tr>
               </thead>
               <tbody>
-                {peopleFilter.map((persona, index) => {
-                  const nombre = persona.nombreEspañol + " " + persona.apellido;
+                {peopleFilter!.map((persona, index) => {
+                  const nombre = persona.nombreEspanol + " " + persona.apellido;
                   const nombreHebreo = persona.nombreHebreo;
                   const numeroSocio = persona.numeroSocio;
                   const grupo = persona.grupo;
-                  const fechaNacimientoGreg = `${persona.fechaNacimientoGregoriano.dia}/${persona.fechaNacimientoGregoriano.mes}/${persona.fechaNacimientoGregoriano.año}`;
-                  const fechaNacimientoHeb = `${persona.fechaNacimientoHebreo.dia} ${persona.fechaNacimientoHebreo.mes} ${persona.fechaNacimientoHebreo.año}`;
+                  const fechaNacimientoGreg = `${persona.fechaNacimientoGregoriano!.dia}/${persona.fechaNacimientoGregoriano!.mes}/${persona.fechaNacimientoGregoriano!.ano}`;
+                  const fechaNacimientoHeb = `${persona.fechaNacimientoHebreo!.dia} ${persona.fechaNacimientoHebreo!.mes} ${persona.fechaNacimientoHebreo!.ano}`;
                   const estadoCuenta = getEstadoDeCuenta(persona.cuenta? persona.cuenta : []);
 
                   return (
@@ -943,11 +951,11 @@ export const AdministratorDefaultDashboard = () => {
                       <td style={styles.td} data-label="Grupo">{grupo}</td>
                       <td style={styles.td} data-label="FechaNacimientoGreg">{fechaNacimientoGreg}</td>
                       <td style={styles.td} data-label="FechaNacimientoHeb">{fechaNacimientoHeb}</td>
-                      <td style={{...styles.td, color: estadoCuenta == "PENDIENTE"? "orange" : "blue", fontWeight: 'bolder'}} data-label="EstadoCuenta">{estadoCuenta}</td>
+                      <td style={{...styles.td, color: estadoCuenta == "PENDIENTE"? "orange" : estadoCuenta == "PAGADA" ? "green" : "blue", fontWeight: 'bolder'}} data-label="EstadoCuenta">{estadoCuenta}</td>
                       <td 
                         style={{...styles.td, color: "green", alignItems: "center", cursor:"pointer"}}
                         data-label="EstadoCuenta"
-                        onClick={() => navigate(`/administrator-user-info/${persona.nombreEspañol+persona.apellido}`)}
+                        onClick={() => navigate(`/administrator-user-info/${persona.nombreEspanol}-${persona.apellido!}`)}
                       >
                         <FaArrowAltCircleRight className="text-black" />
                       </td>

@@ -2,10 +2,11 @@ import { CSSProperties } from "react";
 import { colors } from "../../../assets/colors";
 import { FaArrowLeft, FaFilter } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { VisitorUser } from "../../../structs/structs";
 
 interface DashboardNavigationButtonsProps {
-    peopleList: any[],
-    peopleFilter: any[],
+    peopleList?: VisitorUser[],
+    peopleFilter?: VisitorUser[],
     step: number
     setPeopleFilter: (peopleFilter: any[]) => void
     setStep: (step: number) => void
@@ -15,10 +16,11 @@ export const NavigationDashboardButtons = ({peopleList, peopleFilter, step, setP
     const navigate = useNavigate();
 
     const searchPeopleByName = (key: string) => {
+        let keySearch = key.toLowerCase()
         let people_filtered: any= []
-        if (peopleList.length > 0) {
-            people_filtered = peopleList.filter(
-                peop => peop.nombreEspañol.toLowerCase().startsWith(key) || peop.apellido.toLowerCase().startsWith(key)
+        if (peopleList!.length > 0) {
+            people_filtered = peopleList!.filter(
+                peop => peop.nombreEspanol!.toLowerCase().startsWith(keySearch) || peop.apellido!.toLowerCase().startsWith(keySearch)
             )
         }
         setPeopleFilter(people_filtered)

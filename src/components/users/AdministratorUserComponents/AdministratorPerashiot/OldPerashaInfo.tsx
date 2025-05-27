@@ -1,28 +1,28 @@
-import React, { CSSProperties, useEffect, useState } from "react";
-import { VisitorUser } from '../../../../structs/structs';
+import React, { CSSProperties, useContext, useEffect, useState } from "react";
+import { Alia, VisitorUser } from '../../../../structs/structs';
 
 import { useNavigate, useParams } from "react-router-dom";
 
 import {FaArrowLeft } from "react-icons/fa";
 import { colors } from "../../../../assets/colors";
 import { AliaModal } from "./AliaModal";
-
-interface Alia {
-    alia: string,
-    nombre: string,
-    nombreHebreo: string,
-    monto: number,
-    moneda: string
-}
+import { addPerashaToKehila, getPerashaInfo } from "../../../../apis/requests";
+import { PageContext } from "../../../../StoreInfo/page-storage";
 
 export const OldPerashaInfo = () => {
-  const [user, setUser] = useState<VisitorUser>({})
-  const [openAliaModal, setOpenAliaModal] = useState<boolean>(false)
+  const { logedUser } = useContext(PageContext) as any;
+  const { id } = useParams();
+  console.log("id", id);
+
+  const perashaName = id?.replace(/([a-z])([A-Z])/g, '$1 $2') ?? "";
+  let alia = getPerashaInfo(logedUser.kehila, perashaName);
+  const agregarPerasha = addPerashaToKehila();
 
   const mockAliot: Alia[] = [{
     alia: "Cohen",
     nombre: "Moises",
     nombreHebreo: "Moshe ben Moshe",
+    apellido: "Cohen",
     monto: 2000,
     moneda: "USD"
   },{
@@ -30,74 +30,97 @@ export const OldPerashaInfo = () => {
     nombre: "Leo",
     nombreHebreo: "Zeev ben Moshe",
     monto: 230,
-    moneda: "ARS"
+    moneda: "ARS",
+    apellido: ""
   },{
     alia: "Levi",
     nombre: "Leo",
     nombreHebreo: "Zeev ben Moshe",
     monto: 230,
-    moneda: "ARS"
+    moneda: "ARS",
+    apellido: ""
   },{
     alia: "Levi",
     nombre: "Leo",
     nombreHebreo: "Zeev ben Moshe",
     monto: 230,
-    moneda: "ARS"
+    moneda: "ARS",
+    apellido: ""
   },{
     alia: "Levi",
     nombre: "Leo",
     nombreHebreo: "Zeev ben Moshe",
     monto: 230,
-    moneda: "ARS"
+    moneda: "ARS",
+    apellido: ""
   },{
     alia: "Levi",
     nombre: "Leo",
     nombreHebreo: "Zeev ben Moshe",
     monto: 230,
-    moneda: "ARS"
+    moneda: "ARS",
+    apellido: ""
   },{
     alia: "Levi",
     nombre: "Leo",
     nombreHebreo: "Zeev ben Moshe",
     monto: 230,
-    moneda: "ARS"
+    moneda: "ARS",
+    apellido: ""
   },{
     alia: "Levi",
     nombre: "Leo",
     nombreHebreo: "Zeev ben Moshe",
     monto: 230,
-    moneda: "ARS"
+    moneda: "ARS",
+    apellido: ""
   }]
 
-  const [aliotList, setAliotList] = useState<Alia[]>(mockAliot)
+  const [user, setUser] = useState<VisitorUser>({})
+  const [openAliaModal, setOpenAliaModal] = useState<boolean>(false)
+  //const [addUserDonationModal, setOpenAddUserDonationModal] = useState<boolean>(false)
+  const [aliotList, setAliotList] = useState<Alia[]>()
   const [arsDonation, setArsDonation] = useState<number>(0)
   const [usdDonation, setUsdDonation] = useState<number>(0)
-
-  const { id } = useParams();
-  console.log("id", id);
+  const [formAliaData, setFormAliaData] = useState<Alia>({
+    alia: "",
+    nombre: "",
+    nombreHebreo: "",
+    apellido: "",
+    monto: 0,
+    moneda: ""
+  });
 
   const navigate = useNavigate();
 
   const getAllPendingDonations = () => {
-    const arsTotal = aliotList.reduce((total, alia) => {
-      if (alia.moneda === 'ARS') {
-        return total + (alia.monto || 0);
-      }
-      return total;
-    }, 0);
-    const usdTotal = aliotList.reduce((total, alia) => {
-      if (alia.moneda === 'USD') {
-        return total + (alia.monto || 0);
-      }
-      return total;
-    }, 0);
-    setArsDonation(arsTotal);
-    setUsdDonation(usdTotal);
+    if (aliotList && aliotList.length > 0) {
+       const arsTotal = aliotList!.reduce((total, alia) => {
+        if (alia.moneda === 'ARS') {
+          return total + (alia.monto || 0);
+        }
+        return total;
+      }, 0);
+      const usdTotal = aliotList!.reduce((total, alia) => {
+        if (alia.moneda === 'USD') {
+          return total + (alia.monto || 0);
+        }
+        return total;
+      }, 0);
+      setArsDonation(arsTotal);
+      setUsdDonation(usdTotal);
+    }
   }
   
   useEffect(() => {
-    getAllPendingDonations()
-  }, [aliotList])
+    if (alia === "NOT FOUND") {
+      console.log("⛳ Perasha no encontrada. Creando...");
+      agregarPerasha(logedUser.kehila, perashaName);
+    } else {
+      setAliotList(alia?.aliot!)
+      getAllPendingDonations()
+    }
+  }, [alia, agregarPerasha]);
 
   return (
     <>
@@ -107,7 +130,7 @@ export const OldPerashaInfo = () => {
           <FaArrowLeft className="text-black" /> Lista de Perashiot
         </button>
         <h2 style={{...styles.title, marginRight: '100px'}}>
-            {id?.replace(/([a-z])([A-Z])/g, '$1 $2')}
+          {id?.replace(/([a-z])([A-Z])/g, '$1 $2')}
         </h2>
         <div></div>
       </div>
@@ -137,53 +160,59 @@ export const OldPerashaInfo = () => {
       </div>
       <div style={{ height: "400px", overflowY: "auto", borderRadius: "5px" }}>
         <div>
-            {aliotList.length > 0 ? (
-                <table style={styles.table}>
+            {aliotList && aliotList.length > 0  ? (
+              <table style={styles.table}>
                 <thead>
-                    <tr>
-                        <th style={styles.th}>Alia</th>
-                        <th style={styles.th}>Nombre</th>
-                        <th style={styles.th}>Nombre Hebreo</th>
-                        <th style={styles.th}>Monto</th>
-                        <th style={styles.th}>Moneda</th>
-                    </tr>
+                  <tr>
+                    <th style={styles.th}>Alia</th>
+                    <th style={styles.th}>Nombre</th>
+                    <th style={styles.th}>Apellido</th>
+                    <th style={styles.th}>Nombre Hebreo</th>
+                    <th style={styles.th}>Monto</th>
+                    <th style={styles.th}>Moneda</th>
+                  </tr>
                 </thead>
                 <tbody>
-                    {aliotList.map((alia: Alia, index) => {
-                        const nomAlia = alia.alia;
-                        const nombre = alia.nombre;
-                        const nombreHebreo = alia.nombreHebreo;
-                        const monto = alia.monto
-                        const moneda = alia.moneda
-    
-                        return (
-                          <tr key={index}>
-                            <td style={styles.td} data-label="NomAlia">{nomAlia}</td>
-                            <td style={styles.td} data-label="Nombre">{nombre}</td>
-                            <td style={styles.td} data-label="NombreHebreo">{nombreHebreo}</td>
-                            <td style={styles.td} data-label="Monto">{monto}</td>
-                            <td style={styles.td} data-label="Moneda">{moneda}</td>
-                          </tr>
-                        );
-                    })}
+                  {aliotList!.map((alia: Alia, index) => {
+                    const nomAlia = alia.alia;
+                    const nombre = alia.nombre;
+                    const apellido = alia.apellido;
+                    const nombreHebreo = alia.nombreHebreo;
+                    const monto = alia.monto
+                    const moneda = alia.moneda
+
+                    return (
+                      <tr key={index}>
+                        <td style={styles.td} data-label="NomAlia">{nomAlia}</td>
+                        <td style={styles.td} data-label="Nombre">{nombre}</td>
+                        <td style={styles.td} data-label="Apellido">{apellido}</td>
+                        <td style={styles.td} data-label="NombreHebreo">{nombreHebreo}</td>
+                        <td style={styles.td} data-label="Monto">{monto}</td>
+                        <td style={styles.td} data-label="Moneda">{moneda}</td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
-                </table>
+              </table>
             )
             : 
             (
-                <div style={{ textAlign: 'center', marginTop: '20px', fontSize: '3rem' }}>
-                    <h5 style={{ color: colors.btn_background }}>No hay informacion de esta perasha</h5>
-                </div>
+              <div style={{ textAlign: 'center', marginTop: '20px', fontSize: '3rem' }}>
+                <h5 style={{ color: colors.btn_background }}>No hay informacion de esta perasha</h5>
+              </div>
             )}
         </div>
       </div>
 
       {openAliaModal ? (
         <AliaModal 
-            setOpenAliaModal={setOpenAliaModal}
-            openAliaModal={openAliaModal}
-            setAliotList={setAliotList}
-            aliotList={aliotList}
+          setOpenAliaModal={setOpenAliaModal}
+          openAliaModal={openAliaModal}
+          setAliotList={setAliotList}
+          aliotList={aliotList!}
+          perashaName={id!.replace(/([a-z])([A-Z])/g, '$1 $2')}
+          formAliaData={formAliaData}
+          setFormAliaData={setFormAliaData}
         />
       ) : (
         null

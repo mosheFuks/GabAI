@@ -26,22 +26,22 @@ export const CreateChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen
     fechaNacimiento: {
       dia: childSelected?.fechaNacimiento?.dia != null ? childSelected?.fechaNacimiento.dia : "",
       mes: childSelected?.fechaNacimiento?.mes != null ? childSelected?.fechaNacimiento.mes : "",
-      año: childSelected?.fechaNacimiento?.año != null ? childSelected?.fechaNacimiento.año : "",
+      ano: childSelected?.fechaNacimiento?.ano != null ? childSelected?.fechaNacimiento.ano : "",
     },
     fechaNacimientoHebreo: {
       dia: childSelected?.fechaNacimientoHebreo?.dia != null ? childSelected?.fechaNacimientoHebreo.dia : "",
       mes: childSelected?.fechaNacimientoHebreo?.mes != null ? childSelected?.fechaNacimientoHebreo.mes : "",
-      año: childSelected?.fechaNacimientoHebreo?.año != null ? childSelected?.fechaNacimientoHebreo.año : "",
+      ano: childSelected?.fechaNacimientoHebreo?.ano != null ? childSelected?.fechaNacimientoHebreo.ano : "",
     },
     fechaBarMitzva: {
       dia: childSelected?.fechaBarMitzva?.dia != null ? childSelected?.fechaBarMitzva.dia : "",
       mes: childSelected?.fechaBarMitzva?.mes != null ? childSelected?.fechaBarMitzva.mes : "",
-      año: childSelected?.fechaBarMitzva?.año != null ? childSelected?.fechaBarMitzva.año : "",
+      ano: childSelected?.fechaBarMitzva?.ano != null ? childSelected?.fechaBarMitzva.ano : "",
     },
     fechaBarMitzvaHebreo: {
       dia: childSelected?.fechaBarMitzvaHebreo?.dia != null ? childSelected?.fechaBarMitzvaHebreo.dia : "",
       mes: childSelected?.fechaBarMitzvaHebreo?.mes != null ? childSelected?.fechaBarMitzvaHebreo.mes : "",
-      año: childSelected?.fechaBarMitzvaHebreo?.año != null ? childSelected?.fechaBarMitzvaHebreo.año : "",
+      ano: childSelected?.fechaBarMitzvaHebreo?.ano != null ? childSelected?.fechaBarMitzvaHebreo.ano : "",
     },
     perashaBarMitzva: childSelected?.perashaBarMitzva != null ? childSelected.perashaBarMitzva : "",
     habilidades: childSelected?.habilidades != null ? childSelected.habilidades : [],
@@ -105,7 +105,7 @@ export const CreateChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen
       console.log("Date to calculate is:", date);
       const day = +date.dia!
       const month = +date.mes!
-      const year = +date.año!
+      const year = +date.ano!
   
       const gregorianDate = new Date(year, month - 1, day, 12)
       console.log("Gregorian date is:", gregorianDate);
@@ -119,10 +119,10 @@ export const CreateChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen
   
   const calculateGregorianBirthDate = (date: CustomDate) => {
     console.log("Date to calculate is:", date); // Devuelve "2001-10-18"
-    // Extraer el año, mes y día manualmente
+    // Extraer el ano, mes y día manualmente
     const hebDay = +date.dia!
     const hebMonth = date.mes
-    const hebYear = +date.año!
+    const hebYear = +date.ano!
 
     const hdate = new HDate(hebDay, hebMonth, hebYear);
     const gregDate: Date = hdate.greg();
@@ -177,7 +177,7 @@ export const CreateChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen
           ...formUserChildData[birthBarType],
           dia: e[0],
           mes: e[1],
-          año: e[2]
+          ano: e[2]
         },
       });
     }
@@ -185,10 +185,10 @@ export const CreateChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen
 
   const calculateGregBarMitzvaDate = () => {
     console.log("Date to calculate is:", formUserChildData.fechaBarMitzvaHebreo);
-    // Extraer el año, mes y día manualmente
+    // Extraer el ano, mes y día manualmente
     const hebDay = +formUserChildData.fechaBarMitzvaHebreo?.dia!
     const hebMonth = formUserChildData.fechaBarMitzvaHebreo?.mes
-    const hebYear = +formUserChildData.fechaBarMitzvaHebreo?.año!
+    const hebYear = +formUserChildData.fechaBarMitzvaHebreo?.ano!
 
     const hdate = new HDate(hebDay, hebMonth, hebYear);
     const gregDate: Date = hdate.greg();
@@ -201,7 +201,7 @@ export const CreateChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen
 
   const calculateHebBarMitzvaDate = () => { 
     console.log("Fecha Bar Hebreo: ", user.fechaNacimientoHebreo);
-    const calculatedBarMitzvaYear = parseInt(user.fechaNacimientoHebreo?.año!) + 13
+    const calculatedBarMitzvaYear = parseInt(user.fechaNacimientoHebreo?.ano!) + 13
     saveBirthDateParams("dia", "fechaBarMitzvaHebreo", true, [user.fechaNacimientoHebreo?.dia, user.fechaNacimientoHebreo?.mes, calculatedBarMitzvaYear.toString()])
   }
 
@@ -235,10 +235,10 @@ export const CreateChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen
               <input id="userChildBithDateGregMes" type="number" name="fechaNacimiento" placeholder="Mes" onChange={(e: any) => saveBirthDateParams("mes", "fechaNacimiento", false, e)} style={{...styles.input}} value={formUserChildData?.fechaNacimiento?.mes}/>
             </div>
             <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-              <label htmlFor="userChildBithDateGregAño" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
-              <input id="userChildBithDateGregAño" type="number" name="fechaNacimiento" placeholder="Año" onChange={(e: any) => saveBirthDateParams("año", "fechaNacimiento", false, e)} style={{...styles.input}} value={formUserChildData?.fechaNacimiento?.año}/>
+              <label htmlFor="userChildBithDateGregAno" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
+              <input id="userChildBithDateGregAno" type="number" name="fechaNacimiento" placeholder="Año" onChange={(e: any) => saveBirthDateParams("ano", "fechaNacimiento", false, e)} style={{...styles.input}} value={formUserChildData?.fechaNacimiento?.ano}/>
             </div>
-            {calculateBirthDateBtn("fechaNacimiento", formUserChildData?.fechaNacimientoHebreo!, formUserChildData?.fechaNacimientoHebreo?.dia == "" || formUserChildData?.fechaNacimientoHebreo?.mes == "" || formUserChildData?.fechaNacimientoHebreo?.año == "")}
+            {calculateBirthDateBtn("fechaNacimiento", formUserChildData?.fechaNacimientoHebreo!, formUserChildData?.fechaNacimientoHebreo?.dia == "" || formUserChildData?.fechaNacimientoHebreo?.mes == "" || formUserChildData?.fechaNacimientoHebreo?.ano == "")}
           </div>
 
           <label htmlFor="userChildBithDateHeb" style={{ display: "block"}}>Fecha Nacimiento Hebreo</label>
@@ -270,12 +270,12 @@ export const CreateChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen
                 </select>
               </div>
               <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                <label htmlFor="userFechaNacHebAño" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
-                <input id="userFechaNacHebAño" type="number" name="fechaNacimientoHebreo" placeholder="Año" onChange={(e: any) => saveBirthDateParams("año", "fechaNacimientoHebreo", false, e)} style={{...styles.input}} value={formUserChildData?.fechaNacimientoHebreo?.año}/>
+                <label htmlFor="userFechaNacHebAno" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
+                <input id="userFechaNacHebAno" type="number" name="fechaNacimientoHebreo" placeholder="Año" onChange={(e: any) => saveBirthDateParams("ano", "fechaNacimientoHebreo", false, e)} style={{...styles.input}} value={formUserChildData?.fechaNacimientoHebreo?.ano}/>
               </div>
             </div>
             <AfterSunsetSwitch isCheked={isAfterSunsetSelected} setIsCheked={setIsAfterSunsetSelected} />
-            {calculateBirthDateBtn("fechaNacimientoHebreo", formUserChildData?.fechaNacimiento!, formUserChildData?.fechaNacimiento?.dia == "" || formUserChildData?.fechaNacimiento?.mes == "" || formUserChildData?.fechaNacimiento?.año == "")}
+            {calculateBirthDateBtn("fechaNacimientoHebreo", formUserChildData?.fechaNacimiento!, formUserChildData?.fechaNacimiento?.dia == "" || formUserChildData?.fechaNacimiento?.mes == "" || formUserChildData?.fechaNacimiento?.ano == "")}
           </div>
 
           <label htmlFor="userChildGender" style={{ display: "block" }}>Género</label>
@@ -323,14 +323,14 @@ export const CreateChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen
                     </select>
                   </div>
                   <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                    <label htmlFor="userChildBarMitzvaDateHebAño" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
-                    <input id="userChildBarMitzvaDateHebAño" type="number" name="fechaBarMitzvaHebreo" placeholder="Año" 
-                      onChange={(e: any) => saveBirthDateParams("año", "fechaBarMitzvaHebreo", false, e)} 
-                      style={{...styles.input}} value={formUserChildData.fechaBarMitzvaHebreo?.año}
+                    <label htmlFor="userChildBarMitzvaDateHebAno" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
+                    <input id="userChildBarMitzvaDateHebAno" type="number" name="fechaBarMitzvaHebreo" placeholder="Año" 
+                      onChange={(e: any) => saveBirthDateParams("ano", "fechaBarMitzvaHebreo", false, e)} 
+                      style={{...styles.input}} value={formUserChildData.fechaBarMitzvaHebreo?.ano}
                     />
                   </div>
                 </div>
-                {calculateBarMitzvaDateBtn("fechaBarMitzvaHebreo", formUserChildData?.fechaNacimientoHebreo?.dia == "" || formUserChildData?.fechaNacimientoHebreo?.mes == "" || formUserChildData?.fechaNacimientoHebreo?.año == "",)}
+                {calculateBarMitzvaDateBtn("fechaBarMitzvaHebreo", formUserChildData?.fechaNacimientoHebreo?.dia == "" || formUserChildData?.fechaNacimientoHebreo?.mes == "" || formUserChildData?.fechaNacimientoHebreo?.ano == "",)}
               </div>
               <label htmlFor="userBarMitzvaDateGreg" style={{ display: "block"}}>Fecha Bar Mitzva Gregoriano</label>
               <div style={{ display: "flex", flexDirection: "row"}}>
@@ -351,13 +351,13 @@ export const CreateChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen
                   </div>
                   </div>
                   <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                    <label htmlFor="userChildBarMitzvaDateGregAño" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
-                    <input id="userChildBarMitzvaDateGregAño" type="number" name="fechaBarMitzva" placeholder="Año" 
-                      onChange={(e: any) => saveBirthDateParams("año", "fechaBarMitzva", false, e)} 
-                      style={{...styles.input}} value={formUserChildData?.fechaBarMitzva?.año}
+                    <label htmlFor="userChildBarMitzvaDateGregAno" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
+                    <input id="userChildBarMitzvaDateGregAno" type="number" name="fechaBarMitzva" placeholder="Año" 
+                      onChange={(e: any) => saveBirthDateParams("ano", "fechaBarMitzva", false, e)} 
+                      style={{...styles.input}} value={formUserChildData?.fechaBarMitzva?.ano}
                     />
                   </div>
-                  {calculateBarMitzvaDateBtn("fechaBarMitzva", formUserChildData?.fechaBarMitzvaHebreo?.dia == "" || formUserChildData?.fechaBarMitzvaHebreo?.mes == "" || formUserChildData?.fechaBarMitzvaHebreo?.año == "")}
+                  {calculateBarMitzvaDateBtn("fechaBarMitzva", formUserChildData?.fechaBarMitzvaHebreo?.dia == "" || formUserChildData?.fechaBarMitzvaHebreo?.mes == "" || formUserChildData?.fechaBarMitzvaHebreo?.ano == "")}
               </div>
 
               <label htmlFor="userChildPerasha"style={{ display: "block"}}>Perasha Bar Mitzva</label>

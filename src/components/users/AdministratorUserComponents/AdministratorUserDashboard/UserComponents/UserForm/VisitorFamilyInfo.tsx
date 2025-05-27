@@ -28,7 +28,7 @@ export const VisitorFamilyInfo = ({logedVisitorUser}: FormPersonalDataProps) => 
 
             <label htmlFor="userWifeNameEsp" style={{ display: "block"}}>Nombre Esposa Español</label>
             <h5 id="userWifeNameEsp" style={styles.input}>
-                {logedVisitorUser.nombreEsposaEspañol}
+                {logedVisitorUser.nombreEsposaEspanol}
             </h5>
 
             <label htmlFor="userWifeNameHeb" style={{ display: "block"}}>Nombre Esposa Hebreo</label>
@@ -36,7 +36,7 @@ export const VisitorFamilyInfo = ({logedVisitorUser}: FormPersonalDataProps) => 
                 {logedVisitorUser.nombreEsposaHebreo}
             </h5>
 
-            {logedVisitorUser.hijos != null ? (
+            {logedVisitorUser.hijos.length > 0 ? (
               <div style={{width: '100%' }} >
                 <label style={{ display: "block", marginBottom: "10px"}}>Hijos</label>
                 <div style={{display: "flex", flexDirection: "row", gap: "30px", marginBottom: "10px"}}>
@@ -54,7 +54,7 @@ export const VisitorFamilyInfo = ({logedVisitorUser}: FormPersonalDataProps) => 
               </div>
             ) : (null)}
             
-            {logedVisitorUser.aniversarios != null ? (
+            {logedVisitorUser.aniversarios.length > 0 ? (
                 <div style={{width: '100%' }} >
                     <label style={{display: "block", marginBottom: "10px"}}>Aniversarios</label>
                     <div style={{display: "flex", flexDirection: "row", gap: "20px", marginBottom: "10px"}}>

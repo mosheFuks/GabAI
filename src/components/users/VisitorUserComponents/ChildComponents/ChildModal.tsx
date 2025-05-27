@@ -55,9 +55,9 @@ export const UserChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen, 
                 </h5>
               </div>
               <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                <label htmlFor="userChildBithDateGregAño" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
-                <h5 id="userChildBithDateGregAño" style={styles.input}>
-                  {son!.fechaNacimiento?.año}
+                <label htmlFor="userChildBithDateGregAno" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
+                <h5 id="userChildBithDateGregAno" style={styles.input}>
+                  {son!.fechaNacimiento?.ano}
                 </h5>
               </div>
             </div>
@@ -79,9 +79,9 @@ export const UserChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen, 
                 </h5>
               </div>
               <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                <label htmlFor="userFechaNacHebAño" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
-                <h5 id="userChildBithHebAño" style={styles.input}>
-                  {son!.fechaNacimientoHebreo?.año}
+                <label htmlFor="userFechaNacHebAno" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
+                <h5 id="userChildBithHebAno" style={styles.input}>
+                  {son!.fechaNacimientoHebreo?.ano}
                 </h5>
               </div>
             </div>
@@ -113,9 +113,9 @@ export const UserChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen, 
                     </h5>
                   </div>
                   <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                    <label htmlFor="userChildBarMitzvaDateHebAño" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
-                    <h5 id="userChildBarMitzvaDateHebAño" style={styles.input}>
-                      {son!.fechaBarMitzvaHebreo?.año}
+                    <label htmlFor="userChildBarMitzvaDateHebAno" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
+                    <h5 id="userChildBarMitzvaDateHebAno" style={styles.input}>
+                      {son!.fechaBarMitzvaHebreo?.ano}
                     </h5>
                   </div>
                 </div>
@@ -137,9 +137,9 @@ export const UserChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen, 
                   </div>
                   </div>
                   <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                    <label htmlFor="userChildBarMitzvaDateGregAño" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
-                    <h5 id="userChildBarMitzvaDateGregAño" style={styles.input}>
-                      {son!.fechaBarMitzva?.año}
+                    <label htmlFor="userChildBarMitzvaDateGregAno" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
+                    <h5 id="userChildBarMitzvaDateGregAno" style={styles.input}>
+                      {son!.fechaBarMitzva?.ano}
                     </h5>
                   </div>
               </div>

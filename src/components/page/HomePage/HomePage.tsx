@@ -23,6 +23,7 @@ export default function HomePage() {
             style={styles.button}
             onMouseOver={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = styles.buttonHover.transform || "scale(1.1)")}
             onMouseOut={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = "scale(1)")}
+            onClick={() => navigate("/create-normal-user")}
           >{esp_strings.btn_signup}</button>
         </div>
         <p style={styles.linkText}>

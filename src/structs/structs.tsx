@@ -1,6 +1,7 @@
 export interface VisitorUser {
+    tipoUsuario?: string,
     nombreKehila?: string,
-    nombreEspañol?: string,
+    nombreEspanol?: string,
     nombreHebreo?: string,
     apellido?: string,
     fechaNacimientoGregoriano?: CustomDate,
@@ -16,14 +17,14 @@ export interface VisitorUser {
     fechaBarMitzvaGregoriano?: CustomDate,
     fechaBarMitzvaHebreo?: CustomDate,
     perashaBarMitzva?:  string,
-    habilidades?: Ability[], //Leer tora, haftara, ser jazan
-    nombreMadreEspañol?: string,
+    habilidades?: string[], //Leer tora, haftara, ser jazan
+    nombreMadreEspanol?: string,
     nombreMadreHebreo?: string,
-    nombrePadreEspañol?: string,
+    nombrePadreEspanol?: string,
     nombrePadreHebreo?: string,
 
     estadoCivil?: string,
-    nombreEsposaEspañol?: string,
+    nombreEsposaEspanol?: string,
     nombreEsposaHebreo?: string,
 
     hijos?: Son[]
@@ -42,7 +43,7 @@ export interface Son {
     fechaBarMitzva?: CustomDate,
     fechaBarMitzvaHebreo?: CustomDate,
     perashaBarMitzva?: string,
-    habilidades?: Ability[]
+    habilidades?: string[]
 }
 export interface Aniversary {
     fecha?: CustomDate,
@@ -60,7 +61,7 @@ export interface SignInfo {
 export interface CustomDate {
     dia?: string,
     mes?: string,
-    año?: string
+    ano?: string
 }
 
 export interface ToastData {
@@ -79,9 +80,25 @@ export interface Donacion {
     status?: "PENDIENTE" | "PAGADO" | any,
 }
 
+export interface LogedUserData {
+  email: string;
+  nombre: string;
+  rol: string;
+  kehila: string;
+}
+
 export type Ability = "Leer Torah" | "Jazan" | "Leer Haftara" | "Leer Meguila";
 
 export type Grupo = "Cohen" | "Levi" | "Israel";
+
+export interface Alia {
+  alia: string,
+  nombre: string,
+  apellido?: string,
+  nombreHebreo: string,
+  monto: number,
+  moneda: string
+}
 
 export const HEBREW_MONTHS = [
     "Nisan",

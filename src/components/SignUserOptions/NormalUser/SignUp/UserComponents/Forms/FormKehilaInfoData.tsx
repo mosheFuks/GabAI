@@ -58,18 +58,18 @@ export const FormKehilaInfoData = ({handleChangePersonalData, user, setFormUserP
           ...formUserPersonalData,
           [barMitzvaType]: {
             ...formUserPersonalData[barMitzvaType],
-            dia: e[0],
-            mes: e[1],
-            año: e[2]
+            dia: e[0].toString(),
+            mes: e[1].toString(),
+            ano: e[2].toString() // Ensure year is a string
           },
         });
         setUser({
           ...user,
           [barMitzvaType]: {
             ...(user[barMitzvaType]),
-            dia: e[0],
-            mes: e[1],
-            año: e[2]
+            dia: e[0].toString(),
+            mes: e[1].toString(),
+            ano: e[2].toString() // Ensure year is a string
           },
         });
       }
@@ -77,16 +77,16 @@ export const FormKehilaInfoData = ({handleChangePersonalData, user, setFormUserP
 
     const calculateHebBarMitzvaDate = () => {
       console.log("Fecha Bar Hebreo: ", user.fechaNacimientoHebreo);
-      const calculatedBarMitzvaYear = parseInt(user.fechaNacimientoHebreo?.año!) + 13
+      const calculatedBarMitzvaYear = parseInt(user.fechaNacimientoHebreo?.ano!) + 13
       saveBarMitzvaDateParams("dia", "fechaBarMitzvaHebreo", true, [user.fechaNacimientoHebreo?.dia, user.fechaNacimientoHebreo?.mes, calculatedBarMitzvaYear.toString()])
     }
 
     const calculateGregBarMitzvaDate = () => {
       console.log("Date to calculate is:", user.fechaBarMitzvaHebreo);
-      // Extraer el año, mes y día manualmente
+      // Extraer el ano, mes y día manualmente
       const hebDay = +user.fechaBarMitzvaHebreo?.dia!
       const hebMonth = user.fechaBarMitzvaHebreo?.mes
-      const hebYear = +user.fechaBarMitzvaHebreo?.año!
+      const hebYear = +user.fechaBarMitzvaHebreo?.ano!
   
       const hdate = new HDate(hebDay, hebMonth, hebYear);
       const gregDate: Date = hdate.greg();
@@ -132,14 +132,14 @@ export const FormKehilaInfoData = ({handleChangePersonalData, user, setFormUserP
                   </select>
                 </div>
                 <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                  <label htmlFor="userBarMitzvaDateHebAño" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
-                  <input id="userBarMitzvaDateHebAño" type="number" name="fechaBarMitzvaHebreo" placeholder="Año" 
-                    onChange={(e: any) => saveBarMitzvaDateParams("año", "fechaBarMitzvaHebreo", false, e)} 
-                    style={{...styles.input}} value={user.fechaBarMitzvaHebreo?.año}
+                  <label htmlFor="userBarMitzvaDateHebAno" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
+                  <input id="userBarMitzvaDateHebAno" type="number" name="fechaBarMitzvaHebreo" placeholder="Año" 
+                    onChange={(e: any) => saveBarMitzvaDateParams("ano", "fechaBarMitzvaHebreo", false, e)} 
+                    style={{...styles.input}} value={user.fechaBarMitzvaHebreo?.ano}
                   />
                 </div>
               </div>
-              {calculateBarMitzvaDateBtn(user.fechaNacimientoHebreo == undefined, "fechaBarMitzvaHebreo")}
+              {calculateBarMitzvaDateBtn(user.fechaNacimientoHebreo?.ano == "", "fechaBarMitzvaHebreo")}
             </div>
 
             <label htmlFor="userBarMitzvaDateGreg" style={{ display: "block"}}>Fecha Bar Mitzva Gregoriano</label>
@@ -161,13 +161,13 @@ export const FormKehilaInfoData = ({handleChangePersonalData, user, setFormUserP
                 </div>
                 </div>
                 <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                  <label htmlFor="userBarMitzvaDateGregAño" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
-                  <input id="userBarMitzvaDateGregAño" type="number" name="fechaBarMitzvaGregoriano" placeholder="Año" 
-                    onChange={(e: any) => saveBarMitzvaDateParams("año", "fechaBarMitzvaGregoriano", false, e)} 
-                    style={{...styles.input}} value={user.fechaBarMitzvaGregoriano?.año}
+                  <label htmlFor="userBarMitzvaDateGregAno" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
+                  <input id="userBarMitzvaDateGregAno" type="number" name="fechaBarMitzvaGregoriano" placeholder="Año" 
+                    onChange={(e: any) => saveBarMitzvaDateParams("ano", "fechaBarMitzvaGregoriano", false, e)} 
+                    style={{...styles.input}} value={user.fechaBarMitzvaGregoriano?.ano}
                   />
                 </div>
-                {calculateBarMitzvaDateBtn(user.fechaBarMitzvaHebreo == undefined, "fechaBarMitzvaGregoriano")}
+                {calculateBarMitzvaDateBtn(user.fechaNacimientoHebreo?.ano == "", "fechaBarMitzvaGregoriano")}
             </div>
 
             <label htmlFor="userPerasha" style={{ display: "block"}}>Perasha Bar Mitzva</label>
@@ -191,13 +191,13 @@ export const FormKehilaInfoData = ({handleChangePersonalData, user, setFormUserP
             </div>
 
             <label htmlFor="userMotherNameSpa" style={{ display: "block"}}>Nombre Madre Español</label>
-            <input id="userMotherNameSpa" type="text" name="nombreMadreEspañol" placeholder="Nombre Madre Español" onChange={handleChangePersonalData} style={{...styles.input}} value={user.nombreMadreEspañol}/>
+            <input id="userMotherNameSpa" type="text" name="nombreMadreEspanol" placeholder="Nombre Madre Español" onChange={handleChangePersonalData} style={{...styles.input}} value={user.nombreMadreEspanol}/>
             
             <label htmlFor="userMotherNameHeb" style={{ display: "block"}}>Nombre Madre Hebreo</label>
             <input id="userMotherNameHeb" type="text" name="nombreMadreHebreo" placeholder="Nombre Madre Hebreo" onChange={handleChangePersonalData} style={{...styles.input}} value={user.nombreMadreHebreo}/>
             
             <label htmlFor="userFatherNameSpa" style={{ display: "block"}}>Nombre Padre Español</label>
-            <input id="userFatherNameSpa"type="text" name="nombrePadreEspañol" placeholder="Nombre Padre Español" onChange={handleChangePersonalData} style={{...styles.input}} value={user.nombrePadreEspañol}/>
+            <input id="userFatherNameSpa"type="text" name="nombrePadreEspanol" placeholder="Nombre Padre Español" onChange={handleChangePersonalData} style={{...styles.input}} value={user.nombrePadreEspanol}/>
             
             <label htmlFor="userFatherNameHeb" style={{ display: "block"}}>Nombre Padre Hebreo</label>
             <input id="userFatherNameHeb" type="text" name="nombrePadreHebreo" placeholder="Nombre Padre Hebreo" onChange={handleChangePersonalData} style={{...styles.input}} value={user.nombrePadreHebreo}/>

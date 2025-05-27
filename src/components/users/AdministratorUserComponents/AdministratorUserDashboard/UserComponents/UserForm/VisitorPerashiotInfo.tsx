@@ -26,7 +26,7 @@ export const VisitorPerashiotInfo = ({ logedVisitorUser }: FormPersonalDataProps
 
   const formatDate = (date?: CustomDate) => {
     if (!date) return '';
-    return `${date.dia}/${date.mes}/${date.año}`;
+    return `${date.dia}/${date.mes}/${date.ano}`;
   };
 
   const getAllIortzaiAniversaries = () => {
@@ -84,8 +84,8 @@ export const VisitorPerashiotInfo = ({ logedVisitorUser }: FormPersonalDataProps
       {completeIortzaiList.length > 0 ? (
         <div>
           <div style={styles.headerButtons}>
-            <div style={{ display: "flex", flexDirection: "row", border: '2px solid orange', borderRadius: '50px', padding: '5px', gap: '20px'}}>
-              <div style={{ display: 'flex', marginLeft: '20px'}}>
+            <div style={{ display: "flex", flexDirection: "row", border: '2px solid orange', borderRadius: '50px', paddingLeft: '10px', paddingRight: '10px', justifyContent: 'center', gap: '20px'}}>
+              <div>
                 <h3 onClick={() => setStep(1)} style={{...styles.sectionTitle, color: step === 1 ? "orange" : "black", textDecoration: step === 1 ? "underline" : "none"}}>Proximos Iortzai</h3>
               </div>
 
@@ -222,7 +222,7 @@ export const VisitorPerashiotInfo = ({ logedVisitorUser }: FormPersonalDataProps
       )
       : (
         <div style={{ textAlign: 'center', marginTop: '20px', fontSize: '3rem' }}>
-          <h5 style={{ color: colors.btn_background }}>No hay aniversarioes registradas</h5>
+          <h5 style={{ color: colors.btn_background }}>No hay aniversarios registrados</h5>
         </div>
       )}
 

@@ -26,9 +26,9 @@ export const VisitorKehilaInfo = ({logedVisitorUser}: FormPersonalDataProps) => 
               </h5>
             </div>
             <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-              <label htmlFor="userBarMitzvaDateHebAño" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
-              <h5 id="userBarMitzvaDateHebAño" style={styles.input}>
-                {logedVisitorUser.fechaNacimientoHebreo?.año}
+              <label htmlFor="userBarMitzvaDateHebAno" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
+              <h5 id="userBarMitzvaDateHebAno" style={styles.input}>
+                {logedVisitorUser.fechaNacimientoHebreo?.ano}
               </h5>
             </div>
           </div>
@@ -48,9 +48,9 @@ export const VisitorKehilaInfo = ({logedVisitorUser}: FormPersonalDataProps) => 
               </h5>
             </div>
             <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-              <label htmlFor="userBarMitzvaDateGregAño" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
-              <h5 id="userBarMitzvaDateGregAño" style={styles.input}>
-                {logedVisitorUser.fechaBarMitzvaGregoriano?.año}
+              <label htmlFor="userBarMitzvaDateGregAno" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
+              <h5 id="userBarMitzvaDateGregAno" style={styles.input}>
+                {logedVisitorUser.fechaBarMitzvaGregoriano?.ano}
               </h5>
             </div>
           </div>
@@ -69,7 +69,7 @@ export const VisitorKehilaInfo = ({logedVisitorUser}: FormPersonalDataProps) => 
 
           <label htmlFor="userMotherNameSpa" style={{ display: "block"}}>Nombre Madre Español</label>
           <h5 id="userMotherNameSpa" style={styles.input}>
-            {logedVisitorUser.nombreMadreEspañol}
+            {logedVisitorUser.nombreMadreEspanol}
           </h5>
           
           <label htmlFor="userMotherNameHeb" style={{ display: "block"}}>Nombre Madre Hebreo</label>
@@ -79,7 +79,7 @@ export const VisitorKehilaInfo = ({logedVisitorUser}: FormPersonalDataProps) => 
           
           <label htmlFor="userFatherNameSpa" style={{ display: "block"}}>Nombre Padre Español</label>
           <h5 id="userFatherNameSpa" style={styles.input}>
-            {logedVisitorUser.nombrePadreEspañol}
+            {logedVisitorUser.nombrePadreEspanol}
           </h5>
           
           <label htmlFor="userFatherNameHeb" style={{ display: "block"}}>Nombre Padre Hebreo</label>

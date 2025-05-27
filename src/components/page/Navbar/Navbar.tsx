@@ -1,14 +1,19 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 
 import { useNavigate } from 'react-router-dom';
 import { esp_strings } from "../../../assets/strings";
 import { colors } from "../../../assets/colors";
 import { FaUser } from "react-icons/fa";
+import { PageContext } from "../../../StoreInfo/page-storage";
+import { LogedUserData } from '../../../structs/structs';
 
 
 export const Navbar = () => {
-  const [] = useState();
+  const { logedUser } = useContext(PageContext) as any;
   const navigate = useNavigate();
+
+  console.log("Loged User: ", logedUser);
+  
 
   return (
     <nav style={styles.container}>
@@ -16,36 +21,44 @@ export const Navbar = () => {
         <span style={styles.highlight}>{esp_strings.main_title}</span>
       </div>
       <div style={styles.buttonContainer}>
-        <button
-          style={styles.button}
-          onMouseOver={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = styles.buttonHover.transform)}
-          onMouseOut={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = "scale(1)")}
-          onClick={() => navigate("/create-normal-user")}
-        >
-          {esp_strings.btn_create_user}
-        </button>
-        <button
-          style={styles.button}
-          onMouseOver={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = styles.buttonHover.transform)}
-          onMouseOut={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = "scale(1)")}
-           onClick={() => navigate("/create-operator-user")}
-        >
-          {esp_strings.btn_add_admin_user}
-        </button>
-        <button
-          style={styles.button}
-          onMouseOver={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = styles.buttonHover.transform)}
-          onMouseOut={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = "scale(1)")}
-        >
-          {esp_strings.btn_close_sesion}
-        </button>
-        <button
-          style={{...styles.button, borderRadius: '50px'}}
-          onMouseOver={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = styles.iconButtonHover.transform)}
-          onMouseOut={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = "scale(1)")}
-        >
-          <FaUser className="text-orange" />
-        </button>
+        { logedUser.rol == "ADMIN" ? (
+          <button
+            style={styles.button}
+            onMouseOver={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = styles.buttonHover.transform)}
+            onMouseOut={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = "scale(1)")}
+            onClick={() => navigate("/create-normal-user")}
+          >
+            {esp_strings.btn_create_user}
+          </button>
+        ) : null }
+        { logedUser.rol == "ADMIN" || logedUser.rol == "OPERATOR" ? (
+          <button
+            style={styles.button}
+            onMouseOver={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = styles.buttonHover.transform)}
+            onMouseOut={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = "scale(1)")}
+            onClick={() => navigate("/create-operator-user")}
+          >
+            {esp_strings.btn_add_admin_user}
+          </button>
+        ) : null }
+        { logedUser.nombre != "" ? (
+            <>
+              <button
+                style={styles.button}
+                onMouseOver={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = styles.buttonHover.transform)}
+                onMouseOut={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = "scale(1)")}
+              >
+                {esp_strings.btn_close_sesion}
+              </button>
+              <button
+                style={{...styles.button, borderRadius: '50px'}}
+                onMouseOver={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = styles.iconButtonHover.transform)}
+                onMouseOut={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = "scale(1)")}
+              >
+                <FaUser className="text-orange" />
+              </button>
+            </>
+        ) : null }
       </div>
     </nav>
   );

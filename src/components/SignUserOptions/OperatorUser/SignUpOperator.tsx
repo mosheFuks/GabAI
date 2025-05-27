@@ -1,15 +1,21 @@
 import React, { useContext, useState } from 'react';
 import Modal from 'react-modal';
 import { colors } from '../../../assets/colors';
-import { SignInfo } from '../../../structs/structs';
+import { LogedUserData, SignInfo } from '../../../structs/structs';
 import { Eye, EyeOff } from "lucide-react"
 import { toast } from 'react-toastify';
 import { ToastContext } from '../../../StoreInfo/ToastContext';
 import { useNavigate } from 'react-router-dom';
+import { PageContext } from '../../../StoreInfo/page-storage';
+import { addAUserToTheUsuariosList } from '../../../apis/requests';
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from '../../../firebase-config';
+
 
 Modal.setAppElement('#root');
 
 export const SignUpOperator = (/*{modalRealSignInfo, setModalRealSignInfo, user}: CrateOperatorProps*/) => {
+  const { logedUser } = useContext(PageContext) as any;
   const toastContext = useContext(ToastContext);
   const [formUserSignData, setFormUserSignData] = useState<SignInfo>({
     nombre: "",
@@ -19,6 +25,7 @@ export const SignUpOperator = (/*{modalRealSignInfo, setModalRealSignInfo, user}
   const [showPassword, setShowPassword] = useState(false)
 
   const navigate = useNavigate();
+  const addOperatorUser = addAUserToTheUsuariosList();
 
   const handleNameChange = (inputName: string) => {
     setFormUserSignData({...formUserSignData, ['nombre']: inputName})
@@ -32,7 +39,26 @@ export const SignUpOperator = (/*{modalRealSignInfo, setModalRealSignInfo, user}
     setFormUserSignData({...formUserSignData, ['password']: inputPassword})
   };
 
-  const handleSubmit = (e: any) => {
+  const handleRegister = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      /*ADD THE USER ON FIREBASE */
+      const userCredential = await createUserWithEmailAndPassword(auth, formUserSignData.email!, formUserSignData.password!);
+      console.log("Usuario registrado:", userCredential.user.email);
+      /*ADD THE USER ON THE BACKEND */
+      const newOperatorUser: LogedUserData = {
+        nombre: formUserSignData.nombre!,
+        email: formUserSignData.email!,
+        rol: "OPERADOR",
+        kehila: logedUser.kehila
+      }
+      await addOperatorUser(newOperatorUser);
+    } catch (err: any) {
+      console.error("Error de registro:", err.message);
+    }
+  };
+
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     console.log("User data on Sign In is:", formUserSignData);
     if (formUserSignData?.password != "") {
@@ -44,7 +70,7 @@ export const SignUpOperator = (/*{modalRealSignInfo, setModalRealSignInfo, user}
     if (toastContext?.toastData.show) {
       toast(toastContext.toastData.message);
     }
-
+    await handleRegister(e);
     navigate("/administrator-dashboard");
   };
 
@@ -54,11 +80,11 @@ export const SignUpOperator = (/*{modalRealSignInfo, setModalRealSignInfo, user}
       <div style={{ width: '100%', marginBottom: '190px', paddingLeft: "30px"}}>
         <label htmlFor="kehilaName" style={{ display: "block"}}>Kehila</label>
         <h5 id="kehilaName" style={styles.input}>
-          Moldes
+          {logedUser.kehila}
         </h5>
 
         <label htmlFor="userNameEsp" style={{ display: "block"}}>Nombre</label>
-        <input id="userNameEsp" type="text" name="nombreEspañol" placeholder="Nombre (Español)" style={styles.input} value={formUserSignData.nombre} onChange={(name) => handleNameChange(name.target.value)}/>
+        <input id="userNameEsp" type="text" name="nombreEspanol" placeholder="Nombre (Español)" style={styles.input} value={formUserSignData.nombre} onChange={(name) => handleNameChange(name.target.value)}/>
 
         <label htmlFor="userEmal" style={{ display: "block"}}>Email</label>
         <input id="userEmal" type="email" name="emailPersonal" placeholder="Email" style={styles.input} value={formUserSignData.email} onChange={(email) => handleEmailChange(email.target.value)}/>

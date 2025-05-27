@@ -1,5 +1,6 @@
-import React, { CSSProperties } from 'react';
+import React, { CSSProperties, useContext } from 'react';
 import { colors } from '../../../../assets/colors';
+import { PageContext } from '../../../../StoreInfo/page-storage';
 
 
 interface NavigationButtonProps {
@@ -7,9 +8,11 @@ interface NavigationButtonProps {
   setStep: (step: number) => void;
   setModalRealSignInfo: (modalRealSignInfo: boolean) => void;
   fromPage: string;
+  saveNewVisitorUserOnUsersList: () => void;
 }
 
-export const NavigationButtonSignUp = ({step, setStep, setModalRealSignInfo, fromPage}: NavigationButtonProps) => {
+export const NavigationButtonSignUp = ({step, setStep, setModalRealSignInfo, fromPage, saveNewVisitorUserOnUsersList}: NavigationButtonProps) => {
+    const { logedUser } = useContext(PageContext) as any;
     const nextStep = () => setStep(step + 1);
     const prevStep = () => setStep(step - 1);
     
@@ -34,7 +37,12 @@ export const NavigationButtonSignUp = ({step, setStep, setModalRealSignInfo, fro
                     <div>
                         <button type="button" style={styles.button} onClick={prevStep}>Atrás</button>
                         {fromPage === "homeVisitorUser" || fromPage == "userDashboardPage" ? (<button type="button" onClick={nextStep} style={styles.button}>Siguiente</button>) : null}
-                        {fromPage == "SignUp" && (<button type="submit" style={styles.button} onClick={() => setModalRealSignInfo(true)}>Registrarse</button>)}
+                        {fromPage == "SignUp" && logedUser.rol == "VISITANTE" ? 
+                            (<button type="submit" style={styles.button} onClick={() => saveNewVisitorUserOnUsersList()}>Guardar</button>) : null
+                        }
+                        { fromPage != "userDashboardPage" ?
+                            (<button type="submit" style={styles.button} onClick={() => setModalRealSignInfo(true)}>Registrarse</button>) : null
+                        }
                     </div>
                 )}
                 {step === 4 && (

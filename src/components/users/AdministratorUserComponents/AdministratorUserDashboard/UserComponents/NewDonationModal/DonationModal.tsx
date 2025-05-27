@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Modal from 'react-modal';
-import { Donacion } from '../../../../../../structs/structs';
+import { Donacion, VisitorUser } from '../../../../../../structs/structs';
 import { colors } from '../../../../../../assets/colors';
+import { addADonationToUser } from '../../../../../../apis/requests';
+import { PageContext } from '../../../../../../StoreInfo/page-storage';
 
 
 Modal.setAppElement('#root');
@@ -10,22 +12,26 @@ interface DonationModalProps {
   modalAniversaryIsOpen: boolean;
   setModalAniversaryIsOpen: (modalAniversaryIsOpen: boolean) => void;
   setCompleteDonationsList: (donation: any) => void;
+  logedVisitorUser: VisitorUser
 }
 
-export const DonationModal = ({modalAniversaryIsOpen, setModalAniversaryIsOpen, setCompleteDonationsList}: DonationModalProps) => {
-
+export const DonationModal = ({modalAniversaryIsOpen, setModalAniversaryIsOpen, setCompleteDonationsList, logedVisitorUser}: DonationModalProps) => {
+  const { logedUser } = useContext(PageContext) as any;
   const [formUserDonationData, setFormUserDonationData] = useState<Donacion>({
     monto: 0,
     tipoMoneda: undefined,
     motivo: "",
-    fecha: {  dia: 0, mes: 0, año: 0 },
+    fecha: {  dia: "", mes: "", ano: "" },
     perasha: "",
     aclaracion: "",
     status: undefined,
   });
 
+  const addDonation = addADonationToUser();
+
   const closeModal = () => {
     setModalAniversaryIsOpen(false);
+    addDonation(logedUser.kehila, logedVisitorUser.nombreEspanol!, logedVisitorUser.apellido!, formUserDonationData)
     formUserDonationData.monto != 0 && setCompleteDonationsList((prev: Donacion[]) => [...prev, formUserDonationData]);
   }
   
@@ -112,12 +118,12 @@ export const DonationModal = ({modalAniversaryIsOpen, setModalAniversaryIsOpen, 
               </div>
 
               <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                <label htmlFor="userDonationFechaAño" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
+                <label htmlFor="userDonationFechaAno" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
                 <input
                   type="number"
-                  id="userDonationFechaAño"
-                  value={formUserDonationData.fecha?.año}
-                  onChange={(e) => setFormUserDonationData({ ...formUserDonationData, fecha: { ...formUserDonationData.fecha, año: e.target.value } })}
+                  id="userDonationFechaAno"
+                  value={formUserDonationData.fecha?.ano}
+                  onChange={(e) => setFormUserDonationData({ ...formUserDonationData, fecha: { ...formUserDonationData.fecha, ano: e.target.value } })}
                   style={styles.input}
                 />
               </div>

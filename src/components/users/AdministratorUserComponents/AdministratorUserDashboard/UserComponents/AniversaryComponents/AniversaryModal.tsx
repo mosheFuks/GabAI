@@ -54,9 +54,9 @@ export const CreateAniversaryModalComponent = ({modalAniversaryIsOpen, setModalA
                 </h5>
               </div>
               <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                <label htmlFor="userAniversaryBithDateGregAño" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
-                <h5 id="userAniversaryBithDateGregAño" style={styles.input}>
-                  {aniversary!.fecha?.año}
+                <label htmlFor="userAniversaryBithDateGregAno" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
+                <h5 id="userAniversaryBithDateGregAno" style={styles.input}>
+                  {aniversary!.fecha?.ano}
                 </h5>
               </div>
             </div>
@@ -78,9 +78,9 @@ export const CreateAniversaryModalComponent = ({modalAniversaryIsOpen, setModalA
                 </h5>
               </div>
               <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                <label htmlFor="userAniversaryBithDateHebAño" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
-                <h5 id="userAniversaryBithDateHebAño" style={styles.input}>
-                  {aniversary!.fechaHebreo?.año}
+                <label htmlFor="userAniversaryBithDateHebAno" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
+                <h5 id="userAniversaryBithDateHebAno" style={styles.input}>
+                  {aniversary!.fechaHebreo?.ano}
                 </h5>
               </div>
             </div>

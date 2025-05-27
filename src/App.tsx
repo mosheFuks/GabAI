@@ -2,7 +2,7 @@ import './App.css'
 
 import NormalUserSignUp from './components/SignUserOptions/NormalUser/SignUp/NormalUserSignUp'
 import { SignIn } from './components/SignUserOptions/NormalUser/SignIn/SignIn'
-import { ToastProvider } from './StoreInfo/ToastContext'
+import { ToastContext, ToastProvider } from './StoreInfo/ToastContext'
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import HomePage from './components/page/HomePage/HomePage'
 import { Navbar } from './components/page/Navbar/Navbar'
@@ -13,12 +13,17 @@ import { UserDashboard } from './components/users/AdministratorUserComponents/Ad
 import { OldPerashaInfo } from './components/users/AdministratorUserComponents/AdministratorPerashiot/OldPerashaInfo';
 import { SignUpOperator } from './components/SignUserOptions/OperatorUser/SignUpOperator';
 
+import { ConvexProvider, ConvexReactClient } from "convex/react";
+import { PageProvider } from './StoreInfo/page-storage';
 
 function App() {
+  const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string)
 
   return (
     <>
     <Router>
+      <PageProvider>
+      <ConvexProvider client={convex}>
       <ToastProvider>
           <ToastNotification />
           <Navbar />
@@ -33,6 +38,8 @@ function App() {
             <Route path='/perasha-info/:id' element={<OldPerashaInfo />} />
           </Routes>
       </ToastProvider>
+      </ConvexProvider>
+      </PageProvider>
     </Router>
     </>
   )

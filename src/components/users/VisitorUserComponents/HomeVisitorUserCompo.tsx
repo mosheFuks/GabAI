@@ -1,4 +1,4 @@
-import React, { CSSProperties, useEffect, useState } from "react";
+import React, { CSSProperties, useContext, useState } from "react";
 import { colors } from "../../../assets/colors";
 import { VisitorUser, Son, Aniversary, Grupo, Ability } from '../../../structs/structs';
 import { VisitorPersonalForm } from "./VisitorUserForm/VisitorPersonalForm";
@@ -6,26 +6,28 @@ import { VisitorKehilaForm } from "./VisitorUserForm/VisitorKehilaForm";
 import { VisitorFamilyForm } from "./VisitorUserForm/VisitorFamilyForm";
 import { VisitorAccountForm } from "./VisitorUserForm/VisitorAccountForm";
 import { NavigationButtonSignUp } from "../../SignUserOptions/NormalUser/SignUp/NavigationButtonsSignUp";
+import { PageContext } from "../../../StoreInfo/page-storage";
 
 export const HomeVisitorUserComponent = () => {
+  const { logedVisitorUser } = useContext(PageContext) as any;
   const [step, setStep] = useState<number>(1);
   const [user, setUser] = useState<VisitorUser>({})
   
   const mockLogedVisitorUser = {
     nombreKehila: "Kehila Agudat Israel",
-    nombreEspañol: "Ariel",
+    nombreEspanol: "Ariel",
     nombreHebreo: "אריאל",
     apellido: "Levy",
   
     fechaNacimientoGregoriano: {
       dia: "12",
       mes: "06",
-      año: "1988",
+      ano: "1988",
     },
     fechaNacimientoHebreo: {
       dia: "9",
       mes: "Sivan",
-      año: "5748",
+      ano: "5748",
     },
   
     emailPersonal: "ariel.levy@gmail.com",
@@ -39,23 +41,23 @@ export const HomeVisitorUserComponent = () => {
     fechaBarMitzvaGregoriano: {
       dia: "20",
       mes: "06",
-      año: "2001",
+      ano: "2001",
     },
     fechaBarMitzvaHebreo: {
       dia: "29",
       mes: "Sivan",
-      año: "5761",
+      ano: "5761",
     },
     perashaBarMitzva: "Koraj",
     habilidades: ["Leer Torah", "Jazan"],
   
-    nombreMadreEspañol: "Débora",
+    nombreMadreEspanol: "Débora",
     nombreMadreHebreo: "דבורה",
-    nombrePadreEspañol: "Shlomo",
+    nombrePadreEspanol: "Shlomo",
     nombrePadreHebreo: "שלמה",
   
     estadoCivil: "Casado",
-    nombreEsposaEspañol: "Esther",
+    nombreEsposaEspanol: "Esther",
     nombreEsposaHebreo: "אסתר",
   
     hijos: [
@@ -67,22 +69,22 @@ export const HomeVisitorUserComponent = () => {
         fechaNacimiento: {
           dia: "05",
           mes: "03",
-          año: "2015",
+          ano: "2015",
         },
         fechaNacimientoHebreo: {
           dia: "14",
           mes: "Adar",
-          año: "5775",
+          ano: "5775",
         },
         fechaBarMitzva: {
           dia: "18",
           mes: "03",
-          año: "2028",
+          ano: "2028",
         },
         fechaBarMitzvaHebreo: {
           dia: "17",
           mes: "Adar II",
-          año: "5788",
+          ano: "5788",
         },
         perashaBarMitzva: "Vayakhel",
         habilidades: ["Leer Haftara"] as Ability[],
@@ -95,12 +97,12 @@ export const HomeVisitorUserComponent = () => {
         fechaNacimiento: {
           dia: "11",
           mes: "08",
-          año: "2018",
+          ano: "2018",
         },
         fechaNacimientoHebreo: {
           dia: "30",
           mes: "Av",
-          año: "5778",
+          ano: "5778",
         },
       }
     ] as Son[],
@@ -112,12 +114,12 @@ export const HomeVisitorUserComponent = () => {
         fecha: {
           dia: "15",
           mes: "09",
-          año: "2010",
+          ano: "2010",
         },
         fechaHebreo: {
           dia: "7",
           mes: "Tishrei",
-          año: "5771",
+          ano: "5771",
         },
       },
       {
@@ -126,12 +128,12 @@ export const HomeVisitorUserComponent = () => {
         fecha: {
           dia: "01",
           mes: "08",
-          año: "2022",
+          ano: "2022",
         },
         fechaHebreo: {
           dia: "4",
           mes: "Av",
-          año: "5782",
+          ano: "5782",
         },
       }
     ] as Aniversary[],
@@ -145,7 +147,7 @@ export const HomeVisitorUserComponent = () => {
         fecha: {
           dia: "01",
           mes: "01",
-          año: "2023",
+          ano: "2023",
         },
         status: "PENDIENTE",
       },
@@ -156,7 +158,7 @@ export const HomeVisitorUserComponent = () => {
         fecha: {
           dia: "15",
           mes: "02",
-          año: "2023",
+          ano: "2023",
         },
         aclaracion: "Donación para la Kehila",
         status: "PENDIENTE",
@@ -169,7 +171,7 @@ export const HomeVisitorUserComponent = () => {
         fecha: {
           dia: "15",
           mes: "02",
-          año: "2023",
+          ano: "2023",
         },
         status: "PENDIENTE",
       },
@@ -180,7 +182,7 @@ export const HomeVisitorUserComponent = () => {
         fecha: {
           dia: "15",
           mes: "02",
-          año: "2023",
+          ano: "2023",
         },
         aclaracion: "Donación para la Kehila",
         status: "PENDIENTE",
@@ -192,45 +194,40 @@ export const HomeVisitorUserComponent = () => {
         fecha: {
           dia: "15",
           mes: "02",
-          año: "2023",
+          ano: "2023",
         },
         aclaracion: "Donación para la Kehila",
         status: "PAGADA",
       }
     ] as any[],
   };
-  
-
-  useEffect(() => {
-    console.log("User data on Sign UP is:", user);
-  }, [user])
 
   return (
     <>
     <div style={styles.container}>
       <h2 style={styles.title}>
-        {mockLogedVisitorUser.nombreEspañol} {mockLogedVisitorUser.apellido}
+        {logedVisitorUser.nombreEspanol} {logedVisitorUser.apellido}
       </h2>
       <NavigationButtonSignUp step={step} setStep={setStep} fromPage="homeVisitorUser"/>
       <form style={{ width: "100%" }}>
         {step === 1 && (
           <VisitorPersonalForm 
-            logedVisitorUser={mockLogedVisitorUser}
+            logedVisitorUser={logedVisitorUser}
           />
         )}
         {step === 2 && (
           <VisitorKehilaForm 
-            logedVisitorUser={mockLogedVisitorUser}
+            logedVisitorUser={logedVisitorUser}
           />
         )}
         {step === 3 && (    
           <VisitorFamilyForm 
-            logedVisitorUser={mockLogedVisitorUser} 
+            logedVisitorUser={logedVisitorUser} 
           />
         )}
         {step === 4 && (    
           <VisitorAccountForm 
-            logedVisitorUser={mockLogedVisitorUser} 
+            logedVisitorUser={logedVisitorUser} 
           />
         )}
       </form>

@@ -1,9 +1,12 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { CSSProperties } from 'react';
 import { HDate } from '@hebcal/core';
 import { colors } from '../../../../../../assets/colors';
 import { CustomDate, HEBREW_MONTHS, VisitorUser } from '../../../../../../structs/structs';
 import { AfterSunsetSwitch } from '../../../../../../assets/AfterSunsetSwitch';
+import { PageContext } from '../../../../../../StoreInfo/page-storage';
+import { getKehilotNames, getMinianimList } from '../../../../../../apis/requests';
+import { useConvex } from 'convex/react';
 
 interface FormPersonalDataProps {
   handleChangePersonalData: any,
@@ -14,13 +17,29 @@ interface FormPersonalDataProps {
 }
 
 export const FormPersonalInfoData = ({handleChangePersonalData, user, setFormUserPersonalData, formUserPersonalData, setUser}: FormPersonalDataProps) => {
+  const { logedUser } = useContext(PageContext) as any;
+  console.log("Loged User On Sign Up for first time: ", logedUser);
+  
   const [isAfterSunsetSelected, setIsAfterSunsetSelected] = useState<boolean>(false)
+  const [minianimList, setMinianimList] = useState<string[]>([]);
+
+  const kehilotNames = getKehilotNames();
+  const convex = useConvex();
+
+  const getMinianimFromTheList = async (nombre: string) => {
+    try {
+      const minianimList = await getMinianimList(convex, nombre);
+      setMinianimList(minianimList!);
+    } catch (err) {
+      console.error("Error fetching user:", err);
+    }
+  };
 
   const calculateHebrewBirthDate = (date: CustomDate) => {
     console.log("Date to calculate is:", date);
     const day = +date.dia!
     const month = +date.mes!
-    const year = +date.año!
+    const year = +date.ano!
 
     const gregorianDate = new Date(year, month - 1, day, 12)
     console.log("Gregorian date is:", gregorianDate);
@@ -34,10 +53,10 @@ export const FormPersonalInfoData = ({handleChangePersonalData, user, setFormUse
 
   const calculateGregorianBirthDate = (date: CustomDate) => {
     console.log("Date to calculate is:", date); // Devuelve "2001-10-18"
-    // Extraer el año, mes y día manualmente
+    // Extraer el ano, mes y día manualmente
     const hebDay = +date.dia!
     const hebMonth = date.mes
-    const hebYear = +date.año!
+    const hebYear = +date.ano!
 
     const hdate = new HDate(hebDay, hebMonth, hebYear);
     const gregDate: Date = hdate.greg();
@@ -47,7 +66,7 @@ export const FormPersonalInfoData = ({handleChangePersonalData, user, setFormUse
 
     saveBirthDateParams("dia", "fechaNacimientoGregoriano", true, [dayGreg, monthGreg, yearGreg])
   };
-  
+
   const calculateBirthDateBtn = (birthType: "fechaNacimientoGregoriano" | "fechaNacimientoHebreo", referenceDateValue: CustomDate, disabledCondition: boolean) => {
       return (
         <>
@@ -85,7 +104,7 @@ export const FormPersonalInfoData = ({handleChangePersonalData, user, setFormUse
           ...formUserPersonalData[birthType],
           dia: e[0],
           mes: e[1],
-          año: e[2]
+          ano: e[2]
         },
       });
       setUser({
@@ -94,7 +113,7 @@ export const FormPersonalInfoData = ({handleChangePersonalData, user, setFormUse
           ...(user[birthType]),
           dia: e[0],
           mes: e[1],
-          año: e[2]
+          ano: e[2]
         },
       });
     }
@@ -103,32 +122,50 @@ export const FormPersonalInfoData = ({handleChangePersonalData, user, setFormUse
     
   }
 
+  useEffect(() => {
+    if (logedUser.rol == "") return;
+    setFormUserPersonalData({ ...formUserPersonalData, ["nombreKehila"]: logedUser.kehila });
+    setUser({...user, ["nombreKehila"]: logedUser.kehila });
+    getMinianimFromTheList(logedUser.kehila);
+  }, [logedUser]);
 
   return (
     <div style={{ height: "400px", overflowY: "auto", padding: "10px", border: "0px solid #ccc", borderRadius: "5px" }}>
       <div>
         <label htmlFor="userKehilaName" style={{ display: "block" }}>Nombre Kehila</label>
-        <select id="userKehilaName" name="nombreKehila" onChange={(e) => { 
-          handleChangePersonalData(e);
-        }} style={styles.input}>
-          <option value={user.nombreKehila != "" ? user.nombreKehila : ""} disabled selected>Selecciona una Kehila</option>
-          <option value="Moldes">Moldes</option>
-          <option value="Shaare Tzion">Shaare Tzion</option>
-          <option value="Or Mizrah">Or Mizrah</option>
-        </select>
-
+        { logedUser.rol != "" ? 
+            <input id="userKehilaName" type="text" name="nombreKehila" style={styles.input} onChange={handleChangePersonalData} value={logedUser.kehila} disabled/>
+          :  
+            <select
+              id="userKehilaName"
+              name="nombreKehila"
+              onChange={(e) => {
+                handleChangePersonalData(e);
+                const selectedKehila = e.target.value;
+                getMinianimFromTheList(selectedKehila);
+              }}
+              style={styles.input}
+            >
+              <option value={user.nombreKehila != "" ? user.nombreKehila : ""} disabled selected>Selecciona una Kehila</option>
+              { kehilotNames && kehilotNames.length > 0 ? (
+                kehilotNames.map((kehila: string) => (
+                  <option key={kehila} value={kehila}>{kehila}</option>
+                ))) : ( null )}
+            </select>
+        }
         <label htmlFor="userMinian" style={{ display: "block"}}>Minian</label>
         <select id="userMinian" name="minian" onChange={(e) => { 
           handleChangePersonalData(e);
         }} style={styles.input}>
           <option value={user.minian != "" ? user.minian : ""} disabled selected>Selecciona un Minian</option>
-          <option value="Sefaradi">Sefaradi</option>
-          <option value="Shul">Shul</option>
-          <option value="Minian Juvenil">Minian Juvenil</option>
+          { minianimList && minianimList.length > 0 ? (
+            minianimList.map((minian: string) => (
+              <option key={minian} value={minian}>{minian}</option>
+            ))) : ( null )}
         </select>
           
-        <label htmlFor="userNombreEspañol" style={{ display: "block"}}>Nombre Español</label>
-        <input id="userNombreEspañol" type="text" name="nombreEspañol" placeholder="Nombre en Español" onChange={handleChangePersonalData} style={styles.input} value={user.nombreEspañol}/>
+        <label htmlFor="userNombreEspanol" style={{ display: "block"}}>Nombre Español</label>
+        <input id="userNombreEspanol" type="text" name="nombreEspanol" placeholder="Nombre en Español" onChange={handleChangePersonalData} style={styles.input} value={user.nombreEspanol}/>
         
         <label htmlFor="userNombreHebreo" style={{ display: "block"}}>Nombre Hebreo</label>
         <input id="userNombreHebreo" type="text" name="nombreHebreo" placeholder="Nombre en Hebreo" onChange={handleChangePersonalData} style={styles.input} value={user.nombreHebreo}/>
@@ -147,10 +184,10 @@ export const FormPersonalInfoData = ({handleChangePersonalData, user, setFormUse
             <input id="userFechaNacGregMes" type="number" name="fechaNacimientoGregoriano" placeholder="Mes" onChange={(e: any) => saveBirthDateParams("mes", "fechaNacimientoGregoriano", false, e)} style={{...styles.input}} value={user.fechaNacimientoGregoriano?.mes}/>
           </div>
           <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-            <label htmlFor="userFechaNacGregAño" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
-            <input id="userFechaNacGregAño" type="number" name="fechaNacimientoGregoriano" placeholder="Año" onChange={(e: any) => saveBirthDateParams("año", "fechaNacimientoGregoriano", false, e)} style={{...styles.input}} value={user.fechaNacimientoGregoriano?.año}/>
+            <label htmlFor="userFechaNacGregAno" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
+            <input id="userFechaNacGregAno" type="number" name="fechaNacimientoGregoriano" placeholder="Año" onChange={(e: any) => saveBirthDateParams("ano", "fechaNacimientoGregoriano", false, e)} style={{...styles.input}} value={user.fechaNacimientoGregoriano?.ano}/>
           </div>
-          {calculateBirthDateBtn("fechaNacimientoGregoriano", user.fechaNacimientoHebreo!, user.fechaNacimientoHebreo == undefined)}
+          {calculateBirthDateBtn("fechaNacimientoGregoriano", user.fechaNacimientoHebreo!, user.fechaNacimientoHebreo?.ano == "")}
         </div>
         
         <label htmlFor="userFechaNacHeb" style={{ display: "block"}}>Fecha Nacimiento Hebreo</label>
@@ -182,12 +219,12 @@ export const FormPersonalInfoData = ({handleChangePersonalData, user, setFormUse
               </select>
             </div>
             <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-              <label htmlFor="userFechaNacHebAño" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
-              <input id="userFechaNacHebAño" type="number" name="fechaNacimientoHebreo" placeholder="Año" onChange={(e: any) => saveBirthDateParams("año", "fechaNacimientoHebreo", false, e)} style={{...styles.input}} value={user.fechaNacimientoHebreo?.año}/>
+              <label htmlFor="userFechaNacHebAno" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
+              <input id="userFechaNacHebAno" type="number" name="fechaNacimientoHebreo" placeholder="Año" onChange={(e: any) => saveBirthDateParams("ano", "fechaNacimientoHebreo", false, e)} style={{...styles.input}} value={user.fechaNacimientoHebreo?.ano}/>
             </div>
           </div>
           <AfterSunsetSwitch isCheked={isAfterSunsetSelected} setIsCheked={setIsAfterSunsetSelected} />
-          {calculateBirthDateBtn("fechaNacimientoHebreo", user.fechaNacimientoGregoriano!, user.fechaNacimientoGregoriano == undefined)}
+          {calculateBirthDateBtn("fechaNacimientoHebreo", user.fechaNacimientoGregoriano!, user.fechaNacimientoGregoriano?.ano == "")}
         </div>
 
         <label htmlFor="userEmailPers" style={{ display: "block"}}>Email Personal</label>

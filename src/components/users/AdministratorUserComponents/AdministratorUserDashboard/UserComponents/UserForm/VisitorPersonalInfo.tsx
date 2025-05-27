@@ -21,9 +21,9 @@ export const VisitorPersonalInfo = ({ logedVisitorUser }: VisitorPersonalDataPro
           {logedVisitorUser.minian}
         </h5>
           
-        <label htmlFor="userNombreEspañol" style={{ display: "block"}}>Nombre Español</label>
-        <h5 id="userNombreEspañol" style={styles.input}>
-          {logedVisitorUser.nombreEspañol}
+        <label htmlFor="userNombreEspanol" style={{ display: "block"}}>Nombre Español</label>
+        <h5 id="userNombreEspanol" style={styles.input}>
+          {logedVisitorUser.nombreEspanol}
         </h5>
         
         <label htmlFor="userNombreHebreo" style={{ display: "block"}}>Nombre Hebreo</label>
@@ -51,9 +51,9 @@ export const VisitorPersonalInfo = ({ logedVisitorUser }: VisitorPersonalDataPro
             </h5>
           </div>
           <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-            <label htmlFor="userFechaNacGregAño" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
+            <label htmlFor="userFechaNacGregAno" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
             <h5 id="userFechaNacGregDia" style={styles.input}>
-              {logedVisitorUser.fechaNacimientoGregoriano?.año}
+              {logedVisitorUser.fechaNacimientoGregoriano?.ano}
             </h5>
           </div>
         </div>
@@ -74,9 +74,9 @@ export const VisitorPersonalInfo = ({ logedVisitorUser }: VisitorPersonalDataPro
               </h5>
             </div>
             <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-              <label htmlFor="userFechaNacHebAño" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
-              <h5 id="userFechaNacHebAño" style={styles.input}>
-                {logedVisitorUser.fechaNacimientoHebreo?.año}
+              <label htmlFor="userFechaNacHebAno" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
+              <h5 id="userFechaNacHebAno" style={styles.input}>
+                {logedVisitorUser.fechaNacimientoHebreo?.ano}
               </h5>
             </div>
           </div>

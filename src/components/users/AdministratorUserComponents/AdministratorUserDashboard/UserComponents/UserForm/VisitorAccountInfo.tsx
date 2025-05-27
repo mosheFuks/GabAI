@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { CSSProperties } from 'react';
 
 import { DonationModal } from '../NewDonationModal/DonationModal';
-import { CustomDate } from '../../../../../../structs/structs';
+import { CustomDate, VisitorUser } from '../../../../../../structs/structs';
 import { colors } from '../../../../../../assets/colors';
+import { changeDonationStatus } from '../../../../../../apis/requests';
 
 interface FormPersonalDataProps {
-  logedVisitorUser: any
+  logedVisitorUser: VisitorUser
 }
 
 export const VisitorAccountInfo = ({ logedVisitorUser }: FormPersonalDataProps) => {
@@ -14,13 +15,13 @@ export const VisitorAccountInfo = ({ logedVisitorUser }: FormPersonalDataProps) 
   const [arsPendingDonations, setArsPendingDonations] = useState<number>(0);
   const [usdPendingDonations, setUsdPendingDonations] = useState<number>(0);
   const [statusFilter, setStatusFilter] = useState<'All' | 'PENDIENTE' | 'PAGADA'>('All');
-  const [completeDonationsList, setCompleteDonationsList] = useState<any[]>(logedVisitorUser.cuenta);
+  const [completeDonationsList, setCompleteDonationsList] = useState<any[]>(logedVisitorUser.cuenta!);
   const [filteredDonations, setFilteredDonations] = useState(completeDonationsList);
   const [isDonationModalOpen, setIsDonationModalOpen] = useState(false);
 
   const formatDate = (date?: CustomDate) => {
     if (!date) return '';
-    return `${date.dia}/${date.mes}/${date.año}`;
+    return `${date.dia}/${date.mes}/${date.ano}`;
   };
 
   const filterDonations = () => {
@@ -52,6 +53,8 @@ export const VisitorAccountInfo = ({ logedVisitorUser }: FormPersonalDataProps) 
     setUsdPendingDonations(usdTotal);
   }
 
+  const modDonationStatus = changeDonationStatus()
+
   useEffect(() => {
     getAllPendingDonations()
     filterDonations()
@@ -65,10 +68,10 @@ export const VisitorAccountInfo = ({ logedVisitorUser }: FormPersonalDataProps) 
   
   return (
     <div style={{ height: "400px", overflowY: "auto", padding: "10px", borderRadius: "5px" }}>
-      {filteredDonations.length > 0 ? (
         <div>
           <div style={styles.headerButtons}>
-            <div style={{ display: "flex", flexDirection: "row", gap: '10px' }}>
+            {logedVisitorUser.cuenta!.length > 0 && (
+              <div style={{ display: "flex", flexDirection: "row", gap: '10px' }}>
                 <div style={{justifyContent: 'space-between', alignItems: 'center', padding: '10px', border: '3px solid orange', borderRadius: '5px' }}>
                   <div style={{ fontSize: '1rem', fontWeight: 'bold' }}>
                     {`Pago pendiente en pesos:`}
@@ -86,9 +89,9 @@ export const VisitorAccountInfo = ({ logedVisitorUser }: FormPersonalDataProps) 
                     USD {usdPendingDonations} 
                   </div>
                 </div> 
-            </div>
-
-            <div>
+              </div>
+            )}
+            {logedVisitorUser.cuenta!.length > 0 ? (
               <div style={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
                 <button type='button' style={{...styles.filterButton, fontWeight: statusFilter == "All" ? "bold" : "normal"}} onClick={() => setStatusFilter("All")}>
                   {statusFilter == "All" ? `🟠 Todas` : `Todas`}
@@ -106,68 +109,101 @@ export const VisitorAccountInfo = ({ logedVisitorUser }: FormPersonalDataProps) 
                   Agregar Donación
                 </button>
               </div>
-            </div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'row', gap: '10px', justifyContent: 'flex-end', width: '100%' }}>
+                <button type='button' style={styles.button} onClick={() => setIsDonationModalOpen(true)}>
+                  Agregar Donación
+                </button>
+              </div>
+            )}
           </div>
+          {filteredDonations.length > 0 ? (
+            <table style={styles.table}>
+              <thead>
+                <tr>
+                  <th style={styles.th}>Fecha</th>
+                  <th style={styles.th}>Motivo</th>
+                  <th style={styles.th}>Monto</th>
+                  <th style={styles.th}>Moneda</th>
+                  <th style={styles.th}>Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredDonations.map((donacion, index) => {
+                  const monto = donacion.monto;
+                  const moneda = donacion.tipoMoneda;
+                  const esOtro = donacion.aclaracion != '';
 
-          <table style={styles.table}>
-            <thead>
-              <tr>
-                <th style={styles.th}>Fecha</th>
-                <th style={styles.th}>Motivo</th>
-                <th style={styles.th}>Monto</th>
-                <th style={styles.th}>Moneda</th>
-                <th style={styles.th}>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredDonations.map((donacion, index) => {
-                const monto = donacion.monto;
-                const moneda = donacion.tipoMoneda;
-                const esOtro = donacion.aclaracion != '';
-
-                return (
-                  <tr key={index}>
-                    <td style={styles.td} data-label="Fecha">
-                      {formatDate(donacion.fecha)}
-                    </td>
-                    <td style={styles.td} data-label="Motivo">
-                      {esOtro ? (
-                        <span
-                          style={styles.cellPopover}
-                          onClick={() =>
-                            setExpandedIndex(expandedIndex === index ? null : index)
-                          }
-                        >
-                          {donacion.motivo} <span style={{ marginLeft: '5px' }}>&#9660;</span>
-                          {expandedIndex === index && donacion.aclaracion && (
-                            <div style={styles.popover}>{donacion.aclaracion}</div>
-                          )}
-                        </span>
-                      ) : (
-                        donacion.motivo || '-'
+                  return (
+                    <tr key={index}>
+                      <td style={styles.td} data-label="Fecha">
+                        {formatDate(donacion.fecha)}
+                      </td>
+                      <td style={styles.td} data-label="Motivo">
+                        {esOtro ? (
+                          <span
+                            style={styles.cellPopover}
+                            onClick={() =>
+                              setExpandedIndex(expandedIndex === index ? null : index)
+                            }
+                          >
+                            {donacion.motivo} <span style={{ marginLeft: '5px' }}>&#9660;</span>
+                            {expandedIndex === index && donacion.aclaracion && (
+                              <div style={styles.popover}>{donacion.aclaracion}</div>
+                            )}
+                          </span>
+                        ) : (
+                          donacion.motivo || '-'
+                        )}
+                      </td>
+                      <td style={styles.td} data-label="Monto">{monto}</td>
+                      <td style={styles.td} data-label="Moneda">{moneda}</td>
+                      <td style={{...styles.td, color: "green", fontWeight: 'bolder'}} data-label="Status">{donacion.status || '-'}</td>
+                      {donacion.status === 'PENDIENTE' && (
+                        <div style={{ display: 'flex', justifyContent: 'center' }}>
+                          <button
+                            type="button"
+                            style={{...styles.button, backgroundColor: donacion.status === 'PENDIENTE' ? 'green' : 'orange'}}
+                            onClick={() => {
+                              modDonationStatus(
+                                logedVisitorUser.nombreKehila!,
+                                logedVisitorUser.nombreEspanol!,
+                                logedVisitorUser.apellido!,
+                                donacion.fecha,
+                                donacion.status === 'PENDIENTE' ? "PAGADA" : "PENDIENTE",
+                                donacion.monto
+                              )
+                              if (donacion.status === 'PENDIENTE') {
+                                donacion.status = 'PAGADA';
+                              } else {
+                                donacion.status = 'PENDIENTE';
+                              }
+                              setCompleteDonationsList([...completeDonationsList]);
+                              filterDonations();
+                            }}
+                          >
+                            Confirmar Pago
+                          </button>
+                        </div>
                       )}
-                    </td>
-                    <td style={styles.td} data-label="Monto">{monto}</td>
-                    <td style={styles.td} data-label="Moneda">{moneda}</td>
-                    <td style={{...styles.td, color:donacion.status == "PAGADA" ? "green" : "orange", fontWeight: 'bolder'}} data-label="Status">{donacion.status || '-'}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      )
-      : (
-        <div style={{ textAlign: 'center', marginTop: '20px', fontSize: '3rem' }}>
-          <h5 style={{ color: colors.btn_background }}>No hay donaciones registradas</h5>
-        </div>
-      )}
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          ) : (
+            <div style={{ textAlign: 'center', marginTop: '20px', fontSize: '3rem' }}>
+              <h5 style={{ color: colors.btn_background }}>No hay donaciones registradas</h5>
+            </div>
+          )}
+      </div>
 
       {isDonationModalOpen && (
         <DonationModal
           modalAniversaryIsOpen={isDonationModalOpen} 
           setModalAniversaryIsOpen={setIsDonationModalOpen}
-          setCompleteDonationsList={setCompleteDonationsList}/>
+          setCompleteDonationsList={setCompleteDonationsList}
+          logedVisitorUser={logedVisitorUser}/>
       )}
     </div>
   );
