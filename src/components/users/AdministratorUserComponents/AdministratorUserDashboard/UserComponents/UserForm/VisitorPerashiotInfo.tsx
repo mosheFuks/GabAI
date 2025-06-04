@@ -184,7 +184,7 @@ export const VisitorPerashiotInfo = ({ logedVisitorUser }: FormPersonalDataProps
                   <th style={styles.th}>Motivo</th>
                   <th style={styles.th}>Nombre</th>
                   <th style={styles.th}>Nombre Hebreo</th>
-                  <th style={styles.th}>Habilidades</th>
+                  <th style={styles.th}>Conocimientos</th>
                   <th style={styles.th}>Fecha Bar Mitzva</th>
                   <th style={styles.th}>Fecha Bar Mitzva Hebreo</th>
                 </tr>
@@ -203,7 +203,7 @@ export const VisitorPerashiotInfo = ({ logedVisitorUser }: FormPersonalDataProps
                       <td style={styles.td} data-label="Motivo">Bar Mitzva</td>
                       <td style={styles.td} data-label="Nombre">{nombre}</td>
                       <td style={styles.td} data-label="NombreHebreo">{nombreHebreo}</td>
-                      <td style={styles.td} data-label="Habilidades">
+                      <td style={styles.td} data-label="Conocimientos">
                         {habilidades?.join(', ')}
                       </td>
                       <td style={styles.td} data-label="FechaBarMitzva">

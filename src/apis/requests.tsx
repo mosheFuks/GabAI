@@ -100,7 +100,7 @@ export const addAVisitorUserInTheKehila = () => {
     });
 }
 
-/*POST A NEW USER INTO THE USUARIOS LIST */
+/*-------POST A NEW USER INTO THE USUARIOS LIST------*/
 export const addAUserToTheUsuariosList = () => {
   const mutation = useMutation(api.kehila.addUserToUsuariosList);
   return (newUser: LogedUserData) =>
@@ -132,5 +132,17 @@ export const changeDonationStatus = () => {
       fecha,
       nuevoStatus: newStatus,
       monto
+    });
+};
+
+/*-------CHANGE THE STATUS OF A USER----------------*/
+export const changeUserVisitorData = () => {
+  const mutation = useMutation(api.kehila.changeUserVisitordata);
+  return (kehilaName: string, nombreUsuario: string, apellidoUsuario: string, updatedData: { name: string; value: string }[]) =>
+    mutation({
+      nombreKehila: kehilaName,
+      nombreUsuario,
+      apellidoUsuario,
+      updatedData
     });
 };

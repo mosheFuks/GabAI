@@ -88,7 +88,7 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
   const getCurrentMonthAniversaries = (currentMonth: string) => {
     console.log("People List: ", peopleList);
 
-    const monthAniversaries = peopleList
+    const monthAniversaries = peopleList!
       .filter((persona) =>
         persona.aniversarios!.some((ani) => ani.fechaHebreo!.mes === currentMonth)
       )
@@ -117,10 +117,10 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
         } as AniversariesList))
       );
 
-    const monthBirthdates = peopleList
+    const monthBirthdates = peopleList!
       .filter(persona => persona.fechaNacimientoHebreo?.mes === currentMonth)
       .map(per => ({
-        motivo: "Cumpleanos",
+        motivo: "Cumpleaños",
         nombre: per.nombreEspanol,
         apellido: per.apellido,
         nombreHebreo: per.nombreHebreo,
@@ -140,7 +140,7 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
         },
       } as AniversariesList));
 
-    const monthBarMitzvaAniversary = peopleList
+    const monthBarMitzvaAniversary = peopleList!
       .filter(persona => persona.fechaBarMitzvaHebreo?.mes === currentMonth)
       .map(per => ({
         motivo: "Bar Mitzva",
@@ -217,17 +217,19 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
   return (
     <div>
       <div style={styles.headerButtons}>
-        <div style={{ display: "flex", gap: '10px', width: '100%', marginTop: '20px', justifyContent: "flex-end"}}>
-          <div style={{...styles.rightGroup, display: "flex",border: '3px solid orange', padding: '10px', borderRadius: '20px'}}>
-            <FaFilter className="text-orange" />
-            <input
-              type="text"
-              placeholder="Busca por motivo o Minian"
-              style={styles.input}
-              onChange={(e) => searchAniByMotiveOrMinian(e.target.value)}
-            />
+        {thisWeekAniversaries.length > 0 && (
+          <div style={{ display: "flex", gap: '10px', width: '100%', marginTop: '20px', justifyContent: "flex-end"}}>
+            <div style={{...styles.rightGroup, display: "flex",border: '3px solid orange', padding: '10px', borderRadius: '20px'}}>
+              <FaFilter className="text-orange" />
+              <input
+                type="text"
+                placeholder="Busca por motivo o Minian"
+                style={styles.input}
+                onChange={(e) => searchAniByMotiveOrMinian(e.target.value)}
+              />
+            </div>
           </div>
-        </div>
+        )}
       </div>
       <div style={{ display: "flex",fontSize: '1.5rem', fontWeight: 'bold', justifyContent: "flex-start", textDecorationLine: 'underline', textDecorationColor: 'orange'}}>
         {`Lista de aniversarios que caen en la semana del ${daysOfThisWeek.sunday.toString().match(/^\d+/)} al ${daysOfThisWeek.friday.toString().match(/^\d+/)} de ${daysOfThisWeek.currentMonth}:`}
@@ -244,7 +246,7 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
                   <th style={styles.th}>Numero de Socio</th>
                   <th style={styles.th}>Grupo</th>
                   <th style={styles.th}>Minian</th>
-                  <th style={styles.th}>Habilidades</th>
+                  <th style={styles.th}>Conocimientos</th>
                   <th style={styles.th}>Fecha Aniversario Gregoriano</th>
                   <th style={styles.th}>Fecha Aniversario Hebreo</th>
                 </tr>
@@ -269,7 +271,7 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
                       <td style={styles.td} data-label="NumeroSocio">{numeroSocio}</td>
                       <td style={styles.td} data-label="Grupo">{grupo}</td>
                       <td style={styles.td} data-label="Minian">{minian}</td>
-                      <td style={styles.td} data-label="Habilidades">{habilidades?.join(', ')}</td>
+                      <td style={styles.td} data-label="Conocimientos">{habilidades?.join(', ')}</td>
                       <td style={styles.td} data-label="FechaNacimientoGreg">{fechaAniGreg}</td>
                       <td style={styles.td} data-label="FechaNacimientoHeb">{fechaAniHeb}</td>
                     </tr>

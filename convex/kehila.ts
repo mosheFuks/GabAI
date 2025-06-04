@@ -503,3 +503,73 @@ export const changeDonationStatus = mutation({
     return { success: true };
   },
 });
+
+export const changeUserVisitordata = mutation({
+  args: {
+    nombreKehila: v.string(),
+    nombreUsuario: v.string(),
+    apellidoUsuario: v.string(),
+    updatedData: v.array(
+      v.object({
+        name: v.string(),
+        value: v.string(),
+      })
+    ),
+  },
+
+  handler: async (ctx, args) => {
+    // Paso 1: Buscar la Kehila
+    const kehila = await ctx.db
+      .query("Kehila")
+      .filter((q) => q.eq(q.field("nombre"), args.nombreKehila))
+      .first();
+
+    if (!kehila) {
+      throw new Error("Kehila no encontrada");
+    }
+
+    console.log("🕍 Kehila encontrada:", kehila.nombre);
+
+    // Paso 2: Buscar y actualizar el usuario
+    let usuarioFueModificado = false;
+
+    const usuariosActualizados = kehila.usuarios.map((usuario) => {
+      if (
+        usuario.nombreEspanol === args.nombreUsuario &&
+        usuario.apellido === args.apellidoUsuario
+      ) {
+        const usuarioActualizado = { ...usuario };
+
+        console.log("👤 Usuario encontrado, antes de cambios:", usuario);
+
+        args.updatedData.forEach(({ name, value }) => {
+          if (name in usuarioActualizado) {
+            (usuarioActualizado as any)[name] = value;
+            usuarioFueModificado = true;
+            console.log(`✏️ Campo '${name}' actualizado a: ${value}`);
+          } else {
+            console.warn(`⚠️ Campo '${name}' no existe en el usuario`);
+          }
+        });
+
+        console.log("✅ Usuario después de cambios:", usuarioActualizado);
+        return usuarioActualizado;
+      }
+
+      return usuario;
+    });
+
+    if (!usuarioFueModificado) {
+      throw new Error("Usuario no encontrado o no se modificó ningún campo.");
+    }
+
+    // Paso 3: Guardar los usuarios actualizados en la base de datos
+    await ctx.db.patch(kehila._id, {
+      usuarios: usuariosActualizados,
+    });
+
+    console.log("📦 Datos guardados en Convex");
+
+    return { success: true };
+  },
+});

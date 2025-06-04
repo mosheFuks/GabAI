@@ -57,46 +57,49 @@ export const VisitorAccountForm = ({ logedVisitorUser }: FormPersonalDataProps) 
   
   return (
     <div style={{ height: "400px", overflowY: "auto", padding: "10px", borderRadius: "5px" }}>
-      {filteredDonations.length > 0 ? (
         <div>
           <div style={styles.headerButtons}>
-            <div style={{ display: "flex", flexDirection: "row", gap: '10px' }}>
-                <div style={{justifyContent: 'space-between', alignItems: 'center', padding: '10px', border: '3px solid orange', borderRadius: '5px' }}>
-                  <div style={{ fontSize: '1rem', fontWeight: 'bold' }}>
-                    {`Pago pendiente en pesos:`}
+            {logedVisitorUser.cuenta!.length > 0 && (
+              <div style={{ display: "flex", flexDirection: "row", gap: '10px' }}>
+                  <div style={{justifyContent: 'space-between', alignItems: 'center', padding: '10px', border: '3px solid orange', borderRadius: '5px' }}>
+                    <div style={{ fontSize: '1rem', fontWeight: 'bold' }}>
+                      {`Pago pendiente en pesos:`}
+                    </div>
+                    <div style={{ fontSize: '1rem', fontWeight: 'bold', color: 'orange' }}>
+                      ${arsPendingDonations}
+                    </div>
                   </div>
-                  <div style={{ fontSize: '1rem', fontWeight: 'bold', color: 'orange' }}>
-                    ${arsPendingDonations}
-                  </div>
-                </div>
 
-                <div style={{justifyContent: 'space-between', alignItems: 'center', padding: '10px', border: '3px solid orange', borderRadius: '5px' }}>
-                  <div style={{ fontSize: '1rem', fontWeight: 'bold' }}>
-                    {`Pago pendiente en dolares:`}
-                  </div>
-                  <div style={{ fontSize: '1rem', fontWeight: 'bold', color: 'orange' }}>
-                    USD {usdPendingDonations} 
-                  </div>
-                </div> 
-            </div>
-
-            <div>
-              <div style={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
-                <button type='button' style={{...styles.filterButton, fontWeight: statusFilter == "All" ? "bolder" : "normal"}} onClick={() => setStatusFilter("All")}>
-                  {statusFilter == "All" ? `🟠 Todas` : `Todas`}
-                </button>
-
-                <button type='button' style={{...styles.filterButton, fontWeight: statusFilter == "PAGADA" ? "bolder" : "normal"}} onClick={() => setStatusFilter("PAGADA")}>
-                  {statusFilter == "PAGADA"? `🟠 Pagadas` : `Pagadas`}
-                </button>
-
-                <button type='button' style={{...styles.filterButton, fontWeight: statusFilter == "PENDIENTE" ? "bolder" : "normal"}} onClick={() => setStatusFilter("PENDIENTE")}>
-                  {statusFilter == "PENDIENTE"? `🟠 Pendientes` : `Pendientes`}
-                </button>
+                  <div style={{justifyContent: 'space-between', alignItems: 'center', padding: '10px', border: '3px solid orange', borderRadius: '5px' }}>
+                    <div style={{ fontSize: '1rem', fontWeight: 'bold' }}>
+                      {`Pago pendiente en dolares:`}
+                    </div>
+                    <div style={{ fontSize: '1rem', fontWeight: 'bold', color: 'orange' }}>
+                      USD {usdPendingDonations} 
+                    </div>
+                  </div> 
               </div>
-            </div>
-          </div>
+            )}
 
+            {logedVisitorUser.cuenta!.length > 0 && (
+              <div>
+                <div style={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
+                  <button type='button' style={{...styles.filterButton, fontWeight: statusFilter == "All" ? "bolder" : "normal"}} onClick={() => setStatusFilter("All")}>
+                    {statusFilter == "All" ? `🟠 Todas` : `Todas`}
+                  </button>
+
+                  <button type='button' style={{...styles.filterButton, fontWeight: statusFilter == "PAGADA" ? "bolder" : "normal"}} onClick={() => setStatusFilter("PAGADA")}>
+                    {statusFilter == "PAGADA"? `🟠 Pagadas` : `Pagadas`}
+                  </button>
+
+                  <button type='button' style={{...styles.filterButton, fontWeight: statusFilter == "PENDIENTE" ? "bolder" : "normal"}} onClick={() => setStatusFilter("PENDIENTE")}>
+                    {statusFilter == "PENDIENTE"? `🟠 Pendientes` : `Pendientes`}
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        {filteredDonations.length > 0 ? (
           <table style={styles.table}>
             <thead>
               <tr>
@@ -145,13 +148,13 @@ export const VisitorAccountForm = ({ logedVisitorUser }: FormPersonalDataProps) 
               })}
             </tbody>
           </table>
-        </div>
       )
       : (
         <div style={{ textAlign: 'center', marginTop: '20px', fontSize: '3rem' }}>
           <h5 style={{ color: colors.btn_background }}>No hay donaciones registradas</h5>
         </div>
       )}
+    </div>
     </div>
   );
 };

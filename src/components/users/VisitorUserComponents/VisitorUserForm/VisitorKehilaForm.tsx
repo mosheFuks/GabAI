@@ -59,7 +59,7 @@ export const VisitorKehilaForm = ({logedVisitorUser}: FormPersonalDataProps) => 
             {logedVisitorUser.perashaBarMitzva}
           </h5>
           
-          <label htmlFor="userAbilities" style={{ display: "block" }}>Habilidades</label>
+          <label htmlFor="userAbilities" style={{ display: "block" }}>Conocimientos</label>
           {logedVisitorUser.habilidades.map((role) => (
             <h5 style={styles.input} key={role}>
               {role}

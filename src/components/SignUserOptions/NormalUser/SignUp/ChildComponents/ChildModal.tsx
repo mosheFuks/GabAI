@@ -363,7 +363,7 @@ export const CreateChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen
               <label htmlFor="userChildPerasha"style={{ display: "block"}}>Perasha Bar Mitzva</label>
               <input id="userChildPerasha" type="text" name="perashaBarMitzva" placeholder="Perasha Bar Mitzva" onChange={handleChangeChildData} style={styles.input} value={formUserChildData.perashaBarMitzva}/>
 
-              <label htmlFor="userChildAbilities" style={{ display: "block" }}>Habilidades</label>
+              <label htmlFor="userChildAbilities" style={{ display: "block" }}>Conocimientos</label>
               <div style={styles.input}>
                 <div style={{ display: "flex", flexDirection: "column" }}>
                   {habilidades.map((role) => (

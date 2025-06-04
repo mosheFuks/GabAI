@@ -919,58 +919,63 @@ export const AdministratorDefaultDashboard = () => {
         step={step}  />
 
       {step == 1 ? (
-        <div style={{ height: "400px", overflowY: "auto", padding: "10px", borderRadius: "5px" }}>
-          {peopleFilter != undefined && peopleFilter!.length > 0 ? (
-            <table style={styles.table}>
-              <thead>
-                <tr>
-                  <th style={styles.th}>Nombre</th>
-                  <th style={styles.th}>Nombre Hebreo</th>
-                  <th style={styles.th}>Numero de Socio</th>
-                  <th style={styles.th}>Status</th>
-                  <th style={styles.th}>Fecha Nacimiento Gregoriano</th>
-                  <th style={styles.th}>Fecha Nacimiento Hebreo</th>
-                  <th style={styles.th}>Estado Cuenta</th>
-                </tr>
-              </thead>
-              <tbody>
-                {peopleFilter!.map((persona, index) => {
-                  const nombre = persona.nombreEspanol + " " + persona.apellido;
-                  const nombreHebreo = persona.nombreHebreo;
-                  const numeroSocio = persona.numeroSocio;
-                  const grupo = persona.grupo;
-                  const fechaNacimientoGreg = `${persona.fechaNacimientoGregoriano!.dia}/${persona.fechaNacimientoGregoriano!.mes}/${persona.fechaNacimientoGregoriano!.ano}`;
-                  const fechaNacimientoHeb = `${persona.fechaNacimientoHebreo!.dia} ${persona.fechaNacimientoHebreo!.mes} ${persona.fechaNacimientoHebreo!.ano}`;
-                  const estadoCuenta = getEstadoDeCuenta(persona.cuenta? persona.cuenta : []);
+        <div>
+          <div style={{ fontSize: '1.5rem', fontWeight: 'bold', textAlign: "center", textDecorationLine: 'underline', textDecorationColor: 'orange', marginTop: '10px', marginBottom: '10px'}}>
+            {`Lista de participantes de la Kehila`}
+          </div>
+          <div style={{ height: "400px", overflowY: "auto", padding: "10px", borderRadius: "5px" }}>
+            {peopleFilter != undefined && peopleFilter!.length > 0 ? (
+              <table style={styles.table}>
+                <thead>
+                  <tr>
+                    <th style={styles.th}>Nombre</th>
+                    <th style={styles.th}>Nombre Hebreo</th>
+                    <th style={styles.th}>Numero de Socio</th>
+                    <th style={styles.th}>Status</th>
+                    <th style={styles.th}>Fecha Nacimiento Gregoriano</th>
+                    <th style={styles.th}>Fecha Nacimiento Hebreo</th>
+                    <th style={styles.th}>Estado Cuenta</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {peopleFilter!.map((persona, index) => {
+                    const nombre = persona.nombreEspanol + " " + persona.apellido;
+                    const nombreHebreo = persona.nombreHebreo;
+                    const numeroSocio = persona.numeroSocio;
+                    const grupo = persona.grupo;
+                    const fechaNacimientoGreg = `${persona.fechaNacimientoGregoriano!.dia}/${persona.fechaNacimientoGregoriano!.mes}/${persona.fechaNacimientoGregoriano!.ano}`;
+                    const fechaNacimientoHeb = `${persona.fechaNacimientoHebreo!.dia} ${persona.fechaNacimientoHebreo!.mes} ${persona.fechaNacimientoHebreo!.ano}`;
+                    const estadoCuenta = getEstadoDeCuenta(persona.cuenta? persona.cuenta : []);
 
-                  return (
-                    <tr key={index}>
-                      <td style={styles.td} data-label="Nombre">{nombre}</td>
-                      <td style={styles.td} data-label="NombreHebreo">{nombreHebreo}</td>
-                      <td style={styles.td} data-label="NumeroSocio">{numeroSocio}</td>
-                      <td style={styles.td} data-label="Grupo">{grupo}</td>
-                      <td style={styles.td} data-label="FechaNacimientoGreg">{fechaNacimientoGreg}</td>
-                      <td style={styles.td} data-label="FechaNacimientoHeb">{fechaNacimientoHeb}</td>
-                      <td style={{...styles.td, color: estadoCuenta == "PENDIENTE"? "orange" : estadoCuenta == "PAGADA" ? "green" : "blue", fontWeight: 'bolder'}} data-label="EstadoCuenta">{estadoCuenta}</td>
-                      <td 
-                        style={{...styles.td, color: "green", alignItems: "center", cursor:"pointer"}}
-                        data-label="EstadoCuenta"
-                        onClick={() => navigate(`/administrator-user-info/${persona.nombreEspanol}-${persona.apellido!}`)}
-                      >
-                        <FaArrowAltCircleRight className="text-black" />
-                      </td>
-                    </tr>
-                  );
-                })} 
-              </tbody>
-            </table>
-          )
-          : 
-          (
-            <div style={{ textAlign: 'center', marginTop: '20px', fontSize: '3rem' }}>
-              <h5 style={{ color: colors.btn_background }}>No hay usuarios registrados</h5>
-            </div>
-          )}
+                    return (
+                      <tr key={index}>
+                        <td style={styles.td} data-label="Nombre">{nombre}</td>
+                        <td style={styles.td} data-label="NombreHebreo">{nombreHebreo}</td>
+                        <td style={styles.td} data-label="NumeroSocio">{numeroSocio}</td>
+                        <td style={styles.td} data-label="Grupo">{grupo}</td>
+                        <td style={styles.td} data-label="FechaNacimientoGreg">{fechaNacimientoGreg}</td>
+                        <td style={styles.td} data-label="FechaNacimientoHeb">{fechaNacimientoHeb}</td>
+                        <td style={{...styles.td, color: estadoCuenta == "PENDIENTE"? "orange" : estadoCuenta == "PAGADA" ? "green" : "blue", fontWeight: 'bolder'}} data-label="EstadoCuenta">{estadoCuenta}</td>
+                        <td 
+                          style={{...styles.td, color: "green", alignItems: "center", cursor:"pointer"}}
+                          data-label="EstadoCuenta"
+                          onClick={() => navigate(`/administrator-user-info/${persona.nombreEspanol}-${persona.apellido!}`)}
+                        >
+                          <FaArrowAltCircleRight className="text-black" />
+                        </td>
+                      </tr>
+                    );
+                  })} 
+                </tbody>
+              </table>
+            )
+            : 
+            (
+              <div style={{ textAlign: 'center', marginTop: '20px', fontSize: '3rem' }}>
+                <h5 style={{ color: colors.btn_background }}>No hay usuarios registrados</h5>
+              </div>
+            )}
+          </div>
         </div>
       ) : (
         null

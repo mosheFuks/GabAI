@@ -1,12 +1,10 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { CSSProperties } from 'react';
 import { colors } from '../../../../assets/colors';
-import { getMinianimList } from '../../../../apis/requests';
 
 interface VisitorPersonalDataProps {
   logedVisitorUser: any
 }
-
 
 export const VisitorPersonalForm = ({ logedVisitorUser }: VisitorPersonalDataProps) => {
   return (

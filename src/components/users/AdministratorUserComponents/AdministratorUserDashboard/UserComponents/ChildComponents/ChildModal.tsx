@@ -150,7 +150,7 @@ export const UserChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen, 
                 {son!.perashaBarMitzva}
               </h5>
 
-              <label htmlFor="userChildAbilities" style={{ display: "block" }}>Habilidades</label>
+              <label htmlFor="userChildAbilities" style={{ display: "block" }}>Conocimientos</label>
               {son!.habilidades?.map((habilidad: Ability, index: React.Key | null | undefined) => (
                 <h5 id="userChildAbilities" style={styles.input}>
                   {habilidad}

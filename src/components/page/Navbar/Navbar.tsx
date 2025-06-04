@@ -1,20 +1,17 @@
-import React, { useContext, useState } from "react";
+import React, { useContext  } from "react";
 
 import { useNavigate } from 'react-router-dom';
 import { esp_strings } from "../../../assets/strings";
 import { colors } from "../../../assets/colors";
 import { FaUser } from "react-icons/fa";
 import { PageContext } from "../../../StoreInfo/page-storage";
-import { LogedUserData } from '../../../structs/structs';
-
 
 export const Navbar = () => {
-  const { logedUser } = useContext(PageContext) as any;
+  const { logedUser, signOut} = useContext(PageContext) as any;
   const navigate = useNavigate();
 
   console.log("Loged User: ", logedUser);
   
-
   return (
     <nav style={styles.container}>
       <div style={styles.text}>
@@ -31,7 +28,7 @@ export const Navbar = () => {
             {esp_strings.btn_create_user}
           </button>
         ) : null }
-        { logedUser.rol == "ADMIN" || logedUser.rol == "OPERATOR" ? (
+        { logedUser.rol == "ADMIN" || logedUser.rol == "OPERADOR" ? (
           <button
             style={styles.button}
             onMouseOver={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = styles.buttonHover.transform)}
@@ -47,6 +44,7 @@ export const Navbar = () => {
                 style={styles.button}
                 onMouseOver={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = styles.buttonHover.transform)}
                 onMouseOut={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = "scale(1)")}
+                onClick={() => signOut()}
               >
                 {esp_strings.btn_close_sesion}
               </button>

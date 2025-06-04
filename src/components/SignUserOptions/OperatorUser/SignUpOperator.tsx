@@ -10,6 +10,7 @@ import { PageContext } from '../../../StoreInfo/page-storage';
 import { addAUserToTheUsuariosList } from '../../../apis/requests';
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../../../firebase-config';
+import { FaArrowLeft } from 'react-icons/fa';
 
 
 Modal.setAppElement('#root');
@@ -76,7 +77,17 @@ export const SignUpOperator = (/*{modalRealSignInfo, setModalRealSignInfo, user}
 
   return (
     <div style={styles.container}>
-      <h2 style={styles.title}>Agrega un usuario operador</h2>
+       {logedUser.rol != "VISITANTE" ? (
+          <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%", height: "70px" }}>
+            <button style={{...styles.button, backgroundColor: "green"}} onClick={() => navigate("/administrator-dashboard")}>
+              <FaArrowLeft className="text-black" /> Lista de usuarios
+            </button>
+            <h2 style={{...styles.title, marginRight: '100px'}}>Agrega un usuario operador</h2>
+            <div></div>
+          </div>
+        ) : (
+          <h2 style={styles.title}>Agrega un usuario operador</h2>
+        )}
       <div style={{ width: '100%', marginBottom: '190px', paddingLeft: "30px"}}>
         <label htmlFor="kehilaName" style={{ display: "block"}}>Kehila</label>
         <h5 id="kehilaName" style={styles.input}>

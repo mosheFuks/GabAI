@@ -7,11 +7,12 @@ import { VisitorFamilyForm } from "./VisitorUserForm/VisitorFamilyForm";
 import { VisitorAccountForm } from "./VisitorUserForm/VisitorAccountForm";
 import { NavigationButtonSignUp } from "../../SignUserOptions/NormalUser/SignUp/NavigationButtonsSignUp";
 import { PageContext } from "../../../StoreInfo/page-storage";
+import { EditPropertyModal } from "./EditPropertyModal/EditPropertyModal";
 
 export const HomeVisitorUserComponent = () => {
   const { logedVisitorUser } = useContext(PageContext) as any;
   const [step, setStep] = useState<number>(1);
-  const [user, setUser] = useState<VisitorUser>({})
+  const [openEditPropertyModal, setOpenEditPropertyModal] = useState<boolean>(false);
   
   const mockLogedVisitorUser = {
     nombreKehila: "Kehila Agudat Israel",
@@ -205,9 +206,15 @@ export const HomeVisitorUserComponent = () => {
   return (
     <>
     <div style={styles.container}>
-      <h2 style={styles.title}>
-        {logedVisitorUser.nombreEspanol} {logedVisitorUser.apellido}
-      </h2>
+      <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%", height: "70px" }}>
+        <div style={{...styles.button, backgroundColor: colors.main_background, color: colors.main_background, cursor: '-moz-grab'}}></div>
+        <h2 style={styles.title}>
+          {logedVisitorUser.nombreEspanol} {logedVisitorUser.apellido}
+        </h2>
+        <button style={{...styles.button, backgroundColor: "green"}} onClick={() => setOpenEditPropertyModal(true)}>
+          Editar propiedad
+        </button>
+      </div>
       <NavigationButtonSignUp step={step} setStep={setStep} fromPage="homeVisitorUser"/>
       <form style={{ width: "100%" }}>
         {step === 1 && (
@@ -229,6 +236,12 @@ export const HomeVisitorUserComponent = () => {
           <VisitorAccountForm 
             logedVisitorUser={logedVisitorUser} 
           />
+        )}
+
+        {openEditPropertyModal && (
+          <div>
+            <EditPropertyModal openEditPropertyModal={openEditPropertyModal} setOpenEditPropertyModal={setOpenEditPropertyModal} />
+          </div>
         )}
       </form>
     </div>

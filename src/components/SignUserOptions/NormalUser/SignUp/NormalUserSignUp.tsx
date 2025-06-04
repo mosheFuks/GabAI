@@ -13,9 +13,12 @@ import { addAVisitorUserInTheKehila } from "../../../../apis/requests";
 import { ToastContext } from "../../../../StoreInfo/ToastContext";
 import { PageContext } from "../../../../StoreInfo/page-storage";
 import { toast } from "react-toastify";
+import { FaArrowLeft } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const NormalUserSignUp = () => {
   const { logedUser } = useContext(PageContext) as any;
+  const navigate = useNavigate()
   const toastContext = useContext(ToastContext);
   const [step, setStep] = useState<number>(1);
   const [formUserPersonalData, setFormUserPersonalData] = useState<VisitorUser>({
@@ -103,7 +106,17 @@ const NormalUserSignUp = () => {
   return (
     <>
     <div style={styles.container}>
-      <h2 style={styles.title}>{esp_strings.btn_create_user}</h2>
+      {logedUser.rol != "VISITANTE" ? (
+        <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%", height: "70px" }}>
+          <button style={{...styles.button, backgroundColor: "green"}} onClick={() => navigate("/administrator-dashboard")}>
+            <FaArrowLeft className="text-black" /> Lista de usuarios
+          </button>
+          <h2 style={{...styles.title, marginRight: '100px'}}>{esp_strings.btn_create_user}</h2>
+          <div></div>
+        </div>
+      ) : (
+        <h2 style={styles.title}>{esp_strings.btn_create_user}</h2>
+      )}
       <NavigationButtonSignUp step={step} setStep={setStep} setModalRealSignInfo={setModalRealSignInfo} fromPage={"SignUp"} saveNewVisitorUserOnUsersList={saveNewVisitorUserOnUsersList}/>
       <form style={{ width: "100%" }}>
         {step === 1 && (

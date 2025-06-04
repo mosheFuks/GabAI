@@ -173,7 +173,7 @@ export const FormKehilaInfoData = ({handleChangePersonalData, user, setFormUserP
             <label htmlFor="userPerasha" style={{ display: "block"}}>Perasha Bar Mitzva</label>
             <input id="userPerasha" type="text" name="perashaBarMitzva" placeholder="Perasha Bar Mitzva" onChange={handleChangePersonalData} style={styles.input} value={user.perashaBarMitzva}/>
             
-            <label htmlFor="userAbilities" style={{ display: "block" }}>Habilidades</label>
+            <label htmlFor="userAbilities" style={{ display: "block" }}>Conocimientos</label>
             <div style={styles.input}>
               <div style={{ display: "flex", flexDirection: "column" }}>
                 {habilidades.map((role) => (
