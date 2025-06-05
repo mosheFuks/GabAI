@@ -125,7 +125,7 @@ export const OldPerashaInfo = () => {
   return (
     <>
     <div style={styles.container}>
-      <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%", height: "70px" }}>
+      <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%", height: "70px", marginBottom: '20px'}}>
         <button style={{...styles.button, backgroundColor: "green"}} onClick={() => navigate("/administrator-dashboard")}>
           <FaArrowLeft className="text-black" /> Lista de Perashiot
         </button>
@@ -136,7 +136,7 @@ export const OldPerashaInfo = () => {
       </div>
       <div style={{ display: 'flex', justifyContent: 'space-between', width: '1000px', marginTop: '10px', marginBottom: '10px'}}>
         <div style={{ display: "flex", flexDirection: "row", gap: '10px' }}>
-          <div style={{justifyContent: 'space-between', alignItems: 'center', padding: '10px', border: '3px solid orange', borderRadius: '5px' }}>
+          <div style={styles.pendingCard}>
             <div style={{ fontSize: '1rem', fontWeight: 'bold' }}>
               {`Monto recaudado en pesos:`}
             </div>
@@ -145,7 +145,7 @@ export const OldPerashaInfo = () => {
             </div>
           </div>
 
-          <div style={{justifyContent: 'space-between', alignItems: 'center', padding: '10px', border: '3px solid orange', borderRadius: '5px' }}>
+          <div style={styles.pendingCard}>
             <div style={{ fontSize: '1rem', fontWeight: 'bold' }}>
               {`Monto recaudado en dolares:`}
             </div>
@@ -264,7 +264,7 @@ const styles: { [key: string]: CSSProperties }= {
     backgroundColor: colors.main_background,
     padding: "10px",
     borderRadius: "25px",
-    width: "80%",
+    width: "95%",
     minHeight: "75vh",
     maxHeight: "90vh",
     display: "flex",
@@ -314,22 +314,36 @@ const styles: { [key: string]: CSSProperties }= {
     fontSize: "16px",
   },
   table: {
-    borderCollapse: 'collapse',
-    width: '1000px',
-  } as CSSProperties,
+    borderCollapse: 'separate',
+    borderSpacing: '10px 12px', // espacio vertical entre filas
+    width: '100%',
+  },
   th: {
-    border: '1px solid #ccc',
-    padding: '8px',
-    fontWeight: 'bold',
-    //position: 'sticky',
+    padding: '12px 16px',
+    textAlign: 'center',
+    fontWeight: 'bolder ',
+    background: '#f9f9f9',
+    color: '#333',
+    fontSize: '1.05rem',
+    position: 'sticky',
     top: 0,
-    backgroundColor: 'white',
-    zIndex: 2,
-    textAlign: "center"
+    zIndex: 1,
   },
   td: {
-    border: '1px solid #ccc',
-    padding: '8px',
-    textAlign: "center"
+   padding: '14px 16px',
+    background: '#fff',
+    fontSize: '1.05rem',
+    color: '#333',
+    borderRadius: '8px', // importante
+    boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
   },
+  pendingCard: {
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: '10px',
+    border: '3px solid orange',
+    borderRadius: '20px',
+    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
+    backgroundColor: '#f9f9f9'
+  } as CSSProperties,
 };

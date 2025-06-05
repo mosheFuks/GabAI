@@ -41,7 +41,7 @@ export const Navbar = () => {
         { logedUser.nombre != "" ? (
             <>
               <button
-                style={styles.button}
+                style={styles.close_ses_button}
                 onMouseOver={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = styles.buttonHover.transform)}
                 onMouseOut={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = "scale(1)")}
                 onClick={() => signOut()}
@@ -64,17 +64,15 @@ export const Navbar = () => {
 
 const styles = {
     container: {
-      backgroundColor: colors.main_background,
+      backgroundColor: "white",
       padding: "10px",
       borderRadius: "100px",
       height: "50px",
-      width: "80%",
+      width: "95%",
       display: "flex",
       alignItems: "center",
       justifyContent: "space-between",
       margin: "20px auto 0 auto",
-      paddingLeft: "20px",
-      paddingRight: "20px",
     },
     text: {
       color: "black",
@@ -100,6 +98,17 @@ const styles = {
       cursor: "pointer",
       transition: "transform 0.2s ease-in-out",
       color: colors.btn_txt,
+    },
+    close_ses_button: {
+      backgroundColor: colors.main_background,
+      border: "none",
+      padding: "15px 15px",
+      borderRadius: "20px",
+      fontWeight: "bold",
+      fontSize: "0.9rem",
+      cursor: "pointer",
+      transition: "transform 0.2s ease-in-out",
+      color: colors.btn_background,
     },
     buttonHover: {
       transform: "scale(1.1)",

@@ -1,4 +1,4 @@
-import { CSSProperties, use, useContext, useEffect, useState } from "react";
+import { CSSProperties, useContext, useEffect, useState } from "react";
 import { colors } from "../../../assets/colors";
 import { Aniversary, Grupo, VisitorUser } from "../../../structs/structs";
 import { FaArrowAltCircleRight } from "react-icons/fa";
@@ -920,10 +920,10 @@ export const AdministratorDefaultDashboard = () => {
 
       {step == 1 ? (
         <div>
-          <div style={{ fontSize: '1.5rem', fontWeight: 'bold', textAlign: "center", textDecorationLine: 'underline', textDecorationColor: 'orange', marginTop: '10px', marginBottom: '10px'}}>
+          <div style={{ fontSize: '1.5rem', fontWeight: 'bold', textDecorationLine: 'underline', textDecorationColor: 'orange', marginTop: '10px', marginBottom: '10px'}}>
             {`Lista de participantes de la Kehila`}
           </div>
-          <div style={{ height: "400px", overflowY: "auto", padding: "10px", borderRadius: "5px" }}>
+          <div style={{ height: "400px", overflowY: "auto", padding: "10px", borderRadius: "5px",  }}>
             {peopleFilter != undefined && peopleFilter!.length > 0 ? (
               <table style={styles.table}>
                 <thead>
@@ -955,13 +955,25 @@ export const AdministratorDefaultDashboard = () => {
                         <td style={styles.td} data-label="Grupo">{grupo}</td>
                         <td style={styles.td} data-label="FechaNacimientoGreg">{fechaNacimientoGreg}</td>
                         <td style={styles.td} data-label="FechaNacimientoHeb">{fechaNacimientoHeb}</td>
-                        <td style={{...styles.td, color: estadoCuenta == "PENDIENTE"? "orange" : estadoCuenta == "PAGADA" ? "green" : "blue", fontWeight: 'bolder'}} data-label="EstadoCuenta">{estadoCuenta}</td>
+                        <td style={styles.td} data-label="EstadoCuenta">
+                          <span style={{
+                            ...styles.statusBadge,
+                            backgroundColor: estadoCuenta === "PENDIENTE" ? "#fef3c7" :
+                                            estadoCuenta === "PAGADA" ? "#d1fae5" :
+                                            "#e0e7ff",
+                            color: estadoCuenta === "PENDIENTE" ? "#92400e" :
+                                  estadoCuenta === "PAGADA" ? "#065f46" :
+                                  "#3730a3"
+                          }}>
+                            {estadoCuenta}
+                          </span>
+                        </td>
                         <td 
                           style={{...styles.td, color: "green", alignItems: "center", cursor:"pointer"}}
                           data-label="EstadoCuenta"
                           onClick={() => navigate(`/administrator-user-info/${persona.nombreEspanol}-${persona.apellido!}`)}
                         >
-                          <FaArrowAltCircleRight className="text-black" />
+                          <FaArrowAltCircleRight className="text-3xl text-gray-500 hover:text-blue-500 transition-colors duration-200" />
                         </td>
                       </tr>
                     );
@@ -1037,12 +1049,12 @@ const styles: { [key: string]: CSSProperties }= {
     backgroundColor: colors.main_background,
     padding: "10px",
     borderRadius: "25px",
-    width: "80%",
+    width: "95%",
     minHeight: "75vh",
     maxHeight: "80vh",
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
+    //alignItems: "center",
     justifyContent: "space-between",
     margin: "20px auto 0 auto",
     paddingLeft: "20px",
@@ -1111,22 +1123,37 @@ const styles: { [key: string]: CSSProperties }= {
     borderRadius: '5px',
   } as CSSProperties,
   table: {
-    borderCollapse: 'collapse',
+    borderCollapse: 'separate',
+    borderSpacing: '10px 12px', // espacio vertical entre filas
     width: '100%',
-  } as CSSProperties,
+  },
   th: {
-    border: '1px solid #ccc',
-    padding: '8px',
-    fontWeight: 'bold',
+    padding: '12px 16px',
+    textAlign: 'center',
+    fontWeight: 'bolder ',
+    background: '#f9f9f9',
+    color: '#333',
+    fontSize: '1.05rem',
     position: 'sticky',
     top: 0,
-    backgroundColor: 'white',
-    zIndex: 2,
-  } as CSSProperties,
+    zIndex: 1,
+  },
   td: {
-    border: '1px solid #ccc',
-    padding: '8px',
-  } as CSSProperties,
+    padding: '14px 16px',
+    background: '#fff',
+    fontSize: '1.05rem',
+    color: '#333',
+    borderRadius: '8px', // importante
+    boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+  },
+  statusBadge: {
+    display: 'inline-block',
+    padding: '4px 10px',
+    borderRadius: '20px',
+    fontWeight: 'bold',
+    fontSize: '0.8rem',
+    textTransform: 'uppercase',
+  },
   cellPopover: {
     position: 'relative',
     display: 'inline-block',

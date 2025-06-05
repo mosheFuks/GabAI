@@ -61,7 +61,7 @@ export const VisitorAccountForm = ({ logedVisitorUser }: FormPersonalDataProps) 
           <div style={styles.headerButtons}>
             {logedVisitorUser.cuenta!.length > 0 && (
               <div style={{ display: "flex", flexDirection: "row", gap: '10px' }}>
-                  <div style={{justifyContent: 'space-between', alignItems: 'center', padding: '10px', border: '3px solid orange', borderRadius: '5px' }}>
+                  <div style={styles.pendingCard}>
                     <div style={{ fontSize: '1rem', fontWeight: 'bold' }}>
                       {`Pago pendiente en pesos:`}
                     </div>
@@ -70,7 +70,7 @@ export const VisitorAccountForm = ({ logedVisitorUser }: FormPersonalDataProps) 
                     </div>
                   </div>
 
-                  <div style={{justifyContent: 'space-between', alignItems: 'center', padding: '10px', border: '3px solid orange', borderRadius: '5px' }}>
+                  <div style={styles.pendingCard}>
                     <div style={{ fontSize: '1rem', fontWeight: 'bold' }}>
                       {`Pago pendiente en dolares:`}
                     </div>
@@ -84,16 +84,31 @@ export const VisitorAccountForm = ({ logedVisitorUser }: FormPersonalDataProps) 
             {logedVisitorUser.cuenta!.length > 0 && (
               <div>
                 <div style={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
-                  <button type='button' style={{...styles.filterButton, fontWeight: statusFilter == "All" ? "bolder" : "normal"}} onClick={() => setStatusFilter("All")}>
-                    {statusFilter == "All" ? `🟠 Todas` : `Todas`}
+                  <button type='button' style={{...styles.statusBadge, fontWeight: "bold", border: 'none',
+                    backgroundColor: statusFilter === "All" ? "#60A5FA" : '#f9f9f9',
+                    color: statusFilter === "All" ? "white" : "black",
+                    padding: '10px',
+                    justifyContent: "center"
+                  }} onClick={() => setStatusFilter("All")}>
+                    {`Todas`}
                   </button>
-
-                  <button type='button' style={{...styles.filterButton, fontWeight: statusFilter == "PAGADA" ? "bolder" : "normal"}} onClick={() => setStatusFilter("PAGADA")}>
-                    {statusFilter == "PAGADA"? `🟠 Pagadas` : `Pagadas`}
+  
+                  <button type='button' style={{...styles.statusBadge, fontWeight:"bold", border: 'none',
+                    backgroundColor: statusFilter === "PAGADA" ? "#34D399" : '#f9f9f9',            
+                    color: statusFilter === "PAGADA" ? "white" : "black",
+                    padding: '10px',
+                    justifyContent: "center"  
+                  }} onClick={() => setStatusFilter("PAGADA")}>
+                    {`Pagadas`}
                   </button>
-
-                  <button type='button' style={{...styles.filterButton, fontWeight: statusFilter == "PENDIENTE" ? "bolder" : "normal"}} onClick={() => setStatusFilter("PENDIENTE")}>
-                    {statusFilter == "PENDIENTE"? `🟠 Pendientes` : `Pendientes`}
+  
+                  <button type='button' style={{...styles.statusBadge, fontWeight: "bold",  border: 'none',
+                    backgroundColor: statusFilter === "PENDIENTE" ? "#FDE68A" :  '#f9f9f9',            
+                    color: statusFilter === "PENDIENTE" ? "white" : "black",
+                    padding: '10px',
+                    justifyContent: "center"    
+                  }} onClick={() => setStatusFilter("PENDIENTE")}>
+                    {`Pendientes`}
                   </button>
                 </div>
               </div>
@@ -142,7 +157,19 @@ export const VisitorAccountForm = ({ logedVisitorUser }: FormPersonalDataProps) 
                     </td>
                     <td style={styles.td} data-label="Monto">{monto}</td>
                     <td style={styles.td} data-label="Moneda">{moneda}</td>
-                    <td style={{...styles.td, color:donacion.status == "PAGADA" ? "green" : "orange", fontWeight: 'bolder'}} data-label="Status">{donacion.status || '-'}</td>
+                    <td style={styles.td} data-label="Status">
+                      <span style={{
+                        ...styles.statusBadge,
+                        backgroundColor: donacion.status === "PENDIENTE" ? "#fef3c7" :
+                                        donacion.status === "PAGADA" ? "#d1fae5" :
+                                        "#e0e7ff",
+                        color: donacion.status=== "PENDIENTE" ? "#92400e" :
+                              donacion.status === "PAGADA" ? "#065f46" :
+                              "#3730a3"
+                      }}>
+                        {donacion.status || '-'}
+                      </span>
+                    </td>
                   </tr>
                 );
               })}
@@ -204,22 +231,46 @@ const styles = {
     borderRadius: '5px',
   } as CSSProperties,
   table: {
-    borderCollapse: 'collapse',
+    borderCollapse: 'separate',
+    borderSpacing: '10px 12px', // espacio vertical entre filas
     width: '100%',
   } as CSSProperties,
   th: {
-    border: '1px solid #ccc',
-    padding: '8px',
-    fontWeight: 'bold',
+    padding: '12px 16px',
+    textAlign: 'center',
+    fontWeight: 'bolder ',
+    background: '#f9f9f9',
+    color: '#333',
+    fontSize: '1.05rem',
     position: 'sticky',
     top: 0,
-    backgroundColor: 'white',
-    zIndex: 2,
+    zIndex: 1,
   } as CSSProperties,
   td: {
-    border: '1px solid #ccc',
-    padding: '8px',
+    padding: '14px 16px',
+    background: '#fff',
+    fontSize: '1.05rem',
+    color: '#333',
+    borderRadius: '8px', // importante
+    boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
     textAlign: "center"
+  } as CSSProperties,
+  statusBadge: {
+    display: 'inline-block',
+    padding: '4px 10px',
+    borderRadius: '20px',
+    fontWeight: 'bold',
+    fontSize: '0.8rem',
+    textTransform: 'uppercase',
+  } as CSSProperties,
+  pendingCard: {
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: '10px',
+    border: '3px solid orange',
+    borderRadius: '20px',
+    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
+    backgroundColor: '#f9f9f9'
   } as CSSProperties,
   cellPopover: {
     position: 'relative',

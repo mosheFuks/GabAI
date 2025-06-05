@@ -349,7 +349,7 @@ const styles: { [key: string]: CSSProperties }= {
     backgroundColor: colors.main_background,
     padding: "10px",
     borderRadius: "25px",
-    width: "80%",
+    width: "95%",
     minHeight: "75vh",
     maxHeight: "90vh",
     display: "flex",

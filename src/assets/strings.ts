@@ -5,12 +5,13 @@ export const esp_strings = {
     "btn_create_user": "Crear usuario",
     "btn_add_admin_user": "Agregar operador",
     "btn_close_sesion": "Cerrar sesión",
-    "home_title": "Bienvenido a GabAI, inicia sesión o crea una cuenta para empezar!",
+    "home_title": "Bienvenido a GabAI",
+    "home_sub_title_1": "Inicia sesión o crea una cuenta para empezar!",
     "home_sub_title": "Te gustaría usar GabAI en tu comunidad?",
     "home_link": "Contactate con nosotros",
     "sign_email": "Email",
     "sign_password": "Contraseña",
-    "sign_password_forgot": "Olvidaste la contraseña",
+    "sign_password_forgot": "Olvidaste la contraseña?",
 }
 
 export const eng_strings = {

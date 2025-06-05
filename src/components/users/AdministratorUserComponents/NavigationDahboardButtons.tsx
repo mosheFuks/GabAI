@@ -59,12 +59,12 @@ export const NavigationDashboardButtons = ({peopleList, peopleFilter, step, setP
 const styles: { [key: string]: CSSProperties }= {
   buttonsContainer: {
     display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    backgroundColor: colors.btn_background,
+    //justifyContent: "space-between",
+    //alignItems: "center",
+    //backgroundColor: colors.btn_background,
     borderRadius: "30px",
-    padding: "10px 20px",
-    maxWidth: "900px",
+    //padding: "10px 20px",
+    //maxWidth: "900px",
     marginTop: "20px",
     width: "100%"
   },

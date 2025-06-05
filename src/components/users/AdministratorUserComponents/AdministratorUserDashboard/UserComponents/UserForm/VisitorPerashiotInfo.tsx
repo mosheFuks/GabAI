@@ -112,7 +112,7 @@ export const VisitorPerashiotInfo = ({ logedVisitorUser }: FormPersonalDataProps
                   <th style={styles.th}>Motivo</th>
                   <th style={styles.th}>Aclaracion</th>
                   <th style={styles.th}>Fecha Fallecimiento</th>
-                  <th style={styles.th}>Fecha Fallecimiento en año Hebreo</th>
+                  <th style={styles.th}>Fecha Fallecimiento Hebreo</th>
                   <th style={styles.th}>{`Fecha Aniversario según año Hebreo en curso (${hebYear})`}</th>
                 </tr>
               </thead>
@@ -281,20 +281,28 @@ const styles = {
     borderRadius: '5px',
   } as CSSProperties,
   table: {
-    borderCollapse: 'collapse',
+    borderCollapse: 'separate',
+    borderSpacing: '10px 12px', // espacio vertical entre filas
     width: '100%',
   } as CSSProperties,
   th: {
-    border: '1px solid #ccc',
-    padding: '8px',
-    fontWeight: 'bold',
+    padding: '12px 16px',
+    textAlign: 'center',
+    fontWeight: 'bolder ',
+    background: '#f9f9f9',
+    color: '#333',
+    fontSize: '1.05rem',
+    position: 'sticky',
     top: 0,
-    backgroundColor: 'white',
-    zIndex: 2,
+    zIndex: 1,
   } as CSSProperties,
   td: {
-    border: '1px solid #ccc',
-    padding: '8px',
+   padding: '14px 16px',
+    background: '#fff',
+    fontSize: '1.05rem',
+    color: '#333',
+    borderRadius: '8px', // importante
+    boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
     textAlign: "center"
   } as CSSProperties,
   cellPopover: {

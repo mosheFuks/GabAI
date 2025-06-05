@@ -219,7 +219,7 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
       <div style={styles.headerButtons}>
         {thisWeekAniversaries.length > 0 && (
           <div style={{ display: "flex", gap: '10px', width: '100%', marginTop: '20px', justifyContent: "flex-end"}}>
-            <div style={{...styles.rightGroup, display: "flex",border: '3px solid orange', padding: '10px', borderRadius: '20px'}}>
+            <div style={{...styles.rightGroup, display: "flex", padding: '10px', borderRadius: '20px'}}>
               <FaFilter className="text-orange" />
               <input
                 type="text"
@@ -231,7 +231,7 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
           </div>
         )}
       </div>
-      <div style={{ display: "flex",fontSize: '1.5rem', fontWeight: 'bold', justifyContent: "flex-start", textDecorationLine: 'underline', textDecorationColor: 'orange'}}>
+      <div style={{ display: "flex",fontSize: '1.5rem', fontWeight: 'bold', justifyContent: "center", textDecorationLine: 'underline', textDecorationColor: 'orange'}}>
         {`Lista de aniversarios que caen en la semana del ${daysOfThisWeek.sunday.toString().match(/^\d+/)} al ${daysOfThisWeek.friday.toString().match(/^\d+/)} de ${daysOfThisWeek.currentMonth}:`}
       </div>
       <div style={{ height: "400px", overflowY: "auto", padding: "10px", borderRadius: "5px" }}>
@@ -376,28 +376,35 @@ const styles: { [key: string]: CSSProperties }= {
     padding: '10px',
     borderRadius: '5px',
   } as CSSProperties,
-  table: {
-    borderCollapse: 'collapse',
-    width: '100%',
-  } as CSSProperties,
   rightGroup: {
     display: "flex",
     alignItems: "center",
     gap: "10px",
   } as CSSProperties,
+  table: {
+    borderCollapse: 'separate',
+    borderSpacing: '10px 12px', // espacio vertical entre filas
+    width: '100%',
+  },
   th: {
-    border: '1px solid #ccc',
-    padding: '8px',
-    fontWeight: 'bold',
+    padding: '12px 16px',
+    textAlign: 'center',
+    fontWeight: 'bolder ',
+    background: '#f9f9f9',
+    color: '#333',
+    fontSize: '1.05rem',
     position: 'sticky',
     top: 0,
-    backgroundColor: 'white',
-    zIndex: 2,
-  } as CSSProperties,
+    zIndex: 1,
+  },
   td: {
-    border: '1px solid #ccc',
-    padding: '8px',
-  } as CSSProperties,
+   padding: '14px 16px',
+    background: '#fff',
+    fontSize: '1.05rem',
+    color: '#333',
+    borderRadius: '8px', // importante
+    boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+  },
   cellPopover: {
     position: 'relative',
     display: 'inline-block',
