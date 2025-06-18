@@ -1,5 +1,5 @@
 import React, { CSSProperties, useContext, useEffect, useState } from "react";
-import { Alia, VisitorUser } from '../../../../structs/structs';
+import { Alia } from '../../../../structs/structs';
 
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -8,6 +8,7 @@ import { colors } from "../../../../assets/colors";
 import { AliaModal } from "./AliaModal";
 import { addPerashaToKehila, getPerashaInfo } from "../../../../apis/requests";
 import { PageContext } from "../../../../StoreInfo/page-storage";
+import { DelAllPereashiotInfoModal } from "./DelAllPerashiotInfoModal";
 
 export const OldPerashaInfo = () => {
   const { logedUser } = useContext(PageContext) as any;
@@ -76,20 +77,12 @@ export const OldPerashaInfo = () => {
     apellido: ""
   }]
 
-  const [user, setUser] = useState<VisitorUser>({})
   const [openAliaModal, setOpenAliaModal] = useState<boolean>(false)
   //const [addUserDonationModal, setOpenAddUserDonationModal] = useState<boolean>(false)
   const [aliotList, setAliotList] = useState<Alia[]>()
   const [arsDonation, setArsDonation] = useState<number>(0)
   const [usdDonation, setUsdDonation] = useState<number>(0)
-  const [formAliaData, setFormAliaData] = useState<Alia>({
-    alia: "",
-    nombre: "",
-    nombreHebreo: "",
-    apellido: "",
-    monto: 0,
-    moneda: ""
-  });
+  const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false)
 
   const navigate = useNavigate();
 
@@ -122,6 +115,7 @@ export const OldPerashaInfo = () => {
     }
   }, [alia, agregarPerasha]);
 
+
   return (
     <>
     <div style={styles.container}>
@@ -132,7 +126,9 @@ export const OldPerashaInfo = () => {
         <h2 style={{...styles.title, marginRight: '100px'}}>
           {id?.replace(/([a-z])([A-Z])/g, '$1 $2')}
         </h2>
-        <div></div>
+        <div style={{ display: 'flex', justifyContent: 'flex-end'}}>
+          <button style={styles.delButton} onClick={() => setOpenDeleteModal(true)}>Eliminar</button>
+        </div>
       </div>
       <div style={{ display: 'flex', justifyContent: 'space-between', width: '1000px', marginTop: '10px', marginBottom: '10px'}}>
         <div style={{ display: "flex", flexDirection: "row", gap: '10px' }}>
@@ -198,7 +194,7 @@ export const OldPerashaInfo = () => {
             : 
             (
               <div style={{ textAlign: 'center', marginTop: '20px', fontSize: '3rem' }}>
-                <h5 style={{ color: colors.btn_background }}>No hay informacion de esta perasha</h5>
+                <h5 style={{ color: colors.btn_background }}>No hay donaciones para esta perasha</h5>
               </div>
             )}
         </div>
@@ -211,12 +207,19 @@ export const OldPerashaInfo = () => {
           setAliotList={setAliotList}
           aliotList={aliotList!}
           perashaName={id!.replace(/([a-z])([A-Z])/g, '$1 $2')}
-          formAliaData={formAliaData}
-          setFormAliaData={setFormAliaData}
         />
       ) : (
         null
       )}
+
+      {
+        <DelAllPereashiotInfoModal
+          action={"DEL_PERASHA"}
+          openDeleteModal={openDeleteModal}
+          setOpenDeleteModal={setOpenDeleteModal}
+        />
+      }
+
     </div>
     </>
   );
@@ -330,12 +333,13 @@ const styles: { [key: string]: CSSProperties }= {
     zIndex: 1,
   },
   td: {
-   padding: '14px 16px',
+    padding: '14px 16px',
     background: '#fff',
     fontSize: '1.05rem',
     color: '#333',
     borderRadius: '8px', // importante
     boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+    textAlign: 'center',
   },
   pendingCard: {
     justifyContent: 'space-between',
@@ -345,5 +349,15 @@ const styles: { [key: string]: CSSProperties }= {
     borderRadius: '20px',
     boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
     backgroundColor: '#f9f9f9'
+  } as CSSProperties,
+  delButton: {
+    backgroundColor: "red",
+    padding: "10px 16px",
+    borderRadius: "8px",
+    fontWeight: "bold",
+    border: "1px solid green",
+    cursor: "pointer",
+    color: "white",
+    fontSize: "16px",
   } as CSSProperties,
 };

@@ -336,7 +336,7 @@ export const UserDashboard = () => {
       </form>
       ) : (
         <div style={{ textAlign: 'center', marginTop: '20px', fontSize: '3rem' }}>
-          <h5 style={{ color: colors.btn_background }}>No se encontro informacion de ese usuario</h5>
+          <h5 style={{ color: colors.btn_background }}>No se encontro información de ese usuario</h5>
         </div>
       )}
     </div>

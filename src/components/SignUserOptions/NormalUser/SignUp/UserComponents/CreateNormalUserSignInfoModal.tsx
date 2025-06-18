@@ -29,6 +29,20 @@ export const CreateNormalUserSignInfoModal = ({modalRealSignInfo, setModalRealSi
     console.log("Password: ", formUserSignData.password);
   }
 
+  const showToastError = (message: string) => {
+    toast.error(message, {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      style: { backgroundColor: 'red', color: 'white' },
+    });
+  }
+
   const addVisitorUser = addAVisitorUserInTheKehila();
   const addVisitorUserToUsersList = addAUserToTheUsuariosList();
  
@@ -37,46 +51,64 @@ export const CreateNormalUserSignInfoModal = ({modalRealSignInfo, setModalRealSi
     console.log("Form user child data", formUserSignData?.nombre);
   }
 
+  const camposIgnorados = ['aniversarios', 'hijos', 'habilidades', 'cuenta', 'emailComercial', 'nombreEsposaEspanol', 'nombreEsposaHebreo' ];
+  console.log("User: ", Object.entries(user));
+  const campoIncompleto = Object.entries(user)
+    .filter(([key]) => !camposIgnorados.includes(key))
+    .find(([, value]) => {
+      if (typeof value === 'string') {
+        return value.trim() === '';
+      }
+      if (typeof value === 'object' && value !== null) {
+        return Object.keys(value).length === 0;
+      }
+      return value === null || value === undefined;
+    });
+
+  if (campoIncompleto) {
+    console.warn("Campo incompleto:", campoIncompleto[0], "con valor:", campoIncompleto[1]);
+  }
+
+  const isFormComplete = !campoIncompleto;
+
   const registerUser = async () => {
     console.log("Registering user with data:");
-    try {
-      /*ADD THE USER ON FIREBASE */
-      const userCredential = await createUserWithEmailAndPassword(auth, formUserSignData.email!, formUserSignData.password!);
-      console.log("Usuario registrado:", userCredential.user.email);
-      /*ADD THE USER ON THE BACKEND */
-      const newVisitorUser: LogedUserData = {
-        nombre: formUserSignData.nombre!,
-        email: formUserSignData.email!,
-        rol: "VISITANTE",
-        kehila: user.nombreKehila!,
+    console.log("Is form complete: ", isFormComplete);
+    if (isFormComplete) {
+      try {
+        /*ADD THE USER ON FIREBASE */
+        const userCredential = await createUserWithEmailAndPassword(auth, formUserSignData.email!, formUserSignData.password!);
+        console.log("Usuario registrado:", userCredential.user.email);
+        /*ADD THE USER ON THE BACKEND */
+        const newVisitorUser: LogedUserData = {
+          nombre: formUserSignData.nombre!,
+          email: formUserSignData.email!,
+          rol: "VISITANTE",
+          kehila: user.nombreKehila!,
+        }
+        await addVisitorUser(user.nombreKehila!, user)
+        await addVisitorUserToUsersList(newVisitorUser);
+        toast.success('Usuario registrado correctamente', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+          style: { backgroundColor: 'green', color: 'white' },
+        });
+      } catch (err: any) {
+        console.error("Error al registrar usuario:", err);
+        if (err.toString().includes("auth/email-already-in-use")) {
+          showToastError("Error al registrar usuario: Usuario ya existente")
+        }
       }
-      await addVisitorUser(user.nombreKehila!, user)
-      await addVisitorUserToUsersList(newVisitorUser);
-      toast.success('Usuario registrado correctamente', {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        style: { backgroundColor: 'green', color: 'white' },
-      });
-    } catch (err: any) {
-      console.error("Error al registrar usuario:", err);
-      toast.error('Error al registrar el usuario', {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-        style: { backgroundColor: 'red', color: 'white' },
-      });
+    } else {
+      showToastError('Por favor completa todos los campos')
     }
+    setModalRealSignInfo(false);
   }
 
   return (
@@ -84,7 +116,13 @@ export const CreateNormalUserSignInfoModal = ({modalRealSignInfo, setModalRealSi
       <Modal
         isOpen={modalRealSignInfo}
         onRequestClose={closeModal}
-        style={{ content: styles.container }}
+        style={{
+          content: styles.container,
+          overlay: {
+            backgroundColor: 'rgba(0, 0, 0, 0.5)', // Fondo semitransparente
+            zIndex: 9998 // Asegura que esté detrás del modal pero encima del resto
+          }
+        }}
         contentLabel="Sign Info Modal"
       >
         <h2 style={{ textAlign: 'center', color: 'blue'}}>Ingresa los datos para el inicio de sesion</h2>

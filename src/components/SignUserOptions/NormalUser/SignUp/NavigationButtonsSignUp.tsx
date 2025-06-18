@@ -41,7 +41,7 @@ export const NavigationButtonSignUp = ({step, setStep, setModalRealSignInfo, fro
                             (<button type="submit" style={styles.button} onClick={() => saveNewVisitorUserOnUsersList()}>Guardar</button>) : null
                         }
                         { fromPage != "userDashboardPage" ?
-                            (<button type="submit" style={styles.button} onClick={() => setModalRealSignInfo(true)}>Registrarse</button>) : null
+                            (<button type="submit" style={styles.regi_button} onClick={() => setModalRealSignInfo(true)}>Registrarse</button>) : null
                         }
                     </div>
                 )}
@@ -77,5 +77,16 @@ const styles: { [key: string]: CSSProperties }= {
     cursor: "pointer",
     fontSize: "1rem",
     border: "none",
+  },
+  regi_button: {
+    backgroundColor: "white",
+    color: colors.btn_background,
+    padding: "10px 15px",
+    margin: "10px",
+    borderRadius: "20px",
+    cursor: "pointer",
+    fontSize: "1rem",
+    border: "none",
+    fontWeight: 'bolder'
   } 
 };

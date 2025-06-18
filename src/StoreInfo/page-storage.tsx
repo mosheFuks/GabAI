@@ -29,7 +29,6 @@ export const PageProvider: React.FC<PageProviderProps> = ({ children }) => {
     kehila: ''
   });
   const [logedVisitorUser, setLogedVisitorUser] = useState<VisitorUser>({
-    tipoUsuario: "",
     nombreKehila: "",
     nombreEspanol: "",
     nombreHebreo: "",
@@ -103,8 +102,10 @@ export const PageProvider: React.FC<PageProviderProps> = ({ children }) => {
   };
 
   const signOut = async () => {
+    // Redirigir al login
+    navigate("/");
     try {
-      await signOut(); // Cierra la sesión en Firebase
+      //await signOut(); // Cierra la sesión en Firebase
       console.log("✅ Usuario deslogueado");
 
       localStorage.clear()
@@ -115,58 +116,54 @@ export const PageProvider: React.FC<PageProviderProps> = ({ children }) => {
         kehila: ''
       })
       setLogedVisitorUser({
-        tipoUsuario: "",
-      nombreKehila: "",
-      nombreEspanol: "",
-      nombreHebreo: "",
-      apellido: "",
-      fechaNacimientoGregoriano: {
-        dia: "",
-        mes: "",
-        ano: ""
-      },
-      fechaNacimientoHebreo: {
-        dia: "",
-        mes: "",
-        ano: ""
-      },
-      emailPersonal: "",
-      emailComercial: "", //Opcional
-      telefono: "",
-      direccion: "",
-      minian: "",
-      numeroSocio: "",
-      grupo: "",
+        nombreKehila: "",
+        nombreEspanol: "",
+        nombreHebreo: "",
+        apellido: "",
+        fechaNacimientoGregoriano: {
+          dia: "",
+          mes: "",
+          ano: ""
+        },
+        fechaNacimientoHebreo: {
+          dia: "",
+          mes: "",
+          ano: ""
+        },
+        emailPersonal: "",
+        emailComercial: "", //Opcional
+        telefono: "",
+        direccion: "",
+        minian: "",
+        numeroSocio: "",
+        grupo: "",
 
-      fechaBarMitzvaGregoriano: {
-        dia: "",
-        mes: "",
-        ano: ""
-      },
-      fechaBarMitzvaHebreo: {
-        dia: "",
-        mes: "",
-        ano: ""
-      },
-      perashaBarMitzva: "",
-      habilidades: [""], //Leer tora, haftara, ser jazan
-      nombreMadreEspanol: "",
-      nombreMadreHebreo: "",
-      nombrePadreEspanol: "",
-      nombrePadreHebreo: "",
+        fechaBarMitzvaGregoriano: {
+          dia: "",
+          mes: "",
+          ano: ""
+        },
+        fechaBarMitzvaHebreo: {
+          dia: "",
+          mes: "",
+          ano: ""
+        },
+        perashaBarMitzva: "",
+        habilidades: [""], //Leer tora, haftara, ser jazan
+        nombreMadreEspanol: "",
+        nombreMadreHebreo: "",
+        nombrePadreEspanol: "",
+        nombrePadreHebreo: "",
 
-      estadoCivil: "",
-      nombreEsposaEspanol: "",
-      nombreEsposaHebreo: "",
+        estadoCivil: "",
+        nombreEsposaEspanol: "",
+        nombreEsposaHebreo: "",
 
-      hijos: [],
-      aniversarios: [],
+        hijos: [],
+        aniversarios: [],
 
-      cuenta: []
+        cuenta: []
       })
-
-      // Redirigir al login
-      navigate("/sign-in");
     } catch (error) {
       console.error("❌ Error al cerrar sesión:", error);
     }

@@ -11,16 +11,15 @@ import { LogedUserData } from '../../../../structs/structs';
 import { getUserOnSignInDirect, getVisitorUserInfoOnSignIn } from "../../../../apis/requests";
 import { useConvex } from "convex/react";
 import { PageContext } from "../../../../StoreInfo/page-storage";
-import { ToastContext } from "../../../../StoreInfo/ToastContext";
 import { toast } from "react-toastify";
+import { ResetPassModal } from "./ResetPassModal";
 
 export const SignIn = () => {
     const { updateLocalUser, updateVisitorUserInfo } = useContext(PageContext) as any;
-    const toastContext = useContext(ToastContext);
     const [formData, setFormData] = useState({ "email": "", "password": "" });
     const [showPassword, setShowPassword] = useState(false);
-    const [signInMessageError, setSignInMessageError] = useState("");
     const [isDoingAnApiRequest, setIsDoingAnApiRequest] = useState(false);
+    const [resetPassModal, setResetPassModal] = useState(false);
     let logedUserRol = '';
 
     const convex = useConvex();
@@ -40,6 +39,10 @@ export const SignIn = () => {
         password: inputPassword
       });
     };
+
+    const handleResetPassword = () => {
+      setResetPassModal(true)
+    }
 
     const getUserFromTheList = async (email: string) => {
       try {
@@ -103,7 +106,7 @@ export const SignIn = () => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "colored",
+        theme: "colored", 
         style: { backgroundColor: 'red', color: 'white' },
       });
     }
@@ -158,7 +161,7 @@ export const SignIn = () => {
               </div>
             </div>
           </div>
-          <div>
+          <div onClick={handleResetPassword}>
             <p style={styles.forgotPass}>{esp_strings.sign_password_forgot}</p>
           </div>
         </form>
@@ -172,6 +175,10 @@ export const SignIn = () => {
             disabled={isDoingAnApiRequest == true || (formData.email == "" || formData.password == "")} 
           >{isDoingAnApiRequest == true? "Cargando..." : esp_strings.btn_signin}</button>
         </div>
+
+        {resetPassModal && (
+          <ResetPassModal resetPassModal={resetPassModal} setResetPassModal={setResetPassModal}/>
+        )}
       </div>
     );
 

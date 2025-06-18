@@ -40,7 +40,13 @@ export const DonationModal = ({modalAniversaryIsOpen, setModalAniversaryIsOpen, 
       <Modal
         isOpen={modalAniversaryIsOpen}
         onRequestClose={closeModal}
-        style={{ content: styles.container }}
+        style={{
+          content: styles.container,
+          overlay: {
+            backgroundColor: 'rgba(0, 0, 0, 0.5)', // Fondo semitransparente
+            zIndex: 9998 // Asegura que esté detrás del modal pero encima del resto
+          }
+        }}
         contentLabel="Example Modal"
       >
         <h2 style={{ textAlign: 'center', color: 'blue'}}>Nueva Donación</h2>

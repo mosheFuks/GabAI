@@ -305,7 +305,6 @@ export const addVisitorUser = mutation({
   args: {
     nombre: v.string(),           // Nombre de la kehila
     nuevoUsuario: v.object({
-      tipoUsuario: v.string(),
       aniversarios: v.array(
         Aniversary
       ),
@@ -318,6 +317,7 @@ export const addVisitorUser = mutation({
       habilidades: v.array(
         v.string()
       ),
+      tipoUsuario: v.optional(v.string()),
       nombreEspanol: v.string(),
       nombreHebreo: v.string(),
       apellido: v.string(),
@@ -344,24 +344,28 @@ export const addVisitorUser = mutation({
     }),
   },
   handler: async (ctx, args) => {
-    const kehila = await ctx.db
+    try {
+      const kehila = await ctx.db
       .query("Kehila")
       .filter((q) => q.eq(q.field("nombre"), args.nombre))
       .first();
 
-    if (!kehila) {
-      throw new Error("Kehila no encontrada");
+      if (!kehila) {
+        throw new Error("Kehila no encontrada");
+      }
+
+      const nuevosUsuarios = [...kehila.usuarios, args.nuevoUsuario];
+
+      await ctx.db.patch(kehila._id, {
+        usuarios: nuevosUsuarios
+      });
+
+      console.log("✅ Usuario agregado sin validación:", args.nuevoUsuario);
+
+      return args.nuevoUsuario;
+    } catch (error) {
+      return `ERROR AVU: ${error}`
     }
-
-    const nuevosUsuarios = [...kehila.usuarios, args.nuevoUsuario];
-
-    await ctx.db.patch(kehila._id, {
-      usuarios: nuevosUsuarios
-    });
-
-    console.log("✅ Usuario agregado sin validación:", args.nuevoUsuario);
-
-    return args.nuevoUsuario;
   }
 })
 
@@ -569,6 +573,69 @@ export const changeUserVisitordata = mutation({
     });
 
     console.log("📦 Datos guardados en Convex");
+
+    return { success: true };
+  },
+});
+
+/*------DELETE ALL PERASHA INFO OF THE KEHILA------*/
+export const deleteAllPerashiotInfo = mutation({
+  args: {
+    nombreKehila: v.string()
+  },
+
+  handler: async (ctx, args) => {
+    // Paso 1: Buscar la Kehila
+    const kehila = await ctx.db
+      .query("Kehila")
+      .filter((q) => q.eq(q.field("nombre"), args.nombreKehila))
+      .first();
+
+    if (!kehila) {
+      throw new Error("Kehila no encontrada");
+    }
+
+    console.log("📦 Datos guardados en Convex");
+
+    // 2. Vaciar el array de perashiot
+    await ctx.db.patch(kehila._id, {
+      perashiot: [],
+    });
+
+    console.log(`🧹 Se eliminaron las perashiot de la Kehila: ${args.nombreKehila}`);
+
+    return { success: true };
+  },
+})
+
+export const deletePerashaInfo = mutation({
+  args: {
+    nombreKehila: v.string(),
+    nombrePerasha: v.string(),
+  },
+
+  handler: async (ctx, args) => {
+    // Paso 1: Buscar la Kehila
+    const kehila = await ctx.db
+      .query("Kehila")
+      .filter((q) => q.eq(q.field("nombre"), args.nombreKehila))
+      .first();
+
+    if (!kehila) {
+      throw new Error("Kehila no encontrada");
+    }
+
+    // Paso 2: Filtrar el array de perashiot y eliminar la perashá con el nombre dado
+    const perashiotFiltradas = (kehila.perashiot || []).filter(
+      (perasha) => perasha.nombrePerasha !== args.nombrePerasha
+    );
+
+    // Paso 3: Guardar el array actualizado
+    await ctx.db.patch(kehila._id, {
+      perashiot: perashiotFiltradas,
+    });
+
+    console.log(`🧹 Se eliminó los datos de la perashá "${args.nombrePerasha}" de la Kehila: ${args.nombreKehila}`);
 
     return { success: true };
   },

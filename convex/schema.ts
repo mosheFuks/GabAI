@@ -14,7 +14,8 @@ export const Cuenta = v.object({
     fecha: v.optional(CustomDate),
     perasha: v.optional(v.string()),
     aclaracion: v.optional(v.string()),
-    status: v.optional(v.string())
+    status: v.optional(v.string()),
+    factura: v.optional(v.string())
 })
 
 export const Hijos = v.object({
@@ -62,7 +63,6 @@ export default defineSchema({
     ),
     usuarios: v.array(
         v.object({
-            tipoUsuario: v.string(),
             aniversarios: v.array(
                 Aniversary
             ),
@@ -75,6 +75,7 @@ export default defineSchema({
             habilidades: v.array(
                 v.string()
             ),
+            tipoUsuario: v.optional(v.string()),
             nombreEspanol: v.string(),
             nombreHebreo: v.string(),
             apellido: v.string(),

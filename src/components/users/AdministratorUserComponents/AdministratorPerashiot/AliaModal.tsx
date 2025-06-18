@@ -4,6 +4,7 @@ import { colors } from '../../../../assets/colors'
 import { Alia, Donacion } from '../../../../structs/structs';
 import { addADonationToUser, addAnAliaInAPerasha } from '../../../../apis/requests';
 import { PageContext } from '../../../../StoreInfo/page-storage';
+import { toast } from 'react-toastify';
 
 Modal.setAppElement('#root');
 
@@ -13,38 +14,92 @@ interface AliaModalProps {
   setAliotList: (aliotList: Alia[]) => void;
   aliotList: Alia[];
   perashaName: string;
-  formAliaData: Alia;
-  setFormAliaData: (formAliaData: Alia) => void;
 }
 
-export const AliaModal = ({setOpenAliaModal, openAliaModal, setAliotList, aliotList, perashaName, formAliaData, setFormAliaData}: AliaModalProps) => {
+export const AliaModal = ({setOpenAliaModal, openAliaModal, setAliotList, aliotList, perashaName}: AliaModalProps) => {
   const {logedUser, logedVisitorUser} = useContext(PageContext) as any;
-  const [agregarDonacion, setAgregarDonacion] = useState<boolean>(false);
+  const [addDonationToUser, setAddDonationToUser] = useState<boolean>(false);
+  const [formAliaData, setFormAliaData] = useState<Alia>({
+    alia: "",
+    nombre: "",
+    nombreHebreo: "",
+    apellido: "",
+    monto: 0,
+    moneda: ""
+  });
   
   const addAlia = addAnAliaInAPerasha();
   const addDonation = addADonationToUser(); 
 
+  console.log("User: ", Object.entries(formAliaData));
+  const campoIncompleto = Object.entries(formAliaData)
+    .find(([, value]) => {
+      if (typeof value === 'string') {
+        return value.trim() === '';
+      }
+      if (typeof value === 'object' && value !== null) {
+        return Object.keys(value).length === 0;
+      }
+      return value === null || value === undefined;
+    });
+
+  if (campoIncompleto) {
+    console.warn("Campo incompleto:", campoIncompleto[0], "con valor:", campoIncompleto[1]);
+  }
+
+  const isFormComplete = !campoIncompleto;
+
   const closeModal = async () => {
-    if (formAliaData.moneda !== "") {
-      await addAlia(logedUser.kehila, perashaName, formAliaData);
-      setAliotList([...aliotList, formAliaData]);
-      if (agregarDonacion) {
-        const newDonation: Donacion = {
-          monto: formAliaData.monto,
-          tipoMoneda: formAliaData.moneda,
-          motivo: `Alia`,
-          fecha: {
-            dia: new Date().getDate().toString(),
-            mes: (new Date().getMonth() + 1).toString(), // Meses en JavaScript son 0-indexados
-            ano: new Date().getFullYear().toString()
-          },
-          perasha: perashaName,
-          aclaracion: `Alia ${formAliaData.alia} en ${perashaName}`,
-          status: "PENDIENTE"
-        };
-        await addDonation(logedUser.kehila, formAliaData.nombre, formAliaData.apellido!, newDonation);
+    let errorAddingDonationToUser = false
+    if (isFormComplete) {
+      if (addDonationToUser) {
+        try {
+          const newDonation: Donacion = {
+            monto: formAliaData.monto,
+            tipoMoneda: formAliaData.moneda,
+            motivo: "Alia",
+            fecha: {
+              dia: new Date().getDate().toString(),
+              mes: (new Date().getMonth() + 1).toString(), // Meses en JavaScript son 0-indexados
+              ano: new Date().getFullYear().toString()
+            },
+            perasha: perashaName,
+            aclaracion: `Alia ${formAliaData.alia} en ${perashaName}`,
+            status: "PENDIENTE"
+          };
+          await addDonation(logedUser.kehila, formAliaData.nombre, formAliaData.apellido!, newDonation);
+          toast.success(`Donacion agregada al usuario ${formAliaData.nombre} ${formAliaData.apellido}.`, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored", 
+            style: { backgroundColor: 'green', color: 'white' },
+          })
+        } catch (error) {
+          toast.error(`No se econtro al usuario ${formAliaData.nombre} ${formAliaData.apellido} en la lista de usuarios.`, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored", 
+            style: { backgroundColor: 'red', color: 'white' },
+          })
+          errorAddingDonationToUser = true
+        }
+      }
+      if (errorAddingDonationToUser == false) {
+        await addAlia(logedUser.kehila, perashaName, formAliaData);
+        setAliotList([...aliotList, formAliaData]);
       }
     }
+    setOpenAliaModal(false)
   }
   
   return (
@@ -52,7 +107,13 @@ export const AliaModal = ({setOpenAliaModal, openAliaModal, setAliotList, aliotL
       <Modal
         isOpen={openAliaModal}
         onRequestClose={() => setOpenAliaModal(false)}
-        style={{ content: styles.container }}
+        style={{
+          content: styles.container,
+          overlay: {
+            backgroundColor: 'rgba(0, 0, 0, 0.5)', // Fondo semitransparente
+            zIndex: 9998 // Asegura que esté detrás del modal pero encima del resto
+          }
+        }}
         contentLabel="Example Modal"
       >
         <h2 style={{ textAlign: 'center', color: 'blue'}}>Nueva Alia</h2>
@@ -120,8 +181,8 @@ export const AliaModal = ({setOpenAliaModal, openAliaModal, setAliotList, aliotL
             </label>
             <input
               type="checkbox"
-              checked={agregarDonacion}
-              onChange={(e) => setAgregarDonacion(e.target.checked)}
+              checked={addDonationToUser}
+              onChange={(e) => setAddDonationToUser(e.target.checked)}
               style={styles.switch}
             />
           </div>
@@ -147,7 +208,8 @@ const styles = {
     bottom: 'auto',
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
-    overflowX: "hidden"
+    overflowX: "hidden",
+    zIndex: 9999
   },
   input: {
     width: "80%",

@@ -4,7 +4,6 @@ import { colors } from '../../../assets/colors';
 import { LogedUserData, SignInfo } from '../../../structs/structs';
 import { Eye, EyeOff } from "lucide-react"
 import { toast } from 'react-toastify';
-import { ToastContext } from '../../../StoreInfo/ToastContext';
 import { useNavigate } from 'react-router-dom';
 import { PageContext } from '../../../StoreInfo/page-storage';
 import { addAUserToTheUsuariosList } from '../../../apis/requests';
@@ -17,7 +16,6 @@ Modal.setAppElement('#root');
 
 export const SignUpOperator = (/*{modalRealSignInfo, setModalRealSignInfo, user}: CrateOperatorProps*/) => {
   const { logedUser } = useContext(PageContext) as any;
-  const toastContext = useContext(ToastContext);
   const [formUserSignData, setFormUserSignData] = useState<SignInfo>({
     nombre: "",
     email: "",
@@ -27,6 +25,20 @@ export const SignUpOperator = (/*{modalRealSignInfo, setModalRealSignInfo, user}
 
   const navigate = useNavigate();
   const addOperatorUser = addAUserToTheUsuariosList();
+
+  const showErrorToast = (message: string) => {
+    toast.error(message, {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      style: { backgroundColor: 'red', color: 'white' },
+    });
+  }
 
   const handleNameChange = (inputName: string) => {
     setFormUserSignData({...formUserSignData, ['nombre']: inputName})
@@ -62,15 +74,7 @@ export const SignUpOperator = (/*{modalRealSignInfo, setModalRealSignInfo, user}
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     console.log("User data on Sign In is:", formUserSignData);
-    if (formUserSignData?.password != "") {
-      console.log("Password Selected: ", formUserSignData.password);
-    }
-    toastContext?.setToastData({type: 'success', message: 'Usuario registrado correctamente', show: true});
-
-    console.log("Toast data: ", toastContext?.toastData);
-    if (toastContext?.toastData.show) {
-      toast(toastContext.toastData.message);
-    }
+    showErrorToast('Usuario registrado correctamente')
     await handleRegister(e);
     navigate("/administrator-dashboard");
   };

@@ -3,6 +3,7 @@ import { CSSProperties, useEffect, useState } from "react";
 import { HDate } from '@hebcal/core';
 import { Grupo, VisitorUser } from "../../../../structs/structs";
 import { FaFilter } from "react-icons/fa";
+import { DateToDateAniversary } from "./DateToDateAniversary";
 
 interface DaysOfThisWeek {
   currentYear: number,
@@ -217,6 +218,9 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
   return (
     <div>
       <div style={styles.headerButtons}>
+        {<div style={{ display: "flex", gap: '10px', width: '100%', marginTop: '20px'}}>
+          <DateToDateAniversary peopleList={peopleList!} setFilteredAniversaries={setFilteredAniversaries} daysOfThisWeek={daysOfThisWeek}/>
+        </div>}
         {thisWeekAniversaries.length > 0 && (
           <div style={{ display: "flex", gap: '10px', width: '100%', marginTop: '20px', justifyContent: "flex-end"}}>
             <div style={{...styles.rightGroup, display: "flex", padding: '10px', borderRadius: '20px'}}>
@@ -230,9 +234,6 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
             </div>
           </div>
         )}
-      </div>
-      <div style={{ display: "flex",fontSize: '1.5rem', fontWeight: 'bold', justifyContent: "center", textDecorationLine: 'underline', textDecorationColor: 'orange'}}>
-        {`Lista de aniversarios que caen en la semana del ${daysOfThisWeek.sunday.toString().match(/^\d+/)} al ${daysOfThisWeek.friday.toString().match(/^\d+/)} de ${daysOfThisWeek.currentMonth}:`}
       </div>
       <div style={{ height: "400px", overflowY: "auto", padding: "10px", borderRadius: "5px" }}>
         <div>
@@ -424,10 +425,11 @@ const styles: { [key: string]: CSSProperties }= {
   } as CSSProperties,
   headerButtons: {
     display: "flex",
-    gap: '10px',
-    marginBottom: '20px',
-    justifyContent: 'space-between',
-    alignItems: 'center'
+    //gap: '10px',
+    marginBottom: '10px',
+    //justifyContent: 'space-between',
+    //alignItems: 'center',
+    //backgroundColor: 'red',
   },
   filterButton: {
     border: "1px solid blue",

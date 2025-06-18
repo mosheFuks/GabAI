@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { CSSProperties, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { DelAllPereashiotInfoModal } from "./DelAllPerashiotInfoModal";
 
-export const OldPerashiotList = ({setOldPerashaInfo, setStep}: any) => {
+export const OldPerashiotList = ({setStep}: any) => {
   const parashiotByBook = {
-    Bereshit: [
+    Bereshit: [ 
       "Bereshit",
       "Noaj",
       "Lej Lejá",
@@ -70,10 +71,19 @@ export const OldPerashiotList = ({setOldPerashaInfo, setStep}: any) => {
   } as const;
 
   const [selected, setSelected] = useState<string | null>(null)
+  const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false)
+  
   const navigate = useNavigate()
 
   return (
     <div style={styles.container}>
+      <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%", height: "70px" }}>
+        <div></div>
+        <h2 style={styles.title}>Seleccione una perasha para ver sus donaciones</h2>
+        <div style={{ display: 'flex', justifyContent: 'flex-end'}}>
+          <button style={styles.delButton} onClick={() =>setOpenDeleteModal(true)}>Eliminar</button>
+        </div>
+      </div>
       {Object.entries(parashiotByBook).map(([book, parashiot]) => (
         <div key={book}>
           <div style={styles.bookTitle}>{book}</div>
@@ -98,6 +108,14 @@ export const OldPerashiotList = ({setOldPerashaInfo, setStep}: any) => {
           </div>
         </div>
       ))}
+
+      {
+        <DelAllPereashiotInfoModal
+          action={"DEL_ALL"}
+          openDeleteModal={openDeleteModal}
+          setOpenDeleteModal={setOpenDeleteModal}
+        />
+      }
     </div>
   )
 }
@@ -107,7 +125,10 @@ const styles = {
     display: "flex",
     flexDirection: "column" as const,
     gap: "24px",
-  },
+    justifyContent: "center",
+    textAlign: "center",
+    alignContent: "center"
+  } as CSSProperties,
   bookTitle: {
     fontWeight: "bold",
     fontSize: "18px",
@@ -117,7 +138,21 @@ const styles = {
     display: "flex",
     flexWrap: "wrap" as const,
     gap: "8px",
-  },
+    justifyContent: "center",
+    textAlign: "center",
+    alignContent: "center"
+  } as CSSProperties,
+  title: {
+    fontSize: "2rem",
+    fontWeight: "bold",
+    textDecorationLine: 'underline', 
+    textDecorationColor: 'orange',
+    borderRadius: 20,
+    paddingLeft: 10,
+    paddingRight: 10,
+    marginRight: 100,
+    marginLeft: 200
+  }as CSSProperties,
   button: {
     border: "1px solid orange",
     borderRadius: "9999px",
@@ -130,5 +165,15 @@ const styles = {
     outline: "none",
     appearance: "none" as const,
     WebkitTapHighlightColor: "transparent"
+  },
+  delButton: {
+    backgroundColor: "red",
+    padding: "10px 16px",
+    borderRadius: "8px",
+    fontWeight: "bold",
+    border: "1px solid green",
+    cursor: "pointer",
+    color: "white",
+    fontSize: "16px",
   },
 }

@@ -10,7 +10,6 @@ import { CreateAniversaryModalComponent } from "./AniversaryComponents/Aniversar
 import { CreateNormalUserSignInfoModal } from "./UserComponents/CreateNormalUserSignInfoModal";
 import { CreateChildModalComponent } from "./ChildComponents/ChildModal";
 import { addAVisitorUserInTheKehila } from "../../../../apis/requests";
-import { ToastContext } from "../../../../StoreInfo/ToastContext";
 import { PageContext } from "../../../../StoreInfo/page-storage";
 import { toast } from "react-toastify";
 import { FaArrowLeft } from "react-icons/fa";
@@ -19,10 +18,8 @@ import { useNavigate } from "react-router-dom";
 const NormalUserSignUp = () => {
   const { logedUser } = useContext(PageContext) as any;
   const navigate = useNavigate()
-  const toastContext = useContext(ToastContext);
   const [step, setStep] = useState<number>(1);
   const [formUserPersonalData, setFormUserPersonalData] = useState<VisitorUser>({
-    tipoUsuario: "",
     nombreKehila: "",
     nombreEspanol: "",
     nombreHebreo: "",
@@ -78,6 +75,20 @@ const NormalUserSignUp = () => {
     console.log("User data on Sign UP is:", user);
   }, [user])
 
+  const showToastSucces = (errorMessage: string) => {
+    toast.success(errorMessage, {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      style: { backgroundColor: 'green', color: 'white' },
+    });
+  }
+
   const handleChangePersonalData = (e: any) => {
     setFormUserPersonalData({ ...formUserPersonalData, [e.target.name]: e.target.value });
     setUser({...user, [e.target.name]: e.target.value})
@@ -93,30 +104,24 @@ const NormalUserSignUp = () => {
 
   const addVisitorUser = addAVisitorUserInTheKehila();
   const saveNewVisitorUserOnUsersList = () => {
-    toastContext?.setToastData({type: 'success', message: 'Usuario registrado correctamente', show: true});
-
-    console.log("Toast data: ", toastContext?.toastData);
-    if (toastContext?.toastData.show) {
-      toast(toastContext.toastData.message);
-    }
     addVisitorUser(logedUser.kehila, user)
-    console.log("Full user info: ", user);
+    showToastSucces("Usuario agregado")
   }
 
+  const navigateRule = () => {
+    logedUser.rol == "" ?  navigate("/sign-in") : navigate("/administrator-dashboard")
+  }
+  
   return (
     <>
     <div style={styles.container}>
-      {logedUser.rol != "VISITANTE" ? (
-        <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%", height: "70px" }}>
-          <button style={{...styles.button, backgroundColor: "green"}} onClick={() => navigate("/administrator-dashboard")}>
-            <FaArrowLeft className="text-black" /> Lista de usuarios
-          </button>
-          <h2 style={{...styles.title, marginRight: '100px'}}>{esp_strings.btn_create_user}</h2>
-          <div></div>
-        </div>
-      ) : (
-        <h2 style={styles.title}>{esp_strings.btn_create_user}</h2>
-      )}
+      <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%", height: "70px" }}>
+        <button style={{...styles.button, backgroundColor: "green"}} onClick={navigateRule}>
+          <FaArrowLeft className="text-black" /> {logedUser.rol != "" ?  "Lista de usuarios" : "Iniciar Sesion"}
+        </button>
+        <h2 style={{...styles.title, marginRight: '100px'}}>{esp_strings.btn_create_user}</h2>
+        <div></div>
+      </div>
       <NavigationButtonSignUp step={step} setStep={setStep} setModalRealSignInfo={setModalRealSignInfo} fromPage={"SignUp"} saveNewVisitorUserOnUsersList={saveNewVisitorUserOnUsersList}/>
       <form style={{ width: "100%" }}>
         {step === 1 && (
@@ -137,7 +142,7 @@ const NormalUserSignUp = () => {
             setUser={setUser}
           />
         )}
-        {step === 3 && (    
+        {step === 3 && (
           <FormFamilyInfoData 
             handleChangePersonalData={handleChangePersonalData} 
             user={user} 
@@ -198,7 +203,7 @@ const styles: { [key: string]: CSSProperties }= {
     backgroundColor: colors.main_background,
     padding: "10px",
     borderRadius: "25px",
-    width: "80%",
+    width: "95%",
     minHeight: "75vh",
     maxHeight: "80vh",
     display: "flex",

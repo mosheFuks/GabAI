@@ -210,7 +210,13 @@ export const CreateChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen
       <Modal
         isOpen={modalChildIsOpen}
         onRequestClose={closeModal}
-        style={{ content: styles.container }}
+        style={{
+          content: styles.container,
+          overlay: {
+            backgroundColor: 'rgba(0, 0, 0, 0.5)', // Fondo semitransparente
+            zIndex: 9998 // Asegura que esté detrás del modal pero encima del resto
+          }
+        }}
         contentLabel="Example Modal"
       >
         <h2 style={{ textAlign: 'center'}}>Ingresa los datos de tu hijo/a</h2>

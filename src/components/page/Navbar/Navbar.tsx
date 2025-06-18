@@ -1,4 +1,4 @@
-import React, { useContext  } from "react";
+import React, { useContext, useState  } from "react";
 
 import { useNavigate } from 'react-router-dom';
 import { esp_strings } from "../../../assets/strings";
@@ -9,12 +9,22 @@ import { PageContext } from "../../../StoreInfo/page-storage";
 export const Navbar = () => {
   const { logedUser, signOut} = useContext(PageContext) as any;
   const navigate = useNavigate();
+  const [clicks, setClicks] = useState(0);
 
-  console.log("Loged User: ", logedUser);
+  const handleClick = () => {
+    const newCount = clicks + 1;
+    setClicks(newCount);
+
+    if (newCount === 5) {
+      alert('¡Hiciste 5 clics!');
+      // Podés resetear si querés:
+      setClicks(0);
+    }
+  };
   
   return (
     <nav style={styles.container}>
-      <div style={styles.text}>
+      <div style={styles.text} onClick={handleClick}>
         <span style={styles.highlight}>{esp_strings.main_title}</span>
       </div>
       <div style={styles.buttonContainer}>

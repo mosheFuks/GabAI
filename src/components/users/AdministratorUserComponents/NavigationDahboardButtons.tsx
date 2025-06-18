@@ -1,5 +1,4 @@
-import { CSSProperties } from "react";
-import { colors } from "../../../assets/colors";
+import { CSSProperties, useState } from "react";
 import { FaArrowLeft, FaFilter } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { VisitorUser } from "../../../structs/structs";
@@ -14,6 +13,7 @@ interface DashboardNavigationButtonsProps {
 
 export const NavigationDashboardButtons = ({peopleList, peopleFilter, step, setPeopleFilter, setStep}: DashboardNavigationButtonsProps) => {
     const navigate = useNavigate();
+    const [clicked, setClicked] = useState<boolean>(false)
 
     const searchPeopleByName = (key: string) => {
         let keySearch = key.toLowerCase()
@@ -30,7 +30,7 @@ export const NavigationDashboardButtons = ({peopleList, peopleFilter, step, setP
         <div style={styles.buttonsContainer}>
             <div style={styles.buttonGroup}>
                 {step > 1 ? (
-                    <button style={{...styles.button}} onClick={() => {navigate("/administrator-dashboard"), setStep(1)}}>
+                    <button style={{...styles.button, backgroundColor: "white", color: "green"}} onClick={() => {navigate("/administrator-dashboard"), setStep(1)}}>
                         <FaArrowLeft className="text-black" /> Lista de usuarios
                     </button>
                 ) : (
@@ -45,8 +45,10 @@ export const NavigationDashboardButtons = ({peopleList, peopleFilter, step, setP
                     <input
                         type="text"
                         placeholder="Busca por nombre"
-                        style={styles.input}
+                        style={{...styles.input, borderColor: clicked ? "orange" : "#ccc"}}
                         onChange={(e) => searchPeopleByName(e.target.value)}
+                        onClick={() => setClicked(true)}
+                        onBlur={() => setClicked(false)}
                     />
                 </div>
             ) : (
@@ -93,8 +95,8 @@ const styles: { [key: string]: CSSProperties }= {
     padding: "10px 16px",
     borderRadius: "8px",
     fontWeight: "bold",
-    border: "none",
-    outline: "none",
+    border: "2px solid", // asegurate que haya un borde por defecto
+    outline: "none", // opcional, elimina el borde azul por defecto del navegador
     width: "180px",
     color: "black",
     fontSize: "16px",

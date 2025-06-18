@@ -1,10 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Modal from 'react-modal';
-import { colors } from '../../../../assets/colors';
-import { Ability, HEBREW_MONTHS } from '../../../../structs/structs';
-import { PageContext } from '../../../../StoreInfo/page-storage';
-import { changeUserVisitorData, getMinianimList } from '../../../../apis/requests';
 import { useConvex } from 'convex/react';
+import { PageContext } from '../../../StoreInfo/page-storage';
 
 Modal.setAppElement('#root');
 

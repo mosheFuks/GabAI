@@ -93,11 +93,11 @@ export const addPerashaToKehila = () => {
 /*-------POST A NEW VISITOR USER IN TO THE KEHILA----*/
 export const addAVisitorUserInTheKehila = () => {
   const mutation = useMutation(api.kehila.addVisitorUser);
-  return (kehilaName: string, newUser: any) =>
-    mutation({
-      nombre: kehilaName,
-      nuevoUsuario: newUser
-    });
+    return (kehilaName: string, newUser: any) =>
+      mutation({
+        nombre: kehilaName,
+        nuevoUsuario: newUser
+      });
 }
 
 /*-------POST A NEW USER INTO THE USUARIOS LIST------*/
@@ -146,3 +146,22 @@ export const changeUserVisitorData = () => {
       updatedData
     });
 };
+
+/*------DELETE ALL PERASHA INFO OF THE KEHILA------*/
+export const deleteAllPerashiotInfo = () => {
+  const mutation = useMutation(api.kehila.deleteAllPerashiotInfo)
+  return (kehilaName: string) =>
+    mutation({
+      nombreKehila: kehilaName,
+    });
+}
+
+/*--------DELETE PERASHA INFO OF THE KEHILA--------*/
+export const deletePerashaInfo = () => {
+  const mutation = useMutation(api.kehila.deletePerashaInfo)
+  return (kehilaName: string, perashaName: string) =>
+    mutation({
+      nombreKehila: kehilaName,
+      nombrePerasha: perashaName
+    });
+}

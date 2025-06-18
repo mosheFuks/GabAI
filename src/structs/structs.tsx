@@ -1,5 +1,4 @@
 export interface VisitorUser {
-    tipoUsuario?: string,
     nombreKehila?: string,
     nombreEspanol?: string,
     nombreHebreo?: string,
