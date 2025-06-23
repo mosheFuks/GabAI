@@ -57,7 +57,6 @@ export const SignUpOperator = (/*{modalRealSignInfo, setModalRealSignInfo, user}
     try {
       /*ADD THE USER ON FIREBASE */
       const userCredential = await createUserWithEmailAndPassword(auth, formUserSignData.email!, formUserSignData.password!);
-      console.log("Usuario registrado:", userCredential.user.email);
       /*ADD THE USER ON THE BACKEND */
       const newOperatorUser: LogedUserData = {
         nombre: formUserSignData.nombre!,
@@ -73,7 +72,6 @@ export const SignUpOperator = (/*{modalRealSignInfo, setModalRealSignInfo, user}
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    console.log("User data on Sign In is:", formUserSignData);
     showErrorToast('Usuario registrado correctamente')
     await handleRegister(e);
     navigate("/administrator-dashboard");

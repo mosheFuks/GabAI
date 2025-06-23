@@ -58,8 +58,6 @@ export const VisitorAccountInfo = ({ logedVisitorUser }: FormPersonalDataProps) 
   useEffect(() => {
     getAllPendingDonations()
     filterDonations()
-    console.log("Complete donations:", completeDonationsList);
-    
   }, [completeDonationsList])
 
   useEffect(() => {

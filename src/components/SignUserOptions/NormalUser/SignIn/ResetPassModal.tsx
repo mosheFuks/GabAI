@@ -17,7 +17,6 @@ export const ResetPassModal = ({resetPassModal, setResetPassModal}: ResetPassMod
   const resetPass = () => {
     sendPasswordResetEmail(auth, email!)
         .then(() => {
-            console.log("Correo de recuperación enviado");
             setResetPassModal(false)
         })
         .catch((error) => {
@@ -43,7 +42,7 @@ export const ResetPassModal = ({resetPassModal, setResetPassModal}: ResetPassMod
         }}
         contentLabel="Example Modal"
       >
-        <h2 style={{ textAlign: 'center', color: 'blue'}}>Ingresa email para enviar email de confirmacón</h2>
+        <h2 style={{ textAlign: 'center', color: 'blue'}}>Ingresa tu email personal para enviar email de confirmación</h2>
         <div>
           <label htmlFor="email" style={{ display: "block"}}>Email</label>
           <input

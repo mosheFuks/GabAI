@@ -3,7 +3,7 @@ export const esp_strings = {
     "btn_signin": "Iniciar sesión",
     "btn_signup": "Registrarse",
     "btn_create_user": "Crear usuario",
-    "btn_add_admin_user": "Agregar operador",
+    "btn_add_opp_user": "Agregar operador",
     "btn_close_sesion": "Cerrar sesión",
     "home_title": "Bienvenido a GabAI",
     "home_sub_title_1": "Inicia sesión o crea una cuenta para empezar!",

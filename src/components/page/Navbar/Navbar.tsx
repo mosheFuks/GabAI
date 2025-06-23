@@ -45,7 +45,7 @@ export const Navbar = () => {
             onMouseOut={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = "scale(1)")}
             onClick={() => navigate("/create-operator-user")}
           >
-            {esp_strings.btn_add_admin_user}
+            {esp_strings.btn_add_opp_user}
           </button>
         ) : null }
         { logedUser.nombre != "" ? (

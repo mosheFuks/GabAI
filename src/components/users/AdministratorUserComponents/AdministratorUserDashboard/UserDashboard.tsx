@@ -21,18 +21,12 @@ export const UserDashboard = () => {
   const [visitorUser, setVisitorUser] = useState<VisitorUser>()
 
   const [userName, userSurname] = id!.split("-");
-  console.log("id", id);
-  
-  console.log("id splited", userName, userSurname);
-
   const navigate = useNavigate();
 
   const user = getVisitorUserInfo(logedUser.kehila, userName, userSurname)
-  console.log("Info del usuario de AI desde el back: ", user);
   
   useEffect(() => {
     setVisitorUser(user)
-    console.log("Found user: ", user);
   }, [user])
   
   
@@ -289,8 +283,6 @@ export const UserDashboard = () => {
     const filtered = properties.filter(([propName, _]) =>
       propName.startsWith(key.toLowerCase()) || propName.includes(key.toLowerCase())
     );
-  
-    console.log("Propiedades que coinciden:", filtered);
   };
 
   return (

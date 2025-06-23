@@ -36,8 +36,6 @@ interface DateToDateProps {
 }
 
 export const DateToDateAniversary = ({ peopleList, setFilteredAniversaries, daysOfThisWeek}: DateToDateProps) => {
-  console.log("Days of this week: ", daysOfThisWeek);
-  
   const [dayStart, setDayStart] = useState<string>('');
   const [monthStart, setMonthStart] = useState<string>('');
   const [dayEnd, setDayEnd] = useState<string>('');
@@ -100,32 +98,21 @@ export const DateToDateAniversary = ({ peopleList, setFilteredAniversaries, days
   
 
   const handleBuscar = () => {
-    console.log("Enter here: ", dayStart, monthStart, dayEnd, monthEnd);
-    
     if (!dayStart || !monthStart || !dayEnd || !monthEnd) return;
 
-    console.log("Kehila Ani Length: ", kehilaAniversaries?.length);
-    
     const inRange = kehilaAniversaries!.filter((ani, index) => {
       /*const { dia, mes } = ani.fechaHebreo;
       const hAni = new HDate(parseInt(day), mes, 5785);
 
       return hAni.abs() >= hStart.abs() && hAni.abs() <= hEnd.abs();*/
-      console.log("Minian number: ", index);
-      console.log("Ani now is equal month: Start month: ", ani.fechaAniHeb?.mes, " is equal ? ", ani.fechaAniHeb?.mes == monthStart, " End month: ", ani.fechaAniHeb?.mes, " is equal ? ", ani.fechaAniHeb?.mes == monthEnd);
       const selectedMonths = getMonthsBetweenInclusiveCyclic()
 
       if (selectedMonths.includes(ani.fechaAniHeb.mes as typeof HEBREW_MONTHS[number])) {
-        console.log("Ani day: ", ani.fechaAniHeb.dia! , ", Selected Satrt Day: ", dayStart, "Is gratter or equal: ", parseInt(ani.fechaAniHeb.dia!) >= parseInt(dayStart), ", Selected End Day: ", dayEnd,  ", is lower or equal: ", parseInt(ani.fechaAniHeb.dia!) <= parseInt(dayEnd));
-        console.log("Is between the days: ", parseInt(ani.fechaAniHeb.dia!) >= parseInt(dayStart) || parseInt(ani.fechaAniHeb.dia!) <= parseInt(dayEnd));
         if (parseInt(ani.fechaAniHeb.dia!) >= parseInt(dayStart) || parseInt(ani.fechaAniHeb.dia!) <= parseInt(dayEnd)) {
           return ani
         }
       }
     });
-
-    console.log("In range: ", inRange);
-    
 
     setFilteredAniversaries(inRange);
   };

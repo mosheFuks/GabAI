@@ -34,14 +34,12 @@ export const CreateAniversaryModalComponent = ({modalAniversaryIsOpen, setModalA
 
   const closeModal = () => {
     setModalAniversaryIsOpen(false);
-    console.log("Form aniversary child data", formUserAniversaryData?.motivo);
     
     if (formUserAniversaryData?.motivo != "") {
       const childIsAlreadySavedOnUserChildList = user.aniversarios?.some(ani => ani.motivo === aniversarySelected?.motivo);
       childIsAlreadySavedOnUserChildList ? updateUserAniversaryData() : addUserAniversaryData()
       setAniversarySelected({})
     }
-    console.log("Aniversario agregado", formUserAniversaryData);
   }
 
   const addUserAniversaryData = () => {
@@ -113,29 +111,23 @@ export const CreateAniversaryModalComponent = ({modalAniversaryIsOpen, setModalA
           ano: e[2]
         },
       });
-    }
-    console.log("User form Data: ", formUserAniversaryData.fecha);
-    
+    }    
   }
 
   const calculateHebrewAniversaryDate = (date: CustomDate) => {
-    console.log("Date to calculate is:", date);
     const day = +date.dia!
     const month = +date.mes!
     const year = +date.ano!
 
     const gregorianDate = new Date(year, month - 1, day, 12)
-    console.log("Gregorian date is:", gregorianDate);
 
     const hebrewDate = new HDate(gregorianDate);
-    console.log("Hebrew date is:", hebrewDate.toString());
     const [dayHeb, monthHeb, yearHeb] = hebrewDate.toString().split(" ");
 
     saveBirthDateParams("dia", "fechaHebreo", true, [dayHeb, monthHeb, yearHeb])
   };
   
   const calculateGregorianAniversaryDate = (date: CustomDate) => {
-    console.log("Date to calculate is:", date); // Devuelve "2001-10-18"
     // Extraer el ano, mes y día manualmente
     const hebDay = +date.dia!
     const hebMonth = date.mes

@@ -31,7 +31,6 @@ export const AliaModal = ({setOpenAliaModal, openAliaModal, setAliotList, aliotL
   const addAlia = addAnAliaInAPerasha();
   const addDonation = addADonationToUser(); 
 
-  console.log("User: ", Object.entries(formAliaData));
   const campoIncompleto = Object.entries(formAliaData)
     .find(([, value]) => {
       if (typeof value === 'string') {

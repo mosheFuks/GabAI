@@ -13,7 +13,6 @@ import { DelAllPereashiotInfoModal } from "./DelAllPerashiotInfoModal";
 export const OldPerashaInfo = () => {
   const { logedUser } = useContext(PageContext) as any;
   const { id } = useParams();
-  console.log("id", id);
 
   const perashaName = id?.replace(/([a-z])([A-Z])/g, '$1 $2') ?? "";
   let alia = getPerashaInfo(logedUser.kehila, perashaName);
@@ -107,7 +106,6 @@ export const OldPerashaInfo = () => {
   
   useEffect(() => {
     if (alia === "NOT FOUND") {
-      console.log("⛳ Perasha no encontrada. Creando...");
       agregarPerasha(logedUser.kehila, perashaName);
     } else {
       setAliotList(alia?.aliot!)

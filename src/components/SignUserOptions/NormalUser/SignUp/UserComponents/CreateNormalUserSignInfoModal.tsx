@@ -26,7 +26,6 @@ export const CreateNormalUserSignInfoModal = ({modalRealSignInfo, setModalRealSi
 
   const setPassword = (e: any) => {
     setFormUserSignData({...formUserSignData, ['password']: e.target.value})
-    console.log("Password: ", formUserSignData.password);
   }
 
   const showToastError = (message: string) => {
@@ -48,11 +47,9 @@ export const CreateNormalUserSignInfoModal = ({modalRealSignInfo, setModalRealSi
  
   const closeModal = () => {
     setModalRealSignInfo(false);
-    console.log("Form user child data", formUserSignData?.nombre);
   }
 
   const camposIgnorados = ['aniversarios', 'hijos', 'habilidades', 'cuenta', 'emailComercial', 'nombreEsposaEspanol', 'nombreEsposaHebreo' ];
-  console.log("User: ", Object.entries(user));
   const campoIncompleto = Object.entries(user)
     .filter(([key]) => !camposIgnorados.includes(key))
     .find(([, value]) => {
@@ -72,13 +69,10 @@ export const CreateNormalUserSignInfoModal = ({modalRealSignInfo, setModalRealSi
   const isFormComplete = !campoIncompleto;
 
   const registerUser = async () => {
-    console.log("Registering user with data:");
-    console.log("Is form complete: ", isFormComplete);
     if (isFormComplete) {
       try {
         /*ADD THE USER ON FIREBASE */
         const userCredential = await createUserWithEmailAndPassword(auth, formUserSignData.email!, formUserSignData.password!);
-        console.log("Usuario registrado:", userCredential.user.email);
         /*ADD THE USER ON THE BACKEND */
         const newVisitorUser: LogedUserData = {
           nombre: formUserSignData.nombre!,

@@ -71,10 +71,6 @@ const NormalUserSignUp = () => {
   const [childSelected, setChildSelected] = useState<Son>({});
   const [aniversarySelected, setAniversarySelected] = useState<Aniversary>();
 
-  useEffect(() => {
-    console.log("User data on Sign UP is:", user);
-  }, [user])
-
   const showToastSucces = (errorMessage: string) => {
     toast.success(errorMessage, {
       position: "top-right",

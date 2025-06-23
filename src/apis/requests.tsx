@@ -45,8 +45,6 @@ export const getUserOnSignInDirect = async (convex: any, email: string) => {
 };
 
 export const getPerashaInfo = (kehilaName: string, perashaName: string) => {
-  console.log("Perasha Name: ", perashaName);
-  
   return useQuery(api.kehila.getKehilaPerashaInfo, {
     nombre: kehilaName,
     nombrePerasha: perashaName
@@ -54,7 +52,6 @@ export const getPerashaInfo = (kehilaName: string, perashaName: string) => {
 }
 
 export const getVisitorUserInfo = (kehilaName: string, userName: string,  userSurname: string ) => {
-  console.log("🔍 Hook getVisitorUserInfo ejecutado con:", kehilaName, userName, userSurname);
   return useQuery(api.kehila.getVisitorUser, {
     nombreKehila: kehilaName,
     nombreUsuario: userName,
@@ -63,7 +60,6 @@ export const getVisitorUserInfo = (kehilaName: string, userName: string,  userSu
 }
 
 export const getVisitorUserInfoOnSignIn = async (convex: any, kehilaName: string, email: string ) => {
-  console.log("🔍 Hook getVisitorUserInfo ejecutado con:", kehilaName, email);
   return await convex.query(api.kehila.getVisitorUserOnSignIn, {
     nombreKehila: kehilaName,
     email: email

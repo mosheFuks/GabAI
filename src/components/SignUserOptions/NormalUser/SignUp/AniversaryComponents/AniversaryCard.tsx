@@ -13,7 +13,6 @@ export const AniversaryCard = ({aniversario, setModalAniversaryIsOpen, setAniver
     const handleChildSelection = (aniversary: Aniversary) => {
       setAniversarySelected(aniversary);
       setModalAniversaryIsOpen(true);
-      console.log("Hijo seleccionado", aniversario)
     }
     return (
         <div style={styles.card} onClick={() => handleChildSelection(aniversario)}>

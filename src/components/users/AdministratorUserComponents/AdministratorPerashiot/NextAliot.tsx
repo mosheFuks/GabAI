@@ -64,31 +64,21 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
       nextFriday = nextFriday.next();
     }
     daysOfThisWeek.friday = nextFriday.toString();
-
-    console.log("daysOfThisWeek: ", daysOfThisWeek);
     return daysOfThisWeek
   }
 
   const getCurrentWeekAniversaries = (currentMonthAniversaries: AniversariesList[], sundayDate: string, fridayDate: string) => {
-    console.log("Sunday dates: ", sundayDate);
-    console.log("Friday dates: ", fridayDate);
-    
-    
     const nearSundayDay: number = parseInt(sundayDate.toString().match(/^\d+/)![0], 10)
     const nearFridayDay: number = parseInt(fridayDate.toString().match(/^\d+/)![0], 10)
-    console.log("Just day: Sunday: ", nearSundayDay, ", Friday: ", nearFridayDay);
     
     const aniversariosFiltrados = currentMonthAniversaries.filter((ani) => {
       return parseInt(ani.fechaAniHeb.dia) >= nearSundayDay && parseInt(ani.fechaAniHeb.dia) <= nearFridayDay
     })
 
-    console.log("Aniversarios entre los días:", nearSundayDay, "y", nearFridayDay, aniversariosFiltrados);
     return aniversariosFiltrados || [];
   }
 
   const getCurrentMonthAniversaries = (currentMonth: string) => {
-    console.log("People List: ", peopleList);
-
     const monthAniversaries = peopleList!
       .filter((persona) =>
         persona.aniversarios!.some((ani) => ani.fechaHebreo!.mes === currentMonth)
@@ -170,7 +160,6 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
       ...monthBarMitzvaAniversary
     ];
 
-    console.log("This Month Aniversaries (formatted): ", allAniversaries);
     return allAniversaries || [];
   };
 

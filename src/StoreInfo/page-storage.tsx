@@ -102,12 +102,8 @@ export const PageProvider: React.FC<PageProviderProps> = ({ children }) => {
   };
 
   const signOut = async () => {
-    // Redirigir al login
     navigate("/");
     try {
-      //await signOut(); // Cierra la sesión en Firebase
-      console.log("✅ Usuario deslogueado");
-
       localStorage.clear()
       setLogedUser({
         email: '',

@@ -883,8 +883,7 @@ export const AdministratorDefaultDashboard = () => {
     },
   ];
 
-  const usuarios = getUsersList(logedUser.kehila)
-  console.log("Info de Aniversarios de AI desde el back: ", usuarios);
+  const usuarios = logedUser != undefined ? getUsersList(logedUser.kehila) : []
   
   const [step, setStep] = useState(1)
   const [oldPerashaInfo, setOldPerashaInfo] = useState(false)
@@ -900,7 +899,7 @@ export const AdministratorDefaultDashboard = () => {
       hasPendingDonation = pendingDonation ? "PENDIENTE" : "PAGADA";
     }
     return hasPendingDonation
-  };
+  }; 
   
   useEffect(() => {
     setPeopleList(usuarios)

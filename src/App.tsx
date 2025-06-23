@@ -6,17 +6,17 @@ import { AdministratorDefaultDashboard } from './components/users/AdministratorU
 import { HomeVisitorUserComponent } from './components/users/VisitorUserComponents/HomeVisitorUserCompo';
 import NormalUserSignUp from './components/SignUserOptions/NormalUser/SignUp/NormalUserSignUp';
 import { SignUpOperator } from './components/SignUserOptions/OperatorUser/SignUpOperator';
+import { ToastNotification } from './components/page/ToastNotification/ToastNotification';
 import { SignIn } from './components/SignUserOptions/NormalUser/SignIn/SignIn';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import SplashScreen from './components/page/SplashScreen/SplashScreen';
 import { ConvexProvider, ConvexReactClient } from "convex/react";
 import HomePage from './components/page/HomePage/HomePage';
 import { Navbar } from './components/page/Navbar/Navbar';
+import { ToastProvider } from './StoreInfo/ToastContext';
 import { PageProvider } from './StoreInfo/page-storage';
 import { LogedUserData } from './structs/structs';
 import { useEffect, useState } from 'react';
-import SplashScreen from './components/page/SplashScreen/SplashScreen';
-import { ToastProvider } from './StoreInfo/ToastContext';
-import { ToastNotification } from './components/page/ToastNotification/ToastNotification';
 
 function App() {
   const [logedUser, setLogedUser] = useState<LogedUserData | null>()
@@ -31,8 +31,7 @@ function App() {
   if (showSplash) {
     return <SplashScreen onFinish={() => setShowSplash(false)} />;
   }
-  
-  console.log("Loged user: ", logedUser, ", condition: ", logedUser != null && (logedUser!.rol == "ADMIN" || logedUser!.rol == "OPERATOR")  );
+
   return (
     <>
     <Router>

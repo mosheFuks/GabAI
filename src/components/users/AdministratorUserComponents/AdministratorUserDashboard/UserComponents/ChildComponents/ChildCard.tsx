@@ -14,7 +14,6 @@ export const ChildCard = ({son, setChildModalIsOpen, setSonSelected}: ChildCardP
 
   const handleChildSelection = (child: Son) => {
     setChildModalIsOpen(true)
-    console.log("Hijo seleccionado", child)
     setSonSelected(child)
   }
   

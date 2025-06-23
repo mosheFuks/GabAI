@@ -64,14 +64,11 @@ export const SignIn = () => {
           formData.email,
           formData.password,
         ).then(userCredential => {
-          console.log('Firebase: User Email After SignIn: ', userCredential.user.email);
           logedUser = userCredential.user;
         })
         /*--------GET THE USER INFO FROM BACKEND-------*/
-        console.log("Loged User Email: ", logedUser);
         if (logedUser != null) {
           const userFromBE = await getUserFromTheList(logedUser.email);
-          console.log("Super User from Usuarios List: ", userFromBE);
           const user: LogedUserData = {
             email: logedUser.email,
             nombre: userFromBE.nombre,
@@ -79,7 +76,6 @@ export const SignIn = () => {
             kehila: userFromBE.kehila
           }
           logedUserRol = user.rol;
-          console.log("User data from BE: ", user);
 
           /*----IF THE LOGED USER ROL IS VISITOR, WE NEED TO GET ALL HIS DATA */
           if (logedUserRol == "VISITANTE") {
@@ -90,7 +86,6 @@ export const SignIn = () => {
         }
         setIsDoingAnApiRequest(false);
       } catch (error) {
-        console.log('Firebase Sign In error: ', error);
         signInMessageError = "Error al iniciar sesión. Por favor, verifica tu correo electrónico y contraseña.";
         setIsDoingAnApiRequest(false);
       }
@@ -114,8 +109,6 @@ export const SignIn = () => {
     const handleSubmit = async (e: any) => {
       e.preventDefault();
       const signError = await handleSignIn();
-      console.log("User data on Sign In is:", formData);
-      console.log("Sign Error: ", signError);
       
       if (signError == "NO_ERROR") {
         logedUserRol != "VISITANTE"  ? await navigate("/administrator-dashboard") : await navigate("/visitor-user-info");

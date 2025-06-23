@@ -48,8 +48,7 @@ export const VisitorPerashiotInfo = ({ logedVisitorUser }: FormPersonalDataProps
     notIortzaiAniversaries.userImportantDatesList = userImportantDates
     notIortzaiAniversaries.aniversariesList.push(logedVisitorUser.aniversarios.filter(ani => ani.motivo != "Iortzai"))
     logedVisitorUser.hijos.length > 0 ? notIortzaiAniversaries.sonList.push(logedVisitorUser.hijos.filter(son => son.genero == "Masculino")) : null
-    console.log("Todos los aniversarios que no son Iortzai", notIortzaiAniversaries);
-    
+
     return notIortzaiAniversaries
   }
 
@@ -191,7 +190,6 @@ export const VisitorPerashiotInfo = ({ logedVisitorUser }: FormPersonalDataProps
               </thead>
               <tbody>
                 {notIortzaiAniversaryList.sonList[0].map((son: Son, index) => {
-                  {console.log("Son: ", son);}
                   const nombre = `${son.nombre} ${son.apellido}`;
                   const nombreHebreo = son.nombreHebreo;
                   const habilidades = son.habilidades

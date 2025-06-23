@@ -76,13 +76,11 @@ export const FormKehilaInfoData = ({handleChangePersonalData, user, setFormUserP
     }
 
     const calculateHebBarMitzvaDate = () => {
-      console.log("Fecha Bar Hebreo: ", user.fechaNacimientoHebreo);
       const calculatedBarMitzvaYear = parseInt(user.fechaNacimientoHebreo?.ano!) + 13
       saveBarMitzvaDateParams("dia", "fechaBarMitzvaHebreo", true, [user.fechaNacimientoHebreo?.dia, user.fechaNacimientoHebreo?.mes, calculatedBarMitzvaYear.toString()])
     }
 
     const calculateGregBarMitzvaDate = () => {
-      console.log("Date to calculate is:", user.fechaBarMitzvaHebreo);
       // Extraer el ano, mes y día manualmente
       const hebDay = +user.fechaBarMitzvaHebreo?.dia!
       const hebMonth = user.fechaBarMitzvaHebreo?.mes

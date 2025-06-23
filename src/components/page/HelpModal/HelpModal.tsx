@@ -64,16 +64,13 @@ export const EditPropertyModal = ({setOpenEditPropertyModal, openEditPropertyMod
   const changeVisitorUserPropeties = changeUserVisitorData()
 
   useEffect(() => {
-    console.log("New dates state is:", newDates);
     //console.log("Edited properties state is:", editedProperties);
   }, [newDates, editedProperties]);
 
   const updateVisitorUser = async () => {
     //setEditedProperties([...editedProperties, newDates]);
-    console.log("Edited properties state is:", editedProperties);
     try {
       const updatedUser = await changeVisitorUserPropeties(logedVisitorUser?.nombreKehila, logedVisitorUser?.nombreEspanol, logedVisitorUser?.apellido, editedProperties);
-      console.log("Updated user:", updatedUser);
       setOpenEditPropertyModal(false);
     } catch (error) {
       console.error("Error updating user:", error);
@@ -101,7 +98,6 @@ export const EditPropertyModal = ({setOpenEditPropertyModal, openEditPropertyMod
   const changePropertyToEditValue = (property: EditedPropertyTypes) => {
     setPropertyToEdit(property);
     if (property.name == "Minian") getMinianimFromTheList()
-    console.log("Property to edit is:", property);
   }
   
   const handleAddAbility = (e: React.ChangeEvent<HTMLInputElement>) => {

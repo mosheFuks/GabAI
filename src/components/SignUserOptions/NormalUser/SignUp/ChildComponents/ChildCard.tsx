@@ -13,15 +13,14 @@ export const ChildCard = ({hijo, setChildModalIsOpen, setChildSelected}: ChildCa
     const handleChildSelection = (child: Son) => {
       setChildSelected(child);
       setChildModalIsOpen(true);
-      console.log("Hijo seleccionado", hijo)
     }
     return (
-        <div style={styles.card} onClick={() => handleChildSelection(hijo)}>
-          <div style={styles.iconContainer}>
-            <CircleUser size={30} color="white" />
-          </div>
-          <h3 style={styles.title}>{hijo.nombre}</h3>
+      <div style={styles.card} onClick={() => handleChildSelection(hijo)}>
+        <div style={styles.iconContainer}>
+          <CircleUser size={30} color="white" />
         </div>
+        <h3 style={styles.title}>{hijo.nombre}</h3>
+      </div>
     )
 };
 

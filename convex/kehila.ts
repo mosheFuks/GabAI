@@ -35,8 +35,6 @@ export const getKehilaPerashaInfo = query({
     nombrePerasha: v.string()
   },
   handler: async (ctx, args) => {
-    console.log("Perasha en Kehila: ", args.nombrePerasha);
-    
     const kehila = await ctx.db
       .query("Kehila")
       .filter((q) => q.eq(q.field("nombre"), args.nombre))
@@ -66,8 +64,6 @@ export const getVisitorUser = query({
     apellidoUsuario: v.string(),
   },
   handler: async (ctx, args) => {
-    console.log("Enter here from here to here to user");
-
     const kehila = await ctx.db
       .query("Kehila")
       .filter((q) => q.eq(q.field("nombre"), args.nombreKehila))
@@ -97,8 +93,6 @@ export const getVisitorUserOnSignIn = query({
     email: v.string(),
   },
   handler: async (ctx, args) => {
-    console.log("Enter here from here to here to user");
-
     const kehila = await ctx.db
       .query("Kehila")
       .filter((q) => q.eq(q.field("nombre"), args.nombreKehila))
@@ -242,7 +236,6 @@ export const addAnAliaInAPerasha = mutation({
       })
   },
   handler: async (ctx, args) => {
-    console.log("Adding an alia in a perasha", args.nombre, args.nombrePerasha, args.nuevaAlia);
     const kehila = await ctx.db
       .query("Kehila")
       .filter((q) => q.eq(q.field("nombre"), args.nombre))
@@ -294,8 +287,6 @@ export const addPerashaToKehila = mutation({
     await ctx.db.patch(kehila._id, {
       perashiot: nuevasPerashiot
     });
-
-    console.log("✅ Perasha agregada sin validación:", nuevaPerasha);
 
     return nuevaPerasha;
   }
@@ -360,8 +351,6 @@ export const addVisitorUser = mutation({
         usuarios: nuevosUsuarios
       });
 
-      console.log("✅ Usuario agregado sin validación:", args.nuevoUsuario);
-
       return args.nuevoUsuario;
     } catch (error) {
       return `ERROR AVU: ${error}`
@@ -386,8 +375,6 @@ export const addUserToUsuariosList = mutation({
       kehila: args.nuevoUsuario.kehila,
       rol: args.nuevoUsuario.rol,
     });
-
-    console.log("✅ Usuario Operador agregado:", id);
 
     return { _id: id, ...args.nuevoUsuario };
   },
@@ -443,8 +430,6 @@ export const addDonationToUser = mutation({
     await ctx.db.patch(kehila._id, {
       usuarios: usuariosActualizados,
     });
-
-    console.log("✅ Donación agregada a:", args.nombreUsuario, args.apellidoUsuario);
 
     return args.nuevaDonacion;
   },
@@ -502,8 +487,6 @@ export const changeDonationStatus = mutation({
       usuarios: usuariosActualizados,
     });
 
-    console.log("✅ Estado de la donación actualizado para:", args.nombreUsuario, args.apellidoUsuario);
-
     return { success: true };
   },
 });
@@ -532,8 +515,6 @@ export const changeUserVisitordata = mutation({
       throw new Error("Kehila no encontrada");
     }
 
-    console.log("🕍 Kehila encontrada:", kehila.nombre);
-
     // Paso 2: Buscar y actualizar el usuario
     let usuarioFueModificado = false;
 
@@ -544,19 +525,13 @@ export const changeUserVisitordata = mutation({
       ) {
         const usuarioActualizado = { ...usuario };
 
-        console.log("👤 Usuario encontrado, antes de cambios:", usuario);
-
         args.updatedData.forEach(({ name, value }) => {
           if (name in usuarioActualizado) {
             (usuarioActualizado as any)[name] = value;
             usuarioFueModificado = true;
-            console.log(`✏️ Campo '${name}' actualizado a: ${value}`);
-          } else {
-            console.warn(`⚠️ Campo '${name}' no existe en el usuario`);
           }
         });
 
-        console.log("✅ Usuario después de cambios:", usuarioActualizado);
         return usuarioActualizado;
       }
 
@@ -571,8 +546,6 @@ export const changeUserVisitordata = mutation({
     await ctx.db.patch(kehila._id, {
       usuarios: usuariosActualizados,
     });
-
-    console.log("📦 Datos guardados en Convex");
 
     return { success: true };
   },
@@ -595,14 +568,10 @@ export const deleteAllPerashiotInfo = mutation({
       throw new Error("Kehila no encontrada");
     }
 
-    console.log("📦 Datos guardados en Convex");
-
     // 2. Vaciar el array de perashiot
     await ctx.db.patch(kehila._id, {
       perashiot: [],
     });
-
-    console.log(`🧹 Se eliminaron las perashiot de la Kehila: ${args.nombreKehila}`);
 
     return { success: true };
   },

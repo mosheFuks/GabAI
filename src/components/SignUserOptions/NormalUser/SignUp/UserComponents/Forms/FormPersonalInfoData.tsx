@@ -18,7 +18,6 @@ interface FormPersonalDataProps {
 
 export const FormPersonalInfoData = ({handleChangePersonalData, user, setFormUserPersonalData, formUserPersonalData, setUser}: FormPersonalDataProps) => {
   const { logedUser } = useContext(PageContext) as any;
-  console.log("Loged User On Sign Up for first time: ", logedUser);
   
   const [isAfterSunsetSelected, setIsAfterSunsetSelected] = useState<boolean>(false)
   const [minianimList, setMinianimList] = useState<string[]>([]);
@@ -36,23 +35,19 @@ export const FormPersonalInfoData = ({handleChangePersonalData, user, setFormUse
   };
 
   const calculateHebrewBirthDate = (date: CustomDate) => {
-    console.log("Date to calculate is:", date);
     const day = +date.dia!
     const month = +date.mes!
     const year = +date.ano!
 
     const gregorianDate = new Date(year, month - 1, day, 12)
-    console.log("Gregorian date is:", gregorianDate);
 
     const hebrewDate = isAfterSunsetSelected ? new HDate(gregorianDate).next() : new HDate(gregorianDate);
-    console.log("Hebrew date is:", hebrewDate.toString());
     const [dayHeb, monthHeb, yearHeb] = hebrewDate.toString().split(" ");
 
     saveBirthDateParams("dia", "fechaNacimientoHebreo", true, [dayHeb, monthHeb, yearHeb])
   };
 
   const calculateGregorianBirthDate = (date: CustomDate) => {
-    console.log("Date to calculate is:", date); // Devuelve "2001-10-18"
     // Extraer el ano, mes y día manualmente
     const hebDay = +date.dia!
     const hebMonth = date.mes
@@ -116,10 +111,7 @@ export const FormPersonalInfoData = ({handleChangePersonalData, user, setFormUse
           ano: e[2]
         },
       });
-    }
-    console.log("User form Data: ", formUserPersonalData.fechaNacimientoGregoriano);
-    console.log("User Data: ", user.fechaNacimientoGregoriano);
-    
+    }    
   }
 
   useEffect(() => {

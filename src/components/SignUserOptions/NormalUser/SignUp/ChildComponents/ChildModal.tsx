@@ -56,14 +56,12 @@ export const CreateChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen
 
   const closeModal = () => {
     setChildModalIsOpen(false);
-    console.log("Form user child data", formUserChildData?.nombre);
     
     if (formUserChildData?.nombre != "") {
       const childIsAlreadySavedOnUserChildList = user.hijos?.some(son => son.nombre === childSelected?.nombre);
       childIsAlreadySavedOnUserChildList ? updateUserChildData() : addUserChildData()
       setChildSelected({})
     }
-    console.log("Hijo agregado", formUserChildData);
   }
 
   const addUserChildData = () => {
@@ -102,23 +100,19 @@ export const CreateChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen
   };
 
   const calculateHebrewBirthDate = (date: CustomDate) => {
-      console.log("Date to calculate is:", date);
       const day = +date.dia!
       const month = +date.mes!
       const year = +date.ano!
   
       const gregorianDate = new Date(year, month - 1, day, 12)
-      console.log("Gregorian date is:", gregorianDate);
   
       const hebrewDate = isAfterSunsetSelected ? new HDate(gregorianDate).next() : new HDate(gregorianDate);
-      console.log("Hebrew date is:", hebrewDate.toString());
       const [dayHeb, monthHeb, yearHeb] = hebrewDate.toString().split(" ");
   
       saveBirthDateParams("dia", "fechaNacimientoHebreo", true, [dayHeb, monthHeb, yearHeb])
   };
   
   const calculateGregorianBirthDate = (date: CustomDate) => {
-    console.log("Date to calculate is:", date); // Devuelve "2001-10-18"
     // Extraer el ano, mes y día manualmente
     const hebDay = +date.dia!
     const hebMonth = date.mes
@@ -184,7 +178,6 @@ export const CreateChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen
   }
 
   const calculateGregBarMitzvaDate = () => {
-    console.log("Date to calculate is:", formUserChildData.fechaBarMitzvaHebreo);
     // Extraer el ano, mes y día manualmente
     const hebDay = +formUserChildData.fechaBarMitzvaHebreo?.dia!
     const hebMonth = formUserChildData.fechaBarMitzvaHebreo?.mes
@@ -199,8 +192,7 @@ export const CreateChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen
     saveBirthDateParams("dia", "fechaBarMitzva", true, [dayGreg, monthGreg, yearGreg])
   };
 
-  const calculateHebBarMitzvaDate = () => { 
-    console.log("Fecha Bar Hebreo: ", user.fechaNacimientoHebreo);
+  const calculateHebBarMitzvaDate = () => {
     const calculatedBarMitzvaYear = parseInt(user.fechaNacimientoHebreo?.ano!) + 13
     saveBirthDateParams("dia", "fechaBarMitzvaHebreo", true, [user.fechaNacimientoHebreo?.dia, user.fechaNacimientoHebreo?.mes, calculatedBarMitzvaYear.toString()])
   }

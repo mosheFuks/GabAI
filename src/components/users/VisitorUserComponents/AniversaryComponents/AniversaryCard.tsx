@@ -13,7 +13,6 @@ export const AniversaryCard = ({aniversario, key, setModalAniversaryIsOpen, setA
 
     const handleAniversarySelection = (aniversary: Aniversary ) => {
       setModalAniversaryIsOpen(true);
-      console.log("Hijo seleccionado", aniversary)
       setAniversarySelected(aniversary!);
     }
     return (
