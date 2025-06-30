@@ -5,6 +5,7 @@ import { Ability, HEBREW_MONTHS } from '../../../../structs/structs';
 import { PageContext } from '../../../../StoreInfo/page-storage';
 import { changeUserVisitorData, getMinianimList } from '../../../../apis/requests';
 import { useConvex } from 'convex/react';
+import { toast } from 'react-toastify';
 
 Modal.setAppElement('#root');
 
@@ -59,6 +60,7 @@ export const EditPropertyModal = ({setOpenEditPropertyModal, openEditPropertyMod
 
   const groupList = ["Cohen", "Levi", "Israel"];
   const habilidades: Ability[] = ["Leer Torah", "Jazan", "Leer Haftara", "Leer Meguila"];
+  const stateList = ["Soltero", "Casado", "Divorciado", "Viudo"];
 
   const closeModal = () => {
     setOpenEditPropertyModal(false);
@@ -70,7 +72,29 @@ export const EditPropertyModal = ({setOpenEditPropertyModal, openEditPropertyMod
     try {
       const updatedUser = await changeVisitorUserPropeties(logedVisitorUser?.nombreKehila, logedVisitorUser?.nombreEspanol, logedVisitorUser?.apellido, editedProperties);
       setOpenEditPropertyModal(false);
+      toast.success("Se modificó el valor de las propiedades seleccionadas, refresque la pagina para ver los cambios", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored", 
+        style: { backgroundColor: 'green', color: 'white' },
+      });
     } catch (error) {
+      toast.error("Ocurrió un error al intentar cambiar el valor de las propiedadeas seleccionadas", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored", 
+        style: { backgroundColor: 'red', color: 'white' },
+      });
       console.error("Error updating user:", error);
     }
   };
@@ -274,6 +298,29 @@ export const EditPropertyModal = ({setOpenEditPropertyModal, openEditPropertyMod
     );
   }
 
+  const showStateListToSelect = () => {
+    return (
+      <select
+        id="group-select"
+        style={styles.input}
+        defaultValue=""
+        onChange={(e) => {
+          changeEditPropertyToEditList(propertyToEdit.value, e.target.value, propertyToEdit.normalName);
+        }}
+      >
+        <option value="" disabled>
+          Elegí un Estado Civil
+        </option>
+        {stateList.map((state, index) => (
+          <option key={index} value={state}>
+            {state}
+          </option>
+        ))}
+      </select>
+    );
+  }
+
+
   return (
     <div>
       <Modal
@@ -288,79 +335,87 @@ export const EditPropertyModal = ({setOpenEditPropertyModal, openEditPropertyMod
         }}
         contentLabel="Example Modal"
       >
-        <h2 style={{ textAlign: 'center', border: '1px solid blue', padding: '10px', borderRadius: '25px', justifyContent: 'center', display: 'flex' }}>Elegí la propiedad a editar</h2>
-        <div>
-          {/*Select the property to change from UserProperties List */}
-          <label htmlFor="property-select" style={{ display: 'block', marginBottom: '10px' }}>Propiedad:</label>
-          <select
-            id="property-select"
-            style={styles.input}
-            defaultValue=""
-            onChange={(e) => {
-              const selectedProperty = UserProperties.find(p => p.value === e.target.value);
-              if (selectedProperty) changePropertyToEditValue(selectedProperty);
-              setNewValue(""); // Reset new value when changing property
-            }}
-          >
-            <option value="" disabled>
-              Elegí una propiedad
-            </option>
-            {UserProperties.map((property, index) => (
-              <option key={index} value={property.value}>
-                {property.name}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <label htmlFor="new-value" style={{ display: 'block', marginTop: '10px' }}>Nuevo valor:</label>
-        <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-          { propertyToEdit.name.startsWith("Fecha") && propertyToEdit.name.includes("Hebreo") ? (
-            showHebrewDateInput(propertyToEdit.name)
-          ) : propertyToEdit.name.startsWith("Fecha") ? (
-            showGregorianDateInput(propertyToEdit.name)
-          ) : propertyToEdit.name === "Minian" ? (
-            showMinianinimListToSelect()
-          ) : propertyToEdit.name === "Grupo" ? (
-            showGroupListToSelect()
-          ) : propertyToEdit.name === "Conocimientos" ? (
-            showAbilitiesListToSelect()
-          ) : (
-            <input
-                type="text"
-                name={propertyToEdit.name}
-                placeholder={`Nuevo valor`}
-                onChange={(e) => {
-                  setNewValue(e.target.value);
-                }}
-                //onChange={(e) => changeEditPropertyToEditList(propertyToEdit.value, e.target.value, propertyToEdit.normalName)}
-                value={newValue}
+        <h2 style={{ textAlign: 'center', border: '1px solid blue', padding: '10px', borderRadius: '25px', justifyContent: 'center' }}>Elegí la propiedad a editar</h2>
+        <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+          <div style={{ flex: 2}}>
+            <div>
+              {/*Select the property to change from UserProperties List */}
+              <label htmlFor="property-select" style={{ display: 'block', marginBottom: '10px' }}>Propiedad:</label>
+              <select
+                id="property-select"
                 style={styles.input}
-                disabled={propertyToEdit.name === "" ? true : false}
-              /> 
-          )}
-          <button style={{...styles.button, backgroundColor: newValue !== "" ? "orange" : "gray",}} disabled={newValue === "" ? true : false} onClick={() => {
-            changeEditPropertyToEditList(propertyToEdit.value, newValue, propertyToEdit.normalName);
-            setPropertyToEdit({ name: "", value: "", normalName: "" });
-          }}>
-            Guardar
-          </button>
+                defaultValue=""
+                onChange={(e) => {
+                  const selectedProperty = UserProperties.find(p => p.value === e.target.value);
+                  if (selectedProperty) changePropertyToEditValue(selectedProperty);
+                  setNewValue(""); // Reset new value when changing property
+                }}
+              >
+                <option value="" disabled>
+                  Elegí una propiedad
+                </option>
+                {UserProperties.map((property, index) => (
+                  <option key={index} value={property.value}>
+                    {property.name}
+                  </option>
+                ))}
+              </select>
+          </div>
+
+          <label htmlFor="new-value" style={{ display: 'block', marginTop: '10px' }}>Nuevo valor:</label>
+          <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+            { propertyToEdit.name.startsWith("Fecha") && propertyToEdit.name.includes("Hebreo") ? (
+              showHebrewDateInput(propertyToEdit.name)
+            ) : propertyToEdit.name.startsWith("Fecha") ? (
+              showGregorianDateInput(propertyToEdit.name)
+            ) : propertyToEdit.name === "Minian" ? (
+              showMinianinimListToSelect()
+            ) : propertyToEdit.name === "Grupo" ? (
+              showGroupListToSelect()
+            ) : propertyToEdit.name === "Conocimientos" ? (
+              showAbilitiesListToSelect()
+            ) : propertyToEdit.name === "Estado Civil" ? (
+              showStateListToSelect()
+            ) : (
+              <input
+                  type="text"
+                  name={propertyToEdit.name}
+                  placeholder={`Nuevo valor`}
+                  onChange={(e) => {
+                    setNewValue(e.target.value);
+                  }}
+                  //onChange={(e) => changeEditPropertyToEditList(propertyToEdit.value, e.target.value, propertyToEdit.normalName)}
+                  value={newValue}
+                  style={styles.input}
+                  disabled={propertyToEdit.name === "" ? true : false}
+                /> 
+            )}
+            <button style={{...styles.button, backgroundColor: newValue !== "" ? "orange" : "gray",}} disabled={newValue === "" ? true : false} onClick={() => {
+              changeEditPropertyToEditList(propertyToEdit.value, newValue, propertyToEdit.normalName);
+              setPropertyToEdit({ name: "", value: "", normalName: "" });
+            }}>
+              Guardar
+            </button>
+          </div>
+          </div>
+
+          <div>
+            { editedProperties.length > 0 && (
+              <div>
+                <h3>Propiedades editadas:</h3>
+                <ul>
+                  {editedProperties.map((prop, index) => (
+                    <li key={index}>{`${prop.normalName}: ${prop.value}`}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
         </div>
 
-        <button style={{...styles.button, backgroundColor: "blue"}} onClick={() => updateVisitorUser()}>
+        <button style={{...styles.button, backgroundColor: editedProperties.length > 0 ? "blue" : "gray"}} onClick={() => updateVisitorUser()} disabled={editedProperties.length === 0}>
           Editar
         </button>
-
-        { editedProperties.length > 0 && (
-          <div>
-            <h3>Propiedades editadas:</h3>
-            <ul>
-              {editedProperties.map((prop, index) => (
-                <li key={index}>{`${prop.normalName}: ${prop.value}`}</li>
-              ))}
-            </ul>
-          </div>
-        )}
       </Modal>
     </div>
   );

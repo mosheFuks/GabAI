@@ -1,13 +1,15 @@
 import { colors } from "../../../../assets/colors";
 import { CSSProperties, useEffect, useState } from "react";
 import { HDate } from '@hebcal/core';
-import { Grupo, VisitorUser } from "../../../../structs/structs";
-import { FaFilter } from "react-icons/fa";
+import { Grupo, HEBREW_MONTHS, VisitorUser } from "../../../../structs/structs";
+import { FaArrowAltCircleRight, FaFilter } from "react-icons/fa";
 import { DateToDateAniversary } from "./DateToDateAniversary";
+import { useNavigate } from "react-router-dom";
 
 interface DaysOfThisWeek {
   currentYear: number,
   currentMonth: string,
+  nextMonth: string,
   sunday: string,
   friday: string
 }
@@ -38,14 +40,27 @@ interface AniversariesList {
 }
 
 export const NextAliot = ({peopleList}: NextAliotProps) => {
+  const navigate = useNavigate();
   const [thisWeekAniversaries, setThisWeekAniversaries] = useState<AniversariesList[]>([])
   const [filteredAniversaries, setFilteredAniversaries] = useState<AniversariesList[]>([])
   const [daysOfThisWeek, setDaysOfThisWeek] = useState<DaysOfThisWeek>({
     currentYear: 0,
     currentMonth: "",
+    nextMonth: "",
     sunday: "",
     friday: ""
   })
+  const [clicked, setClicked] = useState<boolean>(false)
+  const [renderedAniversaries, setRenderedAniversaries] = useState<AniversariesList[]>([]);
+
+  function getNextHebrewMonth(currentMonth) {
+    const index = HEBREW_MONTHS.indexOf(currentMonth);
+    if (index === -1) {
+      throw new Error("Mes hebreo inválido");
+    }
+    const nextIndex = (index + 1) % HEBREW_MONTHS.length;
+    return HEBREW_MONTHS[nextIndex];
+  }
 
   const getCurrentHebrewWeek = (daysOfThisWeek: DaysOfThisWeek) => {
     const today = new HDate();
@@ -60,10 +75,17 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
     }
     daysOfThisWeek.sunday = previousSunday.toString();
 
-    while (nextFriday.getDay() !== 5) {
+    while (nextFriday.getDay() !== 5) {  
       nextFriday = nextFriday.next();
     }
+
+    if (nextFriday < previousSunday) {
+      const nextMonth = getNextHebrewMonth(daysOfThisWeek.currentMonth);
+      daysOfThisWeek.nextMonth = nextMonth;
+    }
+
     daysOfThisWeek.friday = nextFriday.toString();
+    
     return daysOfThisWeek
   }
 
@@ -71,21 +93,20 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
     const nearSundayDay: number = parseInt(sundayDate.toString().match(/^\d+/)![0], 10)
     const nearFridayDay: number = parseInt(fridayDate.toString().match(/^\d+/)![0], 10)
     
-    const aniversariosFiltrados = currentMonthAniversaries.filter((ani) => {
+    const filteredAniversaries = currentMonthAniversaries.filter((ani) => {
       return parseInt(ani.fechaAniHeb.dia) >= nearSundayDay && parseInt(ani.fechaAniHeb.dia) <= nearFridayDay
     })
-
-    return aniversariosFiltrados || [];
+    return filteredAniversaries || [];
   }
 
-  const getCurrentMonthAniversaries = (currentMonth: string) => {
+  const getCurrentMonthAniversaries = (currentMonth: string, nextMonth: string) => {
     const monthAniversaries = peopleList!
       .filter((persona) =>
-        persona.aniversarios!.some((ani) => ani.fechaHebreo!.mes === currentMonth)
+        persona.aniversarios!.some((ani) => ani.fechaHebreo!.mes === currentMonth || ani.fechaHebreo!.mes === nextMonth)
       )
       .flatMap((persona) =>
         persona.aniversarios!
-        .filter((ani) => ani.fechaHebreo!.mes === currentMonth)
+        .filter((ani) => ani.fechaHebreo!.mes === currentMonth || ani.fechaHebreo!.mes === nextMonth)
         .map((ani) => ({
           motivo: ani.motivo,
           nombre: persona.nombreEspanol,
@@ -109,7 +130,7 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
       );
 
     const monthBirthdates = peopleList!
-      .filter(persona => persona.fechaNacimientoHebreo?.mes === currentMonth)
+      .filter(persona => persona.fechaNacimientoHebreo?.mes === currentMonth || persona.fechaNacimientoHebreo!.mes === nextMonth)
       .map(per => ({
         motivo: "Cumpleaños",
         nombre: per.nombreEspanol,
@@ -132,7 +153,7 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
       } as AniversariesList));
 
     const monthBarMitzvaAniversary = peopleList!
-      .filter(persona => persona.fechaBarMitzvaHebreo?.mes === currentMonth)
+      .filter(persona => persona.fechaBarMitzvaHebreo?.mes === currentMonth || persona.fechaBarMitzvaHebreo!.mes === nextMonth)
       .map(per => ({
         motivo: "Bar Mitzva",
         nombre: per.nombreEspanol,
@@ -160,6 +181,8 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
       ...monthBarMitzvaAniversary
     ];
 
+    setRenderedAniversaries(allAniversaries);
+
     return allAniversaries || [];
   };
 
@@ -173,7 +196,7 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
   }*/
 
   const getThisWeekAniversaries = (datesOfThisWeek: DaysOfThisWeek) => {
-    const currentMonthAniversaries = getCurrentMonthAniversaries(datesOfThisWeek.currentMonth)
+    const currentMonthAniversaries = getCurrentMonthAniversaries(datesOfThisWeek.currentMonth, datesOfThisWeek.nextMonth)
     const currentWeekAniversaries = getCurrentWeekAniversaries(currentMonthAniversaries, datesOfThisWeek.sunday, datesOfThisWeek.friday)
     //const currentYearAniversaries = getCurrentYearAniversaries(currentWeekAniversaries, datesOfThisWeek.currentYear)
     return currentWeekAniversaries
@@ -186,17 +209,22 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
   }
 
   const searchAniByMotiveOrMinian = (key: string) => {
-    const lowerKey = key.trim().toLowerCase();
+    const keySearch = key.trim().toLowerCase();
 
-    if (lowerKey === "") {
-      setFilteredAniversaries(thisWeekAniversaries); // sin filtro, mostrar todos
-    } else {
-      const filtered = thisWeekAniversaries.filter(
-        ani => ani.motivo.toLowerCase().startsWith(lowerKey) || ani.minian.toLowerCase().includes(lowerKey)
-      );
-      setFilteredAniversaries(filtered);
+    if (keySearch === "") {
+      // Mostrar nuevamente todos los aniversarios disponibles (ya filtrados por fecha)
+      setFilteredAniversaries(renderedAniversaries);
+      return;
     }
+
+    const filtered = renderedAniversaries.filter(ani =>
+      ani.motivo.toLowerCase().startsWith(keySearch) ||
+      ani.minian.toLowerCase().startsWith(keySearch)
+    );
+
+    setFilteredAniversaries(filtered);
   };
+
 
   useEffect(() => {
     const thisWeekAniversaries = getThisWeekAniversariesFromAllUsers()
@@ -208,7 +236,7 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
     <div>
       <div style={styles.headerButtons}>
         {<div style={{ display: "flex", gap: '10px', width: '100%', marginTop: '20px'}}>
-          <DateToDateAniversary peopleList={peopleList!} setFilteredAniversaries={setFilteredAniversaries} daysOfThisWeek={daysOfThisWeek}/>
+          <DateToDateAniversary peopleList={peopleList!} setFilteredAniversaries={setFilteredAniversaries} daysOfThisWeek={daysOfThisWeek} setRenderedAniversaries={setRenderedAniversaries} />
         </div>}
         {thisWeekAniversaries.length > 0 && (
           <div style={{ display: "flex", gap: '10px', width: '100%', marginTop: '20px', justifyContent: "flex-end"}}>
@@ -217,8 +245,10 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
               <input
                 type="text"
                 placeholder="Busca por motivo o Minian"
-                style={styles.input}
+                style={{...styles.input, borderColor: clicked ? "orange" : "#ccc"}}
                 onChange={(e) => searchAniByMotiveOrMinian(e.target.value)}
+                onClick={() => setClicked(true)}
+                onBlur={() => setClicked(false)}
               />
             </div>
           </div>
@@ -264,6 +294,13 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
                       <td style={styles.td} data-label="Conocimientos">{habilidades?.join(', ')}</td>
                       <td style={styles.td} data-label="FechaNacimientoGreg">{fechaAniGreg}</td>
                       <td style={styles.td} data-label="FechaNacimientoHeb">{fechaAniHeb}</td>
+                      <td 
+                        style={{...styles.td, color: "green", alignItems: "center", cursor:"pointer"}}
+                        data-label="EstadoCuenta"
+                        onClick={() => navigate(`/administrator-user-info/${ani.nombre}-${ani.apellido}`)}
+                      >
+                        <FaArrowAltCircleRight className="text-3xl text-gray-500 hover:text-blue-500 transition-colors duration-200" />
+                      </td>
                     </tr>
                   );
                 })}
@@ -273,7 +310,7 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
           : 
           (
             <div style={{ textAlign: 'center', marginTop: '20px', fontSize: '3rem' }}>
-              <h5 style={{ color: colors.btn_background }}>Ningun usuario tiene un aniversario en esta fecha</h5>
+              <h5 style={{ color: colors.btn_background }}>Ningún usuario tiene un aniversario en estas fecha</h5>
             </div>
           )}
       </div>
@@ -354,7 +391,7 @@ const styles: { [key: string]: CSSProperties }= {
     padding: "10px 16px",
     borderRadius: "8px",
     fontWeight: "bold",
-    border: "none",
+    border: "2px solid",
     outline: "none",
     width: "100%",
     color: "black",

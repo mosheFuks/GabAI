@@ -155,7 +155,7 @@ export const CreateAniversaryModalComponent = ({modalAniversaryIsOpen, setModalA
         }}
         contentLabel="Example Modal"
       >
-        <h2 style={{ textAlign: 'center'}}>Ingresa los datos del aniversario</h2>
+        <h2 style={{ textAlign: 'center', color: "blue"}}>Ingresa los datos del aniversario</h2>
         <div>
           <label htmlFor="userAniversaryMotive" style={{ display: "block" }}>Motivo</label>
           <select id="userAniversaryMotive" name="motivo" onChange={(e) => { 
@@ -216,7 +216,7 @@ export const CreateAniversaryModalComponent = ({modalAniversaryIsOpen, setModalA
               </div>
               <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
                 <label htmlFor="userFechaNacHebAno" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
-                <input id="userFechaNacHebAno" type="number" name="fechaHebreo" placeholder="Añso" onChange={(e: any) => saveBirthDateParams("ano", "fechaHebreo", false, e)} style={{...styles.input}} value={formUserAniversaryData.fechaHebreo?.ano}/>
+                <input id="userFechaNacHebAno" type="number" name="fechaHebreo" placeholder="Año" onChange={(e: any) => saveBirthDateParams("ano", "fechaHebreo", false, e)} style={{...styles.input}} value={formUserAniversaryData.fechaHebreo?.ano}/>
               </div>
             </div>
             {calculateAniversaryDateBtn("fechaHebreo", formUserAniversaryData.fecha!, formUserAniversaryData.fecha?.dia! == "" || formUserAniversaryData.fecha?.mes! == "" || formUserAniversaryData.fecha?.ano! == "" )}

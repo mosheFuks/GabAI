@@ -969,7 +969,7 @@ export const AdministratorDefaultDashboard = () => {
                         </td>
                         <td 
                           style={{...styles.td, color: "green", alignItems: "center", cursor:"pointer"}}
-                          data-label="EstadoCuenta"
+                          data-label="InfoUsuario"
                           onClick={() => navigate(`/administrator-user-info/${persona.nombreEspanol}-${persona.apellido!}`)}
                         >
                           <FaArrowAltCircleRight className="text-3xl text-gray-500 hover:text-blue-500 transition-colors duration-200" />

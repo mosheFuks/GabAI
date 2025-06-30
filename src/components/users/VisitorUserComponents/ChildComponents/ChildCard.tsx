@@ -7,13 +7,15 @@ interface ChildCardProps {
   key: React.Key | null | undefined
   son: Son;
   setSonSelected: (son: Son) => void;
+  setIsSonSelected: (isSonSelected: boolean) => void;
 }
 
-export const ChildCard = ({son, setChildModalIsOpen, setSonSelected}: ChildCardProps) => {
+export const ChildCard = ({son, setChildModalIsOpen, setSonSelected, setIsSonSelected}: ChildCardProps) => {
 
   const handleChildSelection = (child: Son) => {
     setChildModalIsOpen(true)
     setSonSelected(child)
+    setIsSonSelected(true)
   }
   
   return (

@@ -100,16 +100,16 @@ export const CreateChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen
   };
 
   const calculateHebrewBirthDate = (date: CustomDate) => {
-      const day = +date.dia!
-      const month = +date.mes!
-      const year = +date.ano!
-  
-      const gregorianDate = new Date(year, month - 1, day, 12)
-  
-      const hebrewDate = isAfterSunsetSelected ? new HDate(gregorianDate).next() : new HDate(gregorianDate);
-      const [dayHeb, monthHeb, yearHeb] = hebrewDate.toString().split(" ");
-  
-      saveBirthDateParams("dia", "fechaNacimientoHebreo", true, [dayHeb, monthHeb, yearHeb])
+    const day = +date.dia!
+    const month = +date.mes!
+    const year = +date.ano!
+
+    const gregorianDate = new Date(year, month - 1, day, 12)
+
+    const hebrewDate = isAfterSunsetSelected ? new HDate(gregorianDate).next() : new HDate(gregorianDate);
+    const [dayHeb, monthHeb, yearHeb] = hebrewDate.toString().split(" ");
+
+    saveBirthDateParams("dia", "fechaNacimientoHebreo", true, [dayHeb, monthHeb, yearHeb])
   };
   
   const calculateGregorianBirthDate = (date: CustomDate) => {
@@ -211,7 +211,7 @@ export const CreateChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen
         }}
         contentLabel="Example Modal"
       >
-        <h2 style={{ textAlign: 'center'}}>Ingresa los datos de tu hijo/a</h2>
+        <h2 style={{ textAlign: 'center', color: "blue"}}>Ingresa los datos de tu hijo/a</h2>
         <div>
           <label htmlFor="userChildNameEsp" style={{ display: "block"}}>Nombre Hijo Español</label>
           <input id="userChildNameEsp" type="text" name="nombre" placeholder="Nombre (Español)" onChange={handleChangeChildData} style={styles.input} value={formUserChildData.nombre}/>

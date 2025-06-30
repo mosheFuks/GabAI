@@ -102,7 +102,7 @@ export const SignUpOperator = (/*{modalRealSignInfo, setModalRealSignInfo, user}
         <label htmlFor="userEmal" style={{ display: "block"}}>Email</label>
         <input id="userEmal" type="email" name="emailPersonal" placeholder="Email" style={styles.input} value={formUserSignData.email} onChange={(email) => handleEmailChange(email.target.value)}/>
 
-        <div style={styles.pass_container}>
+        <div >
           <label htmlFor="userPassword" style={{ display: "block" }}>
             Contraseña
           </label>
@@ -142,9 +142,9 @@ const styles = {
     backgroundColor: colors.main_background,
     padding: "10px",
     borderRadius: "25px",
-    width: "80%",
+    width: "95%",
     minHeight: "70vh",
-    maxHeight: "75vh",
+    //maxHeight: "75vh",
     display: "flex" as const,
     flexDirection: "column" as const,
     alignItems: "center" as const,
@@ -163,7 +163,7 @@ const styles = {
     paddingRight: 10
   },
   pass_container: {
-    //position: "relative",  // ← Importante para posicionar el botón
+    position: "relative",  // ← Importante para posicionar el botón
     display: "inline-block"
   },
   input: {

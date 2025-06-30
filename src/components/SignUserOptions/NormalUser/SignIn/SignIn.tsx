@@ -13,6 +13,7 @@ import { useConvex } from "convex/react";
 import { PageContext } from "../../../../StoreInfo/page-storage";
 import { toast } from "react-toastify";
 import { ResetPassModal } from "./ResetPassModal";
+import { ClipLoader } from "react-spinners";
 
 export const SignIn = () => {
     const { updateLocalUser, updateVisitorUserInfo } = useContext(PageContext) as any;
@@ -166,7 +167,9 @@ export const SignIn = () => {
             onMouseOver={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = styles.buttonHover.transform || "scale(1.1)")}
             onMouseOut={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = "scale(1)")}
             disabled={isDoingAnApiRequest == true || (formData.email == "" || formData.password == "")} 
-          >{isDoingAnApiRequest == true? "Cargando..." : esp_strings.btn_signin}</button>
+          >{isDoingAnApiRequest == true? 
+            <ClipLoader color="white" loading={true} size={35} /> : esp_strings.btn_signin}
+          </button>
         </div>
 
         {resetPassModal && (

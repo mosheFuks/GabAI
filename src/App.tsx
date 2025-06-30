@@ -28,9 +28,9 @@ function App() {
     setLogedUser(JSON.parse(storedLogedUser!))
   }, [])
 
-  if (showSplash) {
+  /*if (showSplash) {
     return <SplashScreen onFinish={() => setShowSplash(false)} />;
-  }
+  }*/
 
   return (
     <>

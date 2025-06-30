@@ -192,7 +192,7 @@ export const OldPerashaInfo = () => {
             : 
             (
               <div style={{ textAlign: 'center', marginTop: '20px', fontSize: '3rem' }}>
-                <h5 style={{ color: colors.btn_background }}>No hay donaciones para esta perasha</h5>
+                <h5 style={{ color: colors.btn_background }}>No hay información de las Aliot</h5>
               </div>
             )}
         </div>

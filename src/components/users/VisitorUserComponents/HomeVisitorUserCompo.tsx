@@ -212,7 +212,7 @@ export const HomeVisitorUserComponent = () => {
           {logedVisitorUser.nombreEspanol} {logedVisitorUser.apellido}
         </h2>
         <button style={{...styles.button, backgroundColor: "green"}} onClick={() => setOpenEditPropertyModal(true)}>
-          Editar propiedad
+          Editar información
         </button>
       </div>
       <NavigationButtonSignUp step={step} setStep={setStep} fromPage="homeVisitorUser"/>

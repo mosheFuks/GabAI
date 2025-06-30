@@ -2,9 +2,9 @@ import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
 export const CustomDate = v.object({
-    dia: v.string(),
-    mes: v.string(),
-    ano: v.string()
+    dia: v.union(v.string(), v.number()),
+    mes: v.union(v.string(), v.number()),
+    ano: v.union(v.string(), v.number())
 })
 
 export const Cuenta = v.object({

@@ -25,29 +25,40 @@ interface AniversariesList {
 interface DaysOfThisWeek {
   currentYear: number,
   currentMonth: string,
+  nextMonth: string,
   sunday: string,
   friday: string
 }
 
 interface DateToDateProps {
-    setFilteredAniversaries : (thisWeekAniversaries: AniversariesList[]) => void
-    peopleList: VisitorUser[]
-    daysOfThisWeek: DaysOfThisWeek
+  setFilteredAniversaries : (thisWeekAniversaries: AniversariesList[]) => void
+  peopleList: VisitorUser[]
+  daysOfThisWeek: DaysOfThisWeek
+  setRenderedAniversaries: (thisWeekAniversaries: AniversariesList[]) => void
 }
 
-export const DateToDateAniversary = ({ peopleList, setFilteredAniversaries, daysOfThisWeek}: DateToDateProps) => {
+export const DateToDateAniversary = ({ peopleList, setFilteredAniversaries, daysOfThisWeek, setRenderedAniversaries }: DateToDateProps) => {
   const [dayStart, setDayStart] = useState<string>('');
   const [monthStart, setMonthStart] = useState<string>('');
   const [dayEnd, setDayEnd] = useState<string>('');
   const [monthEnd, setMonthEnd] = useState<string>('');
-  const [kehilaAniversaries, setKehilaAniversaries] = useState<AniversariesList[]>()
+  const [clicked, setClicked] = useState<boolean>(false);
 
-  useEffect(() => {
-    setKehilaAniversaries(
-    peopleList
-    .flatMap((persona) =>
+  const getImportantDatesFromAllPeopleList = () => {
+    const monthsToInclude = getMonthsBetweenInclusiveCyclic();
+
+    const monthAniversaries = peopleList!
+      .filter(persona =>
+        persona.aniversarios!.some(ani =>
+          monthsToInclude.includes(ani.fechaHebreo!.mes as typeof HEBREW_MONTHS[number])
+        )
+      )
+      .flatMap(persona =>
         persona.aniversarios!
-        .map((ani) => ({
+          .filter(ani =>
+            ani.fechaHebreo?.mes !== undefined && monthsToInclude.includes(ani.fechaHebreo.mes as typeof HEBREW_MONTHS[number])
+          )
+          .map(ani => ({
             motivo: ani.motivo,
             nombre: persona.nombreEspanol,
             apellido: persona.apellido,
@@ -57,22 +68,87 @@ export const DateToDateAniversary = ({ peopleList, setFilteredAniversaries, days
             minian: persona.minian,
             habilidades: persona.habilidades,
             fechaAniGreg: {
-                dia: ani.fecha?.dia,
-                mes: ani.fecha?.mes,
-                ano: ani.fecha?.ano,
+              dia: ani.fecha?.dia,
+              mes: ani.fecha?.mes,
+              ano: ani.fecha?.ano,
             },
             fechaAniHeb: {
-                dia: ani.fechaHebreo?.dia,
-                mes: ani.fechaHebreo?.mes,
-                ano: ani.fechaHebreo?.ano,
-            }
-        } as AniversariesList)
-    )))
-    if (monthStart == '' && monthEnd == '') {
-      setMonthStart(daysOfThisWeek.currentMonth)
-      setMonthEnd(daysOfThisWeek.currentMonth)
-    }
-  }, [])
+              dia: ani.fechaHebreo?.dia,
+              mes: ani.fechaHebreo?.mes,
+              ano: ani.fechaHebreo?.ano,
+            },
+          } as AniversariesList))
+      );
+
+    const monthBirthdates = peopleList!
+      .filter(persona =>
+        monthsToInclude.includes(persona.fechaNacimientoHebreo?.mes as typeof HEBREW_MONTHS[number])
+      )
+      .map(per => ({
+        motivo: "Cumpleaños",
+        nombre: per.nombreEspanol,
+        apellido: per.apellido,
+        nombreHebreo: per.nombreHebreo,
+        numeroSocio: per.numeroSocio,
+        grupo: per.grupo,
+        minian: per.minian,
+        habilidades: per.habilidades,
+        fechaAniGreg: {
+          dia: per.fechaNacimientoGregoriano?.dia,
+          mes: per.fechaNacimientoGregoriano?.mes,
+          ano: per.fechaNacimientoGregoriano?.ano,
+        },
+        fechaAniHeb: {
+          dia: per.fechaNacimientoHebreo?.dia,
+          mes: per.fechaNacimientoHebreo?.mes,
+          ano: per.fechaNacimientoHebreo?.ano,
+        },
+      } as AniversariesList));
+
+    const monthBarMitzvaAniversary = peopleList!
+      .filter(persona =>
+        monthsToInclude.includes(persona.fechaBarMitzvaHebreo?.mes as typeof HEBREW_MONTHS[number])
+      )
+      .map(per => ({
+        motivo: "Bar Mitzva",
+        nombre: per.nombreEspanol,
+        apellido: per.apellido,
+        nombreHebreo: per.nombreHebreo,
+        numeroSocio: per.numeroSocio,
+        grupo: per.grupo,
+        minian: per.minian,
+        habilidades: per.habilidades,
+        fechaAniGreg: {
+          dia: per.fechaBarMitzvaGregoriano?.dia,
+          mes: per.fechaBarMitzvaGregoriano?.mes,
+          ano: per.fechaBarMitzvaGregoriano?.ano,
+        },
+        fechaAniHeb: {
+          dia: per.fechaBarMitzvaHebreo?.dia,
+          mes: per.fechaBarMitzvaHebreo?.mes,
+          ano: per.fechaBarMitzvaHebreo?.ano,
+        },
+      } as AniversariesList));
+
+    const allAniversaries: AniversariesList[] = [
+      ...monthAniversaries,
+      ...monthBirthdates,
+      ...monthBarMitzvaAniversary
+    ];
+
+    allAniversaries.sort((a, b) => {
+      const indexA = HEBREW_MONTHS.indexOf(a.fechaAniHeb.mes as typeof HEBREW_MONTHS[number]);
+      const indexB = HEBREW_MONTHS.indexOf(b.fechaAniHeb.mes as typeof HEBREW_MONTHS[number]);
+
+      if (indexA !== indexB) {
+        return indexA - indexB;
+      }
+
+      return (parseInt(a.fechaAniHeb.dia ?? "0")) - (parseInt(b.fechaAniHeb.dia ?? "0"));
+    });
+
+    return allAniversaries || [];
+  };
 
   const getMonthsBetweenInclusiveCyclic = () => {
     const start = HEBREW_MONTHS.indexOf(monthStart as typeof HEBREW_MONTHS[number]);
@@ -95,34 +171,57 @@ export const DateToDateAniversary = ({ peopleList, setFilteredAniversaries, days
 
     return result;
   }
-  
 
+  useEffect(() => {
+    if (monthStart == '' && monthEnd == '') {
+      setMonthStart(daysOfThisWeek.currentMonth)
+      setMonthEnd(daysOfThisWeek.nextMonth != "" ? daysOfThisWeek.nextMonth :  daysOfThisWeek.currentMonth)
+    }
+  }, [])
+    
   const handleBuscar = () => {
     if (!dayStart || !monthStart || !dayEnd || !monthEnd) return;
 
-    const inRange = kehilaAniversaries!.filter((ani, index) => {
-      /*const { dia, mes } = ani.fechaHebreo;
-      const hAni = new HDate(parseInt(day), mes, 5785);
+    const allAniversaries = getImportantDatesFromAllPeopleList();
+    const monthsToInclude = getMonthsBetweenInclusiveCyclic(); // esto ya devuelve en orden cíclico
 
-      return hAni.abs() >= hStart.abs() && hAni.abs() <= hEnd.abs();*/
-      const selectedMonths = getMonthsBetweenInclusiveCyclic()
+    const inRange = allAniversaries.filter((ani) => {
+      const mesAni = ani.fechaAniHeb.mes;
+      const diaAni = parseInt(ani.fechaAniHeb.dia ?? "0");
 
-      if (selectedMonths.includes(ani.fechaAniHeb.mes as typeof HEBREW_MONTHS[number])) {
-        if (parseInt(ani.fechaAniHeb.dia!) >= parseInt(dayStart) || parseInt(ani.fechaAniHeb.dia!) <= parseInt(dayEnd)) {
-          return ani
-        }
+      if (!mesAni || !diaAni) return false;
+
+      const indexMesAni = monthsToInclude.indexOf(mesAni as typeof HEBREW_MONTHS[number]);
+      const indexMesInicio = monthsToInclude.indexOf(monthStart as typeof HEBREW_MONTHS[number]);
+      const indexMesFin = monthsToInclude.indexOf(monthEnd as typeof HEBREW_MONTHS[number]);
+
+      // Mes fuera del rango
+      if (indexMesAni === -1) return false;
+
+      // Primer mes
+      if (mesAni === monthStart) {
+        return diaAni >= parseInt(dayStart);
       }
+
+      // Último mes
+      if (mesAni === monthEnd) {
+        return diaAni <= parseInt(dayEnd);
+      }
+
+      // Mes intermedio
+      return indexMesAni > indexMesInicio && indexMesAni < indexMesFin;
     });
 
     setFilteredAniversaries(inRange);
+    setRenderedAniversaries(inRange);
   };
-    
-    return (
+
+  
+  return (
     <div style={styles.container}>
       <input type="number" style={styles.input} placeholder={daysOfThisWeek.sunday.toString().match(/^\d+/)} value={dayStart} onChange={(e) => setDayStart(e.target.value)} />
       <label style={styles.label}>de</label>
       <select style={styles.select} value={monthStart} onChange={(e) => setMonthStart(e.target.value)}>
-        <option value="">{daysOfThisWeek.currentMonth}</option>
         {HEBREW_MONTHS.map((month) => (
           <option key={month} value={month}>{month}</option>
         ))}
@@ -133,22 +232,22 @@ export const DateToDateAniversary = ({ peopleList, setFilteredAniversaries, days
       <input type="number" style={styles.input} placeholder={daysOfThisWeek.friday.toString().match(/^\d+/)} value={dayEnd} onChange={(e) => setDayEnd(e.target.value)} />
       <label style={styles.label}>de</label>
       <select style={styles.select} value={monthEnd} onChange={(e) => setMonthEnd(e.target.value)}>
-        <option value="">{daysOfThisWeek.currentMonth}</option>
         {HEBREW_MONTHS.map((month) => (
           <option key={month} value={month}>{month}</option>
         ))}
       </select>
 
       <button
-        style={{ ...styles.button, backgroundColor: dayStart == "" || dayEnd == "" ? "gray" : "blue" }}
+        style={{ ...styles.button, backgroundColor: dayStart == "" || dayEnd == "" ? "gray" : "blue", borderColor: clicked ? "orange" : "#ccc" }}
         onClick={handleBuscar}
         disabled={dayStart == "" || dayEnd == ""}
+        onFocus={() => setClicked(true)}
+        onBlur={() => setClicked(false)}
       >
         Buscar
       </button>
     </div>
   );
-
 };
 
 const styles = {

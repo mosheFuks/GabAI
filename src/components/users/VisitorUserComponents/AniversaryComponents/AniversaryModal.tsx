@@ -13,9 +13,28 @@ interface AniversaryModalProps {
 }
 
 export const CreateAniversaryModalComponent = ({modalAniversaryIsOpen, setModalAniversaryIsOpen, aniversary, setAniversarySelected}: AniversaryModalProps) => {
+  const [formUserAniversaryData, setFormUserAniversaryData] = useState<Aniversary>({
+    fecha: {
+      dia:  aniversary?.fecha?.dia != null ? aniversary.fecha.dia : "",
+      mes:  aniversary?.fecha?.mes != null ? aniversary.fecha.mes : "",
+      ano:  aniversary?.fecha?.ano != null ? aniversary.fecha.ano : "",
+    },
+    fechaHebreo: {
+      dia:  aniversary?.fechaHebreo?.dia != null ? aniversary.fechaHebreo.dia : "",
+      mes:  aniversary?.fechaHebreo?.mes != null ? aniversary.fechaHebreo.mes : "",
+      ano:  aniversary?.fechaHebreo?.ano != null ? aniversary.fechaHebreo.ano : "",
+    },
+    motivo: aniversary?.motivo != null ? aniversary?.motivo : "",
+    nombreDelAniversario: aniversary?.nombreDelAniversario != null ? aniversary?.nombreDelAniversario : "",
+  });
+  
   const closeModal = () => {
     setModalAniversaryIsOpen(false);
     setAniversarySelected({})
+  }
+
+  const handleChangeAniversaryData = (e: any) => {
+    setFormUserAniversaryData({ ...formUserAniversaryData, [e.target.name]: e.target.value }); 
   }
   
   return (

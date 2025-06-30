@@ -71,8 +71,6 @@ export const CreateNormalUserSignInfoModal = ({modalRealSignInfo, setModalRealSi
   const registerUser = async () => {
     if (isFormComplete) {
       try {
-        /*ADD THE USER ON FIREBASE */
-        const userCredential = await createUserWithEmailAndPassword(auth, formUserSignData.email!, formUserSignData.password!);
         /*ADD THE USER ON THE BACKEND */
         const newVisitorUser: LogedUserData = {
           nombre: formUserSignData.nombre!,
@@ -82,6 +80,8 @@ export const CreateNormalUserSignInfoModal = ({modalRealSignInfo, setModalRealSi
         }
         await addVisitorUser(user.nombreKehila!, user)
         await addVisitorUserToUsersList(newVisitorUser);
+        /*ADD THE USER ON FIREBASE */
+        const userCredential = await createUserWithEmailAndPassword(auth, formUserSignData.email!, formUserSignData.password!);
         toast.success('Usuario registrado correctamente', {
           position: "top-right",
           autoClose: 5000,
@@ -98,6 +98,7 @@ export const CreateNormalUserSignInfoModal = ({modalRealSignInfo, setModalRealSi
         if (err.toString().includes("auth/email-already-in-use")) {
           showToastError("Error al registrar usuario: Usuario ya existente")
         }
+        showToastError("Ocurrió un error al registrar usuario, intenta nuevamente más tarde");
       }
     } else {
       showToastError('Por favor completa todos los campos')

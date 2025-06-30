@@ -499,6 +499,7 @@ export const changeUserVisitordata = mutation({
     updatedData: v.array(
       v.object({
         name: v.string(),
+        normalName: v.string(),
         value: v.string(),
       })
     ),
@@ -545,6 +546,61 @@ export const changeUserVisitordata = mutation({
     // Paso 3: Guardar los usuarios actualizados en la base de datos
     await ctx.db.patch(kehila._id, {
       usuarios: usuariosActualizados,
+    });
+
+    return { success: true };
+  },
+});
+
+export const addSonToVisitorUser = mutation({
+  args: {
+    nombreKehila: v.string(),
+    nombreUsuario: v.string(),
+    apellidoUsuario: v.string(),
+    nuevoHijo: v.object({
+      nombre: v.string(),
+      nombreHebreo: v.string(),
+      apellido: v.string(),
+      genero: v.string(),
+      fechaNacimientoGregoriano: CustomDate,
+      fechaNacimientoHebreo: CustomDate,
+      perashaBarMitzva: v.optional(v.string()),
+      fechaBarMitzvaGregoriano: v.optional(CustomDate),
+      fechaBarMitzvaHebreo: v.optional(CustomDate),
+      habilidades: v.array(v.string()),
+    }),
+  },
+
+  handler: async (ctx, args) => {
+    // Paso 1: Buscar la Kehila
+    const kehila = await ctx.db
+      .query("Kehila")
+      .filter((q) => q.eq(q.field("nombre"), args.nombreKehila))
+      .first();
+
+    if (!kehila) {
+      throw new Error("Kehila no encontrada");
+    }
+
+    // Paso 2: Buscar el usuario
+    const usuario = kehila.usuarios.find((u) => u.nombreEspanol === args.nombreUsuario && u.apellido === args.apellidoUsuario);
+
+    if (!usuario) {
+      throw new Error("Usuario no encontrado");
+    }
+
+    const nuevosUsuarios = kehila.usuarios.map((u) => {
+      if (u.nombreEspanol === args.nombreUsuario && u.apellido === args.apellidoUsuario) {
+        return {
+          ...u,
+          hijos: [...(u.hijos || []), args.nuevoHijo],
+        };
+      }
+      return u;
+    });
+
+    await ctx.db.patch(kehila._id, {
+      usuarios: nuevosUsuarios,
     });
 
     return { success: true };
@@ -603,8 +659,6 @@ export const deletePerashaInfo = mutation({
     await ctx.db.patch(kehila._id, {
       perashiot: perashiotFiltradas,
     });
-
-    console.log(`🧹 Se eliminó los datos de la perashá "${args.nombrePerasha}" de la Kehila: ${args.nombreKehila}`);
 
     return { success: true };
   },
