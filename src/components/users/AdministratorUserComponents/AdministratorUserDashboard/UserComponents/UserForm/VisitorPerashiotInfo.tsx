@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { CSSProperties } from 'react';
 
 import { Aniversary, CustomDate, Son } from '../../../../../../structs/structs';

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import Modal from 'react-modal';
 import { colors } from '../../../../assets/colors'
 import { Alia, Donacion } from '../../../../structs/structs';
@@ -17,7 +17,7 @@ interface AliaModalProps {
 }
 
 export const AliaModal = ({setOpenAliaModal, openAliaModal, setAliotList, aliotList, perashaName}: AliaModalProps) => {
-  const {logedUser, logedVisitorUser} = useContext(PageContext) as any;
+  const {logedUser} = useContext(PageContext) as any;
   const [addDonationToUser, setAddDonationToUser] = useState<boolean>(false);
   const [formAliaData, setFormAliaData] = useState<Alia>({
     alia: "",

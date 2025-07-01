@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import Modal from 'react-modal';
 import { Aniversary } from '../../../../../../structs/structs';
 import { colors } from '../../../../../../assets/colors';

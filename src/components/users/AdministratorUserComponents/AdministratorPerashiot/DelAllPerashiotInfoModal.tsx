@@ -1,4 +1,4 @@
-import React, { CSSProperties, useContext } from 'react';
+import { CSSProperties, useContext } from 'react';
 import Modal from 'react-modal';
 import { colors } from '../../../../assets/colors'
 import { deleteAllPerashiotInfo, deletePerashaInfo } from '../../../../apis/requests';

@@ -1,4 +1,4 @@
-import React, { CSSProperties, useContext, useEffect, useState } from "react";
+import { CSSProperties, useContext, useState } from "react";
 import { colors } from "../../../../assets/colors";
 import { esp_strings } from "../../../../assets/strings";
 import { VisitorUser, Son, Aniversary } from '../../../../structs/structs';

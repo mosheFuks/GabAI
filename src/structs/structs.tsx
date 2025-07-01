@@ -58,9 +58,9 @@ export interface SignInfo {
 }
 
 export interface CustomDate {
-    dia?: string,
-    mes?: string,
-    ano?: string
+    dia?: string | number,
+    mes?: string | number,
+    ano?: string | number  
 }
 
 export interface ToastData {

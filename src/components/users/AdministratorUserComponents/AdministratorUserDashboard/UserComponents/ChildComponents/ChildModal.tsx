@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React  from 'react';
 import Modal from 'react-modal';
 import { Ability, Son } from '../../../../../../structs/structs';
 import { colors } from '../../../../../../assets/colors';

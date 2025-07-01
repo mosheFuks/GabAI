@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import Modal from 'react-modal';
 import { Donacion, GREG_MONTHS, VisitorUser } from '../../../../../../structs/structs';
 import { colors } from '../../../../../../assets/colors';

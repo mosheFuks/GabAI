@@ -1,7 +1,7 @@
 import { createContext, useState, ReactNode, useEffect } from "react";
 import { LogedUserData, VisitorUser } from "../structs/structs";
 import { useNavigate } from "react-router-dom";
-import { getAuth, signOut } from "firebase/auth";
+/*import { getAuth, signOut } from "firebase/auth";*/
 
 // Definir el tipo del contexto
 interface PageContextType {

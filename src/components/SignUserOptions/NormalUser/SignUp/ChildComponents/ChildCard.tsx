@@ -1,4 +1,4 @@
-import React, { CSSProperties } from "react";
+import { CSSProperties } from "react";
 import { Son } from "../../../../../structs/structs";
 import { CircleUser } from "lucide-react"
 

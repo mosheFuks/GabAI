@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Modal from 'react-modal';
 import { colors } from '../../../../assets/colors';
 import { Ability, GREG_MONTHS, HEBREW_MONTHS } from '../../../../structs/structs';

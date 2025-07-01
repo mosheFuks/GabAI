@@ -1,4 +1,4 @@
-import React, { CSSProperties } from "react";
+import  { CSSProperties } from "react";
 import { Aniversary } from "../../../../../structs/structs";
 import { CalendarRange  } from "lucide-react"
 

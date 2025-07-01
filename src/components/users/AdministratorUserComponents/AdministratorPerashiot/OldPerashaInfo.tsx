@@ -1,4 +1,4 @@
-import React, { CSSProperties, useContext, useEffect, useState } from "react";
+import { CSSProperties, useContext, useEffect, useState } from "react";
 import { Alia } from '../../../../structs/structs';
 
 import { useNavigate, useParams } from "react-router-dom";
@@ -17,64 +17,6 @@ export const OldPerashaInfo = () => {
   const perashaName = id?.replace(/([a-z])([A-Z])/g, '$1 $2') ?? "";
   let alia = getPerashaInfo(logedUser.kehila, perashaName);
   const agregarPerasha = addPerashaToKehila();
-
-  const mockAliot: Alia[] = [{
-    alia: "Cohen",
-    nombre: "Moises",
-    nombreHebreo: "Moshe ben Moshe",
-    apellido: "Cohen",
-    monto: 2000,
-    moneda: "USD"
-  },{
-    alia: "Levi",
-    nombre: "Leo",
-    nombreHebreo: "Zeev ben Moshe",
-    monto: 230,
-    moneda: "ARS",
-    apellido: ""
-  },{
-    alia: "Levi",
-    nombre: "Leo",
-    nombreHebreo: "Zeev ben Moshe",
-    monto: 230,
-    moneda: "ARS",
-    apellido: ""
-  },{
-    alia: "Levi",
-    nombre: "Leo",
-    nombreHebreo: "Zeev ben Moshe",
-    monto: 230,
-    moneda: "ARS",
-    apellido: ""
-  },{
-    alia: "Levi",
-    nombre: "Leo",
-    nombreHebreo: "Zeev ben Moshe",
-    monto: 230,
-    moneda: "ARS",
-    apellido: ""
-  },{
-    alia: "Levi",
-    nombre: "Leo",
-    nombreHebreo: "Zeev ben Moshe",
-    monto: 230,
-    moneda: "ARS",
-    apellido: ""
-  },{
-    alia: "Levi",
-    nombre: "Leo",
-    nombreHebreo: "Zeev ben Moshe",
-    monto: 230,
-    moneda: "ARS",
-    apellido: ""
-  },{
-    alia: "Levi",
-    nombre: "Leo",
-    nombreHebreo: "Zeev ben Moshe",
-    monto: 230,
-    moneda: "ARS",
-    apellido: ""
-  }]
 
   const [openAliaModal, setOpenAliaModal] = useState<boolean>(false)
   //const [addUserDonationModal, setOpenAddUserDonationModal] = useState<boolean>(false)

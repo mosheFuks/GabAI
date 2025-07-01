@@ -1,4 +1,4 @@
-import React, { CSSProperties, useContext } from 'react';
+import { CSSProperties, useContext } from 'react';
 import { colors } from '../../../../assets/colors';
 import { PageContext } from '../../../../StoreInfo/page-storage';
 
@@ -6,9 +6,9 @@ import { PageContext } from '../../../../StoreInfo/page-storage';
 interface NavigationButtonProps {
   step: number;
   setStep: (step: number) => void;
-  setModalRealSignInfo: (modalRealSignInfo: boolean) => void;
+  setModalRealSignInfo?: (modalRealSignInfo: boolean) => void;
   fromPage: string;
-  saveNewVisitorUserOnUsersList: () => void;
+  saveNewVisitorUserOnUsersList?: () => void;
 }
 
 export const NavigationButtonSignUp = ({step, setStep, setModalRealSignInfo, fromPage, saveNewVisitorUserOnUsersList}: NavigationButtonProps) => {
@@ -38,10 +38,10 @@ export const NavigationButtonSignUp = ({step, setStep, setModalRealSignInfo, fro
                         <button type="button" style={styles.button} onClick={prevStep}>Atrás</button>
                         {fromPage === "homeVisitorUser" || fromPage == "userDashboardPage" ? (<button type="button" onClick={nextStep} style={styles.button}>Siguiente</button>) : null}
                         {fromPage == "SignUp" && logedUser.rol == "VISITANTE" ? 
-                            (<button type="submit" style={styles.button} onClick={() => saveNewVisitorUserOnUsersList()}>Guardar</button>) : null
+                            (<button type="submit" style={styles.button} onClick={() => saveNewVisitorUserOnUsersList!()}>Guardar</button>) : null
                         }
                         { fromPage != "userDashboardPage" ?
-                            (<button type="submit" style={styles.regi_button} onClick={() => setModalRealSignInfo(true)}>Registrarse</button>) : null
+                            (<button type="submit" style={styles.regi_button} onClick={() => setModalRealSignInfo!(true)}>Registrarse</button>) : null
                         }
                     </div>
                 )}

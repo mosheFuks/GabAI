@@ -9,7 +9,7 @@ import { SignUpOperator } from './components/SignUserOptions/OperatorUser/SignUp
 import { ToastNotification } from './components/page/ToastNotification/ToastNotification';
 import { SignIn } from './components/SignUserOptions/NormalUser/SignIn/SignIn';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import SplashScreen from './components/page/SplashScreen/SplashScreen';
+/*import SplashScreen from './components/page/SplashScreen/SplashScreen';*/
 import { ConvexProvider, ConvexReactClient } from "convex/react";
 import HomePage from './components/page/HomePage/HomePage';
 import { Navbar } from './components/page/Navbar/Navbar';
@@ -20,7 +20,7 @@ import { useEffect, useState } from 'react';
 
 function App() {
   const [logedUser, setLogedUser] = useState<LogedUserData | null>()
-  const [showSplash, setShowSplash] = useState<boolean>(true);
+  /*const [showSplash, setShowSplash] = useState<boolean>(true);*/
   const storedLogedUser = localStorage.getItem('logedUser');
   const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string)
   

@@ -134,7 +134,12 @@ export const changeDonationStatus = () => {
 /*-------CHANGE THE STATUS OF A USER----------------*/
 export const changeUserVisitorData = () => {
   const mutation = useMutation(api.kehila.changeUserVisitordata);
-  return (kehilaName: string, nombreUsuario: string, apellidoUsuario: string, updatedData: { name: string; value: string }[]) =>
+  return (
+    kehilaName: string,
+    nombreUsuario: string,
+    apellidoUsuario: string,
+    updatedData: { name: string; value: string; normalName: string }[]
+  ) =>
     mutation({
       nombreKehila: kehilaName,
       nombreUsuario,
