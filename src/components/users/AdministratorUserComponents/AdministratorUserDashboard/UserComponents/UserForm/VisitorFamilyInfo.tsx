@@ -21,24 +21,24 @@ export const VisitorFamilyInfo = ({logedVisitorUser}: FormPersonalDataProps) => 
     return (
       <div style={{ height: "400px", overflowY: "auto", padding: "10px", borderRadius: "5px" }}>
         <div>
-            <label htmlFor="userMaritalStatus "style={{ display: "block" }}>Estado Civil</label>
+            <label htmlFor="userMaritalStatus "style={{ display: "block", fontWeight: 'bold' }}>Estado Civil</label>
             <h5 id="userMaritalStatus" style={styles.input}>
                 {logedVisitorUser.estadoCivil}
             </h5>
 
-            <label htmlFor="userWifeNameEsp" style={{ display: "block"}}>Nombre Esposa Español</label>
+            <label htmlFor="userWifeNameEsp" style={{ display: "block", fontWeight: 'bold'}}>Nombre Esposa Español</label>
             <h5 id="userWifeNameEsp" style={styles.input}>
                 {logedVisitorUser.nombreEsposaEspanol}
             </h5>
 
-            <label htmlFor="userWifeNameHeb" style={{ display: "block"}}>Nombre Esposa Hebreo</label>
+            <label htmlFor="userWifeNameHeb" style={{ display: "block", fontWeight: 'bold'}}>Nombre Esposa Hebreo</label>
             <h5 id="userWifeNameHeb" style={styles.input}>
                 {logedVisitorUser.nombreEsposaHebreo}
             </h5>
 
             {logedVisitorUser.hijos.length > 0 ? (
               <div style={{width: '100%' }} >
-                <label style={{ display: "block", marginBottom: "10px"}}>Hijos</label>
+                <label style={{ display: "block", fontWeight: 'bold', marginBottom: "10px"}}>Hijos</label>
                 <div style={{display: "flex", flexDirection: "row", gap: "30px", marginBottom: "10px"}}>
                   {logedVisitorUser.hijos.map((hijo: Son, index: React.Key | null | undefined) => (
                     <div>
@@ -56,7 +56,7 @@ export const VisitorFamilyInfo = ({logedVisitorUser}: FormPersonalDataProps) => 
             
             {logedVisitorUser.aniversarios.length > 0 ? (
                 <div style={{width: '100%' }} >
-                    <label style={{display: "block", marginBottom: "10px"}}>Aniversarios</label>
+                    <label style={{display: "block", fontWeight: 'bold', marginBottom: "10px"}}>Aniversarios</label>
                     <div style={{display: "flex", flexDirection: "row", gap: "20px", marginBottom: "10px"}}>
                       {logedVisitorUser.aniversarios.map((aniversario: Aniversary, index: React.Key | null | undefined) => (
                         <AniversaryCard 

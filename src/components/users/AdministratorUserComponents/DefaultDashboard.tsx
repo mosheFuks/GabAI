@@ -918,11 +918,11 @@ export const AdministratorDefaultDashboard = () => {
         step={step}  />
 
       {step == 1 ? (
-        <div>
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
           <div style={{ fontSize: '1.5rem', fontWeight: 'bold', textDecorationLine: 'underline', textDecorationColor: 'orange', marginTop: '10px', marginBottom: '10px'}}>
             {`Lista de participantes de la Kehila`}
           </div>
-          <div style={{ height: "400px", overflowY: "auto", padding: "10px", borderRadius: "5px",  }}>
+          <div style={{ flex: 1, overflowY: "auto", padding: "10px", borderRadius: "5px" }}>
             {peopleFilter != undefined && peopleFilter!.length > 0 ? (
               <table style={styles.table}>
                 <thead>
@@ -992,7 +992,9 @@ export const AdministratorDefaultDashboard = () => {
         null
       )}
       {step == 2 ? (
-        <NextAliot peopleList={peopleList}/>
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
+          <NextAliot peopleList={peopleList}/>
+        </div>
       ) : (
         null
       )}
@@ -1042,19 +1044,17 @@ export const AdministratorDefaultDashboard = () => {
 `}
 </style>
 
-
 const styles: { [key: string]: CSSProperties }= {
   container: {
     backgroundColor: colors.main_background,
     padding: "10px",
     borderRadius: "25px",
     width: "95%",
-    minHeight: "75vh",
-    maxHeight: "80vh",
+    height: "75vh",
     display: "flex",
     flexDirection: "column",
     //alignItems: "center",
-    justifyContent: "space-between",
+    //justifyContent: "space-between",
     margin: "20px auto 0 auto",
     paddingLeft: "20px",
     paddingRight: "20px",

@@ -36,33 +36,33 @@ export const UserChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen, 
       >
         <h2 style={{ textAlign: 'center', color: 'blue'}}>{son!.nombre}</h2>
         <div>
-          <label htmlFor="userChildNameHeb" style={{ display: "block"}}>Nombre Hebreo</label>
+          <label htmlFor="userChildNameHeb" style={{ display: "block", fontWeight: 'bold'}}>Nombre Hebreo</label>
           <h5 id="userChildNameHeb" style={styles.input}>
             {son!.nombreHebreo}
           </h5>
 
-          <label htmlFor="userChildSurname" style={{ display: "block"}}>Apellido</label>
+          <label htmlFor="userChildSurname" style={{ display: "block", fontWeight: 'bold'}}>Apellido</label>
           <h5 id="userChildSurname" style={styles.input}>
             {son!.apellido}
           </h5>
 
-          <label htmlFor="userChildBithDateGreg" style={{ display: "block"}}>Fecha Nacimiento Gregoriano</label>
+          <label htmlFor="userChildBithDateGreg" style={{ display: "block", fontWeight: 'bold'}}>Fecha Nacimiento Gregoriano</label>
           <div style={{ display: "flex", flexDirection: "row"}}>
             <div style={{ display: "flex", flexDirection: "row"}}>
               <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                <label htmlFor="userChildBithDateGregDia" style={{ display: "block", marginRight: 10}}>Día</label>
+                <label htmlFor="userChildBithDateGregDia" style={{ display: "block", fontWeight: 'bold', marginRight: 10}}>Día</label>
                 <h5 id="userChildBithDateGregDia" style={styles.input}>
                   {son!.fechaNacimiento?.dia}
                 </h5>
               </div>
               <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                <label htmlFor="userChildBithDateGregMes" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Mes</label>
+                <label htmlFor="userChildBithDateGregMes" style={{ display: "block", fontWeight: 'bold', marginRight: 10, marginLeft: 10}}>Mes</label>
                 <h5 id="userChildBithDateGregMes" style={styles.input}>
                   {son!.fechaNacimiento?.mes}
                 </h5>
               </div>
               <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                <label htmlFor="userChildBithDateGregAno" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
+                <label htmlFor="userChildBithDateGregAno" style={{ display: "block", fontWeight: 'bold', marginRight: 10, marginLeft: 10}}>Año</label>
                 <h5 id="userChildBithDateGregAno" style={styles.input}>
                   {son!.fechaNacimiento?.ano}
                 </h5>
@@ -70,23 +70,23 @@ export const UserChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen, 
             </div>
           </div>
 
-          <label htmlFor="userChildBithDateHeb" style={{ display: "block"}}>Fecha Nacimiento Hebreo</label>
+          <label htmlFor="userChildBithDateHeb" style={{ display: "block", fontWeight: 'bold'}}>Fecha Nacimiento Hebreo</label>
           <div style={{ display: "flex", flexDirection: "row"}}>
             <div style={{ display: "flex", flexDirection: "row"}}>
               <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                <label htmlFor="userChildBithHebDia" style={{ display: "block", marginRight: 10}}>Día</label>
+                <label htmlFor="userChildBithHebDia" style={{ display: "block", fontWeight: 'bold', marginRight: 10}}>Día</label>
                 <h5 id="userChildBithHebDia" style={styles.input}>
                   {son!.fechaNacimientoHebreo?.dia}
                 </h5>
               </div>
               <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                <label htmlFor="userChildBithHebMes" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Mes</label>
+                <label htmlFor="userChildBithHebMes" style={{ display: "block", fontWeight: 'bold', marginRight: 10, marginLeft: 10}}>Mes</label>
                 <h5 id="userChildBithHebMes" style={styles.input}>
                   {son!.fechaNacimientoHebreo?.mes}
                 </h5>
               </div>
               <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                <label htmlFor="userFechaNacHebAno" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
+                <label htmlFor="userFechaNacHebAno" style={{ display: "block", fontWeight: 'bold', marginRight: 10, marginLeft: 10}}>Año</label>
                 <h5 id="userChildBithHebAno" style={styles.input}>
                   {son!.fechaNacimientoHebreo?.ano}
                 </h5>
@@ -94,7 +94,7 @@ export const UserChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen, 
             </div>
           </div>
 
-          <label htmlFor="userChildGender" style={{ display: "block" }}>Género</label>
+          <label htmlFor="userChildGender" style={{ display: "block", fontWeight: 'bold' }}>Género</label>
           <h5 id="userChildGender" style={styles.input}>
             {son!.genero}
           </h5>
@@ -102,17 +102,17 @@ export const UserChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen, 
           
           {son!.genero === "Masculino" ? (
             <div>
-              <label htmlFor="userBarMitzvaDateHeb" style={{ display: "block"}}>Fecha Bar Mitzva Hebreo</label>
+              <label htmlFor="userBarMitzvaDateHeb" style={{ display: "block", fontWeight: 'bold'}}>Fecha Bar Mitzva Hebreo</label>
               <div style={{ display: "flex", flexDirection: "row"}}>
                 <div style={{ display: "flex", flexDirection: "row"}}>
                   <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                    <label htmlFor="userChildBarMitzvaDateHebDia" style={{ display: "block", marginRight: 10}}>Día</label>
+                    <label htmlFor="userChildBarMitzvaDateHebDia" style={{ display: "block", fontWeight: 'bold', marginRight: 10}}>Día</label>
                     <h5 id="userChildBarMitzvaDateHebDia" style={styles.input}>
                       {son!.fechaBarMitzvaHebreo?.dia}
                     </h5>
                   </div>
                   <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                    <label htmlFor="userChildBarMitzvaDateHebMes" style={{ display: "block", marginRight: 10, marginLeft: 10}}>
+                    <label htmlFor="userChildBarMitzvaDateHebMes" style={{ display: "block", fontWeight: 'bold', marginRight: 10, marginLeft: 10}}>
                       Mes
                     </label>
                     <h5 id="userChildBarMitzvaDateHebMes" style={styles.input}>
@@ -120,43 +120,43 @@ export const UserChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen, 
                     </h5>
                   </div>
                   <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                    <label htmlFor="userChildBarMitzvaDateHebAno" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
+                    <label htmlFor="userChildBarMitzvaDateHebAno" style={{ display: "block", fontWeight: 'bold', marginRight: 10, marginLeft: 10}}>Año</label>
                     <h5 id="userChildBarMitzvaDateHebAno" style={styles.input}>
                       {son!.fechaBarMitzvaHebreo?.ano}
                     </h5>
                   </div>
                 </div>
               </div>
-              <label htmlFor="userBarMitzvaDateGreg" style={{ display: "block"}}>Fecha Bar Mitzva Gregoriano</label>
+              <label htmlFor="userBarMitzvaDateGreg" style={{ display: "block", fontWeight: 'bold'}}>Fecha Bar Mitzva Gregoriano</label>
               <div style={{ display: "flex", flexDirection: "row"}}>
                 <div style={{ display: "flex", flexDirection: "row"}}>
                   <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                    <label htmlFor="userChildBarMitzvaDateGregDia" style={{ display: "block", marginRight: 10}}>Día</label>
+                    <label htmlFor="userChildBarMitzvaDateGregDia" style={{ display: "block", fontWeight: 'bold', marginRight: 10}}>Día</label>
                     <h5 id="userChildBarMitzvaDateGregDia" style={styles.input}>
                       {son!.fechaBarMitzva?.dia}
                     </h5>
                   </div>
                   <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                    <label htmlFor="userChildBarMitzvaDateGregMes" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Mes</label>
+                    <label htmlFor="userChildBarMitzvaDateGregMes" style={{ display: "block", fontWeight: 'bold', marginRight: 10, marginLeft: 10}}>Mes</label>
                     <h5 id="userChildBarMitzvaDateGregMes" style={styles.input}>
                       {son!.fechaBarMitzva?.mes}
                     </h5>
                   </div>
                   </div>
                   <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                    <label htmlFor="userChildBarMitzvaDateGregAno" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
+                    <label htmlFor="userChildBarMitzvaDateGregAno" style={{ display: "block", fontWeight: 'bold', marginRight: 10, marginLeft: 10}}>Año</label>
                     <h5 id="userChildBarMitzvaDateGregAno" style={styles.input}>
                       {son!.fechaBarMitzva?.ano}
                     </h5>
                   </div>
               </div>
 
-              <label htmlFor="userChildPerasha"style={{ display: "block"}}>Perasha Bar Mitzva</label>
+              <label htmlFor="userChildPerasha"style={{ display: "block", fontWeight: 'bold'}}>Perasha Bar Mitzva</label>
               <h5 id="userChildPerasha" style={styles.input}>
                 {son!.perashaBarMitzva}
               </h5>
 
-              <label htmlFor="userChildAbilities" style={{ display: "block" }}>Conocimientos</label>
+              <label htmlFor="userChildAbilities" style={{ display: "block", fontWeight: 'bold' }}>Conocimientos</label>
               {son!.habilidades?.map((habilidad: Ability, index: React.Key | null | undefined) => (
                 <h5 id="userChildAbilities" style={styles.input}>
                   {habilidad}
@@ -195,7 +195,7 @@ const styles = {
       color: "black",
     },
   button: {
-    display: "block",
+    display: "block", fontWeight: 'bold',
     color: "white",
     padding: "10px 15px",
     margin: "10px",

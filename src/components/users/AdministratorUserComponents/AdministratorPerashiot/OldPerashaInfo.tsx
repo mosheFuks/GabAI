@@ -128,7 +128,7 @@ export const OldPerashaInfo = () => {
           <button style={styles.delButton} onClick={() => setOpenDeleteModal(true)}>Eliminar</button>
         </div>
       </div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', width: '1000px', marginTop: '10px', marginBottom: '10px'}}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', width: '90%', marginTop: '10px', marginBottom: '10px'}}>
         <div style={{ display: "flex", flexDirection: "row", gap: '10px' }}>
           <div style={styles.pendingCard}>
             <div style={{ fontSize: '1rem', fontWeight: 'bold' }}>
@@ -152,7 +152,7 @@ export const OldPerashaInfo = () => {
           Agregar Alia
         </button>
       </div>
-      <div style={{ height: "400px", overflowY: "auto", borderRadius: "5px" }}>
+      <div style={{ flex: 1, height: "400px", overflowY: "auto", borderRadius: "5px" }}>
         <div>
             {aliotList && aliotList.length > 0  ? (
               <table style={styles.table}>
@@ -271,7 +271,7 @@ const styles: { [key: string]: CSSProperties }= {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    justifyContent: "space-between",
+    //justifyContent: "space-between",
     margin: "20px auto 0 auto",
     paddingLeft: "20px",
     paddingRight: "20px",

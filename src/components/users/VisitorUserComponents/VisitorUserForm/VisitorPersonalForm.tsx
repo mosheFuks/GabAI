@@ -10,70 +10,70 @@ export const VisitorPersonalForm = ({ logedVisitorUser }: VisitorPersonalDataPro
   return (
     <div style={{ height: "400px", overflowY: "auto", padding: "10px", border: "0px solid #ccc", borderRadius: "5px" }}>
       <div>
-        <label htmlFor="userKehilaName" style={{ display: "block" }}>Nombre Kehila</label>
+        <label htmlFor="userKehilaName" style={{ display: "block", fontWeight: 'bold' }}>Nombre Kehila</label>
         <h5 id="userKehilaName" style={styles.input}>
           {logedVisitorUser.nombreKehila}
         </h5>
 
-        <label htmlFor="userMinian" style={{ display: "block"}}>Minian</label>
+        <label htmlFor="userMinian" style={{ display: "block", fontWeight: 'bold'}}>Minian</label>
         <h5 id="userMinian" style={styles.input}>
           {logedVisitorUser.minian}
         </h5>
           
-        <label htmlFor="userNombreEspanol" style={{ display: "block"}}>Nombre Español</label>
+        <label htmlFor="userNombreEspanol" style={{ display: "block", fontWeight: 'bold'}}>Nombre Español</label>
         <h5 id="userNombreEspanol" style={styles.input}>
           {logedVisitorUser.nombreEspanol}
         </h5>
         
-        <label htmlFor="userNombreHebreo" style={{ display: "block"}}>Nombre Hebreo</label>
+        <label htmlFor="userNombreHebreo" style={{ display: "block", fontWeight: 'bold'}}>Nombre Hebreo</label>
         <h5 id="userNombreHebreo" style={styles.input}>
           {logedVisitorUser.nombreHebreo}
         </h5>
         
-        <label htmlFor="userApellido"style={{ display: "block"}}>Apellido</label>
+        <label htmlFor="userApellido"style={{ display: "block", fontWeight: 'bold'}}>Apellido</label>
         <h5 id="userApellido" style={styles.input}>
           {logedVisitorUser.apellido}
         </h5>
 
-        <label htmlFor="userFechaNacGreg" style={{ display: "block"}}>Fecha Nacimiento Gregoriano</label>
+        <label htmlFor="userFechaNacGreg" style={{ display: "block", fontWeight: 'bold'}}>Fecha Nacimiento Gregoriano</label>
         <div style={{ display: "flex", flexDirection: "row"}}>
           <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-            <label htmlFor="userFechaNacGregDia" style={{ display: "block", marginRight: 10}}>Día</label>
+            <label htmlFor="userFechaNacGregDia" style={{ display: "block", fontWeight: 'bold', marginRight: 10}}>Día</label>
             <h5 id="userFechaNacGregDia" style={styles.input}>
               {logedVisitorUser.fechaNacimientoGregoriano?.dia}
             </h5>
           </div>
           <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-            <label htmlFor="userFechaNacGregMes" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Mes</label>
+            <label htmlFor="userFechaNacGregMes" style={{ display: "block", fontWeight: 'bold', marginRight: 10, marginLeft: 10}}>Mes</label>
             <h5 id="userFechaNacGregDia" style={styles.input}>
               {logedVisitorUser.fechaNacimientoGregoriano?.mes}
             </h5>
           </div>
           <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-            <label htmlFor="userFechaNacGregAno" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
+            <label htmlFor="userFechaNacGregAno" style={{ display: "block", fontWeight: 'bold', marginRight: 10, marginLeft: 10}}>Año</label>
             <h5 id="userFechaNacGregDia" style={styles.input}>
               {logedVisitorUser.fechaNacimientoGregoriano?.ano}
             </h5>
           </div>
         </div>
         
-        <label htmlFor="userFechaNacHeb" style={{ display: "block"}}>Fecha Nacimiento Hebreo</label>
+        <label htmlFor="userFechaNacHeb" style={{ display: "block", fontWeight: 'bold'}}>Fecha Nacimiento Hebreo</label>
         <div style={styles.calculateDateBtnContainer}>
           <div style={{ display: "flex", flexDirection: "row"}}>
             <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-              <label htmlFor="userFechaNacHebDia" style={{ display: "block", marginRight: 10}}>Día</label>
+              <label htmlFor="userFechaNacHebDia" style={{ display: "block", fontWeight: 'bold', marginRight: 10}}>Día</label>
               <h5 id="userFechaNacHebDia" style={styles.input}>
                 {logedVisitorUser.fechaNacimientoHebreo?.dia}
               </h5>
             </div>
             <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-              <label htmlFor="userFechaNacHebMes" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Mes</label>
+              <label htmlFor="userFechaNacHebMes" style={{ display: "block", fontWeight: 'bold', marginRight: 10, marginLeft: 10}}>Mes</label>
               <h5 id="userFechaNacHebMes" style={styles.input}>
                 {logedVisitorUser.fechaNacimientoHebreo?.mes}
               </h5>
             </div>
             <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-              <label htmlFor="userFechaNacHebAno" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
+              <label htmlFor="userFechaNacHebAno" style={{ display: "block", fontWeight: 'bold', marginRight: 10, marginLeft: 10}}>Año</label>
               <h5 id="userFechaNacHebAno" style={styles.input}>
                 {logedVisitorUser.fechaNacimientoHebreo?.ano}
               </h5>
@@ -81,32 +81,32 @@ export const VisitorPersonalForm = ({ logedVisitorUser }: VisitorPersonalDataPro
           </div>
         </div>
 
-        <label htmlFor="userEmailPers" style={{ display: "block"}}>Email Personal</label>
+        <label htmlFor="userEmailPers" style={{ display: "block", fontWeight: 'bold'}}>Email Personal</label>
         <h5 id="userEmailPers" style={styles.input}>
           {logedVisitorUser.emailPersonal}
         </h5>
         
-        <label htmlFor="userEmailCom" style={{ display: "block"}}>Email Comercial</label>
+        <label htmlFor="userEmailCom" style={{ display: "block", fontWeight: 'bold'}}>Email Comercial</label>
         <h5 id="userEmailCom" style={styles.input}>
           {logedVisitorUser.emailComercial}
         </h5>
         
-        <label htmlFor="userPhone" style={{ display: "block"}}>Teléfono</label>
+        <label htmlFor="userPhone" style={{ display: "block", fontWeight: 'bold'}}>Teléfono</label>
         <h5 id="userPhone" style={styles.input}>
           {logedVisitorUser.telefono}
         </h5>
         
-        <label htmlFor="userDirection" style={{ display: "block"}}>Dirección</label>
+        <label htmlFor="userDirection" style={{ display: "block", fontWeight: 'bold'}}>Dirección</label>
         <h5 id="userDirection" style={styles.input}>
           {logedVisitorUser.direccion}
         </h5>
         
-        <label htmlFor="userAsosiateNum" style={{ display: "block"}}>Numero Socio</label>
+        <label htmlFor="userAsosiateNum" style={{ display: "block", fontWeight: 'bold'}}>Numero Socio</label>
         <h5 id="userAsosiateNum" style={styles.input}>
           {logedVisitorUser.numeroSocio}
         </h5>
         
-        <label htmlFor="userGroup" style={{ display: "block" }}>Grupo</label>
+        <label htmlFor="userGroup" style={{ display: "block", fontWeight: 'bold' }}>Grupo</label>
         <h5 id="userGroup" style={styles.input}>
           {logedVisitorUser.grupo}
         </h5>

@@ -431,7 +431,7 @@ export const addDonationToUser = mutation({
       usuarios: usuariosActualizados,
     });
 
-    return args.nuevaDonacion;
+    return args.nuevaDonacion;  
   },
 });
 
@@ -562,10 +562,10 @@ export const addSonToVisitorUser = mutation({
       nombreHebreo: v.string(),
       apellido: v.string(),
       genero: v.string(),
-      fechaNacimientoGregoriano: CustomDate,
+      fechaNacimiento: CustomDate,
       fechaNacimientoHebreo: CustomDate,
       perashaBarMitzva: v.optional(v.string()),
-      fechaBarMitzvaGregoriano: v.optional(CustomDate),
+      fechaBarMitzva: v.optional(CustomDate),
       fechaBarMitzvaHebreo: v.optional(CustomDate),
       habilidades: v.array(v.string()),
     }),
@@ -594,6 +594,49 @@ export const addSonToVisitorUser = mutation({
         return {
           ...u,
           hijos: [...(u.hijos || []), args.nuevoHijo],
+        };
+      }
+      return u;
+    });
+
+    await ctx.db.patch(kehila._id, {
+      usuarios: nuevosUsuarios,
+    });
+
+    return { success: true };
+  },
+});
+
+export const addAniversaryToVisitorUser = mutation({
+  args: {
+    nombreKehila: v.string(),
+    nombreUsuario: v.string(),
+    apellidoUsuario: v.string(),
+    nuevoAniversario: Aniversary,
+  },
+  handler: async (ctx, args) => {
+    // Paso 1: Buscar la Kehila
+    const kehila = await ctx.db
+      .query("Kehila")
+      .filter((q) => q.eq(q.field("nombre"), args.nombreKehila))
+      .first();
+
+    if (!kehila) {
+      throw new Error("Kehila no encontrada");
+    }
+
+    // Paso 2: Buscar el usuario
+    const usuario = kehila.usuarios.find((u) => u.nombreEspanol === args.nombreUsuario && u.apellido === args.apellidoUsuario);
+
+    if (!usuario) {
+      throw new Error("Usuario no encontrado");
+    }
+
+    const nuevosUsuarios = kehila.usuarios.map((u) => {
+      if (u.nombreEspanol === args.nombreUsuario && u.apellido === args.apellidoUsuario) {
+        return {
+          ...u,
+          aniversarios: [...(u.aniversarios || []), args.nuevoAniversario],
         };
       }
       return u;

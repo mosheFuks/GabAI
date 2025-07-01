@@ -34,33 +34,33 @@ export const CreateAniversaryModalComponent = ({modalAniversaryIsOpen, setModalA
       >
         <h2 style={{ textAlign: 'center', color: 'blue'}}>{aniversary?.nombreDelAniversario}</h2>
         <div>
-          <label htmlFor="userAniversaryMotive" style={{ display: "block" }}>Motivo</label>
+          <label htmlFor="userAniversaryMotive" style={{ display: "block", fontWeight: 'bold' }}>Motivo</label>
           <h5 id="userAniversaryMotive" style={styles.input}>
             {aniversary!.motivo}
           </h5>
 
-          <label htmlFor="userAniversaryPerName" style={{ display: "block"}}>Nombre de la persona</label>
+          <label htmlFor="userAniversaryPerName" style={{ display: "block", fontWeight: 'bold'}}>Nombre de la persona</label>
           <h5 id="userAniversaryPerName" style={styles.input}>
             {aniversary!.nombreDelAniversario}
           </h5>
 
-          <label htmlFor="userAniversaryBithDateGreg" style={{ display: "block"}}>Fecha Aniversario Gregoriano</label>
+          <label htmlFor="userAniversaryBithDateGreg" style={{ display: "block", fontWeight: 'bold'}}>Fecha Aniversario Gregoriano</label>
           <div style={{ display: "flex", flexDirection: "row"}}>
             <div style={{ display: "flex", flexDirection: "row"}}>
               <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                <label htmlFor="userAniversaryBithDateGregDia" style={{ display: "block", marginRight: 10}}>Día</label>
+                <label htmlFor="userAniversaryBithDateGregDia" style={{ display: "block", fontWeight: 'bold', marginRight: 10}}>Día</label>
                 <h5 id="userAniversaryBithDateGregDia" style={styles.input}>
                   {aniversary!.fecha?.dia}
                 </h5>
               </div>
               <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                <label htmlFor="userAniversaryBithDateGregMes" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Mes</label>
+                <label htmlFor="userAniversaryBithDateGregMes" style={{ display: "block", fontWeight: 'bold', marginRight: 10, marginLeft: 10}}>Mes</label>
                 <h5 id="userAniversaryBithDateGregMes" style={styles.input}>
                   {aniversary!.fecha?.mes}
                 </h5>
               </div>
               <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                <label htmlFor="userAniversaryBithDateGregAno" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
+                <label htmlFor="userAniversaryBithDateGregAno" style={{ display: "block", fontWeight: 'bold', marginRight: 10, marginLeft: 10}}>Año</label>
                 <h5 id="userAniversaryBithDateGregAno" style={styles.input}>
                   {aniversary!.fecha?.ano}
                 </h5>
@@ -68,23 +68,23 @@ export const CreateAniversaryModalComponent = ({modalAniversaryIsOpen, setModalA
             </div>
           </div>
 
-          <label htmlFor="userAniversaryBithDateHebDia" style={{ display: "block"}}>Fecha Aniversario Hebreo</label>
+          <label htmlFor="userAniversaryBithDateHebDia" style={{ display: "block", fontWeight: 'bold'}}>Fecha Aniversario Hebreo</label>
           <div style={{ display: "flex", flexDirection: "row"}}>
             <div style={{ display: "flex", flexDirection: "row"}}>
               <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                <label htmlFor="userAniversaryBithDateHebDia" style={{ display: "block", marginRight: 10}}>Día</label>
+                <label htmlFor="userAniversaryBithDateHebDia" style={{ display: "block", fontWeight: 'bold', marginRight: 10}}>Día</label>
                 <h5 id="userAniversaryBithDateHebDia" style={styles.input}>
                   {aniversary!.fechaHebreo?.dia}
                 </h5>
               </div>
               <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                <label htmlFor="userAniversaryBithDateHebMes" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Mes</label>
+                <label htmlFor="userAniversaryBithDateHebMes" style={{ display: "block", fontWeight: 'bold', marginRight: 10, marginLeft: 10}}>Mes</label>
                 <h5 id="userAniversaryBithDateHebMes" style={styles.input}>
                   {aniversary!.fechaHebreo?.mes!}
                 </h5>
               </div>
               <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                <label htmlFor="userAniversaryBithDateHebAno" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
+                <label htmlFor="userAniversaryBithDateHebAno" style={{ display: "block", fontWeight: 'bold', marginRight: 10, marginLeft: 10}}>Año</label>
                 <h5 id="userAniversaryBithDateHebAno" style={styles.input}>
                   {aniversary!.fechaHebreo?.ano}
                 </h5>
@@ -122,7 +122,7 @@ const styles = {
       color: "black",
     },
   button: {
-    display: "block",
+    display: "block", fontWeight: 'bold',
     color: "white",
     padding: "10px 15px",
     margin: "10px",

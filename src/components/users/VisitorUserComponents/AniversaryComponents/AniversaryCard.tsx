@@ -7,13 +7,15 @@ interface AniversaryCardProps {
   key: React.Key | null | undefined,
   aniversario: Aniversary;
   setAniversarySelected: (aniversary: Aniversary) => void;
+  setIsAniversarySelected?: (isAniversarySelected: boolean) => void;
 }
 
-export const AniversaryCard = ({aniversario, key, setModalAniversaryIsOpen, setAniversarySelected}: AniversaryCardProps) => {
+export const AniversaryCard = ({aniversario, key, setModalAniversaryIsOpen, setAniversarySelected, setIsAniversarySelected}: AniversaryCardProps) => {
 
     const handleAniversarySelection = (aniversary: Aniversary ) => {
       setModalAniversaryIsOpen(true);
       setAniversarySelected(aniversary!);
+      setIsAniversarySelected?.(true);
     }
     return (
         <div style={styles.card} onClick={() => handleAniversarySelection(aniversario)}>

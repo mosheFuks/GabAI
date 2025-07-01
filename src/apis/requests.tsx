@@ -154,6 +154,17 @@ export const addSonToVisitorUser = () => {
     });
 }
 
+export const addAniversaryToVisitorUser = () => {
+  const mutation = useMutation(api.kehila.addAniversaryToVisitorUser);
+  return (kehilaName: string, userName: string, userSurname: string, newAniversary: any) =>
+    mutation({
+      nombreKehila: kehilaName,
+      nombreUsuario: userName,
+      apellidoUsuario: userSurname,
+      nuevoAniversario: newAniversary
+    });
+}
+
 /*------DELETE ALL PERASHA INFO OF THE KEHILA------*/
 export const deleteAllPerashiotInfo = () => {
   const mutation = useMutation(api.kehila.deleteAllPerashiotInfo)

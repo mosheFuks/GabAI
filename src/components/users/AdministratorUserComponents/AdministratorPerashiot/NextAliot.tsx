@@ -96,6 +96,9 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
     const filteredAniversaries = currentMonthAniversaries.filter((ani) => {
       return parseInt(ani.fechaAniHeb.dia) >= nearSundayDay && parseInt(ani.fechaAniHeb.dia) <= nearFridayDay
     })
+    
+    setRenderedAniversaries(filteredAniversaries);
+
     return filteredAniversaries || [];
   }
 
@@ -181,8 +184,6 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
       ...monthBarMitzvaAniversary
     ];
 
-    setRenderedAniversaries(allAniversaries);
-
     return allAniversaries || [];
   };
 
@@ -217,7 +218,7 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
       return;
     }
 
-    const filtered = renderedAniversaries.filter(ani =>
+    const filtered = filteredAniversaries.filter(ani =>
       ani.motivo.toLowerCase().startsWith(keySearch) ||
       ani.minian.toLowerCase().startsWith(keySearch)
     );
@@ -233,7 +234,7 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
   }, [])
 
   return (
-    <div>
+    <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
       <div style={styles.headerButtons}>
         {<div style={{ display: "flex", gap: '10px', width: '100%', marginTop: '20px'}}>
           <DateToDateAniversary peopleList={peopleList!} setFilteredAniversaries={setFilteredAniversaries} daysOfThisWeek={daysOfThisWeek} setRenderedAniversaries={setRenderedAniversaries} />
@@ -254,7 +255,7 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
           </div>
         )}
       </div>
-      <div style={{ height: "400px", overflowY: "auto", padding: "10px", borderRadius: "5px" }}>
+      <div style={{ flex: 1, overflowY: "auto", padding: "10px", borderRadius: "5px" }}>
         <div>
           {filteredAniversaries.length > 0 ? (
             <table style={styles.table}>
@@ -313,7 +314,7 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
               <h5 style={{ color: colors.btn_background }}>Ningún usuario tiene un aniversario en estas fecha</h5>
             </div>
           )}
-      </div>
+        </div>
       </div>
     </div>
 )}
@@ -361,13 +362,12 @@ const styles: { [key: string]: CSSProperties }= {
     backgroundColor: colors.main_background,
     padding: "10px",
     borderRadius: "25px",
-    width: "80%",
-    minHeight: "75vh",
-    maxHeight: "80vh",
+    width: "95%",
+    height: "75vh",
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "space-between",
+    //alignItems: "center",
+    //justifyContent: "space-between",
     margin: "20px auto 0 auto",
     paddingLeft: "20px",
     paddingRight: "20px",

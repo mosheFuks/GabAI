@@ -1,11 +1,12 @@
 import React, { useContext, useState } from 'react';
 import Modal from 'react-modal';
 import { colors } from '../../../../assets/colors';
-import { Ability, CustomDate, HEBREW_MONTHS, Son } from '../../../../structs/structs';
+import { Ability, CustomDate, GREG_MONTHS, HEBREW_MONTHS, Son } from '../../../../structs/structs';
 import { HDate } from '@hebcal/core';
 import { AfterSunsetSwitch } from '../../../../assets/AfterSunsetSwitch';
 import { PageContext } from '../../../../StoreInfo/page-storage';
 import { addSonToVisitorUser } from '../../../../apis/requests';
+import { toast } from 'react-toastify';
 
 Modal.setAppElement('#root');
 
@@ -66,9 +67,32 @@ export const UserChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen, 
 
   const saveNewChild = () => {
     try {
-      addSonLogedVisitorUser(logedVisitorUser.nombreKehila, logedVisitorUser.nombre, logedVisitorUser.apellido, formUserChildData)
+      addSonLogedVisitorUser(logedVisitorUser.nombreKehila, logedVisitorUser.nombreEspanol, logedVisitorUser.apellido, formUserChildData)
+      setChildModalIsOpen(false);
+      toast.success("Hijo/a guardado correctamente", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored", 
+        style: { backgroundColor: 'green', color: 'white' },
+      });
     } catch (error) {
       console.error("Error al guardar el hijo:", error);
+      toast.error("Ocurrio un error", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored", 
+        style: { backgroundColor: 'red', color: 'white' },
+      });
     }
   }
 
@@ -77,21 +101,21 @@ export const UserChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen, 
   }
 
   const handleAddAbility = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const value = e.target.value as Ability;
-    
-      setHabilidad((prevHabilidades) =>
-        e.target.checked
-          ? [...prevHabilidades, value] // Agregar si se selecciona
-          : prevHabilidades.filter((h) => h !== value) // Quitar si se deselecciona
-      );
-    
-      setFormUserChildData((prevData: Son) => ({
-        ...prevData,
-        habilidades: e.target.checked
-          ? [...(prevData.habilidades || []), value] // Agregar la habilidad al array
-          : (prevData.habilidades || []).filter((h: Ability) => h !== value) // Quitar si se deselecciona
-      }));
-    };
+    const value = e.target.value as Ability;
+  
+    setHabilidad((prevHabilidades) =>
+      e.target.checked
+        ? [...prevHabilidades, value] // Agregar si se selecciona
+        : prevHabilidades.filter((h) => h !== value) // Quitar si se deselecciona
+    );
+  
+    setFormUserChildData((prevData: Son) => ({
+      ...prevData,
+      habilidades: e.target.checked
+        ? [...(prevData.habilidades || []), value] // Agregar la habilidad al array
+        : (prevData.habilidades || []).filter((h: Ability) => h !== value) // Quitar si se deselecciona
+    }));
+  };
 
   const calculateHebrewBirthDate = (date: CustomDate) => {
     const day = +date.dia!
@@ -213,51 +237,56 @@ export const UserChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen, 
         <div>
           {!isSonSelected ? (
             <>
-              <label htmlFor="userChildName" style={{ display: "block"}}>Nombre</label>
+              <label htmlFor="userChildName" style={{ display: "block", fontWeight: 'bold'}}>Nombre</label>
               <input type="text" id="userChildName" name="nombre" style={styles.input} value={formUserChildData.nombre} onChange={handleChangeChildData} disabled={isSonSelected} />
             </>
           ) : null}
 
-          <label htmlFor="userChildNameHeb" style={{ display: "block"}}>Nombre Hebreo</label>
+          <label htmlFor="userChildNameHeb" style={{ display: "block", fontWeight: 'bold'}}>Nombre Hebreo</label>
           <input type="text" id="userChildNameHeb" name="nombreHebreo" style={styles.input} value={formUserChildData.nombreHebreo} onChange={handleChangeChildData} disabled={isSonSelected} />
 
-          <label htmlFor="userChildSurname" style={{ display: "block"}}>Apellido</label>
+          <label htmlFor="userChildSurname" style={{ display: "block", fontWeight: 'bold'}}>Apellido</label>
           <input type="text" id="userChildSurname" name="apellido" style={styles.input} value={formUserChildData.apellido} onChange={handleChangeChildData} disabled={isSonSelected} />
 
-          <label htmlFor="userChildBithDateGreg" style={{ display: "block"}}>Fecha Nacimiento Gregoriano</label>
+          <label htmlFor="userChildBithDateGreg" style={{ display: "block", fontWeight: 'bold'}}>Fecha Nacimiento Gregoriano</label>
           <div style={{ display: "flex", flexDirection: "row"}}>
             <div style={{ display: "flex", flexDirection: "row"}}>
               <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                <label htmlFor="userChildBithDateGregDia" style={{ display: "block", marginRight: 10}}>Día</label>
-                <input type="text" id="userChildBithDateGregDia" name="fechaNacimiento" style={styles.input} value={formUserChildData.fechaNacimiento?.dia} onChange={(e: any) => saveBirthDateParams("dia", "fechaNacimiento", false, e)} disabled={isSonSelected} />
+                <label htmlFor="userChildBithDateGregDia" style={{ display: "block", fontWeight: 'bold', marginRight: 10}}>Día</label>
+                <input type="number" id="userChildBithDateGregDia" name="fechaNacimiento" style={styles.input} value={formUserChildData.fechaNacimiento?.dia} onChange={(e: any) => saveBirthDateParams("dia", "fechaNacimiento", false, e)} disabled={isSonSelected} />
               </div>
               <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                <label htmlFor="userChildBithDateGregMes" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Mes</label>
-                <input type="text" id="userChildBithDateGregMes" name="fechaNacimiento" style={styles.input} value={formUserChildData.fechaNacimiento?.mes} onChange={(e: any) => saveBirthDateParams("mes", "fechaNacimiento", false, e)}   disabled={isSonSelected} />
+                <label htmlFor="userChildBithDateGregMes" style={{ display: "block", fontWeight: 'bold', marginRight: 10, marginLeft: 10}}>Mes</label>
+                {/*<input type="number" id="userChildBithDateGregMes" name="fechaNacimiento" style={styles.input} value={formUserChildData.fechaNacimiento?.mes} onChange={(e: any) => saveBirthDateParams("mes", "fechaNacimiento", false, e)}   disabled={isSonSelected} />*/}
+                <select id="userChildBithDateGregMes" name="fechaNacimiento" onChange={(e: any) => saveBirthDateParams("mes", "fechaNacimiento", false, e)} style={styles.input} value={formUserChildData.fechaNacimiento?.mes} disabled={isSonSelected}>
+                  {GREG_MONTHS.map((month) => (
+                    <option key={month.numero} value={month.numero}>{month.nombre}</option>
+                  ))}
+                </select>
               </div>
               <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                <label htmlFor="userChildBithDateGregAno" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
-                <input type="text" id="userChildBithDateGregAno" name="fechaNacimiento" style={styles.input} value={formUserChildData.fechaNacimiento?.ano} onChange={(e: any) => saveBirthDateParams("ano", "fechaNacimiento", false, e)} disabled={isSonSelected} />
+                <label htmlFor="userChildBithDateGregAno" style={{ display: "block", fontWeight: 'bold', marginRight: 10, marginLeft: 10}}>Año</label>
+                <input type="number" id="userChildBithDateGregAno" name="fechaNacimiento" style={styles.input} value={formUserChildData.fechaNacimiento?.ano} onChange={(e: any) => saveBirthDateParams("ano", "fechaNacimiento", false, e)} disabled={isSonSelected} />
               </div>
             </div>
             {!isSonSelected ? calculateBirthDateBtn("fechaNacimiento", formUserChildData?.fechaNacimientoHebreo!, formUserChildData?.fechaNacimientoHebreo?.dia == "" || formUserChildData?.fechaNacimientoHebreo?.mes == "" || formUserChildData?.fechaNacimientoHebreo?.ano == "") : null}
           </div>
 
-          <label htmlFor="userChildBithDateHeb" style={{ display: "block"}}>Fecha Nacimiento Hebreo</label>
+          <label htmlFor="userChildBithDateHeb" style={{ display: "block", fontWeight: 'bold'}}>Fecha Nacimiento Hebreo</label>
           <div style={{ display: "flex", flexDirection: "row"}}>
             <div style={{ display: "flex", flexDirection: "row"}}>
               <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                <label htmlFor="userChildBithHebDia" style={{ display: "block", marginRight: 10}}>Día</label>
+                <label htmlFor="userChildBithHebDia" style={{ display: "block", fontWeight: 'bold', marginRight: 10}}>Día</label>
                 <input id="userChildBithHebDia" type="number" name="fechaNacimientoHebreo" placeholder="Día" onChange={(e: any) => saveBirthDateParams("dia", "fechaNacimientoHebreo", false, e)} style={{...styles.input}} value={formUserChildData?.fechaNacimientoHebreo?.dia}/>
               </div>
               {isSonSelected ? (
                 <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                  <label htmlFor="userChildBithHebMes" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Mes</label>
-                  <input type="text" id="userChildBithHebMes" name="fechaNacimientoHebreo" style={styles.input} value={formUserChildData.fechaNacimientoHebreo?.mes} onChange={handleChangeChildData} disabled={isSonSelected}/>
+                  <label htmlFor="userChildBithHebMes" style={{ display: "block", fontWeight: 'bold', marginRight: 10, marginLeft: 10}}>Mes</label>
+                  <input type="text" id="userChildBithHebMes" name="fechaNacimientoHebreo" style={styles.input} value={formUserChildData.fechaNacimientoHebreo?.mes} onChange={(e: any) => saveBirthDateParams("mes", "fechaNacimientoHebreo", false, e)} disabled={isSonSelected}/>
                 </div>
               ) : (
                 <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                  <label htmlFor="userChildBithHebMes" style={{ display: "block", marginRight: 10, marginLeft: 10}}>
+                  <label htmlFor="userChildBithHebMes" style={{ display: "block", fontWeight: 'bold', marginRight: 10, marginLeft: 10}}>
                     Mes
                   </label>
                   <select
@@ -279,7 +308,7 @@ export const UserChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen, 
                 </div>
               )}
               <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                <label htmlFor="userFechaNacHebAno" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
+                <label htmlFor="userFechaNacHebAno" style={{ display: "block", fontWeight: 'bold', marginRight: 10, marginLeft: 10}}>Año</label>
                 <input id="userFechaNacHebAno" type="number" name="fechaNacimientoHebreo" placeholder="Año" onChange={(e: any) => saveBirthDateParams("ano", "fechaNacimientoHebreo", false, e)} style={{...styles.input}} value={formUserChildData?.fechaNacimientoHebreo?.ano}/>
               </div>
             </div>
@@ -293,7 +322,7 @@ export const UserChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen, 
 
           {son?.nombre != "" ? (
             <>
-              <label htmlFor="userChildGender" style={{ display: "block" }}>Género</label>
+              <label htmlFor="userChildGender" style={{ display: "block", fontWeight: 'bold' }}>Género</label>
               <select id="userChildGender" name="genero" onChange={(e) => { 
                 handleChangeChildData(e);
                 setGenero(e.target.value);
@@ -307,21 +336,26 @@ export const UserChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen, 
           
           {formUserChildData.genero === "Masculino" ? (
             <div>
-              <label htmlFor="userBarMitzvaDateGreg" style={{ display: "block"}}>Fecha Bar Mitzva Gregoriano</label>
+              <label htmlFor="userBarMitzvaDateGreg" style={{ display: "block", fontWeight: 'bold'}}>Fecha Bar Mitzva Gregoriano</label>
               <div style={{ display: "flex", flexDirection: "row"}}>
                 <div style={{ display: "flex", flexDirection: "row"}}>
                   <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                    <label htmlFor="userChildBarMitzvaDateGregDia" style={{ display: "block", marginRight: 10}}>Día</label>
-                    <input type="text" id="userChildBarMitzvaDateGregDia" name="fechaBarMitzva" style={styles.input} value={formUserChildData.fechaBarMitzva?.dia} onChange={handleChangeChildData} disabled={isSonSelected}/>
+                    <label htmlFor="userChildBarMitzvaDateGregDia" style={{ display: "block", fontWeight: 'bold', marginRight: 10}}>Día</label>
+                    <input type="number" id="userChildBarMitzvaDateGregDia" name="fechaBarMitzva" style={styles.input} value={formUserChildData.fechaBarMitzva?.dia} onChange={handleChangeChildData} disabled={isSonSelected}/>
                   </div>
                   <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                    <label htmlFor="userChildBarMitzvaDateGregMes" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Mes</label>
-                    <input type="text" id="userChildBarMitzvaDateGregMes" name="fechaBarMitzva" style={styles.input} value={formUserChildData.fechaBarMitzva?.mes} onChange={handleChangeChildData} disabled={isSonSelected}/>
+                    <label htmlFor="userChildBarMitzvaDateGregMes" style={{ display: "block", fontWeight: 'bold', marginRight: 10, marginLeft: 10}}>Mes</label>
+                    {/*<input type="number" id="userChildBarMitzvaDateGregMes" name="fechaBarMitzva" style={styles.input} value={formUserChildData.fechaBarMitzva?.mes} onChange={handleChangeChildData} disabled={isSonSelected}/>*/}
+                    <select id="userChildBarMitzvaDateGregMes" name="fechaBarMitzva" onChange={handleChangeChildData} style={styles.input} value={formUserChildData.fechaBarMitzva?.mes} disabled={isSonSelected}>
+                      {GREG_MONTHS.map((month) => (
+                        <option key={month.numero} value={month.numero}>{month.nombre}</option>
+                      ))}
+                    </select>
                   </div>
                   </div>
                   <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                    <label htmlFor="userChildBarMitzvaDateGregAno" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
-                    <input type="text" id="userChildBarMitzvaDateGregAno" name="fechaBarMitzva" style={styles.input} value={formUserChildData.fechaBarMitzva?.ano} onChange={handleChangeChildData} disabled={isSonSelected} />
+                    <label htmlFor="userChildBarMitzvaDateGregAno" style={{ display: "block", fontWeight: 'bold', marginRight: 10, marginLeft: 10}}>Año</label>
+                    <input type="number" id="userChildBarMitzvaDateGregAno" name="fechaBarMitzva" style={styles.input} value={formUserChildData.fechaBarMitzva?.ano} onChange={handleChangeChildData} disabled={isSonSelected} />
                   </div>
                   {!isSonSelected ? (
                     <>
@@ -330,21 +364,21 @@ export const UserChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen, 
                   ) : null}
               </div>
 
-              <label htmlFor="userBarMitzvaDateHeb" style={{ display: "block"}}>Fecha Bar Mitzva Hebreo</label>
+              <label htmlFor="userBarMitzvaDateHeb" style={{ display: "block", fontWeight: 'bold'}}>Fecha Bar Mitzva Hebreo</label>
               <div style={{ display: "flex", flexDirection: "row"}}>
                 <div style={{ display: "flex", flexDirection: "row"}}>
                   <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                    <label htmlFor="userChildBarMitzvaDateHebDia" style={{ display: "block", marginRight: 10}}>Día</label>
-                    <input type="text" id="userChildBarMitzvaDateHebDia" style={styles.input} name="fechaBarMitzvaHebreo" value={formUserChildData.fechaBarMitzvaHebreo?.dia} onChange={handleChangeChildData} disabled={isSonSelected}/>
+                    <label htmlFor="userChildBarMitzvaDateHebDia" style={{ display: "block", fontWeight: 'bold', marginRight: 10}}>Día</label>
+                    <input type="number" id="userChildBarMitzvaDateHebDia" style={styles.input} name="fechaBarMitzvaHebreo" value={formUserChildData.fechaBarMitzvaHebreo?.dia} onChange={handleChangeChildData} disabled={isSonSelected}/>
                   </div>
                   {isSonSelected ? (
                     <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                      <label htmlFor="userChildBithHebMes" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Mes</label>
+                      <label htmlFor="userChildBithHebMes" style={{ display: "block", fontWeight: 'bold', marginRight: 10, marginLeft: 10}}>Mes</label>
                       <input type="text" id="userChildBithHebMes" style={styles.input} name="fechaBarMitzvaHebreo" value={formUserChildData.fechaNacimientoHebreo?.mes} onChange={handleChangeChildData} disabled={isSonSelected}/>
                     </div>
                   ) : (
                   <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                    <label htmlFor="userChildBithHebMes" style={{ display: "block", marginRight: 10, marginLeft: 10}}>
+                    <label htmlFor="userChildBithHebMes" style={{ display: "block", fontWeight: 'bold', marginRight: 10, marginLeft: 10}}>
                       Mes
                     </label>
                     <select
@@ -366,8 +400,8 @@ export const UserChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen, 
                   </div>
                   )}
                   <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                    <label htmlFor="userChildBarMitzvaDateHebAno" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
-                    <input type="text" id="userChildBarMitzvaDateHebAno" style={styles.input} name="fechaBarMitzvaHebreo" value={formUserChildData.fechaBarMitzvaHebreo?.ano} onChange={handleChangeChildData} disabled={isSonSelected} />
+                    <label htmlFor="userChildBarMitzvaDateHebAno" style={{ display: "block", fontWeight: 'bold', marginRight: 10, marginLeft: 10}}>Año</label>
+                    <input type="number" id="userChildBarMitzvaDateHebAno" style={styles.input} name="fechaBarMitzvaHebreo" value={formUserChildData.fechaBarMitzvaHebreo?.ano} onChange={handleChangeChildData} disabled={isSonSelected} />
                   </div>
                   {!isSonSelected ? (
                     <>
@@ -377,10 +411,10 @@ export const UserChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen, 
                 </div>
               </div>
 
-              <label htmlFor="userChildPerasha"style={{ display: "block"}}>Perasha Bar Mitzva</label>
+              <label htmlFor="userChildPerasha"style={{ display: "block", fontWeight: 'bold'}}>Perasha Bar Mitzva</label>
               <input type="text" id="userChildPerasha" name="perashaBarMitzva" style={styles.input} value={formUserChildData.perashaBarMitzva} onChange={handleChangeChildData} disabled={isSonSelected} />
 
-              <label htmlFor="userChildAbilities" style={{ display: "block" }}>Conocimientos</label>
+              <label htmlFor="userChildAbilities" style={{ display: "block", fontWeight: 'bold' }}>Conocimientos</label>
               {isSonSelected ? (
                 formUserChildData.habilidades?.map((habilidad: string) => (
                   <h5 key={habilidad} id="userChildAbilities" style={styles.input}>
@@ -405,9 +439,11 @@ export const UserChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen, 
               </div>}
             </div>
           ) :  (null)}
-          <button onClick={saveNewChild} style={{...styles.button, backgroundColor: 'blue'}} disabled={formUserChildData.nombre == ""}>
-            Guardar
-          </button>
+          {!isSonSelected && (
+            <button onClick={saveNewChild} style={{...styles.button, backgroundColor: 'blue'}} disabled={formUserChildData.nombre == ""}>
+              Guardar
+            </button>
+          )}
         </div>
       </Modal>
     </div>

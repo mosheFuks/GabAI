@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Modal from 'react-modal';
 import { colors } from '../../../../../assets/colors';
 import { HDate } from "@hebcal/core";
-import { Aniversary, CustomDate, HEBREW_MONTHS, VisitorUser } from '../../../../../structs/structs';
+import { Aniversary, CustomDate, GREG_MONTHS, HEBREW_MONTHS, VisitorUser } from '../../../../../structs/structs';
 
 Modal.setAppElement('#root');
 
@@ -157,7 +157,7 @@ export const CreateAniversaryModalComponent = ({modalAniversaryIsOpen, setModalA
       >
         <h2 style={{ textAlign: 'center', color: "blue"}}>Ingresa los datos del aniversario</h2>
         <div>
-          <label htmlFor="userAniversaryMotive" style={{ display: "block" }}>Motivo</label>
+          <label htmlFor="userAniversaryMotive" style={{ display: "block", fontWeight: 'bold' }}>Motivo</label>
           <select id="userAniversaryMotive" name="motivo" onChange={(e) => { 
             handleChangeAniversaryData(e);
           }} style={styles.input}>
@@ -166,35 +166,41 @@ export const CreateAniversaryModalComponent = ({modalAniversaryIsOpen, setModalA
             <option value="Otro">Otro</option>
           </select>
 
-          <label htmlFor="userAniversaryPerName" style={{ display: "block"}}>Nombre de la persona</label>
+          <label htmlFor="userAniversaryPerName" style={{ display: "block", fontWeight: 'bold'}}>Nombre de la persona</label>
           <input id="userAniversaryPerName" type="text" name="nombreDelAniversario" placeholder="Nombre de la persona" onChange={handleChangeAniversaryData} style={styles.input} value={formUserAniversaryData.nombreDelAniversario }/>
 
-          <label htmlFor="userAniversaryDateGreg" style={{ display: "block"}}>Fecha en Gregoriano</label>
+          <label htmlFor="userAniversaryDateGreg" style={{ display: "block", fontWeight: 'bold'}}>Fecha en Gregoriano</label>
           <div style={{ display: "flex", flexDirection: "row"}}>
             <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-              <label htmlFor="userAniversaryDateGreg" style={{ display: "block", marginRight: 10}}>Día</label>
+              <label htmlFor="userAniversaryDateGreg" style={{ display: "block", fontWeight: 'bold', marginRight: 10}}>Día</label>
               <input id="userAniversaryDateGreg" type="number" name="fecha" placeholder="Día" onChange={(e: any) => saveBirthDateParams("dia", "fecha", false, e)} style={{...styles.input}} value={formUserAniversaryData.fecha?.dia}/>
             </div>
             <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-              <label htmlFor="userAniversaryDateGregMes" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Mes</label>
-              <input id="userAniversaryDateGregMes" type="number" name="fecha" placeholder="Mes" onChange={(e: any) => saveBirthDateParams("mes", "fecha", false, e)} style={{...styles.input}} value={formUserAniversaryData.fecha?.mes}/>
+              <label htmlFor="userAniversaryDateGregMes" style={{ display: "block", fontWeight: 'bold', marginRight: 10, marginLeft: 10}}>Mes</label>
+              {//MAKE A SELECT FOR MONTHS
+              <select id="userAniversaryDateGregMes" name="fecha" onChange={(e: any) => saveBirthDateParams("mes", "fecha", false, e)} style={styles.input} value={formUserAniversaryData.fecha?.mes}>
+                {GREG_MONTHS.map((month) => (
+                  <option key={month.numero} value={month.numero}>{month.nombre}</option>
+                ))}
+              </select>
+              }
             </div>
             <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-              <label htmlFor="userAniversaryDateGregAno" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
+              <label htmlFor="userAniversaryDateGregAno" style={{ display: "block", fontWeight: 'bold', marginRight: 10, marginLeft: 10}}>Año</label>
               <input id="userAniversaryDateGregAno" type="number" name="fecha" placeholder="Ano" onChange={(e: any) => saveBirthDateParams("ano", "fecha", false, e)} style={{...styles.input}} value={formUserAniversaryData.fecha?.ano}/>
             </div>
             {calculateAniversaryDateBtn("fecha", formUserAniversaryData.fechaHebreo!, formUserAniversaryData.fechaHebreo?.dia! == "" || formUserAniversaryData.fechaHebreo?.mes! == "" || formUserAniversaryData.fechaHebreo?.ano! == "" )}
           </div>
 
-          <label htmlFor="userFechaNacHeb" style={{ display: "block"}}>Fecha Nacimiento Hebreo</label>
+          <label htmlFor="userFechaNacHeb" style={{ display: "block", fontWeight: 'bold'}}>Fecha Nacimiento Hebreo</label>
           <div style={{ display: "flex", flexDirection: "row"}}>
             <div style={{ display: "flex", flexDirection: "row"}}>
               <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                <label htmlFor="userFechaNacHebDia" style={{ display: "block", marginRight: 10}}>Día</label>
-                <input id="userFechaNacHebDia" type="number" name="fechaHebreo" placeholder="Día" onChange={(e: any) => saveBirthDateParams("dia", "fechaHebreo", false, e)} style={{...styles.input}} value={formUserAniversaryData.fechaHebreo?.dia}/>
+                <label htmlFor="userFechaNacHeb" style={{ display: "block", fontWeight: 'bold', marginRight: 10}}>Día</label>
+                <input id="userFechaNacHeb" type="number" name="fechaHebreo" placeholder="Día" onChange={(e: any) => saveBirthDateParams("dia", "fechaHebreo", false, e)} style={{...styles.input}} value={formUserAniversaryData.fechaHebreo?.dia}/>
               </div>
               <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                <label htmlFor="userFechaNacHebMes" style={{ display: "block", marginRight: 10, marginLeft: 10}}>
+                <label htmlFor="userFechaNacHebMes" style={{ display: "block", fontWeight: 'bold', marginRight: 10, marginLeft: 10}}>
                   Mes
                 </label>
                 <select
@@ -215,7 +221,7 @@ export const CreateAniversaryModalComponent = ({modalAniversaryIsOpen, setModalA
                 </select>
               </div>
               <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                <label htmlFor="userFechaNacHebAno" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
+                <label htmlFor="userFechaNacHebAno" style={{ display: "block", fontWeight: 'bold', marginRight: 10, marginLeft: 10}}>Año</label>
                 <input id="userFechaNacHebAno" type="number" name="fechaHebreo" placeholder="Año" onChange={(e: any) => saveBirthDateParams("ano", "fechaHebreo", false, e)} style={{...styles.input}} value={formUserAniversaryData.fechaHebreo?.ano}/>
               </div>
             </div>

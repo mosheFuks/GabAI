@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import Modal from 'react-modal';
-import { Donacion, VisitorUser } from '../../../../../../structs/structs';
+import { Donacion, GREG_MONTHS, VisitorUser } from '../../../../../../structs/structs';
 import { colors } from '../../../../../../assets/colors';
 import { addADonationToUser } from '../../../../../../apis/requests';
 import { PageContext } from '../../../../../../StoreInfo/page-storage';
@@ -51,7 +51,7 @@ export const DonationModal = ({modalAniversaryIsOpen, setModalAniversaryIsOpen, 
       >
         <h2 style={{ textAlign: 'center', color: 'blue'}}>Nueva Donación</h2>
         <div>
-          <label htmlFor="userDonationMonto" style={{ display: "block"}}>Monto</label>
+          <label htmlFor="userDonationMonto" style={{ display: "block", fontWeight: 'bold'}}>Monto</label>
           <input
             type="number"
             id="userDonationMonto"
@@ -60,7 +60,7 @@ export const DonationModal = ({modalAniversaryIsOpen, setModalAniversaryIsOpen, 
             style={styles.input}
           />
 
-          <label htmlFor="userDonationTipoMoneda" style={{ display: "block"}}>Tipo de Moneda</label>
+          <label htmlFor="userDonationTipoMoneda" style={{ display: "block", fontWeight: 'bold'}}>Tipo de Moneda</label>
           <select
             id="userDonationTipoMoneda"
             value={formUserDonationData.tipoMoneda}
@@ -72,7 +72,7 @@ export const DonationModal = ({modalAniversaryIsOpen, setModalAniversaryIsOpen, 
             <option value="ARS">ARS</option>
           </select>
 
-          <label htmlFor="userDonationMotivo" style={{ display: "block"}}>Motivo</label>
+          <label htmlFor="userDonationMotivo" style={{ display: "block", fontWeight: 'bold'}}>Motivo</label>
           <input
             type="text"
             id="userDonationMotivo"
@@ -81,7 +81,7 @@ export const DonationModal = ({modalAniversaryIsOpen, setModalAniversaryIsOpen, 
             style={styles.input}
           />
 
-          <label htmlFor="userDonationAclaracion" style={{ display: "block"}}>Aclaración</label>
+          <label htmlFor="userDonationAclaracion" style={{ display: "block", fontWeight: 'bold'}}>Aclaración</label>
           <input
             type="text"
             id="userDonationAclaracion"
@@ -90,7 +90,7 @@ export const DonationModal = ({modalAniversaryIsOpen, setModalAniversaryIsOpen, 
             style={styles.input}
           />
           
-          <label htmlFor="userDonationPerasha" style={{ display: "block"}}>Perasha</label>
+          <label htmlFor="userDonationPerasha" style={{ display: "block", fontWeight: 'bold'}}>Perasha</label>
           <input
             type="text"
             id="userDonationPerasha"
@@ -99,11 +99,11 @@ export const DonationModal = ({modalAniversaryIsOpen, setModalAniversaryIsOpen, 
             style={styles.input}
           />
 
-          <label htmlFor="userDonationFecha" style={{ display: "block"}}>Fecha</label>
+          <label htmlFor="userDonationFecha" style={{ display: "block", fontWeight: 'bold'}}>Fecha</label>
           <div style={{ display: "flex", flexDirection: "row"}}>
             <div style={{ display: "flex", flexDirection: "row"}}>
               <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                <label htmlFor="userDonationFechaDia" style={{ display: "block", marginRight: 10}}>Día</label>
+                <label htmlFor="userDonationFechaDia" style={{ display: "block", fontWeight: 'bold', marginRight: 10}}>Día</label>
                 <input
                   type="number"
                   id="userDonationFechaDia"
@@ -113,18 +113,16 @@ export const DonationModal = ({modalAniversaryIsOpen, setModalAniversaryIsOpen, 
                 />
               </div>
               <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                <label htmlFor="userDonationFechaMes" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Mes</label>
-                <input
-                  type="number"
-                  id="userDonationFechaMes"
-                  value={formUserDonationData.fecha?.mes}
-                  onChange={(e) => setFormUserDonationData({ ...formUserDonationData, fecha: { ...formUserDonationData.fecha, mes: e.target.value } })}
-                  style={styles.input}
-                />
+                <label htmlFor="userDonationFechaMes" style={{ display: "block", fontWeight: 'bold', marginRight: 10, marginLeft: 10}}>Mes</label>
+                <select id="userDonationFechaMes" name="userDonationFechaMes" onChange={(e) => setFormUserDonationData({ ...formUserDonationData, fecha: { ...formUserDonationData.fecha, mes: e.target.value } })} style={styles.input} value={formUserDonationData.fecha?.mes}>
+                  {GREG_MONTHS.map((month) => (
+                    <option key={month.numero} value={month.numero}>{month.nombre}</option>
+                  ))}
+                </select>
               </div>
 
               <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                <label htmlFor="userDonationFechaAno" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
+                <label htmlFor="userDonationFechaAno" style={{ display: "block", fontWeight: 'bold', marginRight: 10, marginLeft: 10}}>Año</label>
                 <input
                   type="number"
                   id="userDonationFechaAno"
@@ -136,7 +134,7 @@ export const DonationModal = ({modalAniversaryIsOpen, setModalAniversaryIsOpen, 
             </div>
           </div>
           
-          <label htmlFor="userDonationStatus" style={{ display: "block"}}>Status</label>
+          <label htmlFor="userDonationStatus" style={{ display: "block", fontWeight: 'bold'}}>Status</label>
           <select
             id="userDonationStatus"
             value={formUserDonationData.status}
@@ -182,7 +180,7 @@ const styles = {
     color: "black",
   },
   button: {
-    display: "block",
+    display: "block", fontWeight: 'bold',
     color: "white",
     padding: "10px 15px",
     margin: "10px",

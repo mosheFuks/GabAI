@@ -17,7 +17,7 @@ export const FormFamilyInfoData = ({handleChangePersonalData, user, setChildModa
   
     return (
       <div style={{ height: "300px", overflowY: "auto", padding: "10px", borderRadius: "5px" }}>
-        <label htmlFor="userMaritalStatus "style={{ display: "block" }}>Estado Civil</label>
+        <label htmlFor="userMaritalStatus "style={{ display: "block", fontWeight: "bold" }}>Estado Civil</label>
         <select name="estadoCivil" onChange={(e) => { 
           handleChangePersonalData(e);
         }} style={styles.input}>
@@ -28,15 +28,15 @@ export const FormFamilyInfoData = ({handleChangePersonalData, user, setChildModa
           <option value="Viudo">Viudo</option>
         </select>
       
-        <label htmlFor="userWifeNameEsp" style={{ display: "block"}}>Nombre Esposa Español</label>
+        <label htmlFor="userWifeNameEsp" style={{ display: "block", fontWeight: "bold"}}>Nombre Esposa Español</label>
         <input id="userWifeNameEsp" type="text" name="nombreEsposaEspanol" placeholder="Nombre Esposa (Español)" onChange={handleChangePersonalData} style={styles.input} value={user.nombreEsposaEspanol}/>
 
-        <label htmlFor="userWifeNameHeb" style={{ display: "block"}}>Nombre Esposa Hebreo</label>
+        <label htmlFor="userWifeNameHeb" style={{ display: "block", fontWeight: "bold"}}>Nombre Esposa Hebreo</label>
         <input id="userWifeNameHeb" type="text" name="nombreEsposaHebreo" placeholder="Nombre Esposa (Hebreo)" onChange={handleChangePersonalData} style={styles.input} value={user.nombreEsposaHebreo}/>
 
         {user.hijos!.length > 0 ? (
           <div style={{width: '100%' }} >
-            <label style={{ display: "block"}}>Hijos</label>
+            <label style={{ display: "block", fontWeight: "bold"}}>Hijos</label>
             <div style={styles.childCardContainer}>
               {user.hijos!.map((hijo: Son, index: React.Key | null | undefined) => (
                 <ChildCard 
@@ -51,7 +51,7 @@ export const FormFamilyInfoData = ({handleChangePersonalData, user, setChildModa
 
         {user.aniversarios!.length > 0 ? (
           <div style={{width: '100%' }} >
-            <label style={{ display: "block"}}>Aniversarios</label>
+            <label style={{ display: "block", fontWeight: "bold"}}>Aniversarios</label>
             <div style={styles.childCardContainer}>
               {user.aniversarios!.map((aniversario: Aniversary, index: React.Key | null | undefined) => (
                 <AniversaryCard 

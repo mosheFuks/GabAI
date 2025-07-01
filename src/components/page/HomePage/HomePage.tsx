@@ -1,58 +1,86 @@
-import React from "react";
+import React, { useContext } from "react";
 import { CSSProperties } from "react";
 
 import { useNavigate } from 'react-router-dom';
 import { colors } from "../../../assets/colors";
 import { esp_strings } from "../../../assets/strings";
+import { PageContext } from "../../../StoreInfo/page-storage";
 
 export default function HomePage() {
+    const { logedUser } = useContext(PageContext) as any;
     const navigate = useNavigate();
-    return (
-      <div style={styles.container}>
-        <h2 style={styles.title}>
-          {esp_strings.home_title}
-        </h2>
-        <span style={styles.sub_title}>La primera plataforma Web que te ayuda a organizar las aliot y donaciones de tu Kehila</span>
-        {/*<div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', marginTop: '10px', marginBottom: '10px', backgroundColor: "red"}}>
-          <div style={{ display: "flex", flexDirection: "row", gap: '10px' }}>
-            <div style={styles.pendingCard}>
-              <div style={{ fontSize: '1rem', fontWeight: 'bold', color: 'orange' }}>
-                {`Proposito:`}
-              </div>
-              <div style={{ fontSize: '1rem', fontWeight: 'bold' }}>
-                Administra las aliot y donaciones de los participantes de una Kehila 
-              </div>
-            </div>
 
-            <div style={styles.pendingCard}>
-              <div style={{ fontSize: '1rem', fontWeight: 'bold', color: 'orange' }}>
-                {`Proposito:`}
+    const showWelcomePage = () => {
+      return (
+        <div style={styles.container}>
+          <h2 style={styles.title}>
+            {esp_strings.home_title}
+          </h2>
+          <span style={styles.sub_title}>La primera plataforma Web que te ayuda a organizar las aliot y donaciones de tu Kehila</span>
+          {/*<div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', marginTop: '10px', marginBottom: '10px', backgroundColor: "red"}}>
+            <div style={{ display: "flex", flexDirection: "row", gap: '10px' }}>
+              <div style={styles.pendingCard}>
+                <div style={{ fontSize: '1rem', fontWeight: 'bold', color: 'orange' }}>
+                  {`Proposito:`}
+                </div>
+                <div style={{ fontSize: '1rem', fontWeight: 'bold' }}>
+                  Administra las aliot y donaciones de los participantes de una Kehila 
+                </div>
               </div>
-              <div style={{ fontSize: '1rem', fontWeight: 'bold' }}>
-                Administra las aliot y donaciones de los participantes de una Kehila 
-              </div>
-            </div> 
+
+              <div style={styles.pendingCard}>
+                <div style={{ fontSize: '1rem', fontWeight: 'bold', color: 'orange' }}>
+                  {`Proposito:`}
+                </div>
+                <div style={{ fontSize: '1rem', fontWeight: 'bold' }}>
+                  Administra las aliot y donaciones de los participantes de una Kehila 
+                </div>
+              </div> 
+            </div>
+          </div>*/}
+          <div style={styles.buttonContainer}>
+            <button 
+              style={styles.sign_button}
+              onMouseOver={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = styles.buttonHover.transform || "scale(1.1)")}
+              onMouseOut={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = "scale(1)")}
+              onClick={() => navigate("/sign-in")}
+            >{esp_strings.btn_signin}</button>
+            <button 
+              style={styles.regis_button}
+              onMouseOver={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = styles.buttonHover.transform || "scale(1.1)")}
+              onMouseOut={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = "scale(1)")}
+              onClick={() => navigate("/create-normal-user")}
+            >{esp_strings.btn_signup}</button>
           </div>
-        </div>*/}
-        <div style={styles.buttonContainer}>
-          <button 
-            style={styles.sign_button}
-            onMouseOver={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = styles.buttonHover.transform || "scale(1.1)")}
-            onMouseOut={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = "scale(1)")}
-            onClick={() => navigate("/sign-in")}
-          >{esp_strings.btn_signin}</button>
-          <button 
-            style={styles.regis_button}
-            onMouseOver={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = styles.buttonHover.transform || "scale(1.1)")}
-            onMouseOut={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = "scale(1)")}
-            onClick={() => navigate("/create-normal-user")}
-          >{esp_strings.btn_signup}</button>
+          <p style={styles.linkText}>
+            {esp_strings.home_sub_title}{' '}
+            <a href="#" style={styles.link}>{esp_strings.home_link}</a>
+          </p>
         </div>
-        <p style={styles.linkText}>
-          {esp_strings.home_sub_title}{' '}
-          <a href="#" style={styles.link}>{esp_strings.home_link}</a>
-        </p>
-      </div>
+      );
+    } 
+
+    return (
+      <>
+        {logedUser.rol == "VISITANTE" ? (
+          <div style={styles.container}>
+            <h2 style={styles.title}>
+              Bienvendio a GabAI {logedUser.nombre} {logedUser.apellido}
+            </h2>
+            <span style={styles.sub_title}>Ingresa para ver tu cuenta</span>
+            <div style={styles.buttonContainer}>
+              <button 
+                style={styles.sign_button}
+                onMouseOver={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = styles.buttonHover.transform || "scale(1.1)")}
+                onMouseOut={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = "scale(1)")}
+                onClick={() => navigate(`/visitor-user-info`)}
+              >Ingresar</button>
+            </div>
+          </div>
+        ) : (
+          showWelcomePage()
+        )}
+      </>
     );
 
     

@@ -205,7 +205,7 @@ const styles: { [key: string]: CSSProperties }= {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    justifyContent: "space-between",
+    //justifyContent: "space-between",
     margin: "20px auto 0 auto",
     paddingLeft: "20px",
     paddingRight: "20px",

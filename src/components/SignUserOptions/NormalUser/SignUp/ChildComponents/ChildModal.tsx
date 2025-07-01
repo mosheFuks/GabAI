@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Modal from 'react-modal';
 import { colors } from '../../../../../assets/colors';
 import { HDate } from "@hebcal/core";
-import { Ability, CustomDate, HEBREW_MONTHS, Son, VisitorUser } from '../../../../../structs/structs';
+import { Ability, CustomDate, GREG_MONTHS, HEBREW_MONTHS, Son, VisitorUser } from '../../../../../structs/structs';
 import { AfterSunsetSwitch } from '../../../../../assets/AfterSunsetSwitch';
 
 Modal.setAppElement('#root');
@@ -213,41 +213,45 @@ export const CreateChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen
       >
         <h2 style={{ textAlign: 'center', color: "blue"}}>Ingresa los datos de tu hijo/a</h2>
         <div>
-          <label htmlFor="userChildNameEsp" style={{ display: "block"}}>Nombre Hijo Español</label>
+          <label htmlFor="userChildNameEsp" style={{ display: "block", fontWeight: 'bold'}}>Nombre Hijo Español</label>
           <input id="userChildNameEsp" type="text" name="nombre" placeholder="Nombre (Español)" onChange={handleChangeChildData} style={styles.input} value={formUserChildData.nombre}/>
 
-          <label htmlFor="userChildNameHeb" style={{ display: "block"}}>Nombre Hijo Hebreo</label>
+          <label htmlFor="userChildNameHeb" style={{ display: "block", fontWeight: 'bold'}}>Nombre Hijo Hebreo</label>
           <input id="userChildNameHeb" type="text" name="nombreHebreo" placeholder="Nombre (Hebreo)" onChange={handleChangeChildData} style={styles.input} value={formUserChildData.nombreHebreo}/>
 
-          <label htmlFor="userChildSurname" style={{ display: "block"}}>Apellido</label>
+          <label htmlFor="userChildSurname" style={{ display: "block", fontWeight: 'bold'}}>Apellido</label>
           <input id="userChildSurname" type="text" name="apellido" placeholder={user.apellido != null ? user.apellido : "Apellido"} onChange={handleChangeChildData} style={styles.input} value={formUserChildData.apellido}/>
 
-          <label htmlFor="userChildBithDateGregDia" style={{ display: "block"}}>Fecha Nacimiento Gregoriano</label>
+          <label htmlFor="userChildBithDateGregDia" style={{ display: "block", fontWeight: 'bold'}}>Fecha Nacimiento Gregoriano</label>
           <div style={{ display: "flex", flexDirection: "row"}}>
             <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-              <label htmlFor="userChildBithDateGregDia" style={{ display: "block", marginRight: 10}}>Día</label>
+              <label htmlFor="userChildBithDateGregDia" style={{ display: "block", fontWeight: "bold", marginRight: 10}}>Día</label>
               <input id="userChildBithDateGregDia" type="number" name="fechaNacimiento" placeholder="Día" onChange={(e: any) => saveBirthDateParams("dia", "fechaNacimiento", false, e)} style={{...styles.input}} value={formUserChildData?.fechaNacimiento?.dia}/>
             </div>
             <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-              <label htmlFor="userChildBithDateGregMes" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Mes</label>
-              <input id="userChildBithDateGregMes" type="number" name="fechaNacimiento" placeholder="Mes" onChange={(e: any) => saveBirthDateParams("mes", "fechaNacimiento", false, e)} style={{...styles.input}} value={formUserChildData?.fechaNacimiento?.mes}/>
+              <label htmlFor="userChildBithDateGregMes" style={{ display: "block", fontWeight: "bold", marginRight: 10, marginLeft: 10}}>Mes</label>
+              <select id="userAniversaryDateGregMes" name="fecha" onChange={(e: any) => saveBirthDateParams("mes", "fechaNacimiento", false, e)} style={styles.input} value={formUserChildData?.fechaNacimiento?.mes}>
+                {GREG_MONTHS.map((month) => (
+                  <option key={month.numero} value={month.numero}>{month.nombre}</option>
+                ))}
+              </select>
             </div>
             <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-              <label htmlFor="userChildBithDateGregAno" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
+              <label htmlFor="userChildBithDateGregAno" style={{ display: "block", fontWeight: "bold", marginRight: 10, marginLeft: 10}}>Año</label>
               <input id="userChildBithDateGregAno" type="number" name="fechaNacimiento" placeholder="Año" onChange={(e: any) => saveBirthDateParams("ano", "fechaNacimiento", false, e)} style={{...styles.input}} value={formUserChildData?.fechaNacimiento?.ano}/>
             </div>
             {calculateBirthDateBtn("fechaNacimiento", formUserChildData?.fechaNacimientoHebreo!, formUserChildData?.fechaNacimientoHebreo?.dia == "" || formUserChildData?.fechaNacimientoHebreo?.mes == "" || formUserChildData?.fechaNacimientoHebreo?.ano == "")}
           </div>
 
-          <label htmlFor="userChildBithDateHeb" style={{ display: "block"}}>Fecha Nacimiento Hebreo</label>
+          <label htmlFor="userChildBithDateHeb" style={{ display: "block", fontWeight: 'bold'}}>Fecha Nacimiento Hebreo</label>
           <div style={{ display: "flex", flexDirection: "row"}}>
             <div style={{ display: "flex", flexDirection: "row"}}>
               <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                <label htmlFor="userChildBithHebDia" style={{ display: "block", marginRight: 10}}>Día</label>
+                <label htmlFor="userChildBithHebDia" style={{ display: "block", fontWeight: "bold", marginRight: 10}}>Día</label>
                 <input id="userChildBithHebDia" type="number" name="fechaNacimientoHebreo" placeholder="Día" onChange={(e: any) => saveBirthDateParams("dia", "fechaNacimientoHebreo", false, e)} style={{...styles.input}} value={formUserChildData?.fechaNacimientoHebreo?.dia}/>
               </div>
               <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                <label htmlFor="userChildBithHebMes" style={{ display: "block", marginRight: 10, marginLeft: 10}}>
+                <label htmlFor="userChildBithHebMes" style={{ display: "block", fontWeight: "bold", marginRight: 10, marginLeft: 10}}>
                   Mes
                 </label>
                 <select
@@ -268,7 +272,7 @@ export const CreateChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen
                 </select>
               </div>
               <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                <label htmlFor="userFechaNacHebAno" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
+                <label htmlFor="userFechaNacHebAno" style={{ display: "block", fontWeight: "bold", marginRight: 10, marginLeft: 10}}>Año</label>
                 <input id="userFechaNacHebAno" type="number" name="fechaNacimientoHebreo" placeholder="Año" onChange={(e: any) => saveBirthDateParams("ano", "fechaNacimientoHebreo", false, e)} style={{...styles.input}} value={formUserChildData?.fechaNacimientoHebreo?.ano}/>
               </div>
             </div>
@@ -276,7 +280,7 @@ export const CreateChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen
             {calculateBirthDateBtn("fechaNacimientoHebreo", formUserChildData?.fechaNacimiento!, formUserChildData?.fechaNacimiento?.dia == "" || formUserChildData?.fechaNacimiento?.mes == "" || formUserChildData?.fechaNacimiento?.ano == "")}
           </div>
 
-          <label htmlFor="userChildGender" style={{ display: "block" }}>Género</label>
+          <label htmlFor="userChildGender" style={{ display: "block", fontWeight: 'bold' }}>Género</label>
           <select id="userChildGender" name="genero" onChange={(e) => { 
             handleChangeChildData(e);
             setGenero(e.target.value);
@@ -293,14 +297,14 @@ export const CreateChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen
               <div style={{ display: "flex", flexDirection: "row"}}>
                 <div style={{ display: "flex", flexDirection: "row"}}>
                   <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                    <label htmlFor="userChildBarMitzvaDateHebDia" style={{ display: "block", marginRight: 10}}>Día</label>
+                    <label htmlFor="userChildBarMitzvaDateHebDia" style={{ display: "block", fontWeight: "bold", marginRight: 10}}>Día</label>
                     <input id="userChildBarMitzvaDateHebDia" type="number" name="fechaBarMitzvaHebreo" placeholder="Día" 
                       onChange={(e: any) => saveBirthDateParams("dia", "fechaBarMitzvaHebreo", false, e)} 
                       style={{...styles.input}} value={formUserChildData.fechaBarMitzvaHebreo?.dia}
                     />
                   </div>
                   <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                    <label htmlFor="userChildBarMitzvaDateHebMes" style={{ display: "block", marginRight: 10, marginLeft: 10}}>
+                    <label htmlFor="userChildBarMitzvaDateHebMes" style={{ display: "block", fontWeight: "bold", marginRight: 10, marginLeft: 10}}>
                       Mes
                     </label>
                     <select
@@ -321,7 +325,7 @@ export const CreateChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen
                     </select>
                   </div>
                   <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                    <label htmlFor="userChildBarMitzvaDateHebAno" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
+                    <label htmlFor="userChildBarMitzvaDateHebAno" style={{ display: "block", fontWeight: "bold", marginRight: 10, marginLeft: 10}}>Año</label>
                     <input id="userChildBarMitzvaDateHebAno" type="number" name="fechaBarMitzvaHebreo" placeholder="Año" 
                       onChange={(e: any) => saveBirthDateParams("ano", "fechaBarMitzvaHebreo", false, e)} 
                       style={{...styles.input}} value={formUserChildData.fechaBarMitzvaHebreo?.ano}
@@ -334,22 +338,23 @@ export const CreateChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen
               <div style={{ display: "flex", flexDirection: "row"}}>
                 <div style={{ display: "flex", flexDirection: "row"}}>
                   <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                    <label htmlFor="userChildBarMitzvaDateGregDia" style={{ display: "block", marginRight: 10}}>Día</label>
+                    <label htmlFor="userChildBarMitzvaDateGregDia" style={{ display: "block", fontWeight: "bold", marginRight: 10}}>Día</label>
                     <input id="userChildBarMitzvaDateGregDia" type="number" name="fechaBarMitzva" placeholder="Día" 
                       onChange={(e: any) => saveBirthDateParams("dia", "fechaBarMitzva", false, e)} 
                       style={{...styles.input}} value={formUserChildData?.fechaBarMitzva?.dia}
                     />
                   </div>
                   <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                    <label htmlFor="userChildBarMitzvaDateGregMes" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Mes</label>
-                    <input id="userChildBarMitzvaDateGregMes" type="number" name="fechaBarMitzva" placeholder="Mes" 
-                      onChange={(e: any) => saveBirthDateParams("mes", "fechaBarMitzva", false, e)} 
-                      style={{...styles.input}} value={formUserChildData?.fechaBarMitzva?.mes}
-                    />
+                    <label htmlFor="userChildBarMitzvaDateGregMes" style={{ display: "block", fontWeight: "bold", marginRight: 10, marginLeft: 10}}>Mes</label>
+                    <select id="userChildBarMitzvaDateGregMes" name="fechaBarMitzva" onChange={(e: any) => saveBirthDateParams("mes", "fechaBarMitzva", false, e)} style={styles.input} value={formUserChildData?.fechaBarMitzva?.mes}>
+                      {GREG_MONTHS.map((month) => (
+                        <option key={month.numero} value={month.numero}>{month.nombre}</option>
+                      ))}
+                    </select>
                   </div>
                   </div>
                   <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                    <label htmlFor="userChildBarMitzvaDateGregAno" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>
+                    <label htmlFor="userChildBarMitzvaDateGregAno" style={{ display: "block", fontWeight: "bold", marginRight: 10, marginLeft: 10}}>Año</label>
                     <input id="userChildBarMitzvaDateGregAno" type="number" name="fechaBarMitzva" placeholder="Año" 
                       onChange={(e: any) => saveBirthDateParams("ano", "fechaBarMitzva", false, e)} 
                       style={{...styles.input}} value={formUserChildData?.fechaBarMitzva?.ano}
@@ -416,7 +421,7 @@ const styles = {
       color: "black",
     },
   button: {
-    display: "block",
+    display: "block", fontWeight: "bold",
     color: "white",
     padding: "10px 15px",
     margin: "10px",

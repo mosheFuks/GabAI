@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import { colors } from '../../../../assets/colors';
-import { Ability, HEBREW_MONTHS } from '../../../../structs/structs';
+import { Ability, GREG_MONTHS, HEBREW_MONTHS } from '../../../../structs/structs';
 import { PageContext } from '../../../../StoreInfo/page-storage';
 import { changeUserVisitorData, getMinianimList } from '../../../../apis/requests';
 import { useConvex } from 'convex/react';
@@ -208,12 +208,22 @@ export const EditPropertyModal = ({setOpenEditPropertyModal, openEditPropertyMod
         <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
           <label htmlFor="userBarMitzvaDateGregMes" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Mes</label>
           <input id="userBarMitzvaDateGregMes" type="number" name="fechaBarMitzvaGregoriano" placeholder="Mes" 
-          onChange={(e: any) => setNewDates({
+            onChange={(e: any) => setNewDates({
               ...newDates, 
               [property]: { ...newDates[property], mes: e.target.value }
             })} 
             style={{...styles.input}}
           />
+          <select id="userBarMitzvaDateGregMes" name="fechaBarMitzvaGregoriano" onChange={(e: any) => setNewDates({
+              ...newDates, 
+              [property]: { ...newDates[property], mes: e.target.value }
+            })}  style={styles.input} value={newDates[property]?.mes}>
+            {GREG_MONTHS.map((month) => (
+              <option key={month.numero} value={month.numero}>{month.nombre}</option>
+            ))}
+          </select>
+          
+          
         </div>
         <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
           <label htmlFor="userBarMitzvaDateGregAno" style={{ display: "block", marginRight: 10, marginLeft: 10}}>Año</label>

@@ -117,7 +117,7 @@ export const AliaModal = ({setOpenAliaModal, openAliaModal, setAliotList, aliotL
       >
         <h2 style={{ textAlign: 'center', color: 'blue'}}>Nueva Alia</h2>
         <div>
-          <label htmlFor="aliaAlia" style={{ display: "block"}}>Alia</label>
+          <label htmlFor="aliaAlia" style={{ display: "block", fontWeight: 'bold'}}>Alia</label>
           <input
             type="text"
             id="aliaAlia"
@@ -126,7 +126,7 @@ export const AliaModal = ({setOpenAliaModal, openAliaModal, setAliotList, aliotL
             style={styles.input}
           />
 
-          <label htmlFor="aliaNombre" style={{ display: "block"}}>Nombre</label>
+          <label htmlFor="aliaNombre" style={{ display: "block", fontWeight: 'bold'}}>Nombre</label>
           <input
             type="text"
             id="aliaNombre"
@@ -135,7 +135,7 @@ export const AliaModal = ({setOpenAliaModal, openAliaModal, setAliotList, aliotL
             style={styles.input}
           />
 
-          <label htmlFor="aliaApellido" style={{ display: "block"}}>Apellido</label>
+          <label htmlFor="aliaApellido" style={{ display: "block", fontWeight: 'bold'}}>Apellido</label>
           <input
             type="text"
             id="aliaApellido"
@@ -144,7 +144,7 @@ export const AliaModal = ({setOpenAliaModal, openAliaModal, setAliotList, aliotL
             style={styles.input}
           />
 
-          <label htmlFor="aliaNombreHebreo" style={{ display: "block"}}>Nombre Hebreo</label>
+          <label htmlFor="aliaNombreHebreo" style={{ display: "block", fontWeight: 'bold'}}>Nombre Hebreo</label>
           <input
             type="text"
             id="aliaNombreHebreo"
@@ -153,7 +153,7 @@ export const AliaModal = ({setOpenAliaModal, openAliaModal, setAliotList, aliotL
             style={styles.input}
           />
           
-          <label htmlFor="aliaMonto" style={{ display: "block"}}>Monto</label>
+          <label htmlFor="aliaMonto" style={{ display: "block", fontWeight: 'bold'}}>Monto</label>
           <input
             type="number"
             id="aliaMonto"
@@ -162,7 +162,7 @@ export const AliaModal = ({setOpenAliaModal, openAliaModal, setAliotList, aliotL
             style={styles.input}
           />
 
-          <label htmlFor="aliaMoneda" style={{ display: "block"}}>Moneda</label>
+          <label htmlFor="aliaMoneda" style={{ display: "block", fontWeight: 'bold'}}>Moneda</label>
           <select
             id="aliaMoneda"
             value={formAliaData.moneda}
@@ -175,7 +175,7 @@ export const AliaModal = ({setOpenAliaModal, openAliaModal, setAliotList, aliotL
           </select>
 
           <div style={styles.switchContainer}>
-            <label style={{ display: "block"}}>
+            <label style={{ display: "block", fontWeight: 'bold'}}>
               ¿Querés agregar esta donación a la lista de donaciones de {formAliaData.nombre}?
             </label>
             <input
@@ -221,7 +221,7 @@ const styles = {
     color: "black",
   },
   button: {
-    display: "block",
+    display: "block", fontWeight: 'bold',
     color: "white",
     padding: "10px 15px",
     margin: "10px",
