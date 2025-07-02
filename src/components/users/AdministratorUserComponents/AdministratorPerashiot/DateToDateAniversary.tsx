@@ -226,7 +226,7 @@ export const DateToDateAniversary = ({ peopleList, setFilteredAniversaries, days
         value={dayStart}
         onChange={(e) => setDayStart(e.target.value)}
       />
-      <label style={styles.label}>de</label>
+      <label style={styles.label}>LA LALA LA LA</label>
       <select style={styles.select} value={monthStart} onChange={(e) => setMonthStart(e.target.value)}>
         {HEBREW_MONTHS.map((month) => (
           <option key={month} value={month}>{month}</option>
