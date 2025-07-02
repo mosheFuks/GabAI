@@ -76,7 +76,7 @@ export const FormKehilaInfoData = ({handleChangePersonalData, user, setFormUserP
     }
 
     const calculateHebBarMitzvaDate = () => {
-      const calculatedBarMitzvaYear = parseInt(user.fechaNacimientoHebreo?.ano!) + 13
+      const calculatedBarMitzvaYear = parseInt(user.fechaNacimientoHebreo?.ano!.toString()!) + 13
       saveBarMitzvaDateParams("dia", "fechaBarMitzvaHebreo", true, [user.fechaNacimientoHebreo?.dia, user.fechaNacimientoHebreo?.mes, calculatedBarMitzvaYear.toString()])
     }
 

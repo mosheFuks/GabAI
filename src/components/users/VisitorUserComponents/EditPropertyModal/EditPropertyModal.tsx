@@ -70,7 +70,7 @@ export const EditPropertyModal = ({setOpenEditPropertyModal, openEditPropertyMod
 
   const updateVisitorUser = async () => {
     try {
-      const updatedUser = await changeVisitorUserPropeties(logedVisitorUser?.nombreKehila, logedVisitorUser?.nombreEspanol, logedVisitorUser?.apellido, editedProperties);
+      await changeVisitorUserPropeties(logedVisitorUser?.nombreKehila, logedVisitorUser?.nombreEspanol, logedVisitorUser?.apellido, editedProperties);
       setOpenEditPropertyModal(false);
       toast.success("Se modificó el valor de las propiedades seleccionadas, refresque la pagina para ver los cambios", {
         position: "top-right",
@@ -294,7 +294,7 @@ export const EditPropertyModal = ({setOpenEditPropertyModal, openEditPropertyMod
               <input
                 type="checkbox"
                 value={role}
-                checked={habilidad.includes(role)}
+                checked={habilidad.includes(role as Ability)}
                 onChange={(e) => {
                   handleAddAbility(e)
                   setNewValue(habilidad.join(", ")); // Update newValue with the selected abilities

@@ -219,7 +219,7 @@ export const DateToDateAniversary = ({ peopleList, setFilteredAniversaries, days
   
   return (
     <div style={styles.container}>
-      <input type="number" style={styles.input} placeholder={daysOfThisWeek.sunday.toString().match(/^\d+/)} value={dayStart} onChange={(e) => setDayStart(e.target.value)} />
+      <input type="number" style={styles.input} placeholder={(daysOfThisWeek.sunday.toString().match(/^\d+/) || [""])[0]} value={dayStart} onChange={(e) => setDayStart(e.target.value)} />
       <label style={styles.label}>de</label>
       <select style={styles.select} value={monthStart} onChange={(e) => setMonthStart(e.target.value)}>
         {HEBREW_MONTHS.map((month) => (
@@ -229,7 +229,7 @@ export const DateToDateAniversary = ({ peopleList, setFilteredAniversaries, days
 
       <label style={styles.label}>-</label>
 
-      <input type="number" style={styles.input} placeholder={daysOfThisWeek.friday.toString().match(/^\d+/)} value={dayEnd} onChange={(e) => setDayEnd(e.target.value)} />
+      <input type="number" style={styles.input} placeholder={(daysOfThisWeek.friday.toString().match(/^\d+/) || [""])[0]} value={dayEnd} onChange={(e) => setDayEnd(e.target.value)} />
       <label style={styles.label}>de</label>
       <select style={styles.select} value={monthEnd} onChange={(e) => setMonthEnd(e.target.value)}>
         {HEBREW_MONTHS.map((month) => (

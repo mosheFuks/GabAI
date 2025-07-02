@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { CSSProperties } from 'react';
-import { CustomDate } from '../../../../structs/structs';
+import { CustomDate, Donacion } from '../../../../structs/structs';
 import { colors } from '../../../../assets/colors';
 
 interface FormPersonalDataProps {
@@ -23,21 +23,21 @@ export const VisitorAccountForm = ({ logedVisitorUser }: FormPersonalDataProps) 
     let donations_filtered: any= []
     if (logedVisitorUser.cuenta.length > 0) {
       donations_filtered = logedVisitorUser.cuenta.filter(
-        dona=>  dona.status == statusFilter || statusFilter == "All"
+        (dona: Donacion) =>  dona.status == statusFilter || statusFilter == "All"
       )
     }
     setFilteredDonations(donations_filtered)
   }
 
   const getAllPendingDonations = () => {
-    const pendingDonations = logedVisitorUser.cuenta.filter(donacion => donacion.status === 'PENDIENTE');
-    const arsTotal = pendingDonations.reduce((total, donacion) => {
+    const pendingDonations = logedVisitorUser.cuenta.filter((donacion: Donacion) => donacion.status === 'PENDIENTE');
+    const arsTotal = pendingDonations.reduce((total: any, donacion: Donacion ) => {
       if (donacion.tipoMoneda === 'ARS') {
         return total + (donacion.monto || 0);
       }
       return total;
     }, 0);
-    const usdTotal = pendingDonations.reduce((total, donacion) => {
+    const usdTotal = pendingDonations.reduce((total: any, donacion: Donacion ) => {
       if (donacion.tipoMoneda === 'USD') {
         return total + (donacion.monto || 0);
       }
@@ -126,7 +126,7 @@ export const VisitorAccountForm = ({ logedVisitorUser }: FormPersonalDataProps) 
               </tr>
             </thead>
             <tbody>
-              {filteredDonations.map((donacion, index) => {
+              {filteredDonations.map((donacion: Donacion, index: any) => {
                 const monto = donacion.monto;
                 const moneda = donacion.tipoMoneda;
                 const aclaracion = donacion.aclaracion;

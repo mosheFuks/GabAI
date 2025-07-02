@@ -56,7 +56,7 @@ export const SignUpOperator = (/*{modalRealSignInfo, setModalRealSignInfo, user}
     e.preventDefault();
     try {
       /*ADD THE USER ON FIREBASE */
-      const userCredential = await createUserWithEmailAndPassword(auth, formUserSignData.email!, formUserSignData.password!);
+      await createUserWithEmailAndPassword(auth, formUserSignData.email!, formUserSignData.password!);
       /*ADD THE USER ON THE BACKEND */
       const newOperatorUser: LogedUserData = {
         nombre: formUserSignData.nombre!,

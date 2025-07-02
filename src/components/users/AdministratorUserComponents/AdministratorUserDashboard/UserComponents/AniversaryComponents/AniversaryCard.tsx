@@ -10,7 +10,7 @@ interface AniversaryCardProps {
   setAniversarySelected: (aniversary: Aniversary) => void;
 }
 
-export const AniversaryCard = ({aniversario, key, setModalAniversaryIsOpen, setAniversarySelected}: AniversaryCardProps) => {
+export const AniversaryCard = ({aniversario, setModalAniversaryIsOpen, setAniversarySelected}: AniversaryCardProps) => {
 
     const handleAniversarySelection = (aniversary: Aniversary ) => {
       setModalAniversaryIsOpen(true);

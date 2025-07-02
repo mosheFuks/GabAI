@@ -125,7 +125,11 @@ export const changeDonationStatus = () => {
       nombreKehila: kehilaName,
       nombreUsuario,
       apellidoUsuario,
-      fecha,
+      fecha: {
+        dia: fecha.dia ?? "",
+        mes: fecha.mes ?? "",
+        ano: fecha.ano ?? ""
+      },
       nuevoStatus: newStatus,
       monto
     });

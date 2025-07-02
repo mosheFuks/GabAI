@@ -1,4 +1,3 @@
-import React from 'react'
 import { CSSProperties } from 'react';
 import { colors } from '../../../../assets/colors';
 
@@ -60,7 +59,7 @@ export const VisitorKehilaForm = ({logedVisitorUser}: FormPersonalDataProps) => 
           </h5>
           
           <label htmlFor="userAbilities" style={{ display: "block", fontWeight: 'bold' }}>Conocimientos</label>
-          {logedVisitorUser.habilidades.map((role) => (
+          {logedVisitorUser.habilidades.map((role: any) => (
             <h5 style={styles.input} key={role}>
               {role}
             </h5>

@@ -81,7 +81,7 @@ export const CreateNormalUserSignInfoModal = ({modalRealSignInfo, setModalRealSi
         await addVisitorUser(user.nombreKehila!, user)
         await addVisitorUserToUsersList(newVisitorUser);
         /*ADD THE USER ON FIREBASE */
-        const userCredential = await createUserWithEmailAndPassword(auth, formUserSignData.email!, formUserSignData.password!);
+        await createUserWithEmailAndPassword(auth, formUserSignData.email!, formUserSignData.password!);
         toast.success('Usuario registrado correctamente', {
           position: "top-right",
           autoClose: 5000,

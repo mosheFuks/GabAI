@@ -157,8 +157,8 @@ export const UserChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen, 
               </h5>
 
               <label htmlFor="userChildAbilities" style={{ display: "block", fontWeight: 'bold' }}>Conocimientos</label>
-              {son!.habilidades?.map((habilidad: Ability, index: React.Key | null | undefined) => (
-                <h5 id="userChildAbilities" style={styles.input}>
+              {son!.habilidades?.map((habilidad: string, index: number) => (
+                <h5 key={index} id="userChildAbilities" style={styles.input}>
                   {habilidad}
                 </h5>
               ))}

@@ -1,5 +1,4 @@
-import { CSSProperties, useContext, useEffect, useState } from "react";
-import { Son, Aniversary, Grupo, Ability, VisitorUser } from '../../../../structs/structs';
+import { CSSProperties, useContext, useState } from "react";
 
 import { useNavigate, useParams } from "react-router-dom";
 import { VisitorPersonalInfo } from "./UserComponents/UserForm/VisitorPersonalInfo";

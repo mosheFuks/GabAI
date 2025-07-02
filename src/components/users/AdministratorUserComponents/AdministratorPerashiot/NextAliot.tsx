@@ -43,18 +43,26 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
   const navigate = useNavigate();
   const [thisWeekAniversaries, setThisWeekAniversaries] = useState<AniversariesList[]>([])
   const [filteredAniversaries, setFilteredAniversaries] = useState<AniversariesList[]>([])
-  const [daysOfThisWeek, setDaysOfThisWeek] = useState<DaysOfThisWeek>({
+  /*const [daysOfThisWeek, setDaysOfThisWeek] = useState<DaysOfThisWeek>({
     currentYear: 0,
     currentMonth: "",
     nextMonth: "",
     sunday: "",
     friday: ""
-  })
+  })*/
+
+  let daysOfThisWeek = {
+    currentYear: 0,
+    currentMonth: "",
+    nextMonth: "",
+    sunday: "",
+    friday: ""
+  }
   const [clicked, setClicked] = useState<boolean>(false)
   const [renderedAniversaries, setRenderedAniversaries] = useState<AniversariesList[]>([]);
 
-  function getNextHebrewMonth(currentMonth) {
-    const index = HEBREW_MONTHS.indexOf(currentMonth);
+  function getNextHebrewMonth(currentMonth: string) {
+    const index = HEBREW_MONTHS.indexOf(currentMonth as typeof HEBREW_MONTHS[number]);
     if (index === -1) {
       throw new Error("Mes hebreo inválido");
     }

@@ -30,7 +30,7 @@ export const VisitorPerashiotInfo = ({ logedVisitorUser }: FormPersonalDataProps
   };
 
   const getAllIortzaiAniversaries = () => {
-    return logedVisitorUser.aniversarios.filter(ani => ani.motivo == "Iortzai")
+    return logedVisitorUser.aniversarios.filter((ani: Aniversary) => ani.motivo == "Iortzai")
   }
 
   const getAllNotIortzaiAniversaries = () => {
@@ -46,8 +46,8 @@ export const VisitorPerashiotInfo = ({ logedVisitorUser }: FormPersonalDataProps
       barMitzvaDateHeb: logedVisitorUser.fechaBarMitzvaHebreo
     }
     notIortzaiAniversaries.userImportantDatesList = userImportantDates
-    notIortzaiAniversaries.aniversariesList.push(logedVisitorUser.aniversarios.filter(ani => ani.motivo != "Iortzai"))
-    logedVisitorUser.hijos.length > 0 ? notIortzaiAniversaries.sonList.push(logedVisitorUser.hijos.filter(son => son.genero == "Masculino")) : null
+    notIortzaiAniversaries.aniversariesList.push(logedVisitorUser.aniversarios.filter((ani: Aniversary) => ani.motivo != "Iortzai"))
+    logedVisitorUser.hijos.length > 0 ? notIortzaiAniversaries.sonList.push(logedVisitorUser.hijos.filter((son: Son) => son.genero == "Masculino")) : null
 
     return notIortzaiAniversaries
   }
@@ -189,7 +189,7 @@ export const VisitorPerashiotInfo = ({ logedVisitorUser }: FormPersonalDataProps
                 </tr>
               </thead>
               <tbody>
-                {notIortzaiAniversaryList.sonList[0].map((son: Son, index) => {
+                {notIortzaiAniversaryList.sonList[0].map((son: Son, index: any) => {
                   const nombre = `${son.nombre} ${son.apellido}`;
                   const nombreHebreo = son.nombreHebreo;
                   const habilidades = son.habilidades

@@ -95,7 +95,7 @@ export const CreateChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen
       ...prevData,
       habilidades: e.target.checked
         ? [...(prevData.habilidades || []), value] // Agregar la habilidad al array
-        : (prevData.habilidades || []).filter((h: Ability) => h !== value) // Quitar si se deselecciona
+        : ((prevData.habilidades || []) as Ability[]).filter((h: Ability) => h !== value) // Quitar si se deselecciona
     }));
   };
 
@@ -193,7 +193,7 @@ export const CreateChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen
   };
 
   const calculateHebBarMitzvaDate = () => {
-    const calculatedBarMitzvaYear = parseInt(user.fechaNacimientoHebreo?.ano!) + 13
+    const calculatedBarMitzvaYear = parseInt(user.fechaNacimientoHebreo?.ano!.toString()!) + 13
     saveBirthDateParams("dia", "fechaBarMitzvaHebreo", true, [user.fechaNacimientoHebreo?.dia, user.fechaNacimientoHebreo?.mes, calculatedBarMitzvaYear.toString()])
   }
 

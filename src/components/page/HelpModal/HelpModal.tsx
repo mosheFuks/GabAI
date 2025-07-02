@@ -2,6 +2,9 @@ import React, { useContext, useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import { useConvex } from 'convex/react';
 import { PageContext } from '../../../StoreInfo/page-storage';
+import { changeUserVisitorData, getMinianimList } from '../../../apis/requests';
+import { Ability, HEBREW_MONTHS } from '../../../structs/structs';
+import { colors } from '../../../assets/colors';
 
 Modal.setAppElement('#root');
 
@@ -63,14 +66,14 @@ export const EditPropertyModal = ({setOpenEditPropertyModal, openEditPropertyMod
 
   const changeVisitorUserPropeties = changeUserVisitorData()
 
-  useEffect(() => {
+  useEffect(() => { 
     //console.log("Edited properties state is:", editedProperties);
   }, [newDates, editedProperties]);
 
   const updateVisitorUser = async () => {
     //setEditedProperties([...editedProperties, newDates]);
     try {
-      const updatedUser = await changeVisitorUserPropeties(logedVisitorUser?.nombreKehila, logedVisitorUser?.nombreEspanol, logedVisitorUser?.apellido, editedProperties);
+      await changeVisitorUserPropeties(logedVisitorUser?.nombreKehila, logedVisitorUser?.nombreEspanol, logedVisitorUser?.apellido, editedProperties);
       setOpenEditPropertyModal(false);
     } catch (error) {
       console.error("Error updating user:", error);
@@ -262,7 +265,7 @@ export const EditPropertyModal = ({setOpenEditPropertyModal, openEditPropertyMod
               <input
                 type="checkbox"
                 value={role}
-                checked={habilidad.includes(role)}
+                checked={habilidad.includes(role as Ability)}
                 onChange={(e) => {
                   handleAddAbility(e)
                   setNewValue(habilidad.join(", ")); // Update newValue with the selected abilities

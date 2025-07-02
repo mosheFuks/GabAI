@@ -11,7 +11,7 @@ interface DashboardNavigationButtonsProps {
     setStep: (step: number) => void
 }
 
-export const NavigationDashboardButtons = ({peopleList, peopleFilter, step, setPeopleFilter, setStep}: DashboardNavigationButtonsProps) => {
+export const NavigationDashboardButtons = ({peopleList, step, setPeopleFilter, setStep}: DashboardNavigationButtonsProps) => {
     const navigate = useNavigate();
     const [clicked, setClicked] = useState<boolean>(false)
 

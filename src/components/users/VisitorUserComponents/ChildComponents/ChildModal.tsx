@@ -56,9 +56,6 @@ export const UserChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen, 
     habilidades: isSonSelected ? son?.habilidades : [],
   });
   
-
-  const [genero, setGenero] = useState(formUserChildData.genero != null ? formUserChildData.genero : "");
-  
   const habilidades: Ability[] = ["Leer Torah", "Jazan", "Leer Haftara", "Leer Meguila"];
   const [habilidad, setHabilidad] = useState<Ability[]>([])
   const [isAfterSunsetSelected, setIsAfterSunsetSelected] = useState<boolean>(false)
@@ -113,7 +110,7 @@ export const UserChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen, 
       ...prevData,
       habilidades: e.target.checked
         ? [...(prevData.habilidades || []), value] // Agregar la habilidad al array
-        : (prevData.habilidades || []).filter((h: Ability) => h !== value) // Quitar si se deselecciona
+        : (prevData.habilidades || []).filter((h: string) => h !== value) // Quitar si se deselecciona
     }));
   };
 
@@ -211,7 +208,7 @@ export const UserChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen, 
   };
   
   const calculateHebBarMitzvaDate = () => {
-    const calculatedBarMitzvaYear = parseInt(formUserChildData.fechaNacimientoHebreo?.ano!) + 13
+    const calculatedBarMitzvaYear = parseInt(formUserChildData.fechaNacimientoHebreo?.ano!.toString()!) + 13
     saveBirthDateParams("dia", "fechaBarMitzvaHebreo", true, [formUserChildData.fechaNacimientoHebreo?.dia, formUserChildData.fechaNacimientoHebreo?.mes, calculatedBarMitzvaYear.toString()])
   }
 
@@ -325,7 +322,6 @@ export const UserChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen, 
               <label htmlFor="userChildGender" style={{ display: "block", fontWeight: 'bold' }}>Género</label>
               <select id="userChildGender" name="genero" onChange={(e) => { 
                 handleChangeChildData(e);
-                setGenero(e.target.value);
               }} style={styles.input}>
                 <option value="" disabled selected>{formUserChildData.genero != "" ? formUserChildData.genero : 'Selecciona el género'}</option>
                 <option value="Masculino">Masculino</option>
