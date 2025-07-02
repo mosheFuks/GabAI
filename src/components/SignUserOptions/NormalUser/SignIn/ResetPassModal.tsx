@@ -74,7 +74,7 @@ const styles = {
     bottom: 'auto',
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
-    overflowX: "hidden"
+    overflowX: "hidden" as const
   },
   input: {
     width: "80%",
