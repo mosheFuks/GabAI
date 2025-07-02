@@ -39,10 +39,13 @@ interface DateToDateProps {
 
 export const DateToDateAniversary = ({ peopleList, setFilteredAniversaries, daysOfThisWeek, setRenderedAniversaries }: DateToDateProps) => {
   const [dayStart, setDayStart] = useState<string>('');
-  const [monthStart, setMonthStart] = useState<string>('');
+  const [monthStart, setMonthStart] = useState<string>("");
   const [dayEnd, setDayEnd] = useState<string>('');
-  const [monthEnd, setMonthEnd] = useState<string>('');
+  const [monthEnd, setMonthEnd] = useState<string>("");
   const [clicked, setClicked] = useState<boolean>(false);
+
+  console.log("Days of this week here:", daysOfThisWeek);
+  
 
   const getImportantDatesFromAllPeopleList = () => {
     const monthsToInclude = getMonthsBetweenInclusiveCyclic();
@@ -171,13 +174,6 @@ export const DateToDateAniversary = ({ peopleList, setFilteredAniversaries, days
 
     return result;
   }
-
-  useEffect(() => {
-    if (monthStart == '' && monthEnd == '') {
-      setMonthStart(daysOfThisWeek.currentMonth)
-      setMonthEnd(daysOfThisWeek.nextMonth != "" ? daysOfThisWeek.nextMonth :  daysOfThisWeek.currentMonth)
-    }
-  }, [])
     
   const handleBuscar = () => {
     if (!dayStart || !monthStart || !dayEnd || !monthEnd) return;
@@ -217,6 +213,11 @@ export const DateToDateAniversary = ({ peopleList, setFilteredAniversaries, days
   };
 
   console.log("Days of this week:", daysOfThisWeek);
+
+  useEffect(() => {
+    setMonthStart(daysOfThisWeek.currentMonth);
+    setMonthEnd(daysOfThisWeek.nextMonth !== "" ? daysOfThisWeek.nextMonth : daysOfThisWeek.currentMonth);
+  }, [daysOfThisWeek]);
   
   return (
     <div style={styles.container}>
