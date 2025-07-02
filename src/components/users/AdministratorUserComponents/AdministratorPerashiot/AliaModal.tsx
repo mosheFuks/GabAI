@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { CSSProperties, useContext, useState } from 'react';
 import Modal from 'react-modal';
 import { colors } from '../../../../assets/colors'
 import { Alia, Donacion } from '../../../../structs/structs';
@@ -209,7 +209,7 @@ const styles = {
     transform: 'translate(-50%, -50%)',
     overflowX: "hidden",
     zIndex: 9999
-  },
+  } as CSSProperties,
   input: {
     width: "80%",
     padding: "10px",
@@ -219,7 +219,7 @@ const styles = {
     fontSize: "1rem",
     backgroundColor: "white",
     color: "black",
-  },
+  } as CSSProperties,
   button: {
     display: "block", fontWeight: 'bold',
     color: "white",
@@ -229,17 +229,17 @@ const styles = {
     cursor: "pointer",
     fontSize: "1rem",
     border: "none",
-  },
+  } as CSSProperties,
   switchContainer: {
     display: "flex",
     //justifyContent: "center",
     marginTop: "20px",
     marginBottom: "20px",
-  },
+  } as CSSProperties,
   switch: {
     width: "25px",
     height: "25px",
     accentColor: colors.btn_background, // o el azul de tu estilo
     cursor: "pointer",
-  },
+  } as CSSProperties,
 };

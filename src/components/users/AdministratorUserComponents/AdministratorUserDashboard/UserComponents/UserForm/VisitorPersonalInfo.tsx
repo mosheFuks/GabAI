@@ -1,4 +1,3 @@
-import React, { useState } from 'react'
 import { CSSProperties } from 'react';
 import { colors } from '../../../../../../assets/colors';
 

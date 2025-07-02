@@ -1,6 +1,10 @@
 import { CSSProperties, useEffect } from 'react';
 
-export default function SplashScreen({ onFinish }) {
+interface SplashScreenProps {
+  onFinish: () => void;
+}
+
+export default function SplashScreen({ onFinish }: SplashScreenProps) {
   useEffect(() => {
     const timer = setTimeout(() => {
       onFinish();

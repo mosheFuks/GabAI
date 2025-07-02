@@ -1,6 +1,6 @@
 import { CSSProperties, useContext, useEffect, useState } from "react";
 import { colors } from "../../../assets/colors";
-import { Aniversary, Grupo, VisitorUser } from "../../../structs/structs";
+import { VisitorUser } from "../../../structs/structs";
 import { FaArrowAltCircleRight } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { NavigationDashboardButtons } from "./NavigationDahboardButtons";

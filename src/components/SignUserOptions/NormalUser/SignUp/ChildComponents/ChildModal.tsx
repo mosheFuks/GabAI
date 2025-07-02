@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { CSSProperties, useState } from 'react';
 import Modal from 'react-modal';
 import { colors } from '../../../../../assets/colors';
 import { HDate } from "@hebcal/core";
@@ -409,17 +409,17 @@ const styles = {
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
     overflowX: "hidden"
-  },
+  } as CSSProperties,
   input: {
-      width: "80%",
-      padding: "10px",
-      margin: "10px 0", 
-      borderRadius: "5px",
-      border: "1px solid #ccc",
-      fontSize: "1rem",
-      backgroundColor: "white",
-      color: "black",
-    },
+    width: "80%",
+    padding: "10px",
+    margin: "10px 0", 
+    borderRadius: "5px",
+    border: "1px solid #ccc",
+    fontSize: "1rem",
+    backgroundColor: "white",
+    color: "black",
+  } as CSSProperties,
   button: {
     display: "block", fontWeight: "bold",
     color: "white",
@@ -429,5 +429,5 @@ const styles = {
     cursor: "pointer",
     fontSize: "1rem",
     border: "none",
-  },
+  } as CSSProperties,
 };

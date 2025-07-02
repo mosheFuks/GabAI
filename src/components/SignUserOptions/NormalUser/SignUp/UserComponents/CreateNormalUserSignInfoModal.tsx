@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { CSSProperties, useState } from 'react';
 import Modal from 'react-modal';
 import { colors } from '../../../../../assets/colors';
 import { LogedUserData, SignInfo, VisitorUser } from '../../../../../structs/structs';
@@ -177,11 +177,11 @@ const styles = {
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
     overflowX: "hidden"
-  },
+  } as CSSProperties,
   pass_container: {
     //position: "relative",  // ← Importante para posicionar el botón
     display: "inline-block"
-  },
+  } as CSSProperties,
   input: {
     width: "80%",
     padding: "10px",
@@ -191,7 +191,7 @@ const styles = {
     fontSize: "1rem",
     backgroundColor: "white",
     color: "black",
-  },
+  } as CSSProperties,
   button: {
     display: "block",
     color: "white",
@@ -201,7 +201,7 @@ const styles = {
     cursor: "pointer",
     fontSize: "1rem",
     border: "none",
-  },
+  } as CSSProperties,
   toggleButton: {
     //position: "absolute",
     top: "50%",
@@ -212,9 +212,9 @@ const styles = {
     cursor: "pointer",
     fontSize: "1.2rem",
     marginTop: 35
-  },
+  } as CSSProperties,
   icon: {
     marginRight: "10px", 
     color: 'black'
-  },
+  } as CSSProperties,
 };
