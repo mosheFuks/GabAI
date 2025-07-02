@@ -43,21 +43,14 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
   const navigate = useNavigate();
   const [thisWeekAniversaries, setThisWeekAniversaries] = useState<AniversariesList[]>([])
   const [filteredAniversaries, setFilteredAniversaries] = useState<AniversariesList[]>([])
-  /*const [daysOfThisWeek, setDaysOfThisWeek] = useState<DaysOfThisWeek>({
+  const [daysOfThisWeek, setDaysOfThisWeek] = useState<DaysOfThisWeek>({
     currentYear: 0,
     currentMonth: "",
     nextMonth: "",
     sunday: "",
     friday: ""
-  })*/
+  })
 
-  let daysOfThisWeek = {
-    currentYear: 0,
-    currentMonth: "",
-    nextMonth: "",
-    sunday: "",
-    friday: ""
-  }
   const [clicked, setClicked] = useState<boolean>(false)
   const [renderedAniversaries, setRenderedAniversaries] = useState<AniversariesList[]>([]);
 
@@ -70,31 +63,33 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
     return HEBREW_MONTHS[nextIndex];
   }
 
-  const getCurrentHebrewWeek = (daysOfThisWeek: DaysOfThisWeek) => {
+  const getCurrentHebrewWeek = (thisWeekDays: DaysOfThisWeek) => {
     const today = new HDate();
     let nextFriday = new HDate(today);
     let previousSunday = new HDate(today);
 
-    daysOfThisWeek.currentYear = nextFriday.getFullYear()
-    daysOfThisWeek.currentMonth = nextFriday.getMonthName()
+    thisWeekDays.currentYear = nextFriday.getFullYear()
+    thisWeekDays.currentMonth = nextFriday.getMonthName()
 
     while (previousSunday.getDay() !== 0) {
       previousSunday = previousSunday.prev();
     }
-    daysOfThisWeek.sunday = previousSunday.toString();
+    thisWeekDays.sunday = previousSunday.toString();
 
     while (nextFriday.getDay() !== 5) {  
       nextFriday = nextFriday.next();
     }
 
     if (nextFriday < previousSunday) {
-      const nextMonth = getNextHebrewMonth(daysOfThisWeek.currentMonth);
-      daysOfThisWeek.nextMonth = nextMonth;
+      const nextMonth = getNextHebrewMonth(thisWeekDays.currentMonth);
+      thisWeekDays.nextMonth = nextMonth;
     }
 
-    daysOfThisWeek.friday = nextFriday.toString();
-    
-    return daysOfThisWeek
+    thisWeekDays.friday = nextFriday.toString();
+
+    setDaysOfThisWeek(thisWeekDays);
+
+    return thisWeekDays
   }
 
   const getCurrentWeekAniversaries = (currentMonthAniversaries: AniversariesList[], sundayDate: string, fridayDate: string) => {

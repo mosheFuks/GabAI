@@ -77,10 +77,10 @@ export const OldPerashiotList = ({setStep}: any) => {
 
   return (
     <div style={styles.container}>
-      <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%", height: "70px" }}>
+      <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%", height: "30px", marginTop: "20px"}}>
         <div></div>
         <h2 style={styles.title}>Seleccione una perasha para ver sus donaciones</h2>
-        <div style={{ display: 'flex', justifyContent: 'flex-end'}}>
+        <div style={{ justifyContent: 'flex-end'}}>
           <button style={styles.delButton} onClick={() =>setOpenDeleteModal(true)}>Eliminar</button>
         </div>
       </div>
@@ -124,7 +124,7 @@ const styles = {
   container: {
     display: "flex",
     flexDirection: "column" as const,
-    gap: "24px",
+    gap: "20px",
     justifyContent: "center",
     textAlign: "center",
     alignContent: "center"
