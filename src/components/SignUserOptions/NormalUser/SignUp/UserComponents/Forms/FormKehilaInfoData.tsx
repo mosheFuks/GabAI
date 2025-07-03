@@ -166,7 +166,7 @@ export const FormKehilaInfoData = ({handleChangePersonalData, user, setFormUserP
                     style={{...styles.input}} value={user.fechaBarMitzvaGregoriano?.ano}
                   />
                 </div>
-                {calculateBarMitzvaDateBtn(user.fechaNacimientoHebreo?.ano == "", "fechaBarMitzvaGregoriano")}
+                {calculateBarMitzvaDateBtn(user.fechaBarMitzvaHebreo?.ano == "", "fechaBarMitzvaGregoriano")}
             </div>
 
             <label htmlFor="userPerasha" style={{ display: "block", fontWeight: "bold"}}>Perasha Bar Mitzva</label>

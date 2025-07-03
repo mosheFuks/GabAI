@@ -52,7 +52,6 @@ export const DateToDateAniversary = ({ peopleList, setFilteredAniversaries, days
   }, [daysOfThisWeek]);*/
 
   useEffect(() => {
-    console.log("Days of this week herereeereio:", daysOfThisWeek);
     if (!daysOfThisWeek?.currentMonth) return;
     setMonthStart(daysOfThisWeek.currentMonth);
     setMonthEnd(daysOfThisWeek.nextMonth !== "" ? daysOfThisWeek.nextMonth : daysOfThisWeek.currentMonth);

@@ -17,9 +17,10 @@ interface UserChildModalProps {
   setSonSelected?: (son: Son | undefined) => void;
   isSonSelected?: boolean;
   setIsSonSelected?: (isSonSelected: boolean) => void;
+  setUserChangedSomeProperty: (value: boolean) => void;
 }
 
-export const UserChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen, son, setSonSelected, isSonSelected, setIsSonSelected}: UserChildModalProps) => {
+export const UserChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen, son, setSonSelected, isSonSelected, setIsSonSelected, setUserChangedSomeProperty}: UserChildModalProps) => {
   const { logedVisitorUser } = useContext(PageContext) as any;
   const closeModal = () => {
     setChildModalIsOpen(false);
@@ -66,9 +67,9 @@ export const UserChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen, 
     try {
       addSonLogedVisitorUser(logedVisitorUser.nombreKehila, logedVisitorUser.nombreEspanol, logedVisitorUser.apellido, formUserChildData)
       setChildModalIsOpen(false);
-      toast.success("Hijo/a guardado correctamente", {
+      toast.success("Se modificó la información correctamente", {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -77,8 +78,8 @@ export const UserChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen, 
         theme: "colored", 
         style: { backgroundColor: 'green', color: 'white' },
       });
+      setUserChangedSomeProperty(true);
     } catch (error) {
-      console.error("Error al guardar el hijo:", error);
       toast.error("Ocurrio un error", {
         position: "top-right",
         autoClose: 5000,
@@ -227,7 +228,7 @@ export const UserChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen, 
         contentLabel="Example Modal"
       >
         {isSonSelected ? (
-          <h2 style={{ textAlign: 'center'}}>{formUserChildData.nombre}</h2>
+          <h2 style={{ textAlign: 'center', color: "blue"}}>{formUserChildData.nombre}</h2>
         ) : (
           <h2 style={{ textAlign: 'center', color: "blue"}}>Ingresa los datos de tu hijo/a</h2>
         )}

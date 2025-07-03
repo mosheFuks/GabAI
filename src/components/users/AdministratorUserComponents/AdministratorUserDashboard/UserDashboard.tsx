@@ -36,39 +36,41 @@ export const UserDashboard = () => {
         <div style={{...styles.button, backgroundColor: colors.main_background, color: colors.main_background, cursor: '-moz-grab'}}></div>
       </div>
       <NavigationButtonSignUp step={step} setStep={setStep} fromPage="userDashboardPage"/>
-      {user != undefined ? (
-        <form style={{ width: "100%" }}>
-        {step === 1 && (
-          <VisitorPersonalInfo 
-            logedVisitorUser={user}
-          />
+      <div style={{ flex: 1, overflow: 'auto', width: '100%' }}>
+        {user != undefined ? (
+          <form style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
+            {step === 1 && (
+              <VisitorPersonalInfo 
+                logedVisitorUser={user}
+              />
+            )}
+            {step === 2 && (
+              <VisitorKehilaInfo 
+                logedVisitorUser={user}
+              />
+            )}
+            {step === 3 && ( 
+              <VisitorFamilyInfo
+                logedVisitorUser={user} 
+              />
+            )}
+            {step === 4 && (    
+              <VisitorAccountInfo 
+                logedVisitorUser={user} 
+              />
+            )}
+            {step === 5 && (    
+              <VisitorPerashiotInfo 
+                logedVisitorUser={user} 
+              />
+            )}
+          </form>
+        ) : (
+          <div style={{ textAlign: 'center', marginTop: '20px', fontSize: '3rem' }}>
+            <h5 style={{ color: colors.btn_background }}>No se encontro información de ese usuario</h5>
+          </div>
         )}
-        {step === 2 && (
-          <VisitorKehilaInfo 
-            logedVisitorUser={user}
-          />
-        )}
-        {step === 3 && ( 
-          <VisitorFamilyInfo
-            logedVisitorUser={user} 
-          />
-        )}
-        {step === 4 && (    
-          <VisitorAccountInfo 
-            logedVisitorUser={user} 
-          />
-        )}
-        {step === 5 && (    
-          <VisitorPerashiotInfo 
-            logedVisitorUser={user} 
-          />
-        )}
-      </form>
-      ) : (
-        <div style={{ textAlign: 'center', marginTop: '20px', fontSize: '3rem' }}>
-          <h5 style={{ color: colors.btn_background }}>No se encontro información de ese usuario</h5>
-        </div>
-      )}
+      </div>
     </div>
     </>
   );
@@ -77,18 +79,15 @@ export const UserDashboard = () => {
 const styles: { [key: string]: CSSProperties }= {
   container: {
     backgroundColor: colors.main_background,
-    padding: "10px",
     borderRadius: "25px",
     width: "95%",
-    minHeight: "75vh",
-    maxHeight: "90vh",
+    height: "79vh", // altura fija
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
-    //justifyContent: "space-between",
     margin: "20px auto 0 auto",
-    paddingLeft: "20px",
-    paddingRight: "20px",
+    padding: "10px 20px",
+    overflow: "hidden", // oculta desbordes
+    marginBottom: "20px",
   },
   title: {
     fontSize: "2rem",

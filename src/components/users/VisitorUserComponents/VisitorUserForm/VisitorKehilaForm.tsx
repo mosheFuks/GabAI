@@ -7,7 +7,7 @@ interface FormPersonalDataProps {
 
 export const VisitorKehilaForm = ({logedVisitorUser}: FormPersonalDataProps) => {
     return (
-      <div style={{ height: "400px", overflowY: "auto", padding: "10px", borderRadius: "5px" }}>
+      <div style={{ flex: 1, overflowY: "auto", padding: "10px", borderRadius: "5px", minHeight: 0 }}>
         <div>
           <label htmlFor="userBarMitzvaDateHeb" style={{ display: "block", fontWeight: 'bold'}}>Fecha Bar Mitzva Hebreo</label>
           <div style={{ display: "flex", flexDirection: "row"}}>
@@ -58,12 +58,18 @@ export const VisitorKehilaForm = ({logedVisitorUser}: FormPersonalDataProps) => 
             {logedVisitorUser.perashaBarMitzva}
           </h5>
           
-          <label htmlFor="userAbilities" style={{ display: "block", fontWeight: 'bold' }}>Conocimientos</label>
-          {logedVisitorUser.habilidades.map((role: any) => (
-            <h5 style={styles.input} key={role}>
-              {role}
-            </h5>
-          ))}
+          {logedVisitorUser.habilidades.length > 0 ? (
+           <>
+              <label htmlFor="userAbilities" style={{ display: "block", fontWeight: 'bold' }}>Conocimientos</label>
+              {logedVisitorUser.habilidades.map((role: any) => (
+                <h5 style={styles.input} key={role}>
+                  {role}
+                </h5>
+              ))}
+           </>
+          ) : (
+            null
+          )}
 
           <label htmlFor="userMotherNameSpa" style={{ display: "block", fontWeight: 'bold'}}>Nombre Madre Español</label>
           <h5 id="userMotherNameSpa" style={styles.input}>

@@ -16,9 +16,10 @@ interface AniversaryModalProps {
   setAniversarySelected: (aniversary: Aniversary) => void;
   isAniversarySelected?: boolean;
   setIsAniversarySelected?: (isAniversarySelected: boolean) => void;
+  setUserChangedSomeProperty: (value: boolean) => void;
 }
 
-export const CreateAniversaryModalComponent = ({modalAniversaryIsOpen, setModalAniversaryIsOpen, aniversary, setAniversarySelected, isAniversarySelected, setIsAniversarySelected}: AniversaryModalProps) => {
+export const CreateAniversaryModalComponent = ({modalAniversaryIsOpen, setModalAniversaryIsOpen, aniversary, setAniversarySelected, isAniversarySelected, setIsAniversarySelected, setUserChangedSomeProperty}: AniversaryModalProps) => {
   const { logedVisitorUser } = useContext(PageContext) as any;
 
   const closeModal = () => {
@@ -50,7 +51,7 @@ export const CreateAniversaryModalComponent = ({modalAniversaryIsOpen, setModalA
       setModalAniversaryIsOpen(false);
       toast.success("Aniversario guardado correctamente", {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -59,6 +60,7 @@ export const CreateAniversaryModalComponent = ({modalAniversaryIsOpen, setModalA
         theme: "colored", 
         style: { backgroundColor: 'green', color: 'white' },
       });
+      setUserChangedSomeProperty(true);
     } catch (error) {
       console.error("Error al guardar el hijo:", error);
       toast.error("Ocurrio un error", {

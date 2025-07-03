@@ -79,7 +79,7 @@ export const VisitorPerashiotInfo = ({ logedVisitorUser }: FormPersonalDataProps
   
   
   return (
-    <div style={{ height: "400px", overflowY: "auto", padding: "10px", borderRadius: "5px" }}>
+    <div style={{ flex: 1, overflowY: "auto", padding: "10px", borderRadius: "5px", minHeight: 0 }}>
       {completeIortzaiList.length > 0 ? (
         <div>
           <div style={styles.headerButtons}>

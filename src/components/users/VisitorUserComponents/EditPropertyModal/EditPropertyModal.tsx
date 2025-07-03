@@ -12,6 +12,7 @@ Modal.setAppElement('#root');
 interface EditPropertyModalProps {
   setOpenEditPropertyModal: (open: boolean) => void;
   openEditPropertyModal: boolean;
+  setUserChangedSomeProperty: (value: boolean) => void;
 }
 
 const UserProperties = [
@@ -43,7 +44,7 @@ interface EditedPropertyTypes{
   value: string;
 }
 
-export const EditPropertyModal = ({setOpenEditPropertyModal, openEditPropertyModal}: EditPropertyModalProps) => {
+export const EditPropertyModal = ({setOpenEditPropertyModal, openEditPropertyModal, setUserChangedSomeProperty}: EditPropertyModalProps) => {
   const { logedVisitorUser } = useContext(PageContext) as any;
   const convex = useConvex();
   const [propertyToEdit, setPropertyToEdit] = useState<EditedPropertyTypes>({ name: "", value: "", normalName: "" });
@@ -72,9 +73,9 @@ export const EditPropertyModal = ({setOpenEditPropertyModal, openEditPropertyMod
     try {
       await changeVisitorUserPropeties(logedVisitorUser?.nombreKehila, logedVisitorUser?.nombreEspanol, logedVisitorUser?.apellido, editedProperties);
       setOpenEditPropertyModal(false);
-      toast.success("Se modificó el valor de las propiedades seleccionadas, refresque la pagina para ver los cambios", {
+      toast.success("Se modificó la información correctamente", {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -83,6 +84,7 @@ export const EditPropertyModal = ({setOpenEditPropertyModal, openEditPropertyMod
         theme: "colored", 
         style: { backgroundColor: 'green', color: 'white' },
       });
+      setUserChangedSomeProperty(true);
     } catch (error) {
       toast.error("Ocurrió un error al intentar cambiar el valor de las propiedadeas seleccionadas", {
         position: "top-right",

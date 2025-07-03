@@ -9,9 +9,10 @@ import { CreateAniversaryModalComponent } from '../AniversaryComponents/Aniversa
 
 interface FormPersonalDataProps {
   logedVisitorUser: any
+  setUserChangedSomeProperty: (value: boolean) => void;
 }
 
-export const VisitorFamilyForm = ({logedVisitorUser}: FormPersonalDataProps) => {
+export const VisitorFamilyForm = ({logedVisitorUser, setUserChangedSomeProperty}: FormPersonalDataProps) => {
     const [modalChildIsOpen, setChildModalIsOpen] = React.useState<boolean>(false);
     const [modalAniversaryIsOpen, setModalAniversaryIsOpen] = React.useState<boolean>(false);
     const [aniversarySelected, setAniversarySelected] = React.useState<Aniversary>();
@@ -20,7 +21,7 @@ export const VisitorFamilyForm = ({logedVisitorUser}: FormPersonalDataProps) => 
     const [isAniversarySelected, setIsAniversarySelected] = React.useState<boolean>(false);
 
     return (
-      <div style={{ height: "400px", overflowY: "auto", padding: "10px", borderRadius: "5px" }}>
+      <div style={{ flex: 1, overflowY: "auto", padding: "10px", borderRadius: "5px", minHeight: 0 }}>
         <div>
             <label htmlFor="userMaritalStatus "style={{ display: "block", fontWeight: 'bold' }}>Estado Civil</label>
             <h5 id="userMaritalStatus" style={styles.input}>
@@ -95,8 +96,10 @@ export const VisitorFamilyForm = ({logedVisitorUser}: FormPersonalDataProps) => 
                 son={sonSelected}
                 setSonSelected={setSonSelected}
                 isSonSelected={isSonSelected}
-                setIsSonSelected={setIsSonSelected} /> 
-              : 
+                setIsSonSelected={setIsSonSelected}
+                setUserChangedSomeProperty={setUserChangedSomeProperty}
+              />
+              :
               null
             }
             {modalAniversaryIsOpen ? 
@@ -107,6 +110,7 @@ export const VisitorFamilyForm = ({logedVisitorUser}: FormPersonalDataProps) => 
                 setAniversarySelected={setAniversarySelected}
                 isAniversarySelected={isAniversarySelected}
                 setIsAniversarySelected={setIsAniversarySelected}
+                setUserChangedSomeProperty={setUserChangedSomeProperty}
               />
               :
               null

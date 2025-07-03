@@ -19,7 +19,7 @@ export const VisitorFamilyInfo = ({logedVisitorUser}: FormPersonalDataProps) => 
     const [sonSelected, setSonSelected] = React.useState<Son>();
 
     return (
-      <div style={{ height: "400px", overflowY: "auto", padding: "10px", borderRadius: "5px" }}>
+      <div style={{ flex: 1, overflowY: "auto", padding: "10px", borderRadius: "5px", minHeight: 0 }}>
         <div>
             <label htmlFor="userMaritalStatus "style={{ display: "block", fontWeight: 'bold' }}>Estado Civil</label>
             <h5 id="userMaritalStatus" style={styles.input}>

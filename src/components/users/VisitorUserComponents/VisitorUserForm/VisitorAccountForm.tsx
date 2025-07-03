@@ -56,7 +56,7 @@ export const VisitorAccountForm = ({ logedVisitorUser }: FormPersonalDataProps) 
   }, [statusFilter])
   
   return (
-    <div style={{ height: "400px", overflowY: "auto", padding: "10px", borderRadius: "5px" }}>
+    <div style={{ flex: 1, overflowY: "auto", padding: "10px", borderRadius: "5px", minHeight: 0 }}>
         <div>
           <div style={styles.headerButtons}>
             {logedVisitorUser.cuenta!.length > 0 && (
