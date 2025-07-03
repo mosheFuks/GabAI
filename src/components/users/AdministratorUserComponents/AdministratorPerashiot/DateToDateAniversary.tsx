@@ -44,12 +44,19 @@ export const DateToDateAniversary = ({ peopleList, setFilteredAniversaries, days
   const [monthEnd, setMonthEnd] = useState<string>("");
   const [clicked, setClicked] = useState<boolean>(false);
 
-  useEffect(() => {
+  /*useEffect(() => {
     console.log("Days of this week herereeereio:", daysOfThisWeek);
     
     setMonthStart(daysOfThisWeek.currentMonth);
     setMonthEnd(daysOfThisWeek.nextMonth !== "" ? daysOfThisWeek.nextMonth : daysOfThisWeek.currentMonth);
-  }, [daysOfThisWeek]);
+  }, [daysOfThisWeek]);*/
+
+  useEffect(() => {
+    console.log("Days of this week herereeereio:", daysOfThisWeek);
+    if (!daysOfThisWeek?.currentMonth) return;
+    setMonthStart(daysOfThisWeek.currentMonth);
+    setMonthEnd(daysOfThisWeek.nextMonth !== "" ? daysOfThisWeek.nextMonth : daysOfThisWeek.currentMonth);
+  }, [daysOfThisWeek.currentMonth, daysOfThisWeek.nextMonth]);
   
 
   const getImportantDatesFromAllPeopleList = () => {
