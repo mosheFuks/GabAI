@@ -140,7 +140,7 @@ export const changeDonationStatus = () => {
     });
 };
 
-/*-------CHANGE THE STATUS OF A USER----------------*/
+/*-------CHANGE THE PROPERTY OF A USER----------------*/
 export const changeUserVisitorData = () => {
   const mutation = useMutation(api.kehila.changeUserVisitordata);
   return (

@@ -11,10 +11,11 @@ interface FormFamilyDataProps {
   setModalAniversaryIsOpen: (isOpen: boolean) => void,
   setChildSelected: any,
   setAniversarySelected: (aniversary: Aniversary) => void
+  deleteAniversary: (aniversary: Aniversary) => void; // Si se necesita una función para eliminar aniversarios
 }
 
-export const FormFamilyInfoData = ({handleChangePersonalData, user, setChildModalIsOpen, setModalAniversaryIsOpen, setChildSelected, setAniversarySelected}: FormFamilyDataProps) => {
-  
+export const FormFamilyInfoData = ({handleChangePersonalData, user, setChildModalIsOpen, setModalAniversaryIsOpen, setChildSelected, setAniversarySelected, deleteAniversary}: FormFamilyDataProps) => {
+
     return (
       <div  style={{ flex: 1, overflowY: "auto", padding: "10px", borderRadius: "5px", minHeight: 0 }}>
         <label htmlFor="userMaritalStatus "style={{ display: "block", fontWeight: "bold" }}>Estado Civil</label>
@@ -58,7 +59,9 @@ export const FormFamilyInfoData = ({handleChangePersonalData, user, setChildModa
                   aniversario={aniversario} 
                   key={index} 
                   setModalAniversaryIsOpen={setModalAniversaryIsOpen} 
-                  setAniversarySelected={setAniversarySelected}/>
+                  setAniversarySelected={setAniversarySelected}
+                  deleteAniversary={deleteAniversary}
+                />
               ))}
             </div>
           </div>

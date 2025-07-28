@@ -45,6 +45,7 @@ export interface Son {
     habilidades?: string[]
 }
 export interface Aniversary {
+    id?: string,
     fecha?: CustomDate,
     fechaHebreo?: CustomDate,
     motivo?: string,

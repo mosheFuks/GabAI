@@ -18,6 +18,7 @@ interface AniversaryModalProps {
 export const CreateAniversaryModalComponent = ({modalAniversaryIsOpen, setModalAniversaryIsOpen, user, setUser, aniversarySelected, setAniversarySelected}: AniversaryModalProps) => {
 
   const [formUserAniversaryData, setFormUserAniversaryData] = useState<Aniversary>({
+    id: aniversarySelected?.id != null ? aniversarySelected.id : crypto.randomUUID(),
     fecha: {
       dia:  aniversarySelected?.fecha?.dia != null ? aniversarySelected.fecha.dia : "",
       mes:  aniversarySelected?.fecha?.mes != null ? aniversarySelected.fecha.mes : "",
@@ -36,7 +37,7 @@ export const CreateAniversaryModalComponent = ({modalAniversaryIsOpen, setModalA
     setModalAniversaryIsOpen(false);
     
     if (formUserAniversaryData?.motivo != "") {
-      const childIsAlreadySavedOnUserChildList = user.aniversarios?.some(ani => ani.motivo === aniversarySelected?.motivo);
+      const childIsAlreadySavedOnUserChildList = user.aniversarios?.some(ani => ani.id === aniversarySelected?.id);
       childIsAlreadySavedOnUserChildList ? updateUserAniversaryData() : addUserAniversaryData()
       setAniversarySelected({})
     }
@@ -47,13 +48,13 @@ export const CreateAniversaryModalComponent = ({modalAniversaryIsOpen, setModalA
   }
 
   const updateUserAniversaryData = () => {
-    const updatedUserChildData = user.aniversarios?.map(aniversary => {
-      if(aniversary.motivo === aniversarySelected?.motivo) {
+    const updatedUserAniversaryData = user.aniversarios?.map(aniversary => {
+      if(aniversary.id === aniversarySelected?.id) {
         return formUserAniversaryData
       }
       return aniversary
     })
-    setUser({...user, aniversarios: updatedUserChildData})
+    setUser({...user, aniversarios: updatedUserAniversaryData})
   }
 
   const handleChangeAniversaryData = (e: any) => {
@@ -187,12 +188,12 @@ export const CreateAniversaryModalComponent = ({modalAniversaryIsOpen, setModalA
             </div>
             <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
               <label htmlFor="userAniversaryDateGregAno" style={{ display: "block", fontWeight: 'bold', marginRight: 10, marginLeft: 10}}>Año</label>
-              <input id="userAniversaryDateGregAno" type="number" name="fecha" placeholder="Ano" onChange={(e: any) => saveBirthDateParams("ano", "fecha", false, e)} style={{...styles.input}} value={formUserAniversaryData.fecha?.ano}/>
+              <input id="userAniversaryDateGregAno" type="number" name="fecha" placeholder="Año" onChange={(e: any) => saveBirthDateParams("ano", "fecha", false, e)} style={{...styles.input}} value={formUserAniversaryData.fecha?.ano}/>
             </div>
             {calculateAniversaryDateBtn("fecha", formUserAniversaryData.fechaHebreo!, formUserAniversaryData.fechaHebreo?.dia! == "" || formUserAniversaryData.fechaHebreo?.mes! == "" || formUserAniversaryData.fechaHebreo?.ano! == "" )}
           </div>
 
-          <label htmlFor="userFechaNacHeb" style={{ display: "block", fontWeight: 'bold'}}>Fecha Nacimiento Hebreo</label>
+          <label htmlFor="userFechaNacHeb" style={{ display: "block", fontWeight: 'bold'}}>Fecha en Hebreo</label>
           <div style={{ display: "flex", flexDirection: "row"}}>
             <div style={{ display: "flex", flexDirection: "row"}}>
               <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>

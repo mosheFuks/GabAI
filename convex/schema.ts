@@ -48,6 +48,7 @@ export const Perasha = v.object({
 })
 
 export const Aniversary = v.object({
+    id: v.optional(v.string()),
     fecha: CustomDate,
     fechaHebreo: CustomDate,
     motivo: v.string(),

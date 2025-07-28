@@ -217,7 +217,7 @@ export const CreateChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen
           <input id="userChildNameEsp" type="text" name="nombre" placeholder="Nombre (Español)" onChange={handleChangeChildData} style={styles.input} value={formUserChildData.nombre}/>
 
           <label htmlFor="userChildNameHeb" style={{ display: "block", fontWeight: 'bold'}}>Nombre Hijo Hebreo</label>
-          <input id="userChildNameHeb" type="text" name="nombreHebreo" placeholder="Nombre (Hebreo)" onChange={handleChangeChildData} style={styles.input} value={formUserChildData.nombreHebreo}/>
+          <input id="userChildNameHeb" type="text" name="nombreHebreo" placeholder="Itzjak ben Abraham" onChange={handleChangeChildData} style={styles.input} value={formUserChildData.nombreHebreo}/>
 
           <label htmlFor="userChildSurname" style={{ display: "block", fontWeight: 'bold'}}>Apellido</label>
           <input id="userChildSurname" type="text" name="apellido" placeholder={user.apellido != null ? user.apellido : "Apellido"} onChange={handleChangeChildData} style={styles.input} value={formUserChildData.apellido}/>

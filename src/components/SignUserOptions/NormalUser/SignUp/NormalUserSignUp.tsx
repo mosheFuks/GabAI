@@ -98,6 +98,12 @@ const NormalUserSignUp = () => {
     setModalAniversaryIsOpen(true)
   }
 
+  const deleteAniversary = (aniversary: Aniversary) => {
+    const updatedAniversaries = user.aniversarios?.filter(a => a.id !== aniversary.id);
+    setUser({...user, aniversarios: updatedAniversaries});
+    showToastSucces("Aniversario eliminado");
+  }
+
   const addVisitorUser = addAVisitorUserInTheKehila();
   const saveNewVisitorUserOnUsersList = () => {
     addVisitorUser(logedUser.kehila, user)
@@ -146,17 +152,18 @@ const NormalUserSignUp = () => {
             setModalAniversaryIsOpen={setModalAniversaryIsOpen} 
             setChildSelected={setChildSelected}
             setAniversarySelected={setAniversarySelected}
+            deleteAniversary={deleteAniversary}
           />
         )}
       </form>
 
-      {step === 3 && (
+      {step === 3 && (  
         <div style={{display: "flex", flexDirection: "row", justifyContent: "center"}}>
           <div>
-            <button type={"button"}style={styles.button} onClick={addChild}>Agregar Hijo</button>
+            <button type={"button"} style={styles.button} onClick={addChild}>Agregar Hijo</button>
           </div>
           <div>
-            <button type={"button"}style={styles.button} onClick={addAniversary}>Agregar Aniversario</button>
+            <button type={"button"} style={styles.button} onClick={addAniversary}>Agregar Aniversario</button>
           </div>
         </div>
       )}
