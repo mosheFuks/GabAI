@@ -160,7 +160,7 @@ export const FormPersonalInfoData = ({handleChangePersonalData, user, setFormUse
         <input id="userNombreEspanol" type="text" name="nombreEspanol" placeholder="Nombre en Español" onChange={handleChangePersonalData} style={styles.input} value={user.nombreEspanol}/>
         
         <label htmlFor="userNombreHebreo" style={{ display: "block", fontWeight: "bold"}}>Nombre Hebreo</label>
-        <input id="userNombreHebreo" type="text" name="nombreHebreo" placeholder="Nombre en Hebreo" onChange={handleChangePersonalData} style={styles.input} value={user.nombreHebreo}/>
+        <input id="userNombreHebreo" type="text" name="nombreHebreo" placeholder="Iaakov ben Abraham" onChange={handleChangePersonalData} style={styles.input} value={user.nombreHebreo}/>
         
         <label htmlFor="userApellido"style={{ display: "block", fontWeight: "bold"}}>Apellido</label>
         <input id="userApellido" type="text" name="apellido" placeholder="Apellido" onChange={handleChangePersonalData} style={styles.input} value={user.apellido}/>
@@ -238,11 +238,11 @@ export const FormPersonalInfoData = ({handleChangePersonalData, user, setFormUse
         <label htmlFor="userAsosiateNum" style={{ display: "block", fontWeight: "bold"}}>Numero Socio</label>
         <input id="userAsosiateNum" type="text" name="numeroSocio" placeholder="Número de Socio" onChange={handleChangePersonalData} style={styles.input} value={user.numeroSocio}/>
         
-        <label htmlFor="userGroup" style={{ display: "block", fontWeight: "bold" }}>Grupo</label>
+        <label htmlFor="userGroup" style={{ display: "block", fontWeight: "bold" }}>Estatus Halájico</label>
         <select id="userGroup" name="grupo" onChange={(e) => { 
           handleChangePersonalData(e);
         }} style={styles.input}>
-          <option value="" disabled selected>Selecciona el grupo</option>
+          <option value="" disabled selected>Estado Halájico</option>
           <option value="Cohen">Cohen</option>
           <option value="Levi">Levi</option>
           <option value="Israel">Israel</option>

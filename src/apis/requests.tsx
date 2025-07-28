@@ -9,6 +9,11 @@ export const getUsersList = (kehilaName: string) => {
   });
 }
 
+export const useUsersList = (kehila: string | undefined) => {
+  const usuarios = useQuery(api.kehila.getKehilaUsersList, kehila ? { nombre: kehila } : "skip");
+  return usuarios ?? [];
+};
+
 export const getMinianimList = async (convex: any, nombre: string) => {
   return await convex.query(api.kehila.getKehilaMinianimList, {
     nombre

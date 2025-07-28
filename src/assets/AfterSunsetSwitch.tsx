@@ -14,7 +14,7 @@ export const AfterSunsetSwitch = ({isCheked, setIsCheked}: AfterSunsetSwitchProp
   return (
     <div style={styles.container}>
       <label style={{ display: 'block', width: 180, marginBottom: 5}}>
-        Antes de Tzet Hacojavim
+        Después de Tzet Hacojavim
       </label>
       <button
         onClick={handleToggle}

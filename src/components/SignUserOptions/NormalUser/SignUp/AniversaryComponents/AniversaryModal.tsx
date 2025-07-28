@@ -5,7 +5,7 @@ import { HDate } from "@hebcal/core";
 import { Aniversary, CustomDate, GREG_MONTHS, HEBREW_MONTHS, VisitorUser } from '../../../../../structs/structs';
 
 Modal.setAppElement('#root');
-
+ 
 interface AniversaryModalProps {
   modalAniversaryIsOpen: boolean;
   setModalAniversaryIsOpen: (modalAniversaryIsOpen: boolean) => void;
@@ -162,7 +162,7 @@ export const CreateAniversaryModalComponent = ({modalAniversaryIsOpen, setModalA
             handleChangeAniversaryData(e);
           }} style={styles.input}>
             <option value="" disabled selected>{formUserAniversaryData.motivo != "" ? formUserAniversaryData.motivo : 'Selecciona el motivo'}</option>
-            <option value="Iortzai">Iortzai</option>
+            <option value="Yortzait">Yortzait</option>
             <option value="Otro">Otro</option>
           </select>
 

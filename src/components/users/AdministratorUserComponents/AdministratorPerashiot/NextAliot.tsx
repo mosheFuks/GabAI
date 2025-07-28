@@ -268,7 +268,7 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
                   <th style={styles.th}>Nombre</th>
                   <th style={styles.th}>Nombre Hebreo</th>
                   <th style={styles.th}>Numero de Socio</th>
-                  <th style={styles.th}>Grupo</th>
+                  <th style={styles.th}>Estatus Halájico</th>
                   <th style={styles.th}>Minian</th>
                   <th style={styles.th}>Conocimientos</th>
                   <th style={styles.th}>Fecha Aniversario Gregoriano</th>

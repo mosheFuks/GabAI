@@ -30,7 +30,7 @@ export const VisitorPerashiotInfo = ({ logedVisitorUser }: FormPersonalDataProps
   };
 
   const getAllIortzaiAniversaries = () => {
-    return logedVisitorUser.aniversarios.filter((ani: Aniversary) => ani.motivo == "Iortzai")
+    return logedVisitorUser.aniversarios.filter((ani: Aniversary) => ani.motivo == "Yortzait")
   }
 
   const getAllNotIortzaiAniversaries = () => {
@@ -46,7 +46,7 @@ export const VisitorPerashiotInfo = ({ logedVisitorUser }: FormPersonalDataProps
       barMitzvaDateHeb: logedVisitorUser.fechaBarMitzvaHebreo
     }
     notIortzaiAniversaries.userImportantDatesList = userImportantDates
-    notIortzaiAniversaries.aniversariesList.push(logedVisitorUser.aniversarios.filter((ani: Aniversary) => ani.motivo != "Iortzai"))
+    notIortzaiAniversaries.aniversariesList.push(logedVisitorUser.aniversarios.filter((ani: Aniversary) => ani.motivo != "Yortzait"))
     logedVisitorUser.hijos.length > 0 ? notIortzaiAniversaries.sonList.push(logedVisitorUser.hijos.filter((son: Son) => son.genero == "Masculino")) : null
 
     return notIortzaiAniversaries
@@ -85,7 +85,7 @@ export const VisitorPerashiotInfo = ({ logedVisitorUser }: FormPersonalDataProps
           <div style={styles.headerButtons}>
             <div style={{ display: "flex", flexDirection: "row", border: '2px solid orange', borderRadius: '50px', paddingLeft: '10px', paddingRight: '10px', justifyContent: 'center', gap: '20px'}}>
               <div>
-                <h3 onClick={() => setStep(1)} style={{...styles.sectionTitle, color: step === 1 ? "orange" : "black", textDecoration: step === 1 ? "underline" : "none"}}>Proximos Iortzai</h3>
+                <h3 onClick={() => setStep(1)} style={{...styles.sectionTitle, color: step === 1 ? "orange" : "black", textDecoration: step === 1 ? "underline" : "none"}}>Proximos Yortzait</h3>
               </div>
 
               <div>

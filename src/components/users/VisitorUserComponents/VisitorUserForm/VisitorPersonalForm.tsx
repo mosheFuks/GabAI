@@ -105,7 +105,7 @@ export const VisitorPersonalForm = ({ logedVisitorUser }: VisitorPersonalDataPro
           {logedVisitorUser.numeroSocio}
         </h5>
         
-        <label htmlFor="userGroup" style={{ display: "block", fontWeight: 'bold' }}>Grupo</label>
+        <label htmlFor="userGroup" style={{ display: "block", fontWeight: 'bold' }}>Estatus Halájico</label>
         <h5 id="userGroup" style={styles.input}>
           {logedVisitorUser.grupo}
         </h5>

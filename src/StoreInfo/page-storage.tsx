@@ -79,6 +79,8 @@ export const PageProvider: React.FC<PageProviderProps> = ({ children }) => {
   });
 
   useEffect(() => {
+    console.log("Also enter here");
+    
     const storedLogedUser = localStorage.getItem('logedUser');
     const storedLogedVisitorUser = localStorage.getItem('logedVisitorUser');
 
@@ -102,7 +104,6 @@ export const PageProvider: React.FC<PageProviderProps> = ({ children }) => {
   };
 
   const signOut = async () => {
-    navigate("/");
     try {
       localStorage.clear()
       setLogedUser({
@@ -160,6 +161,7 @@ export const PageProvider: React.FC<PageProviderProps> = ({ children }) => {
 
         cuenta: []
       })
+      navigate("/");
     } catch (error) {
       console.error("❌ Error al cerrar sesión:", error);
     }

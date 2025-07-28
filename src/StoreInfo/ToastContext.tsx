@@ -1,4 +1,4 @@
-import { createContext, useState, ReactNode } from "react";
+import React, { createContext, useState, ReactNode } from "react";
 import { ToastData } from "../structs/structs";
 
 // Definir el tipo del contexto

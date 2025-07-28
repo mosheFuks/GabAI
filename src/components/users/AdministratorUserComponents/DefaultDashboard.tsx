@@ -15,6 +15,8 @@ export const AdministratorDefaultDashboard = () => {
   const { logedUser } = useContext(PageContext) as any;
 
   const usuarios = logedUser != undefined ? getUsersList(logedUser.kehila) : []
+  console.log("Enter here");
+  
   
   const [step, setStep] = useState(1)
   const [oldPerashaInfo, setOldPerashaInfo] = useState(false)

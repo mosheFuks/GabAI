@@ -102,8 +102,8 @@ export const OldPerashaInfo = () => {
                   <tr>
                     <th style={styles.th}>Alia</th>
                     <th style={styles.th}>Nombre</th>
-                    <th style={styles.th}>Apellido</th>
                     <th style={styles.th}>Nombre Hebreo</th>
+                    <th style={styles.th}>Apellido</th>
                     <th style={styles.th}>Monto</th>
                     <th style={styles.th}>Moneda</th>
                   </tr>
@@ -112,8 +112,8 @@ export const OldPerashaInfo = () => {
                   {aliotList!.map((alia: Alia, index) => {
                     const nomAlia = alia.alia;
                     const nombre = alia.nombre;
-                    const apellido = alia.apellido;
                     const nombreHebreo = alia.nombreHebreo;
+                    const apellido = alia.apellido;
                     const monto = alia.monto
                     const moneda = alia.moneda
 
@@ -121,8 +121,8 @@ export const OldPerashaInfo = () => {
                       <tr key={index}>
                         <td style={styles.td} data-label="NomAlia">{nomAlia}</td>
                         <td style={styles.td} data-label="Nombre">{nombre}</td>
-                        <td style={styles.td} data-label="Apellido">{apellido}</td>
                         <td style={styles.td} data-label="NombreHebreo">{nombreHebreo}</td>
+                        <td style={styles.td} data-label="Apellido">{apellido}</td>
                         <td style={styles.td} data-label="Monto">{monto}</td>
                         <td style={styles.td} data-label="Moneda">{moneda}</td>
                       </tr>

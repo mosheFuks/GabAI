@@ -245,7 +245,7 @@ export const EditPropertyModal = ({setOpenEditPropertyModal, openEditPropertyMod
         }}
       >
         <option value="" disabled>
-          Elegí un Grupo
+          Seleccioná tu Estatus Halájico
         </option>
         {groupList.map((group, index) => (
           <option key={index} value={group}>
