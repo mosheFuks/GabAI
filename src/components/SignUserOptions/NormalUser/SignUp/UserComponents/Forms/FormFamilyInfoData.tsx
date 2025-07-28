@@ -16,7 +16,7 @@ interface FormFamilyDataProps {
 export const FormFamilyInfoData = ({handleChangePersonalData, user, setChildModalIsOpen, setModalAniversaryIsOpen, setChildSelected, setAniversarySelected}: FormFamilyDataProps) => {
   
     return (
-      <div style={{ height: "300px", overflowY: "auto", padding: "10px", borderRadius: "5px" }}>
+      <div  style={{ flex: 1, overflowY: "auto", padding: "10px", borderRadius: "5px", minHeight: 0 }}>
         <label htmlFor="userMaritalStatus "style={{ display: "block", fontWeight: "bold" }}>Estado Civil</label>
         <select name="estadoCivil" onChange={(e) => { 
           handleChangePersonalData(e);

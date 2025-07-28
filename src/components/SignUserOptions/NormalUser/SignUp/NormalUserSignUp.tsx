@@ -119,7 +119,7 @@ const NormalUserSignUp = () => {
         <div></div>
       </div>
       <NavigationButtonSignUp step={step} setStep={setStep} setModalRealSignInfo={setModalRealSignInfo} fromPage={"SignUp"} saveNewVisitorUserOnUsersList={saveNewVisitorUserOnUsersList}/>
-      <form style={{ width: "100%" }}>
+      <form style={{ flex: 1, overflow: 'auto', width: '100%' }}>
         {step === 1 && (
           <FormPersonalInfoData 
             handleChangePersonalData={handleChangePersonalData}
@@ -151,7 +151,7 @@ const NormalUserSignUp = () => {
       </form>
 
       {step === 3 && (
-        <div style={{display: "flex", flexDirection: "row"}}>
+        <div style={{display: "flex", flexDirection: "row", justifyContent: "center"}}>
           <div>
             <button type={"button"}style={styles.button} onClick={addChild}>Agregar Hijo</button>
           </div>
@@ -194,21 +194,19 @@ const NormalUserSignUp = () => {
   );
 };
 
+
 const styles: { [key: string]: CSSProperties }= {
   container: {
     backgroundColor: colors.main_background,
-    padding: "10px",
     borderRadius: "25px",
     width: "95%",
-    minHeight: "75vh",
-    maxHeight: "80vh",
+    height: "79vh", // altura fija
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
-    //justifyContent: "space-between",
     margin: "20px auto 0 auto",
-    paddingLeft: "20px",
-    paddingRight: "20px",
+    padding: "10px 20px",
+    overflow: "hidden", // oculta desbordes
+    marginBottom: "20px",
   },
   title: {
     fontSize: "2rem",

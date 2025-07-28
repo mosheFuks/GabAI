@@ -96,7 +96,7 @@ export const FormKehilaInfoData = ({handleChangePersonalData, user, setFormUserP
     };
     
     return (
-      <div style={{ height: "400px", overflowY: "auto", padding: "10px", borderRadius: "5px" }}>
+      <div  style={{ flex: 1, overflowY: "auto", padding: "10px", borderRadius: "5px", minHeight: 0 }}>
         <div>        
             <label htmlFor="userBarMitzvaDateHeb" style={{ display: "block", fontWeight: "bold"}}>Fecha Bar Mitzva Hebreo</label>
             <div style={{ display: "flex", flexDirection: "row"}}>

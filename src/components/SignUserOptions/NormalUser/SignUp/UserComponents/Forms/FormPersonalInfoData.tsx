@@ -122,7 +122,7 @@ export const FormPersonalInfoData = ({handleChangePersonalData, user, setFormUse
   }, [logedUser]);
 
   return (
-    <div style={{ height: "400px", overflowY: "auto", padding: "10px", border: "0px solid #ccc", borderRadius: "5px" }}>
+    <div style={{ flex: 1, overflowY: "auto", padding: "10px", borderRadius: "5px", minHeight: 0 }}>
       <div>
         <label htmlFor="userKehilaName" style={{ display: "block", fontWeight: "bold" }}>Nombre Kehila</label>
         { logedUser.rol != "" ? 

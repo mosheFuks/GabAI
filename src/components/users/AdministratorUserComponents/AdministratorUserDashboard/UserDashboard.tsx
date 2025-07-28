@@ -1,13 +1,13 @@
 import { CSSProperties, useContext, useState } from "react";
 
 import { useNavigate, useParams } from "react-router-dom";
-import { VisitorPersonalInfo } from "./UserComponents/UserForm/VisitorPersonalInfo";
-import { VisitorKehilaInfo } from "./UserComponents/UserForm/VisitorKehilaInfo";
-import { VisitorFamilyInfo } from "./UserComponents/UserForm/VisitorFamilyInfo";
-import { VisitorAccountInfo } from "./UserComponents/UserForm/VisitorAccountInfo";
+import { VisitorPersonalInfo } from "./UserComponents/UserInfo/VisitorPersonalInfo";
+import { VisitorKehilaInfo } from "./UserComponents/UserInfo/VisitorKehilaInfo";
+import { VisitorFamilyInfo } from "./UserComponents/UserInfo/VisitorFamilyInfo";
+import { VisitorAccountInfo } from "./UserComponents/UserInfo/VisitorAccountInfo";
 
 import {FaArrowLeft } from "react-icons/fa";
-import { VisitorPerashiotInfo } from "./UserComponents/UserForm/VisitorPerashiotInfo";
+import { VisitorPerashiotInfo } from "./UserComponents/UserInfo/VisitorPerashiotInfo";
 import { colors } from "../../../../assets/colors";
 import { NavigationButtonSignUp } from "../../../SignUserOptions/NormalUser/SignUp/NavigationButtonsSignUp";
 import { getVisitorUserInfo } from "../../../../apis/requests";
