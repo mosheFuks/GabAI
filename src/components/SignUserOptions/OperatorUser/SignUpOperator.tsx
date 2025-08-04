@@ -1,5 +1,4 @@
 import React, { useContext, useState } from 'react';
-import Modal from 'react-modal';
 import { colors } from '../../../assets/colors';
 import { LogedUserData, SignInfo } from '../../../structs/structs';
 import { Eye, EyeOff } from "lucide-react"
