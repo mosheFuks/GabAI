@@ -293,6 +293,8 @@ const styles = {
     position: 'sticky',
     top: 0,
     zIndex: 1,
+    borderRadius: '8px', // importante
+    border: '2px solid #040404ff',
   } as CSSProperties,
   td: {
    padding: '14px 16px',
@@ -300,6 +302,7 @@ const styles = {
     fontSize: '1.05rem',
     color: '#333',
     borderRadius: '8px', // importante
+    border: '2px solid #cbbabaff',
     boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
     textAlign: "center"
   } as CSSProperties,

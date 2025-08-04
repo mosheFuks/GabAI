@@ -7,7 +7,6 @@ import { changeUserVisitorData, getMinianimList } from '../../../../apis/request
 import { useConvex } from 'convex/react';
 import { toast } from 'react-toastify';
 
-Modal.setAppElement('#root');
 
 interface EditPropertyModalProps {
   setOpenEditPropertyModal: (open: boolean) => void;
@@ -170,7 +169,7 @@ export const EditPropertyModal = ({setOpenEditPropertyModal, openEditPropertyMod
             })}
           >
             <option value="" disabled>
-              Selecciona un mes
+              Mes
             </option>
             {HEBREW_MONTHS.map((month) => (
               <option key={month} value={month}>
@@ -345,7 +344,7 @@ export const EditPropertyModal = ({setOpenEditPropertyModal, openEditPropertyMod
             zIndex: 9998 // Asegura que esté detrás del modal pero encima del resto
           }
         }}
-        contentLabel="Example Modal"
+        contentLabel="Edit Property Modal"
       >
         <h2 style={{ textAlign: 'center', border: '1px solid blue', padding: '10px', borderRadius: '25px', justifyContent: 'center' }}>Elegí la propiedad a editar</h2>
         <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>

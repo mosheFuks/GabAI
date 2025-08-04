@@ -25,6 +25,18 @@ export const FormPersonalInfoData = ({handleChangePersonalData, user, setFormUse
   const kehilotNames = getKehilotNames();
   const convex = useConvex();
 
+  const [isMobile, setIsMobile] = useState(false);
+  
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth <= 600); // podés ajustar el break point
+    };
+
+    checkScreenSize();
+    window.addEventListener("resize", checkScreenSize);
+    return () => window.removeEventListener("resize", checkScreenSize);
+  }, []);
+
   const getMinianimFromTheList = async (nombre: string) => {
     try {
       const minianimList = await getMinianimList(convex, nombre);
@@ -63,8 +75,8 @@ export const FormPersonalInfoData = ({handleChangePersonalData, user, setFormUse
   };
 
   const calculateBirthDateBtn = (birthType: "fechaNacimientoGregoriano" | "fechaNacimientoHebreo", referenceDateValue: CustomDate, disabledCondition: boolean) => {
-      return (
-        <>
+    return (
+      <>
         <button 
           type="button" 
           style={{...styles.button, backgroundColor: disabledCondition == true ? 'gray' : colors.btn_calculate_date, color: "white"}}
@@ -72,8 +84,8 @@ export const FormPersonalInfoData = ({handleChangePersonalData, user, setFormUse
           disabled={disabledCondition}>
             Calcular fecha
         </button>
-        </>
-      )
+      </>
+    )
   };
 
   const saveBirthDateParams = (dateKey: string, birthType: "fechaNacimientoGregoriano" | "fechaNacimientoHebreo", isCalculated?: boolean, e?: any) => {
@@ -165,8 +177,11 @@ export const FormPersonalInfoData = ({handleChangePersonalData, user, setFormUse
         <label htmlFor="userApellido"style={{ display: "block", fontWeight: "bold"}}>Apellido</label>
         <input id="userApellido" type="text" name="apellido" placeholder="Apellido" onChange={handleChangePersonalData} style={styles.input} value={user.apellido}/>
 
-        <label htmlFor="userFechaNacGreg" style={{ display: "block", fontWeight: "bold"}}>Fecha Nacimiento Gregoriano</label>
-        <div style={{ display: "flex", flexDirection: "row"}}>
+        <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginBottom: "5px", gap: "20px"}}>
+          <label htmlFor="userFechaNacGreg" style={{ display: "block", fontWeight: "bold"}}>Fecha Nacimiento Gregoriano</label>
+          {calculateBirthDateBtn("fechaNacimientoGregoriano", user.fechaNacimientoHebreo!, user.fechaNacimientoHebreo?.ano == "")}
+        </div>
+        <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row"}}>
           <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
             <label htmlFor="userFechaNacGregDia" style={{ display: "block", fontWeight: "bold", marginRight: 10}}>Día</label>
             <input id="userFechaNacGregDia" type="number" name="fechaNacimientoGregoriano" placeholder="Día" onChange={(e: any) => saveBirthDateParams("dia", "fechaNacimientoGregoriano", false, e)} style={{...styles.input}} value={user.fechaNacimientoGregoriano?.dia}/>
@@ -174,6 +189,7 @@ export const FormPersonalInfoData = ({handleChangePersonalData, user, setFormUse
           <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
             <label htmlFor="userFechaNacGregMes" style={{ display: "block", fontWeight: "bold", marginRight: 10, marginLeft: 10}}>Mes</label>
             <select id="userFechaNacGregMes" name="fechaNacimientoGregoriano" onChange={(e: any) => saveBirthDateParams("mes", "fechaNacimientoGregoriano", false, e)} style={styles.input} value={user.fechaNacimientoGregoriano?.mes}>
+              <option value="" disabled hidden>Mes</option>
               {GREG_MONTHS.map((month) => (
                 <option key={month.numero} value={month.numero}>{month.nombre}</option>
               ))}
@@ -183,44 +199,43 @@ export const FormPersonalInfoData = ({handleChangePersonalData, user, setFormUse
             <label htmlFor="userFechaNacGregAno" style={{ display: "block", fontWeight: "bold", marginRight: 10, marginLeft: 10}}>Año</label>
             <input id="userFechaNacGregAno" type="number" name="fechaNacimientoGregoriano" placeholder="Año" onChange={(e: any) => saveBirthDateParams("ano", "fechaNacimientoGregoriano", false, e)} style={{...styles.input}} value={user.fechaNacimientoGregoriano?.ano}/>
           </div>
-          {calculateBirthDateBtn("fechaNacimientoGregoriano", user.fechaNacimientoHebreo!, user.fechaNacimientoHebreo?.ano == "")}
         </div>
         
-        <label htmlFor="userFechaNacHeb" style={{ display: "block", fontWeight: "bold"}}>Fecha Nacimiento Hebreo</label>
-        <div style={styles.calculateDateBtnContainer}>
-          <div style={{ display: "flex", flexDirection: "row"}}>
-            <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-              <label htmlFor="userFechaNacHebDia" style={{ display: "block", fontWeight: "bold", marginRight: 10}}>Día</label>
-              <input id="userFechaNacHebDia" type="number" name="fechaNacimientoHebreo" placeholder="Día" onChange={(e: any) => saveBirthDateParams("dia", "fechaNacimientoHebreo", false, e)} style={{...styles.input}} value={user.fechaNacimientoHebreo?.dia}/>
-            </div>
-            <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-              <label htmlFor="userFechaNacHebMes" style={{ display: "block", fontWeight: "bold", marginRight: 10, marginLeft: 10}}>
+        <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginBottom: "5px", gap: "20px" }}>
+          <label htmlFor="userFechaNacHeb" style={{ display: "block", fontWeight: "bold"}}>Fecha Nacimiento Hebreo</label>
+          {calculateBirthDateBtn("fechaNacimientoHebreo", user.fechaNacimientoGregoriano!, user.fechaNacimientoGregoriano?.ano == "")}
+        </div>
+        <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row"}}>
+          <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
+            <label htmlFor="userFechaNacHebDia" style={{ display: "block", fontWeight: "bold", marginRight: 10}}>Día</label>
+            <input id="userFechaNacHebDia" type="number" name="fechaNacimientoHebreo" placeholder="Día" onChange={(e: any) => saveBirthDateParams("dia", "fechaNacimientoHebreo", false, e)} style={{...styles.input}} value={user.fechaNacimientoHebreo?.dia}/>
+          </div>
+          <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
+            <label htmlFor="userFechaNacHebMes" style={{ display: "block", fontWeight: "bold", marginRight: 10, marginLeft: isMobile ? 0 : 10}}>
+              Mes
+            </label>
+            <select
+              id="userFechaNacHebMes"
+              name="fechaNacimientoHebreo"
+              style={styles.input}
+              onChange={(e) => saveBirthDateParams("mes", "fechaNacimientoHebreo", false, e)}
+              value={user.fechaNacimientoHebreo?.mes || ""}
+            >
+              <option value="" disabled>
                 Mes
-              </label>
-              <select
-                id="userFechaNacHebMes"
-                name="fechaNacimientoHebreo"
-                style={styles.input}
-                onChange={(e) => saveBirthDateParams("mes", "fechaNacimientoHebreo", false, e)}
-                value={user.fechaNacimientoHebreo?.mes || ""}
-              >
-                <option value="" disabled>
-                  Selecciona un mes
+              </option>
+              {HEBREW_MONTHS.map((month) => (
+                <option key={month} value={month}>
+                  {month}
                 </option>
-                {HEBREW_MONTHS.map((month) => (
-                  <option key={month} value={month}>
-                    {month}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-              <label htmlFor="userFechaNacHebAno" style={{ display: "block", fontWeight: "bold", marginRight: 10, marginLeft: 10}}>Año</label>
-              <input id="userFechaNacHebAno" type="number" name="fechaNacimientoHebreo" placeholder="Año" onChange={(e: any) => saveBirthDateParams("ano", "fechaNacimientoHebreo", false, e)} style={{...styles.input}} value={user.fechaNacimientoHebreo?.ano}/>
-            </div>
+              ))}
+            </select>
+          </div>
+          <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
+            <label htmlFor="userFechaNacHebAno" style={{ display: "block", fontWeight: "bold", marginRight: 10, marginLeft: 10}}>Año</label>
+            <input id="userFechaNacHebAno" type="number" name="fechaNacimientoHebreo" placeholder="Año" onChange={(e: any) => saveBirthDateParams("ano", "fechaNacimientoHebreo", false, e)} style={{...styles.input}} value={user.fechaNacimientoHebreo?.ano}/>
           </div>
           <AfterSunsetSwitch isCheked={isAfterSunsetSelected} setIsCheked={setIsAfterSunsetSelected} />
-          {calculateBirthDateBtn("fechaNacimientoHebreo", user.fechaNacimientoGregoriano!, user.fechaNacimientoGregoriano?.ano == "")}
         </div>
 
         <label htmlFor="userEmailPers" style={{ display: "block", fontWeight: "bold"}}>Email Personal</label>

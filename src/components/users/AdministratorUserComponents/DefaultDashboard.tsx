@@ -15,8 +15,6 @@ export const AdministratorDefaultDashboard = () => {
   const { logedUser } = useContext(PageContext) as any;
 
   const usuarios = logedUser != undefined ? getUsersList(logedUser.kehila) : []
-  console.log("Enter here");
-  
   
   const [step, setStep] = useState(1)
   const [oldPerashaInfo, setOldPerashaInfo] = useState(false)
@@ -101,7 +99,7 @@ export const AdministratorDefaultDashboard = () => {
                           </span>
                         </td>
                         <td 
-                          style={{...styles.td, color: "green", alignItems: "center", cursor:"pointer"}}
+                          style={{...styles.td, color: "green", alignItems: "center", cursor:"pointer", border: "2px solid green"}}
                           data-label="InfoUsuario"
                           onClick={() => navigate(`/administrator-user-info/${persona.nombreEspanol}-${persona.apellido!}`)}
                         >
@@ -125,9 +123,7 @@ export const AdministratorDefaultDashboard = () => {
         null
       )}
       {step == 2 ? (
-        <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
-          <NextAliot peopleList={peopleList}/>
-        </div>
+        <NextAliot peopleList={peopleList}/>
       ) : (
         null
       )}
@@ -270,6 +266,8 @@ const styles: { [key: string]: CSSProperties }= {
     position: 'sticky',
     top: 0,
     zIndex: 1,
+    borderRadius: '8px', // importante
+    border: '2px solid #040404ff',
   },
   td: {
     padding: '14px 16px',
@@ -277,6 +275,7 @@ const styles: { [key: string]: CSSProperties }= {
     fontSize: '1.05rem',
     color: '#333',
     borderRadius: '8px', // importante
+    border: '2px solid #cbbabaff',
     boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
   },
   statusBadge: {

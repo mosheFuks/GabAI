@@ -4,8 +4,6 @@ import { colors } from '../../../../assets/colors'
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../../../../firebase-config';
 
-Modal.setAppElement('#root');
-
 interface ResetPassModal {
   resetPassModal: boolean;
   setResetPassModal: (openAliaModal: boolean) => void;
@@ -40,7 +38,7 @@ export const ResetPassModal = ({resetPassModal, setResetPassModal}: ResetPassMod
             zIndex: 9998 // Asegura que esté detrás del modal pero encima del resto
           }
         }}
-        contentLabel="Example Modal"
+        contentLabel="Reset Password Modal"
       >
         <h2 style={{ textAlign: 'center', color: 'blue'}}>Ingresa tu email personal para enviar email de confirmación</h2>
         <div>

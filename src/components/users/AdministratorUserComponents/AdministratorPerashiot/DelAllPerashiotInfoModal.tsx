@@ -6,8 +6,6 @@ import { PageContext } from '../../../../StoreInfo/page-storage';
 import { toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
 
-Modal.setAppElement('#root');
-
 interface DelAllPerashiotModalProps {
   action: "DEL_ALL" | "DEL_PERASHA";
   openDeleteModal: boolean;
@@ -65,7 +63,7 @@ export const DelAllPereashiotInfoModal = ({action, openDeleteModal, setOpenDelet
             zIndex: 9998 // Asegura que esté detrás del modal pero encima del resto
           }
         }}
-        contentLabel="Example Modal"
+        contentLabel="Delete Perashiot Info Modal"
       >
         <h2 style={{ textAlign: 'center', color: 'blue'}}>{action == "DEL_ALL" ? 
           "¿Queres eliminar la información de las Aliot y sus donaciones de todas las perashiot?" : 

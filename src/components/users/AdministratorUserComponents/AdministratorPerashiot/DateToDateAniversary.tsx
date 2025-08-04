@@ -44,6 +44,7 @@ export const DateToDateAniversary = ({ peopleList, setFilteredAniversaries, days
   const [monthEnd, setMonthEnd] = useState<string>("");
   const [clicked, setClicked] = useState<boolean>(false);
 
+  console.log("DateToDateAniversary props:", { peopleList, setFilteredAniversaries, daysOfThisWeek, setRenderedAniversaries });
   /*useEffect(() => {
     console.log("Days of this week herereeereio:", daysOfThisWeek);
     
@@ -278,7 +279,7 @@ const styles = {
     alignItems: 'center',
     gap: '8px',
     fontFamily: 'sans-serif',
-    fontSize: '14px',
+    fontSize: '14px'
   } as CSSProperties,
   label: {
     marginRight: '4px',

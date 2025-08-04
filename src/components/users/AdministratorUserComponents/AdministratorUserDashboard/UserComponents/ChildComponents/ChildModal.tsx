@@ -3,9 +3,6 @@ import Modal from 'react-modal';
 import { Son } from '../../../../../../structs/structs';
 import { colors } from '../../../../../../assets/colors';
 
-
-Modal.setAppElement('#root');
-
 interface UserChildModalProps {
   modalChildIsOpen: boolean;
   setChildModalIsOpen: (modalChildIsOpen: boolean) => void;
@@ -32,7 +29,7 @@ export const UserChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen, 
             zIndex: 9998 // Asegura que esté detrás del modal pero encima del resto
           }
         }}
-        contentLabel="Example Modal"
+        contentLabel="Admin Child Modal"
       >
         <h2 style={{ textAlign: 'center', color: 'blue'}}>{son!.nombre}</h2>
         <div>

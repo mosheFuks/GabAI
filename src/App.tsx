@@ -17,6 +17,9 @@ import { ToastProvider } from './StoreInfo/ToastContext';
 import { PageProvider } from './StoreInfo/page-storage';
 import { LogedUserData } from './structs/structs';
 import { useEffect, useState } from 'react';
+import Modal from 'react-modal';
+
+Modal.setAppElement('#root');
 
 function App() {
   const [logedUser, setLogedUser] = useState<LogedUserData | null>()

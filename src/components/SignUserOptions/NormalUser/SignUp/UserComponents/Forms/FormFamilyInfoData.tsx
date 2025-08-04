@@ -52,7 +52,7 @@ export const FormFamilyInfoData = ({handleChangePersonalData, user, setChildModa
 
         {user.aniversarios!.length > 0 ? (
           <div style={{width: '100%' }} >
-            <label style={{ display: "block", fontWeight: "bold"}}>Aniversarios</label>
+            <label style={{ display: "block", fontWeight: "bold", marginTop: "10px"}}>Aniversarios</label>
             <div style={styles.childCardContainer}>
               {user.aniversarios!.map((aniversario: Aniversary, index: React.Key | null | undefined) => (
                 <AniversaryCard 

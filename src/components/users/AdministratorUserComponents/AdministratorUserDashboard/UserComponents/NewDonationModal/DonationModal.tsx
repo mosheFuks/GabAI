@@ -5,9 +5,6 @@ import { colors } from '../../../../../../assets/colors';
 import { addADonationToUser } from '../../../../../../apis/requests';
 import { PageContext } from '../../../../../../StoreInfo/page-storage';
 
-
-Modal.setAppElement('#root');
-
 interface DonationModalProps {
   modalAniversaryIsOpen: boolean;
   setModalAniversaryIsOpen: (modalAniversaryIsOpen: boolean) => void;
@@ -47,7 +44,7 @@ export const DonationModal = ({modalAniversaryIsOpen, setModalAniversaryIsOpen, 
             zIndex: 9998 // Asegura que esté detrás del modal pero encima del resto
           }
         }}
-        contentLabel="Example Modal"
+        contentLabel="Donation Modal"
       >
         <h2 style={{ textAlign: 'center', color: 'blue'}}>Nueva Donación</h2>
         <div>

@@ -3,8 +3,6 @@ import { Aniversary } from '../../../../../../structs/structs';
 import { colors } from '../../../../../../assets/colors';
 import { CSSProperties } from 'react';
 
-Modal.setAppElement('#root');
-
 interface AniversaryModalProps {
   modalAniversaryIsOpen: boolean;
   setModalAniversaryIsOpen: (modalAniversaryIsOpen: boolean) => void;
@@ -30,7 +28,7 @@ export const CreateAniversaryModalComponent = ({modalAniversaryIsOpen, setModalA
             zIndex: 9998 // Asegura que esté detrás del modal pero encima del resto
           }
         }}
-        contentLabel="Example Modal"
+        contentLabel="Admin Aniversary Modal"
       >
         <h2 style={{ textAlign: 'center', color: 'blue'}}>{aniversary?.nombreDelAniversario}</h2>
         <div>

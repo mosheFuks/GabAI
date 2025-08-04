@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { CSSProperties, useState } from 'react';
 import { HDate } from '@hebcal/core';
 import { Ability, GREG_MONTHS, HEBREW_MONTHS, VisitorUser } from '../../../../../../structs/structs';
@@ -13,8 +13,20 @@ interface FormPersonalDataProps {
 }
 
 export const FormKehilaInfoData = ({handleChangePersonalData, user, setFormUserPersonalData, formUserPersonalData, setUser}: FormPersonalDataProps) => {
-    const habilidades: Ability[] = ["Leer Torah", "Jazan", "Leer Haftara", "Leer Meguila"];
-    const [habilidad, setHabilidad] = useState<Ability[]>([])
+  const habilidades: Ability[] = ["Leer Torah", "Jazan", "Leer Haftara", "Leer Meguila"];
+  const [habilidad, setHabilidad] = useState<Ability[]>([])
+
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth <= 600); // podés ajustar el break point
+    };
+
+    checkScreenSize();
+    window.addEventListener("resize", checkScreenSize);
+    return () => window.removeEventListener("resize", checkScreenSize);
+  }, []);
 
     const handleAddAbility = (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value as Ability;
@@ -98,75 +110,76 @@ export const FormKehilaInfoData = ({handleChangePersonalData, user, setFormUserP
     return (
       <div  style={{ flex: 1, overflowY: "auto", padding: "10px", borderRadius: "5px", minHeight: 0 }}>
         <div>        
-            <label htmlFor="userBarMitzvaDateHeb" style={{ display: "block", fontWeight: "bold"}}>Fecha Bar Mitzva Hebreo</label>
-            <div style={{ display: "flex", flexDirection: "row"}}>
-              <div style={{ display: "flex", flexDirection: "row"}}>
-                <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                  <label htmlFor="userBarMitzvaDateHebDia" style={{ display: "block", fontWeight: "bold", marginRight: 10}}>Día</label>
-                  <input id="userBarMitzvaDateHebDia" type="number" name="fechaBarMitzvaHebreo" placeholder="Día" 
-                    onChange={(e: any) => saveBarMitzvaDateParams("dia", "fechaBarMitzvaHebreo", false, e)} 
-                    style={{...styles.input}} value={user.fechaBarMitzvaHebreo?.dia}
-                  />
-                </div>
-                <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                  <label htmlFor="userBarMitzvaDateHebMes" style={{ display: "block", fontWeight: "bold", marginRight: 10, marginLeft: 10}}>
-                    Mes
-                  </label>
-                  <select
-                    id="userBarMitzvaDateHebMes"
-                    name="fechaBarMitzvaHebreo"
-                    style={styles.input}
-                    onChange={(e) => saveBarMitzvaDateParams("mes", "fechaBarMitzvaHebreo", false, e)}
-                    value={user.fechaBarMitzvaHebreo?.mes || ""}
-                  >
-                    <option value="" disabled>
-                      Selecciona un mes
-                    </option>
-                    {HEBREW_MONTHS.map((month) => (
-                      <option key={month} value={month}>
-                        {month}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                  <label htmlFor="userBarMitzvaDateHebAno" style={{ display: "block", fontWeight: "bold", marginRight: 10, marginLeft: 10}}>Año</label>
-                  <input id="userBarMitzvaDateHebAno" type="number" name="fechaBarMitzvaHebreo" placeholder="Año" 
-                    onChange={(e: any) => saveBarMitzvaDateParams("ano", "fechaBarMitzvaHebreo", false, e)} 
-                    style={{...styles.input}} value={user.fechaBarMitzvaHebreo?.ano}
-                  />
-                </div>
-              </div>
+            <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginBottom: "5px", gap: "20px"}}>
+              <label htmlFor="userBarMitzvaDateHeb" style={{ display: "block", fontWeight: "bold"}}>Fecha Bar Mitzva Hebreo</label>
               {calculateBarMitzvaDateBtn(user.fechaNacimientoHebreo?.ano == "", "fechaBarMitzvaHebreo")}
             </div>
+            <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row"}}>
+              <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
+                <label htmlFor="userBarMitzvaDateHebDia" style={{ display: "block", fontWeight: "bold", marginRight: 10}}>Día</label>
+                <input id="userBarMitzvaDateHebDia" type="number" name="fechaBarMitzvaHebreo" placeholder="Día" 
+                  onChange={(e: any) => saveBarMitzvaDateParams("dia", "fechaBarMitzvaHebreo", false, e)} 
+                  style={{...styles.input}} value={user.fechaBarMitzvaHebreo?.dia}
+                />
+              </div>
+              <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
+                <label htmlFor="userBarMitzvaDateHebMes" style={{ display: "block", fontWeight: "bold", marginRight: 10, marginLeft: isMobile ? 0 : 10}}>
+                  Mes
+                </label>
+                <select
+                  id="userBarMitzvaDateHebMes"
+                  name="fechaBarMitzvaHebreo"
+                  style={styles.input}
+                  onChange={(e) => saveBarMitzvaDateParams("mes", "fechaBarMitzvaHebreo", false, e)}
+                  value={user.fechaBarMitzvaHebreo?.mes || ""}
+                >
+                  <option value="" disabled>
+                    Mes
+                  </option>
+                  {HEBREW_MONTHS.map((month) => (
+                    <option key={month} value={month}>
+                      {month}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
+                <label htmlFor="userBarMitzvaDateHebAno" style={{ display: "block", fontWeight: "bold", marginRight: 10, marginLeft: 10}}>Año</label>
+                <input id="userBarMitzvaDateHebAno" type="number" name="fechaBarMitzvaHebreo" placeholder="Año" 
+                  onChange={(e: any) => saveBarMitzvaDateParams("ano", "fechaBarMitzvaHebreo", false, e)} 
+                  style={{...styles.input}} value={user.fechaBarMitzvaHebreo?.ano}
+                />
+              </div>
+            </div>
 
-            <label htmlFor="userBarMitzvaDateGreg" style={{ display: "block", fontWeight: "bold"}}>Fecha Bar Mitzva Gregoriano</label>
-            <div style={{ display: "flex", flexDirection: "row"}}>
-              <div style={{ display: "flex", flexDirection: "row"}}>
-                <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                  <label htmlFor="userBarMitzvaDateGregDia" style={{ display: "block", fontWeight: "bold", marginRight: 10}}>Día</label>
-                  <input id="userBarMitzvaDateGregDia" type="number" name="fechaBarMitzvaGregoriano" placeholder="Día" 
-                    onChange={(e: any) => saveBarMitzvaDateParams("dia", "fechaBarMitzvaGregoriano", false, e)} 
-                    style={{...styles.input}} value={user.fechaBarMitzvaGregoriano?.dia}
-                  />
-                </div>
-                <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                  <label htmlFor="userBarMitzvaDateGregMes" style={{ display: "block", fontWeight: "bold", marginRight: 10, marginLeft: 10}}>Mes</label>
-                  <select id="userBarMitzvaDateGregMes" name="fechaBarMitzvaGregoriano" onChange={(e: any) => saveBarMitzvaDateParams("mes", "fechaBarMitzvaGregoriano", false, e)} style={styles.input} value={user.fechaBarMitzvaGregoriano?.mes}>
-                    {GREG_MONTHS.map((month) => (
-                      <option key={month.numero} value={month.numero}>{month.nombre}</option>
-                    ))}
-                  </select>
-                </div>
-                </div>
-                <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-                  <label htmlFor="userBarMitzvaDateGregAno" style={{ display: "block", fontWeight: "bold", marginRight: 10, marginLeft: 10}}>Año</label>
-                  <input id="userBarMitzvaDateGregAno" type="number" name="fechaBarMitzvaGregoriano" placeholder="Año" 
-                    onChange={(e: any) => saveBarMitzvaDateParams("ano", "fechaBarMitzvaGregoriano", false, e)} 
-                    style={{...styles.input}} value={user.fechaBarMitzvaGregoriano?.ano}
-                  />
-                </div>
-                {calculateBarMitzvaDateBtn(user.fechaBarMitzvaHebreo?.ano == "", "fechaBarMitzvaGregoriano")}
+            <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginBottom: "5px", gap: "20px"}}>
+              <label htmlFor="userBarMitzvaDateGreg" style={{ display: "block", fontWeight: "bold"}}>Fecha Bar Mitzva Gregoriano</label>
+              {calculateBarMitzvaDateBtn(user.fechaBarMitzvaHebreo?.ano == "", "fechaBarMitzvaGregoriano")} 
+            </div>
+            <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row"}}>
+              <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
+                <label htmlFor="userBarMitzvaDateGregDia" style={{ display: "block", fontWeight: "bold", marginRight: 10}}>Día</label>
+                <input id="userBarMitzvaDateGregDia" type="number" name="fechaBarMitzvaGregoriano" placeholder="Día" 
+                  onChange={(e: any) => saveBarMitzvaDateParams("dia", "fechaBarMitzvaGregoriano", false, e)} 
+                  style={{...styles.input}} value={user.fechaBarMitzvaGregoriano?.dia}
+                />
+              </div>
+              <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
+                <label htmlFor="userBarMitzvaDateGregMes" style={{ display: "block", fontWeight: "bold", marginRight: 10, marginLeft: isMobile ? 0 : 10}}>Mes</label>
+                <select id="userBarMitzvaDateGregMes" name="fechaBarMitzvaGregoriano" onChange={(e: any) => saveBarMitzvaDateParams("mes", "fechaBarMitzvaGregoriano", false, e)} style={styles.input} value={user.fechaBarMitzvaGregoriano?.mes}>
+                  <option value="" disabled>Mes</option>
+                  {GREG_MONTHS.map((month) => (
+                    <option key={month.numero} value={month.numero}>{month.nombre}</option>
+                  ))}
+                </select>
+              </div>
+              <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
+                <label htmlFor="userBarMitzvaDateGregAno" style={{ display: "block", fontWeight: "bold", marginRight: 10, marginLeft: 10}}>Año</label>
+                <input id="userBarMitzvaDateGregAno" type="number" name="fechaBarMitzvaGregoriano" placeholder="Año" 
+                  onChange={(e: any) => saveBarMitzvaDateParams("ano", "fechaBarMitzvaGregoriano", false, e)} 
+                  style={{...styles.input}} value={user.fechaBarMitzvaGregoriano?.ano}
+                />
+              </div>
             </div>
 
             <label htmlFor="userPerasha" style={{ display: "block", fontWeight: "bold"}}>Perasha Bar Mitzva</label>

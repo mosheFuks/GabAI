@@ -80,7 +80,7 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
       nextFriday = nextFriday.next();
     }
 
-    if (nextFriday < previousSunday) {
+    if (nextFriday.dd < previousSunday.dd) {
       const nextMonth = getNextHebrewMonth(thisWeekDays.currentMonth);
       thisWeekDays.nextMonth = nextMonth;
     }
@@ -200,6 +200,8 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
   }*/
 
   const getThisWeekAniversaries = (datesOfThisWeek: DaysOfThisWeek) => {
+    console.log("Dates of this week when searching for aniversaries: ", datesOfThisWeek);
+    
     const currentMonthAniversaries = getCurrentMonthAniversaries(datesOfThisWeek.currentMonth, datesOfThisWeek.nextMonth)
     const currentWeekAniversaries = getCurrentWeekAniversaries(currentMonthAniversaries, datesOfThisWeek.sunday, datesOfThisWeek.friday)
     //const currentYearAniversaries = getCurrentYearAniversaries(currentWeekAniversaries, datesOfThisWeek.currentYear)
@@ -237,9 +239,9 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
   }, [])
 
   return (
-    <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
+    <div style={{ minWidth: "100%"}}>
       <div style={styles.headerButtons}>
-        {<div style={{ display: "flex", gap: '10px', width: '100%', marginTop: '20px'}}>
+        {<div style={{ display: "flex", width: '100%', marginTop: '20px'}}>
           <DateToDateAniversary peopleList={peopleList!} setFilteredAniversaries={setFilteredAniversaries} daysOfThisWeek={daysOfThisWeek} setRenderedAniversaries={setRenderedAniversaries} />
         </div>}
         {thisWeekAniversaries.length > 0 && (
@@ -258,7 +260,7 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
           </div>
         )}
       </div>
-      <div style={{ flex: 1, overflowY: "auto", padding: "10px", borderRadius: "5px" }}>
+      <div style={{overflowY: "auto", padding: "10px", borderRadius: "5px" }}>
         <div>
           {filteredAniversaries.length > 0 ? (
             <table style={styles.table}>
@@ -299,7 +301,7 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
                       <td style={styles.td} data-label="FechaNacimientoGreg">{fechaAniGreg}</td>
                       <td style={styles.td} data-label="FechaNacimientoHeb">{fechaAniHeb}</td>
                       <td 
-                        style={{...styles.td, color: "green", alignItems: "center", cursor:"pointer"}}
+                        style={{...styles.td, color: "green", alignItems: "center", cursor:"pointer", border: "2px solid green"}}
                         data-label="EstadoCuenta"
                         onClick={() => navigate(`/administrator-user-info/${ani.nombre}-${ani.apellido}`)}
                       >
@@ -314,7 +316,7 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
           : 
           (
             <div style={{ textAlign: 'center', marginTop: '20px', fontSize: '3rem' }}>
-              <h5 style={{ color: colors.btn_background }}>Ningún usuario tiene un aniversario en estas fecha</h5>
+              <h5 style={{ color: colors.btn_background }}>No hay aniversarios registrados en estas fechas</h5>
             </div>
           )}
         </div>
@@ -426,6 +428,8 @@ const styles: { [key: string]: CSSProperties }= {
     position: 'sticky',
     top: 0,
     zIndex: 1,
+    borderRadius: '8px', // importante
+    border: '2px solid #040404ff',
   },
   td: {
    padding: '14px 16px',
@@ -433,6 +437,7 @@ const styles: { [key: string]: CSSProperties }= {
     fontSize: '1.05rem',
     color: '#333',
     borderRadius: '8px', // importante
+    border: '2px solid #cbbabaff',
     boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
   },
   cellPopover: {
@@ -454,8 +459,9 @@ const styles: { [key: string]: CSSProperties }= {
   } as CSSProperties,
   headerButtons: {
     display: "flex",
+    width: '100%',
     //gap: '10px',
-    marginBottom: '10px',
+    //marginBottom: '10px',
     //justifyContent: 'space-between',
     //alignItems: 'center',
     //backgroundColor: 'red',

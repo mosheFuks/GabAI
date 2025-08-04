@@ -1,0 +1,38 @@
+.fecha-input-wrapper {
+  container-type: inline-size;
+  container-name: fecha;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.fecha-input-group {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: flex-end;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.fecha-input-group input,
+.fecha-input-group select {
+  width: 100%;
+  max-width: 100px;
+  padding: 8px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+/* Container query */
+@container fecha (max-width: 320px) {
+  .fecha-input-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .fecha-input-group input,
+  .fecha-input-group select {
+    max-width: 100%;
+  }
+}

@@ -11,9 +11,6 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../../../firebase-config';
 import { FaArrowLeft } from 'react-icons/fa';
 
-
-Modal.setAppElement('#root');
-
 export const SignUpOperator = (/*{modalRealSignInfo, setModalRealSignInfo, user}: CrateOperatorProps*/) => {
   const { logedUser } = useContext(PageContext) as any;
   const [formUserSignData, setFormUserSignData] = useState<SignInfo>({

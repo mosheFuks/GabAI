@@ -8,8 +8,6 @@ import { addAUserToTheUsuariosList, addAVisitorUserInTheKehila } from '../../../
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../../../../firebase-config';
 
-Modal.setAppElement('#root');
-
 interface RealSignModalProps {
   modalRealSignInfo: boolean,
   setModalRealSignInfo: (modalRealSignInfo: boolean) => void;

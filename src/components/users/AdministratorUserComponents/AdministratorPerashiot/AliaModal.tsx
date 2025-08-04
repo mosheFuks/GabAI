@@ -6,8 +6,6 @@ import { addADonationToUser, addAnAliaInAPerasha } from '../../../../apis/reques
 import { PageContext } from '../../../../StoreInfo/page-storage';
 import { toast } from 'react-toastify';
 
-Modal.setAppElement('#root');
-
 interface AliaModalProps {
   openAliaModal: boolean;
   setOpenAliaModal: (openAliaModal: boolean) => void;
@@ -113,7 +111,7 @@ export const AliaModal = ({setOpenAliaModal, openAliaModal, setAliotList, aliotL
             zIndex: 9998 // Asegura que esté detrás del modal pero encima del resto
           }
         }}
-        contentLabel="Example Modal"
+        contentLabel="Alia Modal"
       >
         <h2 style={{ textAlign: 'center', color: 'blue'}}>Nueva Alia</h2>
         <div>

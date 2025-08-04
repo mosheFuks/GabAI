@@ -6,8 +6,6 @@ import { changeUserVisitorData, getMinianimList } from '../../../apis/requests';
 import { Ability, HEBREW_MONTHS } from '../../../structs/structs';
 import { colors } from '../../../assets/colors';
 
-Modal.setAppElement('#root');
-
 interface EditPropertyModalProps {
   setOpenEditPropertyModal: (open: boolean) => void;
   openEditPropertyModal: boolean;
@@ -149,7 +147,7 @@ export const EditPropertyModal = ({setOpenEditPropertyModal, openEditPropertyMod
             })}
           >
             <option value="" disabled>
-              Selecciona un mes
+              Mes
             </option>
             {HEBREW_MONTHS.map((month) => (
               <option key={month} value={month}>
@@ -291,7 +289,7 @@ export const EditPropertyModal = ({setOpenEditPropertyModal, openEditPropertyMod
             zIndex: 9998 // Asegura que esté detrás del modal pero encima del resto
           }
         }}
-        contentLabel="Example Modal"
+        contentLabel="HelpModal"
       >
         <h2 style={{ textAlign: 'center', border: '1px solid blue', padding: '10px', borderRadius: '25px', justifyContent: 'center', display: 'flex' }}>Elegí la propiedad a editar</h2>
         <div>

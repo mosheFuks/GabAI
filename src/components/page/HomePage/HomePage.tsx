@@ -14,9 +14,9 @@ export default function HomePage() {
       return (
         <div style={styles.container}>
           <h2 style={styles.title}>
-            {esp_strings.home_title}
+            {esp_strings.home_title}<span style={{ fontStyle: "italic" }}>AI</span>
           </h2>
-          <span style={styles.sub_title}>La primera plataforma Web que te ayuda a organizar las aliot y donaciones de tu Kehila</span>
+          <span style={{...styles.sub_title, fontSize: '1.5rem'}}>La primera plataforma Web que te ayuda a organizar las aliot y donaciones de tu Kehila</span>
           {/*<div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', marginTop: '10px', marginBottom: '10px', backgroundColor: "red"}}>
             <div style={{ display: "flex", flexDirection: "row", gap: '10px' }}>
               <div style={styles.pendingCard}>
@@ -53,7 +53,7 @@ export default function HomePage() {
             >{esp_strings.btn_signup}</button>
           </div>
           <p style={styles.linkText}>
-            {esp_strings.home_sub_title}{' '}
+            {esp_strings.home_sub_title_2_1}<span style={{ fontStyle: "italic" }}>AI</span>{' '}{esp_strings.home_sub_title_2_2}{' '}
             <a href="#" style={styles.link}>{esp_strings.home_link}</a>
           </p>
         </div>
@@ -65,7 +65,7 @@ export default function HomePage() {
         {logedUser.rol == "VISITANTE" ? (
           <div style={styles.container}>
             <h2 style={styles.title}>
-              Bienvendio a GabAI {logedUser.nombre} {logedUser.apellido}
+              Bienvendio a Gab<span style={{ fontStyle: "italic" }}>AI</span>, <span style={{ color: colors.btn_background }}>{logedUser.nombre} {logedUser.apellido}</span>
             </h2>
             <span style={styles.sub_title}>Ingresa para ver tu cuenta</span>
             <div style={styles.buttonContainer}>
@@ -107,9 +107,10 @@ const styles: { [key: string]: CSSProperties } = {
       marginBottom: '1.5rem'
     } as CSSProperties,
     sub_title: {
-      fontSize: '1.2rem',
+      fontSize: '2.2rem',
       fontWeight: 'bold',
-      marginBottom: '5rem'
+      marginBottom: '5rem',
+      textAlign: 'center',
     } as CSSProperties,
     buttonContainer: {
       display: "flex",

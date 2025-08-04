@@ -25,7 +25,7 @@ export const Navbar = () => {
   return (
     <nav style={styles.container}>
       <div style={styles.text} onClick={handleClick}>
-        <span style={styles.highlight}>{esp_strings.main_title}</span>
+        <span style={styles.highlight}>{esp_strings.main_title}<span style={{ fontStyle: "italic" }}>AI</span></span>
       </div>
       <div style={styles.buttonContainer}>
         { logedUser.rol == "ADMIN" ? (

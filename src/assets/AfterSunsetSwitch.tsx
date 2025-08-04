@@ -13,7 +13,7 @@ export const AfterSunsetSwitch = ({isCheked, setIsCheked}: AfterSunsetSwitchProp
 
   return (
     <div style={styles.container}>
-      <label style={{ display: 'block', width: 180, marginBottom: 5}}>
+      <label style={{ display: 'block', width: '100%', marginBottom: 5}}>
         Después de Tzet Hacojavim
       </label>
       <button
@@ -34,7 +34,11 @@ const styles: { [key: string]: CSSProperties }= {
     padding: 10,
     border: '1px solid',
     borderColor: 'green',
-    borderRadius: 25
+    borderRadius: 25,
+    width: 'fit-content',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   btn_container: {
     width: "60px",
