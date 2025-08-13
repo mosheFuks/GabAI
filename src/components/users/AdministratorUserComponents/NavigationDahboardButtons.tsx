@@ -63,7 +63,7 @@ const styles: { [key: string]: CSSProperties }= {
     display: "flex",
     //justifyContent: "space-between",
     //alignItems: "center",
-    //backgroundColor: colors.btn_background,
+    padding: "20px",
     borderRadius: "30px",
     //padding: "10px 20px",
     //maxWidth: "900px",

@@ -77,37 +77,47 @@ export const OldPerashiotList = ({setStep}: any) => {
 
   return (
     <div style={styles.container}>
-      <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%", height: "30px", marginTop: "20px"}}>
+      <div style={{ display: "flex",
+                    //flex: 1,
+                    //width: '100%',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    padding: '0px 20px',
+                    //height: '30px',
+                    /*backgroundColor: 'white'*/}}>
         <div></div>
         <h2 style={styles.title}>Seleccione una perasha para ver sus donaciones</h2>
-        <div style={{ justifyContent: 'flex-end'}}>
+        <div >
           <button style={styles.delButton} onClick={() =>setOpenDeleteModal(true)}>Eliminar</button>
         </div>
       </div>
-      {Object.entries(parashiotByBook).map(([book, parashiot]) => (
-        <div key={book}>
-          <div style={styles.bookTitle}>{book}</div>
-          <div style={styles.buttonGroup}>
-            {parashiot.map((name) => {
-              const isSelected = selected === name
-              return (
-                <button
-                  key={name}
-                  onClick={() => {setSelected(name), navigate(`/perasha-info/${name}`), setStep(2)}}
-                  style={{
-                    ...styles.button,
-                    fontWeight: isSelected ? "bold" : "normal",
-                    background: isSelected ? "linear-gradient(to right, orange, #ff6ec4)" : "white",
-                  }}
-                  onMouseDown={(e) => e.preventDefault()} // evita estilo de focus/fondo
-                >
-                  {name}
-                </button>
-              )
-            })}
+
+      <div style={{ flex: 1 }}>
+        {Object.entries(parashiotByBook).map(([book, parashiot]) => (
+          <div key={book}>
+            <div style={styles.bookTitle}>{book}</div>
+            <div style={styles.buttonGroup}>
+              {parashiot.map((name) => {
+                const isSelected = selected === name
+                return (
+                  <button
+                    key={name}
+                    onClick={() => {setSelected(name), navigate(`/perasha-info/${name}`), setStep(2)}}
+                    style={{
+                      ...styles.button,
+                      fontWeight: isSelected ? "bold" : "normal",
+                      background: isSelected ? "linear-gradient(to right, orange, #ff6ec4)" : "white",
+                    }}
+                    onMouseDown={(e) => e.preventDefault()} // evita estilo de focus/fondo
+                  >
+                    {name}
+                  </button>
+                )
+              })}
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
 
       {
         <DelAllPereashiotInfoModal
@@ -133,25 +143,27 @@ const styles = {
     fontWeight: "bold",
     fontSize: "18px",
     marginBottom: "8px",
-  },
+  }as CSSProperties,
   buttonGroup: {
     display: "flex",
     flexWrap: "wrap" as const,
     gap: "8px",
     justifyContent: "center",
     textAlign: "center",
-    alignContent: "center"
+    alignContent: "center",
+    marginBottom: "10px",
   } as CSSProperties,
   title: {
-    fontSize: "2rem",
+    fontSize: "1.5rem",
     fontWeight: "bold",
     textDecorationLine: 'underline', 
     textDecorationColor: 'orange',
-    borderRadius: 20,
+    /*borderRadius: 20,
     paddingLeft: 10,
     paddingRight: 10,
     marginRight: 100,
-    marginLeft: 200
+    marginLeft: 200,*/
+    //backgroundColor: 'orange'
   }as CSSProperties,
   button: {
     border: "1px solid orange",

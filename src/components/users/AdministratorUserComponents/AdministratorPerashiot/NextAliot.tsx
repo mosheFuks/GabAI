@@ -239,28 +239,24 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
   }, [])
 
   return (
-    <div style={{ minWidth: "100%"}}>
+    <div style={styles.container}>
       <div style={styles.headerButtons}>
-        {<div style={{ display: "flex", width: '100%', marginTop: '20px'}}>
-          <DateToDateAniversary peopleList={peopleList!} setFilteredAniversaries={setFilteredAniversaries} daysOfThisWeek={daysOfThisWeek} setRenderedAniversaries={setRenderedAniversaries} />
-        </div>}
+        <DateToDateAniversary peopleList={peopleList!} setFilteredAniversaries={setFilteredAniversaries} daysOfThisWeek={daysOfThisWeek} setRenderedAniversaries={setRenderedAniversaries} />
         {thisWeekAniversaries.length > 0 && (
-          <div style={{ display: "flex", gap: '10px', width: '100%', marginTop: '20px', justifyContent: "flex-end"}}>
-            <div style={{...styles.rightGroup, display: "flex", padding: '10px', borderRadius: '20px'}}>
-              <FaFilter className="text-orange" />
-              <input
-                type="text"
-                placeholder="Busca por motivo o Minian"
-                style={{...styles.input, borderColor: clicked ? "orange" : "#ccc"}}
-                onChange={(e) => searchAniByMotiveOrMinian(e.target.value)}
-                onClick={() => setClicked(true)}
-                onBlur={() => setClicked(false)}
-              />
-            </div>
+          <div style={styles.searchByMotiveOrMinian}>
+            <FaFilter className="text-orange" />
+            <input
+              type="text"
+              placeholder="Busca por motivo o Minian"
+              style={{...styles.input, borderColor: clicked ? "orange" : "#ccc"}}
+              onChange={(e) => searchAniByMotiveOrMinian(e.target.value)}
+              onClick={() => setClicked(true)}
+              onBlur={() => setClicked(false)}
+            />
           </div>
         )}
       </div>
-      <div style={{overflowY: "auto", padding: "10px", borderRadius: "5px" }}>
+      <div style={{ flex: 1, overflowY: "auto", padding: "10px", borderRadius: "5px" }}>
         <div>
           {filteredAniversaries.length > 0 ? (
             <table style={styles.table}>
@@ -364,20 +360,33 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
 
 const styles: { [key: string]: CSSProperties }= {
   container: {
-    backgroundColor: colors.main_background,
-    padding: "10px",
-    borderRadius: "25px",
-    width: "95%",
-    height: "75vh",
     display: "flex",
     flexDirection: "column",
-    //alignItems: "center",
-    //justifyContent: "space-between",
-    margin: "20px auto 0 auto",
-    paddingLeft: "20px",
-    paddingRight: "20px",
-    textAlign:"center"
-  },
+    gap: "20px",
+    justifyContent: "center",
+    textAlign: "center",
+    alignContent: "center",
+    overflowY: "auto", // CAMBIAR ESTO
+    minHeight: "100%",    // IMPORTANTE: asegurás que se estire al tamaño del padre
+    width: "100%",     // que ocupe toda el área del contenedor gris
+  } as CSSProperties,
+  headerButtons: {
+    display: "flex",
+    width: '100%',
+    marginTop: "20px",
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: '0px 20px',
+  } as CSSProperties,
+  filterButton: {
+    border: "1px solid blue",
+    color: 'black',
+    padding: '10px 15px',
+    borderRadius: '20px',
+    cursor: 'pointer',
+    fontSize: '1rem',
+    backgroundColor: colors.main_background
+  } as CSSProperties,
   title: {
     fontSize: "2rem",
     fontWeight: "bold",
@@ -386,11 +395,11 @@ const styles: { [key: string]: CSSProperties }= {
     borderRadius: 20,
     paddingLeft: 10,
     paddingRight: 10
-  },
+  } as CSSProperties,
   icon: {
     fontSize: "20px",
     cursor: "pointer",
-  },
+  } as CSSProperties,
   input: {
     backgroundColor: "white",
     padding: "10px 16px",
@@ -401,23 +410,24 @@ const styles: { [key: string]: CSSProperties }= {
     width: "100%",
     color: "black",
     fontSize: "16px",
-  },
+  } as CSSProperties,
   tableContainer: {
-    height: 'auto',
+    flex: 1,
     overflowY: 'auto',
     padding: '10px',
     borderRadius: '5px',
+    maxHeight: '100%',
   } as CSSProperties,
-  rightGroup: {
+  searchByMotiveOrMinian: {
     display: "flex",
     alignItems: "center",
-    gap: "10px",
+    gap: "10px"
   } as CSSProperties,
   table: {
     borderCollapse: 'separate',
     borderSpacing: '10px 12px', // espacio vertical entre filas
     width: '100%',
-  },
+  } as CSSProperties,
   th: {
     padding: '12px 16px',
     textAlign: 'center',
@@ -430,7 +440,7 @@ const styles: { [key: string]: CSSProperties }= {
     zIndex: 1,
     borderRadius: '8px', // importante
     border: '2px solid #040404ff',
-  },
+  } as CSSProperties,
   td: {
    padding: '14px 16px',
     background: '#fff',
@@ -439,7 +449,7 @@ const styles: { [key: string]: CSSProperties }= {
     borderRadius: '8px', // importante
     border: '2px solid #cbbabaff',
     boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
-  },
+  } as CSSProperties,
   cellPopover: {
     position: 'relative',
     display: 'inline-block',
@@ -456,23 +466,5 @@ const styles: { [key: string]: CSSProperties }= {
     padding: '5px',
     zIndex: 1000,
     whiteSpace: 'nowrap',
-  } as CSSProperties,
-  headerButtons: {
-    display: "flex",
-    width: '100%',
-    //gap: '10px',
-    //marginBottom: '10px',
-    //justifyContent: 'space-between',
-    //alignItems: 'center',
-    //backgroundColor: 'red',
-  },
-  filterButton: {
-    border: "1px solid blue",
-    color: 'black',
-    padding: '10px 15px',
-    borderRadius: '20px',
-    cursor: 'pointer',
-    fontSize: '1rem',
-    backgroundColor: colors.main_background
   } as CSSProperties
 };

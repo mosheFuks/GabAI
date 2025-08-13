@@ -78,10 +78,13 @@ export const UserDashboard = () => {
 
 const styles: { [key: string]: CSSProperties }= {
   container: {
+    flex: 1,
     backgroundColor: colors.main_background,
     borderRadius: "25px",
     width: "95%",
+    minWidth: "720px",
     height: "79vh", // altura fija
+    minHeight: "150vh",
     display: "flex",
     flexDirection: "column",
     margin: "20px auto 0 auto",
