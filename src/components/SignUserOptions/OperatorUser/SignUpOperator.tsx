@@ -157,8 +157,7 @@ const styles = {
     borderColor: colors.btn_background,
     borderRadius: 20,
     paddingLeft: 10,
-    paddingRight: 10,
-    textAlign: 'center'
+    paddingRight: 10
   },
   pass_container: {
     position: "relative",  // ← Importante para posicionar el botón
