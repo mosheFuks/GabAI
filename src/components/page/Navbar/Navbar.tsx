@@ -79,6 +79,7 @@ const styles = {
       borderRadius: "100px",
       height: "50px",
       width: "95%",
+      minWidth: "720px",
       display: "flex",
       alignItems: "center",
       justifyContent: "space-between",
@@ -111,7 +112,7 @@ const styles = {
     },
     close_ses_button: {
       backgroundColor: colors.main_background,
-      border: "none",
+      border: `1px solid ${colors.btn_background}`,
       padding: "15px 15px",
       borderRadius: "20px",
       fontWeight: "bold",

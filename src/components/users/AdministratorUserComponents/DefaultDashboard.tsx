@@ -49,8 +49,8 @@ export const AdministratorDefaultDashboard = () => {
         step={step}  />
 
       {step == 1 ? (
-        <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
-          <div style={{ fontSize: '1.5rem', fontWeight: 'bold', textDecorationLine: 'underline', textDecorationColor: 'orange', marginTop: '10px', marginBottom: '10px'}}>
+        <div style={styles.stepsContainer}>
+          <div style={{ fontSize: '2rem', fontWeight: 'bold', textDecorationLine: 'underline', textDecorationColor: 'orange', marginTop: '10px', marginBottom: '10px'}}>
             {`Lista de participantes de la Kehila`}
           </div>
           <div style={{ flex: 1, overflowY: "auto", padding: "10px", borderRadius: "5px" }}>
@@ -122,13 +122,15 @@ export const AdministratorDefaultDashboard = () => {
       ) : (
         null
       )}
-      {step == 2 ? (
-        <NextAliot peopleList={peopleList}/>
-      ) : (
-        null
+      {step === 2 && (
+        <div style={styles.stepsContainer}>
+          <NextAliot peopleList={peopleList} />
+        </div>
       )}
       {step == 3 ? (
-        <OldPerashiotList setOldPerashaInfo={setOldPerashaInfo} setStep={setStep}/>
+        <div style={styles.stepsContainer}>
+          <OldPerashiotList setOldPerashaInfo={setOldPerashaInfo} setStep={setStep}/>
+        </div>
       ) : (
         null
       )}
@@ -136,59 +138,29 @@ export const AdministratorDefaultDashboard = () => {
   );
 }
 
-<style>
-{`
-  @media (max-width: 768px) {
-    table {
-      display: block;
-      width: 100%;
-    }
-    thead {
-      display: none;
-    }
-    tbody {
-      display: block;
-    }
-    tr {
-      display: block;
-      margin-bottom: 15px;
-      border: 1px solid #ccc;
-      padding: 10px;
-      border-radius: 8px;
-      background: #f9f9f9;
-    }
-    td {
-      display: flex;
-      justify-content: space-between;
-      padding: 5px 10px;
-      border: none;
-      border-bottom: 1px solid #eee;
-    }
-    td::before {
-      content: attr(data-label);
-      font-weight: bold;
-      flex-basis: 50%;
-    }
-  }
-`}
-</style>
-
-const styles: { [key: string]: CSSProperties }= {
+const styles: {  [key: string]: CSSProperties }= {
   container: {
     backgroundColor: colors.main_background,
-    padding: "10px",
+    //marginBottom: '200px',
+    padding: "15px",
     borderRadius: "25px",
-    width: "95%",
-    minHeight: "75vh",
-    maxHeight: "80vh",
+    width: "95%", // CAMBIO AQUÍ
+    minWidth: "720px",
+    //minHeight: "100%", // CAMBIO AQUÍ (antes 75vh)
+    height: '85vh',
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    //justifyContent: "space-between",
     margin: "20px auto 0 auto",
-    paddingLeft: "20px",
-    paddingRight: "20px",
-    textAlign:"center"
+    textAlign: "center"
+  },
+  stepsContainer: {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    width: '100%', // <--- aseguramos que ocupe 100% del amarillo
+    overflowY: 'auto', // en vez de 'hidden'
+    overflowX: "auto"
   },
   title: {
     fontSize: "2rem",
@@ -253,7 +225,8 @@ const styles: { [key: string]: CSSProperties }= {
   } as CSSProperties,
   table: {
     borderCollapse: 'separate',
-    borderSpacing: '10px 12px', // espacio vertical entre filas
+    borderSpacing: '10px 12px',
+    minWidth: '800px', // ✅ clave para habilitar el scroll horizontal
     width: '100%',
   },
   th: {

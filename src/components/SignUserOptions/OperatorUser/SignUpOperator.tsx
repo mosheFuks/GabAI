@@ -1,5 +1,4 @@
 import React, { useContext, useState } from 'react';
-import Modal from 'react-modal';
 import { colors } from '../../../assets/colors';
 import { LogedUserData, SignInfo } from '../../../structs/structs';
 import { Eye, EyeOff } from "lucide-react"
@@ -77,7 +76,7 @@ export const SignUpOperator = (/*{modalRealSignInfo, setModalRealSignInfo, user}
   return (
     <div style={styles.container}>
        {logedUser.rol != "VISITANTE" ? (
-          <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%", height: "70px" }}>
+          <div style={{ display: "flex", marginTop: '10px',flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%", height: "70px" }}>
             <button style={{...styles.button, backgroundColor: "green"}} onClick={() => navigate("/administrator-dashboard")}>
               <FaArrowLeft className="text-black" /> Lista de usuarios
             </button>
@@ -140,8 +139,9 @@ const styles = {
     padding: "10px",
     borderRadius: "25px",
     width: "95%",
-    minHeight: "70vh",
-    maxHeight: "75vh",
+    minWidth: "720px",
+    height: "79vh", // altura fija
+    
     display: "flex" as const,
     flexDirection: "column" as const,
     alignItems: "center" as const,
@@ -157,7 +157,8 @@ const styles = {
     borderColor: colors.btn_background,
     borderRadius: 20,
     paddingLeft: 10,
-    paddingRight: 10
+    paddingRight: 10,
+    textAlign: 'center'
   },
   pass_container: {
     position: "relative",  // ← Importante para posicionar el botón
