@@ -83,8 +83,7 @@ const styles: { [key: string]: CSSProperties }= {
     borderRadius: "25px",
     width: "95%",
     minWidth: "720px",
-    height: "79vh", // altura fija
-    minHeight: "150vh",
+    minHeight: "79vh", // altura fija
     display: "flex",
     flexDirection: "column",
     margin: "20px auto 0 auto",

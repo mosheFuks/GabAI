@@ -202,8 +202,8 @@ export const CreateChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen
   };
 
   const calculateHebBarMitzvaDate = () => {
-    const calculatedBarMitzvaYear = parseInt(user.fechaNacimientoHebreo?.ano!.toString()!) + 13
-    saveBirthDateParams("dia", "fechaBarMitzvaHebreo", true, [user.fechaNacimientoHebreo?.dia, user.fechaNacimientoHebreo?.mes, calculatedBarMitzvaYear.toString()])
+    const calculatedBarMitzvaYear = parseInt(formUserChildData.fechaNacimientoHebreo?.ano!.toString()!) + 13
+    saveBirthDateParams("dia", "fechaBarMitzvaHebreo", true, [formUserChildData.fechaNacimientoHebreo?.dia, formUserChildData.fechaNacimientoHebreo?.mes, calculatedBarMitzvaYear.toString()])
   }
 
   return (

@@ -141,7 +141,6 @@ const styles = {
     width: "95%",
     minWidth: "720px",
     height: "79vh", // altura fija
-    
     display: "flex" as const,
     flexDirection: "column" as const,
     alignItems: "center" as const,
