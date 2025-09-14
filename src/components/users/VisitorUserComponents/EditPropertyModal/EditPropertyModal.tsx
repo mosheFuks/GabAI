@@ -219,6 +219,7 @@ export const EditPropertyModal = ({setOpenEditPropertyModal, openEditPropertyMod
               ...newDates, 
               [property]: { ...newDates[property], mes: e.target.value }
             })}  style={styles.input} value={newDates[property]?.mes}>
+            <option value="" disabled hidden>Mes</option>
             {GREG_MONTHS.map((month) => (
               <option key={month.numero} value={month.numero}>{month.nombre}</option>
             ))}

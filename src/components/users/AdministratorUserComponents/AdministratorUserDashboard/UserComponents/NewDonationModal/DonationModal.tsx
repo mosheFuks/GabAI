@@ -112,6 +112,7 @@ export const DonationModal = ({modalAniversaryIsOpen, setModalAniversaryIsOpen, 
               <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
                 <label htmlFor="userDonationFechaMes" style={{ display: "block", fontWeight: 'bold', marginRight: 10, marginLeft: 10}}>Mes</label>
                 <select id="userDonationFechaMes" name="userDonationFechaMes" onChange={(e) => setFormUserDonationData({ ...formUserDonationData, fecha: { ...formUserDonationData.fecha, mes: e.target.value } })} style={styles.input} value={formUserDonationData.fecha?.mes}>
+                  <option value="" disabled hidden>Mes</option>
                   {GREG_MONTHS.map((month) => (
                     <option key={month.numero} value={month.numero}>{month.nombre}</option>
                   ))}

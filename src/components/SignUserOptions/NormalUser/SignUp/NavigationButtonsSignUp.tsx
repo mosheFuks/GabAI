@@ -40,7 +40,7 @@ export const NavigationButtonSignUp = ({step, setStep, setModalRealSignInfo, fro
                         {fromPage == "SignUp" && logedUser.rol == "VISITANTE" ? 
                             (<button type="submit" style={styles.button} onClick={() => saveNewVisitorUserOnUsersList!()}>Guardar</button>) : null
                         }
-                        { fromPage != "userDashboardPage" ?
+                        {logedUser.rol != "VISITANTE"  ?
                             (<button type="submit" style={styles.regi_button} onClick={() => setModalRealSignInfo!(true)}>Registrarse</button>) : null
                         }
                     </div>
