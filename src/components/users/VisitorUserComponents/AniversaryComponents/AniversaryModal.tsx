@@ -175,6 +175,7 @@ export const CreateAniversaryModalComponent = ({modalAniversaryIsOpen, setModalA
             }} style={styles.input}>
               <option value="" disabled selected>{formUserAniversaryData.motivo != "" ? formUserAniversaryData.motivo : 'Selecciona el motivo'}</option>
               <option value="Yortzait">Yortzait</option>
+              <option value="Jupa">Jupa</option>
               <option value="Otro">Otro</option>
             </select>
           )}
