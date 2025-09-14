@@ -18,6 +18,11 @@ export const VisitorPersonalForm = ({ logedVisitorUser }: VisitorPersonalDataPro
         <h5 id="userMinian" style={styles.input}>
           {logedVisitorUser.minian}
         </h5>
+
+        <label htmlFor="userApellido"style={{ display: "block", fontWeight: 'bold'}}>Apellido</label>
+        <h5 id="userApellido" style={styles.input}>
+          {logedVisitorUser.apellido}
+        </h5>
           
         <label htmlFor="userNombreEspanol" style={{ display: "block", fontWeight: 'bold'}}>Nombre Español</label>
         <h5 id="userNombreEspanol" style={styles.input}>
@@ -27,11 +32,6 @@ export const VisitorPersonalForm = ({ logedVisitorUser }: VisitorPersonalDataPro
         <label htmlFor="userNombreHebreo" style={{ display: "block", fontWeight: 'bold'}}>Nombre Hebreo</label>
         <h5 id="userNombreHebreo" style={styles.input}>
           {logedVisitorUser.nombreHebreo}
-        </h5>
-        
-        <label htmlFor="userApellido"style={{ display: "block", fontWeight: 'bold'}}>Apellido</label>
-        <h5 id="userApellido" style={styles.input}>
-          {logedVisitorUser.apellido}
         </h5>
 
         <label htmlFor="userFechaNacGreg" style={{ display: "block", fontWeight: 'bold'}}>Fecha Nacimiento Gregoriano</label>

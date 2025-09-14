@@ -167,15 +167,15 @@ export const FormPersonalInfoData = ({handleChangePersonalData, user, setFormUse
               <option key={minian} value={minian}>{minian}</option>
             ))) : ( null )}
         </select>
+
+        <label htmlFor="userApellido"style={{ display: "block", fontWeight: "bold"}}>Apellido</label>
+        <input id="userApellido" type="text" name="apellido" placeholder="Apellido" onChange={handleChangePersonalData} style={styles.input} value={user.apellido}/>
           
         <label htmlFor="userNombreEspanol" style={{ display: "block", fontWeight: "bold"}}>Nombre Español</label>
         <input id="userNombreEspanol" type="text" name="nombreEspanol" placeholder="Nombre en Español" onChange={handleChangePersonalData} style={styles.input} value={user.nombreEspanol}/>
         
         <label htmlFor="userNombreHebreo" style={{ display: "block", fontWeight: "bold"}}>Nombre Hebreo</label>
         <input id="userNombreHebreo" type="text" name="nombreHebreo" placeholder="Iaakov ben Abraham" onChange={handleChangePersonalData} style={styles.input} value={user.nombreHebreo}/>
-        
-        <label htmlFor="userApellido"style={{ display: "block", fontWeight: "bold"}}>Apellido</label>
-        <input id="userApellido" type="text" name="apellido" placeholder="Apellido" onChange={handleChangePersonalData} style={styles.input} value={user.apellido}/>
 
         <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginBottom: "5px", gap: "20px"}}>
           <label htmlFor="userFechaNacGreg" style={{ display: "block", fontWeight: "bold"}}>Fecha Nacimiento Gregoriano</label>
