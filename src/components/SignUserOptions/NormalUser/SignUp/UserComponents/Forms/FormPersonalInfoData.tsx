@@ -53,11 +53,22 @@ export const FormPersonalInfoData = ({handleChangePersonalData, user, setFormUse
 
     const gregorianDate = new Date(year, month - 1, day, 12)
 
-    const hebrewDate = isAfterSunsetSelected ? new HDate(gregorianDate).next() : new HDate(gregorianDate);
-    const [dayHeb, monthHeb, yearHeb] = hebrewDate.toString().split(" ");
+    // Si el usuario indicó "after sunset" sumamos un día en la conversión
+    const hd = isAfterSunsetSelected
+      ? new HDate(gregorianDate).add(1, 'd')   // avanzamos 1 día
+      : new HDate(gregorianDate)
 
-    saveBirthDateParams("dia", "fechaNacimientoHebreo", true, [dayHeb, monthHeb, yearHeb])
-  };
+    const dayHeb = hd.getDate()               // número de día (1-30)
+    const monthHeb = hd.getMonthName()        // nombre completo del mes, p.ej. "Adar II"
+    const yearHeb = hd.getFullYear()          // año hebreo
+
+    saveBirthDateParams("dia", "fechaNacimientoHebreo", true, [
+      String(dayHeb),
+      monthHeb,
+      String(yearHeb),
+    ])
+  }
+
 
   const calculateGregorianBirthDate = (date: CustomDate) => {
     // Extraer el ano, mes y día manualmente
@@ -170,7 +181,7 @@ export const FormPersonalInfoData = ({handleChangePersonalData, user, setFormUse
 
         <label htmlFor="userApellido"style={{ display: "block", fontWeight: "bold"}}>Apellido</label>
         <input id="userApellido" type="text" name="apellido" placeholder="Apellido" onChange={handleChangePersonalData} style={styles.input} value={user.apellido}/>
-          
+        
         <label htmlFor="userNombreEspanol" style={{ display: "block", fontWeight: "bold"}}>Nombre Español</label>
         <input id="userNombreEspanol" type="text" name="nombreEspanol" placeholder="Nombre en Español" onChange={handleChangePersonalData} style={styles.input} value={user.nombreEspanol}/>
         

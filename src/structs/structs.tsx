@@ -118,16 +118,16 @@ export const HEBREW_MONTHS = [
 ] as const;
 
 export const GREG_MONTHS = [
-    {nombre: "Enero", numero: 1},
-    {nombre: "Febrero", numero: 2},
-    {nombre: "Marzo", numero: 3},
-    {nombre: "Abril", numero: 4},
-    {nombre: "Mayo", numero: 5},
-    {nombre: "Junio", numero: 6},
-    {nombre: "Julio", numero: 7},
-    {nombre: "Agosto", numero: 8},
-    {nombre: "Septiembre", numero: 9},
-    {nombre: "Octubre", numero: 10},
-    {nombre: "Noviembre", numero: 11},
-    {nombre: "Diciembre", numero: 12}
+    {nombre: "Enero", numero: 0},
+    {nombre: "Febrero", numero: 1},
+    {nombre: "Marzo", numero: 2},
+    {nombre: "Abril", numero: 3},
+    {nombre: "Mayo", numero: 4},
+    {nombre: "Junio", numero: 5},
+    {nombre: "Julio", numero: 6},
+    {nombre: "Agosto", numero: 7},
+    {nombre: "Septiembre", numero: 8},
+    {nombre: "Octubre", numero: 9},
+    {nombre: "Noviembre", numero: 10},
+    {nombre: "Diciembre", numero: 11}
 ] as const;

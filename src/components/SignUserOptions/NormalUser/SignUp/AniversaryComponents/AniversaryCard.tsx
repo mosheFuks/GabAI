@@ -1,6 +1,7 @@
 import { CSSProperties } from "react";
 import { Aniversary } from "../../../../../structs/structs";
-import { CalendarRange, Trash2 } from "lucide-react";
+import {Icon, House, CalendarRange, Trash2 } from "lucide-react";
+import {candlestickBigLit, } from '@lucide/lab';
 
 interface AniversaryCardProps {
   setModalAniversaryIsOpen: (modalIsOpen: boolean) => void;
@@ -32,9 +33,15 @@ export const AniversaryCard = ({
         <Trash2 size={16} color="white" />
       </button>
       <div style={styles.iconContainer}>
-        <CalendarRange size={25} color="white" />
+        {aniversario.motivo == "Yortzait" ? <Icon iconNode={candlestickBigLit} size={25} color="white"/> : null}
+        {aniversario.motivo == "Jupa" ? <House size={25} color="white" /> : null}
+        {aniversario.motivo == "Otro" ? <CalendarRange size={25} color="white" /> : null}
       </div>
-      <h3 style={styles.title}>{aniversario.motivo}</h3>
+      <div style={{ flexDirection: 'row' }}>
+        <h3 style={styles.title}>{aniversario.motivo}</h3>
+        <p style={{ margin: 0, fontSize: "14px", color: "#666" }}>{aniversario.nombreDelAniversario}</p>
+        <p style={{ margin: 0, fontSize: "14px", color: "#666" }}>{aniversario.fecha?.dia}/{aniversario.fecha?.mes}/{aniversario.fecha?.ano} - {aniversario.fechaHebreo?.dia}/{aniversario.fechaHebreo?.mes}/{aniversario.fechaHebreo?.ano}</p> 
+      </div>
     </div>
   );
 };

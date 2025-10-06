@@ -21,7 +21,7 @@ export const CreateNormalUserSignInfoModal = ({modalRealSignInfo, setModalRealSi
     password: ""
   });
   const [showPassword, setShowPassword] = useState(false)
-
+  
   const setPassword = (e: any) => {
     setFormUserSignData({...formUserSignData, ['password']: e.target.value})
   }
@@ -47,7 +47,7 @@ export const CreateNormalUserSignInfoModal = ({modalRealSignInfo, setModalRealSi
     setModalRealSignInfo(false);
   }
 
-  const camposIgnorados = ['aniversarios', 'hijos', 'habilidades', 'cuenta', 'emailComercial', 'nombreEsposaEspanol', 'nombreEsposaHebreo' ];
+  const camposIgnorados = ['aniversarios', 'hijos', 'habilidades', 'cuenta', 'emailComercial', 'nombreEsposaEspanol', 'nombreEsposaHebreo', 'numeroSocio' ];
   const campoIncompleto = Object.entries(user)
     .filter(([key]) => !camposIgnorados.includes(key))
     .find(([, value]) => {
@@ -122,7 +122,7 @@ export const CreateNormalUserSignInfoModal = ({modalRealSignInfo, setModalRealSi
         <div>
           <label htmlFor="userNameEsp" style={{ display: "block"}}>Nombre</label>
           <input id="userNameEsp" type="text" name="nombreEspanol" placeholder="Nombre (Español)" style={styles.input} value={formUserSignData.nombre} disabled/>
-
+          
           <label htmlFor="userEmal" style={{ display: "block"}}>Email</label>
           <input id="userEmal" type="email" name="emailPersonal" placeholder="Email" style={styles.input} value={formUserSignData.email} disabled/>
 

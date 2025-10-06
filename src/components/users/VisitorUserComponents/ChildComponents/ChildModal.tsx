@@ -120,11 +120,21 @@ export const UserChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen, 
 
     const gregorianDate = new Date(year, month - 1, day, 12)
 
-    const hebrewDate = isAfterSunsetSelected ? new HDate(gregorianDate).next() : new HDate(gregorianDate);
-    const [dayHeb, monthHeb, yearHeb] = hebrewDate.toString().split(" ");
+    // Si el usuario indicó "after sunset" sumamos un día en la conversión
+    const hd = isAfterSunsetSelected
+      ? new HDate(gregorianDate).add(1, 'd')   // avanzamos 1 día
+      : new HDate(gregorianDate)
 
-    saveBirthDateParams("dia", "fechaNacimientoHebreo", true, [dayHeb, monthHeb, yearHeb])
-  };
+    const dayHeb = hd.getDate()               // número de día (1-30)
+    const monthHeb = hd.getMonthName()        // nombre completo del mes, p.ej. "Adar II"
+    const yearHeb = hd.getFullYear()          // año hebreo
+
+    saveBirthDateParams("dia", "fechaNacimientoHebreo", true, [
+      String(dayHeb),
+      monthHeb,
+      String(yearHeb),
+    ])
+  }
     
   const calculateGregorianBirthDate = (date: CustomDate) => {
     // Extraer el ano, mes y día manualmente
@@ -244,7 +254,7 @@ export const UserChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen, 
           <label htmlFor="userChildSurname" style={{ display: "block", fontWeight: 'bold'}}>Apellido</label>
           <input type="text" id="userChildSurname" name="apellido" style={styles.input} value={formUserChildData.apellido} onChange={handleChangeChildData} disabled={isSonSelected} />
 
-          <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "10px" }}>
+          <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "5px" }}>
             <label htmlFor="userChildBithDateGreg" style={{ display: "block", fontWeight: 'bold'}}>Fecha Nacimiento Gregoriano</label>
             {!isSonSelected ? calculateBirthDateBtn("fechaNacimiento", formUserChildData?.fechaNacimientoHebreo!, formUserChildData?.fechaNacimientoHebreo?.dia == "" || formUserChildData?.fechaNacimientoHebreo?.mes == "" || formUserChildData?.fechaNacimientoHebreo?.ano == "") : null}
           </div>

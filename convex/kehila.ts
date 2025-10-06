@@ -72,7 +72,7 @@ export const getVisitorUser = query({
     if (!kehila) {
       throw new Error("Kehila no encontrada");
     }
-
+    
     const usuario = kehila.usuarios.find(
       (usu) =>
         usu.nombreEspanol == args.nombreUsuario &&
@@ -80,7 +80,7 @@ export const getVisitorUser = query({
     );
 
     if (!usuario) {
-      throw new Error("Usuario no encontrado");
+      throw new Error(`Usuario no encontrado: ${args.nombreUsuario}, ${args.apellidoUsuario}`);
     }
 
     return usuario;
