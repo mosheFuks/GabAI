@@ -109,16 +109,16 @@ export const CreateNormalUserSignInfoModal = ({modalRealSignInfo, setModalRealSi
         /*ADD THE USER ON FIREBASE */
         isNewUser ? await createUserWithEmailAndPassword(auth, formUserSignData.email!, formUserSignData.password!) : null;
 
-        showToastSucces('Usuario registrado correctamente');
+        showToastSucces('Mitpalel registrado correctamente');
 
         //SEND A CONFIRMATION EMAIL TO THE USER
         
       } catch (err: any) {
-        console.error("Error al registrar usuario:", err);
+        console.error("Error al registrar al Mitpalel:", err);
         if (err.toString().includes("auth/email-already-in-use")) {
-          showToastError("Error al registrar usuario: Usuario ya existente")
+          showToastError("Error al registrar al Mitpael: Mitpalel ya existente")
         }
-        showToastError("Ocurrió un error al registrar usuario, intenta nuevamente más tarde");
+        showToastError("Ocurrió un error al registrar al Mitpael, intenta nuevamente más tarde");
       }
     } else {
       showToastError('Por favor completa todos los campos, revisa los Datos Personales.');
@@ -140,7 +140,7 @@ export const CreateNormalUserSignInfoModal = ({modalRealSignInfo, setModalRealSi
         }}
         contentLabel="Sign Info Modal"
       >
-        <h2 style={{ textAlign: 'center', color: 'blue'}}>Confirmar la creacion del usuario</h2>
+        <h2 style={{ textAlign: 'center', color: 'blue'}}>Confirmar la creacion del Mitpalel</h2>
         <div>
           <label htmlFor="userNameEsp" style={{ display: "block"}}>Nombre</label>
           <input id="userNameEsp" type="text" name="nombreEspanol" placeholder="Nombre (Español)" style={styles.input} value={formUserSignData.nombre} disabled/>
@@ -179,13 +179,13 @@ export const CreateNormalUserSignInfoModal = ({modalRealSignInfo, setModalRealSi
           :
           
           <div style={{ color: 'black', fontWeight: 'bold', marginTop: 10, textAlign: 'center', border: '2px solid yellow', padding: 10, borderRadius: 10 }}>
-            ⚠️ Se le enviará un email al usuario para informarle que se le creo una cuenta de <b>GAB<i>AI</i></b> en {logedUser.kehila}.
+            ⚠️ Se le enviará un email al Mitpalel para informarle que se le creo una cuenta de <b>GAB<i>AI</i></b> en {logedUser.kehila}.
           </div>
 
           }
 
           <button onClick={registerUser} style={{...styles.button, backgroundColor:  colors.btn_background}}>
-            {logedUser.rol == "ADMIN" ? "Guardar Usuario" : "Registrarse"}
+            {logedUser.rol == "ADMIN" ? "Guardar Mitpalel" : "Registrarse"}
           </button>
         </div>
       </Modal>

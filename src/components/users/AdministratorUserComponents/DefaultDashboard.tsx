@@ -51,7 +51,7 @@ export const AdministratorDefaultDashboard = () => {
       {step == 1 ? (
         <div style={styles.stepsContainer}>
           <div style={{ fontSize: '2rem', fontWeight: 'bold', textDecorationLine: 'underline', textDecorationColor: 'orange', marginTop: '10px', marginBottom: '10px'}}>
-            {`Lista de participantes de la Kehila`}
+            {`Lista de Mitpalelim de la Kehila`}
           </div>
           <div style={{ flex: 1, overflowY: "auto", padding: "10px", borderRadius: "5px" }}>
             {peopleFilter != undefined && peopleFilter!.length > 0 ? (

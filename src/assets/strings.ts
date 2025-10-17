@@ -2,7 +2,7 @@ export const esp_strings = {
     "main_title": "Gab",
     "btn_signin": "Iniciar sesión",
     "btn_signup": "Registrarse",
-    "btn_create_user": "Crear usuario",
+    "btn_create_user": "Crear Mitpalel",
     "btn_add_opp_user": "Agregar operador",
     "btn_close_sesion": "Cerrar sesión",
     "home_title": "Bienvenido a Gab",

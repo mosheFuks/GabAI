@@ -109,7 +109,7 @@ const NormalUserSignUp = () => {
 
   const saveNewVisitorUserOnUsersList = () => {
     addVisitorUser(logedUser.kehila, user)
-    showToastSucces("Usuario agregado")
+    showToastSucces("Mitpalel agregado")
   }
 
   const navigateRule = () => {

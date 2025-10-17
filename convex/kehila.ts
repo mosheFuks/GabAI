@@ -80,7 +80,7 @@ export const getVisitorUser = query({
     );
 
     if (!usuario) {
-      throw new Error(`Usuario no encontrado: ${args.nombreUsuario}, ${args.apellidoUsuario}`);
+      throw new Error(`Mitpalel no encontrado: ${args.nombreUsuario}, ${args.apellidoUsuario}`);
     }
 
     return usuario;
@@ -108,7 +108,7 @@ export const getVisitorUserOnSignIn = query({
     );
 
     if (!usuario) {
-      throw new Error("Usuario no encontrado");
+      throw new Error("Mitpalel no encontrado");
     }
 
     return usuario;
@@ -197,7 +197,7 @@ export const getUserOnSignIn = query({
       .first();
 
     if (!superUser) {
-      throw new Error("Usuario no encontrado");
+      throw new Error("Mitpalel no encontrado");
     }
 
     return superUser;
@@ -213,7 +213,7 @@ export const getUserOnSignInDirect = query({
       .first();
 
     if (!user) {
-      throw new Error("Usuario no encontrado");
+      throw new Error("Mitpalel no encontrado");
     }
 
     return user;
@@ -424,7 +424,7 @@ export const addDonationToUser = mutation({
     });
 
     if (!usuarioEncontrado) {
-      throw new Error("Usuario no encontrado en la Kehila");
+      throw new Error("Mitpalel no encontrado en la Kehila");
     }
 
     await ctx.db.patch(kehila._id, {
@@ -480,7 +480,7 @@ export const changeDonationStatus = mutation({
     });
 
     if (!usuarioEncontrado) {
-      throw new Error("Usuario no encontrado en la Kehila");
+      throw new Error("Mitpalel no encontrado en la Kehila");
     }
 
     await ctx.db.patch(kehila._id, {
@@ -540,7 +540,7 @@ export const changeUserVisitordata = mutation({
     });
 
     if (!usuarioFueModificado) {
-      throw new Error("Usuario no encontrado o no se modificó ningún campo.");
+      throw new Error("Mitpalel no encontrado o no se modificó ningún campo.");
     }
 
     // Paso 3: Guardar los usuarios actualizados en la base de datos
@@ -586,7 +586,7 @@ export const addSonToVisitorUser = mutation({
     const usuario = kehila.usuarios.find((u) => u.nombreEspanol === args.nombreUsuario && u.apellido === args.apellidoUsuario);
 
     if (!usuario) {
-      throw new Error("Usuario no encontrado");
+      throw new Error("Mitpalel no encontrado");
     }
 
     const nuevosUsuarios = kehila.usuarios.map((u) => {
@@ -629,7 +629,7 @@ export const addAniversaryToVisitorUser = mutation({
     const usuario = kehila.usuarios.find((u) => u.nombreEspanol === args.nombreUsuario && u.apellido === args.apellidoUsuario);
 
     if (!usuario) {
-      throw new Error("Usuario no encontrado");
+      throw new Error("Mitpalel no encontrado");
     }
 
     const nuevosUsuarios = kehila.usuarios.map((u) => {

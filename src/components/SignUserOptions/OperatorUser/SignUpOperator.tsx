@@ -68,7 +68,7 @@ export const SignUpOperator = (/*{modalRealSignInfo, setModalRealSignInfo, user}
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    showErrorToast('Usuario registrado correctamente')
+    showErrorToast('Mitpalel registrado correctamente')
     await handleRegister(e);
     navigate("/administrator-dashboard");
   };

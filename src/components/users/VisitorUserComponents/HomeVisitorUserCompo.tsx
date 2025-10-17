@@ -101,7 +101,7 @@ export const HomeVisitorUserComponent = () => {
       ) : (
         <div style={{ textAlign: 'center', marginTop: '20px', fontSize: '3rem', justifyContent: 'center', alignItems: 'center', display: 'flex', height: '100%', flexDirection: 'column' }}>
           <ClipLoader color="black" loading={true} size={50} />
-          <h6 style={{ color: colors.btn_background, fontSize: '1.5rem' }}>Actualizando información del usuario...</h6>
+          <h6 style={{ color: colors.btn_background, fontSize: '1.5rem' }}>Actualizando información del Mitpalel...</h6>
         </div>
       )}
     </div>

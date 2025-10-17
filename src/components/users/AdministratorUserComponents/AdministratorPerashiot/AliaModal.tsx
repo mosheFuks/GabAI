@@ -65,7 +65,7 @@ export const AliaModal = ({setOpenAliaModal, openAliaModal, setAliotList, aliotL
             status: "PENDIENTE"
           };
           await addDonation(logedUser.kehila, formAliaData.nombre, formAliaData.apellido!, newDonation);
-          toast.success(`Donacion agregada al usuario ${formAliaData.nombre} ${formAliaData.apellido}.`, {
+          toast.success(`Donacion agregada al Mitpalel ${formAliaData.nombre} ${formAliaData.apellido}.`, {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: false,
@@ -77,7 +77,7 @@ export const AliaModal = ({setOpenAliaModal, openAliaModal, setAliotList, aliotL
             style: { backgroundColor: 'green', color: 'white' },
           })
         } catch (error) {
-          toast.error(`No se econtro al usuario ${formAliaData.nombre} ${formAliaData.apellido} en la lista de usuarios.`, {
+          toast.error(`No se econtro al Mitpalel ${formAliaData.nombre} ${formAliaData.apellido} en la lista de Mitpalelim.`, {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: false,
