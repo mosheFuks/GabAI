@@ -1,4 +1,4 @@
-import { CSSProperties, useState } from 'react';
+import { CSSProperties, useContext, useState } from 'react';
 import Modal from 'react-modal';
 import { colors } from '../../../../../assets/colors';
 import { LogedUserData, SignInfo, VisitorUser } from '../../../../../structs/structs';
@@ -7,14 +7,19 @@ import { toast } from 'react-toastify';
 import { addAUserToTheUsuariosList, addAVisitorUserInTheKehila } from '../../../../../apis/requests';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../../../../firebase-config';
+import { PageContext } from '../../../../../StoreInfo/page-storage';
 
 interface RealSignModalProps {
   modalRealSignInfo: boolean,
   setModalRealSignInfo: (modalRealSignInfo: boolean) => void;
   user: VisitorUser;
+  isNewUser: boolean;
 }
 
-export const CreateNormalUserSignInfoModal = ({modalRealSignInfo, setModalRealSignInfo, user}: RealSignModalProps) => {
+export const CreateNormalUserSignInfoModal = ({modalRealSignInfo, setModalRealSignInfo, user, isNewUser, saveNewVisitorUserOnUsersList}: RealSignModalProps) => {
+  const { logedUser } = useContext(PageContext) as any;
+  console.log("Loged User:", logedUser);
+  
   const [formUserSignData, setFormUserSignData] = useState<SignInfo>({
     nombre: user.nombreEspanol != null ? user.nombreEspanol : "",
     email:  user.emailPersonal != null ? user.emailPersonal : "",
@@ -40,31 +45,54 @@ export const CreateNormalUserSignInfoModal = ({modalRealSignInfo, setModalRealSi
     });
   }
 
-  const addVisitorUser = addAVisitorUserInTheKehila();
-  const addVisitorUserToUsersList = addAUserToTheUsuariosList();
+  const showToastSucces = (errorMessage: string) => {
+    toast.success(errorMessage, {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      style: { backgroundColor: 'green', color: 'white' },
+    });
+  }
+
+  const addVisitorUserToKehila = addAVisitorUserInTheKehila();
+  const addVisitorUserToGlobalUsersList = addAUserToTheUsuariosList();
  
   const closeModal = () => {
     setModalRealSignInfo(false);
   }
 
-  const camposIgnorados = ['aniversarios', 'hijos', 'habilidades', 'cuenta', 'emailComercial', 'nombreEsposaEspanol', 'nombreEsposaHebreo', 'numeroSocio' ];
-  const campoIncompleto = Object.entries(user)
-    .filter(([key]) => !camposIgnorados.includes(key))
-    .find(([, value]) => {
-      if (typeof value === 'string') {
-        return value.trim() === '';
-      }
-      if (typeof value === 'object' && value !== null) {
-        return Object.keys(value).length === 0;
-      }
-      return value === null || value === undefined;
-    });
+  const camposCriticos = [
+    'nombreEspanol',
+    'nombreHebreo',
+    'apellido',
+    'fechaNacimientoGregoriano',
+    'fechaNacimientoHebreo',
+    'minian'
+  ];
+  const esUsuarioCompleto = () => {
+    const campoIncompleto = Object.entries(user)
+      .filter(([key]) => camposCriticos.includes(key))
+      .find(([, value]) => {
+        if (typeof value === 'string') return value.trim() === '';
+        if (typeof value === 'object' && value !== null)
+          return Object.keys(value).length === 0;
+        return value === null || value === undefined;
+      });
 
-  if (campoIncompleto) {
-    console.warn("Campo incompleto:", campoIncompleto[0], "con valor:", campoIncompleto[1]);
-  }
+    if (campoIncompleto) {
+      console.warn("Campo incompleto:", campoIncompleto[0], "con valor:", campoIncompleto[1]);
+      return false; // usuario incompleto
+    }
 
-  const isFormComplete = !campoIncompleto;
+    return true; // usuario completo
+  };
+
+  const isFormComplete = esUsuarioCompleto()
 
   const registerUser = async () => {
     if (isFormComplete) {
@@ -76,21 +104,15 @@ export const CreateNormalUserSignInfoModal = ({modalRealSignInfo, setModalRealSi
           rol: "VISITANTE",
           kehila: user.nombreKehila!,
         }
-        await addVisitorUser(user.nombreKehila!, user)
-        await addVisitorUserToUsersList(newVisitorUser);
+        await addVisitorUserToKehila(user.nombreKehila!, user)
+        await addVisitorUserToGlobalUsersList(newVisitorUser);
         /*ADD THE USER ON FIREBASE */
-        await createUserWithEmailAndPassword(auth, formUserSignData.email!, formUserSignData.password!);
-        toast.success('Usuario registrado correctamente', {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-          style: { backgroundColor: 'green', color: 'white' },
-        });
+        isNewUser ? await createUserWithEmailAndPassword(auth, formUserSignData.email!, formUserSignData.password!) : null;
+
+        showToastSucces('Usuario registrado correctamente');
+
+        //SEND A CONFIRMATION EMAIL TO THE USER
+        
       } catch (err: any) {
         console.error("Error al registrar usuario:", err);
         if (err.toString().includes("auth/email-already-in-use")) {
@@ -99,7 +121,7 @@ export const CreateNormalUserSignInfoModal = ({modalRealSignInfo, setModalRealSi
         showToastError("Ocurrió un error al registrar usuario, intenta nuevamente más tarde");
       }
     } else {
-      showToastError('Por favor completa todos los campos')
+      showToastError('Por favor completa todos los campos, revisa los Datos Personales.');
     }
     setModalRealSignInfo(false);
   }
@@ -118,7 +140,7 @@ export const CreateNormalUserSignInfoModal = ({modalRealSignInfo, setModalRealSi
         }}
         contentLabel="Sign Info Modal"
       >
-        <h2 style={{ textAlign: 'center', color: 'blue'}}>Ingresa los datos para el inicio de sesion</h2>
+        <h2 style={{ textAlign: 'center', color: 'blue'}}>Confirmar la creacion del usuario</h2>
         <div>
           <label htmlFor="userNameEsp" style={{ display: "block"}}>Nombre</label>
           <input id="userNameEsp" type="text" name="nombreEspanol" placeholder="Nombre (Español)" style={styles.input} value={formUserSignData.nombre} disabled/>
@@ -126,12 +148,13 @@ export const CreateNormalUserSignInfoModal = ({modalRealSignInfo, setModalRealSi
           <label htmlFor="userEmal" style={{ display: "block"}}>Email</label>
           <input id="userEmal" type="email" name="emailPersonal" placeholder="Email" style={styles.input} value={formUserSignData.email} disabled/>
 
-          <div style={styles.pass_container}>
+          {isNewUser ?
+            <div style={styles.pass_container}>
             <label htmlFor="userPassword" style={{ display: "block" }}>
               Contraseña
             </label>
 
-            {/* Si showPassword es true => type="text", sino => "password" */}
+            {/*Si showPassword es true => type="text", sino => "password"}*/}
             <div style={{ display: 'flex', flexDirection: 'row', flex: 1}}>
                 <input
                   id="userPassword"
@@ -151,10 +174,18 @@ export const CreateNormalUserSignInfoModal = ({modalRealSignInfo, setModalRealSi
                   {showPassword ? <EyeOff size={25} style={styles.icon}/> : <Eye size={25} style={styles.icon}/>}
                 </button>
             </div>
+          </div> 
+
+          :
+          
+          <div style={{ color: 'black', fontWeight: 'bold', marginTop: 10, textAlign: 'center', border: '2px solid yellow', padding: 10, borderRadius: 10 }}>
+            ⚠️ Se le enviará un email al usuario para informarle que se le creo una cuenta de <b>GAB<i>AI</i></b> en {logedUser.kehila}.
           </div>
 
-          <button onClick={registerUser} style={{...styles.button, backgroundColor: formUserSignData.password == "" ? 'gray' : colors.btn_background}} disabled={formUserSignData.password == ""}>
-            Registrarse
+          }
+
+          <button onClick={registerUser} style={{...styles.button, backgroundColor:  colors.btn_background}}>
+            {logedUser.rol == "ADMIN" ? "Guardar Usuario" : "Registrarse"}
           </button>
         </div>
       </Modal>
@@ -194,7 +225,7 @@ const styles = {
     display: "block",
     color: "white",
     padding: "10px 15px",
-    margin: "10px",
+    margin: "20px",
     borderRadius: "20px",
     cursor: "pointer",
     fontSize: "1rem",

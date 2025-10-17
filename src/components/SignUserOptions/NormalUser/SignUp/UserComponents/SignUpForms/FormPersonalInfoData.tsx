@@ -26,6 +26,15 @@ export const FormPersonalInfoData = ({handleChangePersonalData, user, setFormUse
   const convex = useConvex();
 
   const [isMobile, setIsMobile] = useState(false);
+
+  const camposCriticos = [
+    'nombreEspanol',
+    'nombreHebreo',
+    'apellido',
+    'fechaNacimientoGregoriano',
+    'fechaNacimientoHebreo',
+    'minian'
+  ];
   
   useEffect(() => {
     const checkScreenSize = () => {
@@ -144,6 +153,27 @@ export const FormPersonalInfoData = ({handleChangePersonalData, user, setFormUse
     getMinianimFromTheList(logedUser.kehila);
   }, [logedUser]);
 
+  const renderError = (campo: string) =>
+    camposCriticos.includes(campo) ? (
+      <span style={{ color: 'red', fontSize: '0.9rem'}}>Campo obligatorio</span>
+    ) : null;
+
+  const renderCamposCriticos = (htmlAndId: string, campo: string, name: string, value: string, placeholder: string = "") => {
+    return (
+      <div>
+        <label htmlFor={htmlAndId}style={{ display: "block", fontWeight: "bold"}}>{campo} <span style={{ color: 'red' }}>*</span></label>
+        <input id={htmlAndId} type="text" name={name} placeholder={placeholder == "" ? campo : placeholder} onChange={handleChangePersonalData} 
+          style={{
+            ...styles.input,
+            borderColor: camposCriticos.includes(name) ? 'red' : '#ccc',
+          }} 
+          value={value}
+        />
+        {/*<div>{renderError(name)}</div>*/}  
+      </div>
+    )
+  };
+
   return (
     <div style={{ flex: 1, overflowY: "auto", padding: "10px", borderRadius: "5px", minHeight: 0 }}>
       <div>
@@ -168,28 +198,31 @@ export const FormPersonalInfoData = ({handleChangePersonalData, user, setFormUse
                 ))) : ( null )}
             </select>
         }
-        <label htmlFor="userMinian" style={{ display: "block", fontWeight: "bold"}}>Minian</label>
+        <label style={{ display: 'block', fontWeight: 'bold' }}>
+          Minian <span style={{ color: 'red' }}>*</span>
+        </label>
         <select id="userMinian" name="minian" onChange={(e) => { 
           handleChangePersonalData(e);
-        }} style={styles.input}>
+        }} style={{...styles.input, borderColor: camposCriticos.includes('minian') ? 'red' : '#ccc'}}>
           <option value={user.minian != "" ? user.minian : ""} disabled selected>Selecciona un Minian</option>
           { minianimList && minianimList.length > 0 ? (
             minianimList.map((minian: string) => (
               <option key={minian} value={minian}>{minian}</option>
             ))) : ( null )}
         </select>
+        {/*<div>{renderError('minian')}</div>*/}
 
-        <label htmlFor="userApellido"style={{ display: "block", fontWeight: "bold"}}>Apellido</label>
-        <input id="userApellido" type="text" name="apellido" placeholder="Apellido" onChange={handleChangePersonalData} style={styles.input} value={user.apellido}/>
+        {/*//userApellido     //Apellido     //apellido     //user.apellido */}
+        {renderCamposCriticos("userApellido", "Apellido", "apellido", user.apellido!)}
         
-        <label htmlFor="userNombreEspanol" style={{ display: "block", fontWeight: "bold"}}>Nombre Español</label>
-        <input id="userNombreEspanol" type="text" name="nombreEspanol" placeholder="Nombre en Español" onChange={handleChangePersonalData} style={styles.input} value={user.nombreEspanol}/>
-        
-        <label htmlFor="userNombreHebreo" style={{ display: "block", fontWeight: "bold"}}>Nombre Hebreo</label>
-        <input id="userNombreHebreo" type="text" name="nombreHebreo" placeholder="Iaakov ben Abraham" onChange={handleChangePersonalData} style={styles.input} value={user.nombreHebreo}/>
+        {/*//userNombreEspanol     //Nombre Español     //nombreEspanol     //user.nombreEspanol */}
+        {renderCamposCriticos("userNombreEspanol", "Nombre Español", "nombreEspanol", user.nombreEspanol!)}
+
+        {/*//userNombreHebreo     //Nombre Hebreo     //nombreHebreo     //user.nombreHebreo */}
+        {renderCamposCriticos("userNombreHebreo", "Nombre Hebreo", "nombreHebreo", user.nombreHebreo!, "Yaakov ben Yitzjak")}
 
         <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginBottom: "5px", gap: "20px"}}>
-          <label htmlFor="userFechaNacGreg" style={{ display: "block", fontWeight: "bold"}}>Fecha Nacimiento Gregoriano</label>
+          <label htmlFor="userFechaNacGreg" style={{ display: "block", fontWeight: "bold"}}>Fecha Nacimiento Gregoriano<span style={{ color: 'red' }}>*</span></label>
           {calculateBirthDateBtn("fechaNacimientoGregoriano", user.fechaNacimientoHebreo!, user.fechaNacimientoHebreo?.ano == "")}
         </div>
         <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row"}}>
@@ -211,9 +244,10 @@ export const FormPersonalInfoData = ({handleChangePersonalData, user, setFormUse
             <input id="userFechaNacGregAno" type="number" name="fechaNacimientoGregoriano" placeholder="Año" onChange={(e: any) => saveBirthDateParams("ano", "fechaNacimientoGregoriano", false, e)} style={{...styles.input}} value={user.fechaNacimientoGregoriano?.ano}/>
           </div>
         </div>
+        {/*<div>{renderError('fechaNacimientoHebreo')}</div>*/}
         
         <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginBottom: "5px", gap: "20px" }}>
-          <label htmlFor="userFechaNacHeb" style={{ display: "block", fontWeight: "bold"}}>Fecha Nacimiento Hebreo</label>
+          <label htmlFor="userFechaNacHeb" style={{ display: "block", fontWeight: "bold"}}>Fecha Nacimiento Hebreo<span style={{ color: 'red' }}>*</span></label>
           {calculateBirthDateBtn("fechaNacimientoHebreo", user.fechaNacimientoGregoriano!, user.fechaNacimientoGregoriano?.ano == "")}
         </div>
         <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row"}}>
@@ -248,10 +282,11 @@ export const FormPersonalInfoData = ({handleChangePersonalData, user, setFormUse
           </div>
           <AfterSunsetSwitch isCheked={isAfterSunsetSelected} setIsCheked={setIsAfterSunsetSelected} />
         </div>
+        {/*<div>{renderError('fechaNacimientoGregoriano')}</div>*/}
 
-        <label htmlFor="userEmailPers" style={{ display: "block", fontWeight: "bold"}}>Email Personal</label>
-        <input id="userEmailPers" type="email" name="emailPersonal" placeholder="Email Personal" onChange={handleChangePersonalData} style={styles.input} value={user.emailPersonal}/>
-        
+        {/*userEmailPers     //Email Personal     //emailPersonal     //user.emailPersonal */}
+        {renderCamposCriticos("userEmailPers", "Email Personal", "emailPersonal", user.emailPersonal!)}
+
         <label htmlFor="userEmailCom" style={{ display: "block", fontWeight: "bold"}}>Email Comercial</label>
         <input id="userEmailCom" type="email" name="emailComercial" placeholder="Email Comercial (Opcional)" onChange={handleChangePersonalData} style={styles.input} value={user.emailComercial}/>
         

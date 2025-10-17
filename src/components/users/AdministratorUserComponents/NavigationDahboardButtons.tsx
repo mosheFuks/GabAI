@@ -1,5 +1,5 @@
 import { CSSProperties, useState } from "react";
-import { FaArrowLeft, FaFilter } from "react-icons/fa";
+import { FaArrowLeft, FaFilter, FaSearch } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { VisitorUser } from "../../../structs/structs";
 
@@ -41,7 +41,7 @@ export const NavigationDashboardButtons = ({peopleList, step, setPeopleFilter, s
             </div>
             {step == 1 ? (
                 <div style={styles.rightGroup}>
-                    <FaFilter className="text-black" />
+                    <FaSearch className="text-black" size={30} />
                     <input
                         type="text"
                         placeholder="Busca por nombre"

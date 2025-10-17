@@ -8,10 +8,10 @@ interface NavigationButtonProps {
   setStep: (step: number) => void;
   setModalRealSignInfo?: (modalRealSignInfo: boolean) => void;
   fromPage: string;
-  saveNewVisitorUserOnUsersList?: () => void;
+  setIsNewUser?: (isNewUser: boolean) => void;
 }
 
-export const NavigationButtonSignUp = ({step, setStep, setModalRealSignInfo, fromPage, saveNewVisitorUserOnUsersList}: NavigationButtonProps) => {
+export const NavigationButtonSignUp = ({step, setStep, setModalRealSignInfo, fromPage, setIsNewUser}: NavigationButtonProps) => {
     const { logedUser } = useContext(PageContext) as any;
     const nextStep = () => setStep(step + 1);
     const prevStep = () => setStep(step - 1);
@@ -37,11 +37,11 @@ export const NavigationButtonSignUp = ({step, setStep, setModalRealSignInfo, fro
                     <div>
                         <button type="button" style={styles.button} onClick={prevStep}>Atrás</button>
                         {fromPage === "homeVisitorUser" || fromPage == "userDashboardPage" ? (<button type="button" onClick={nextStep} style={styles.button}>Siguiente</button>) : null}
-                        {fromPage == "SignUp" && logedUser.rol == "VISITANTE" ? 
-                            (<button type="submit" style={styles.button} onClick={() => saveNewVisitorUserOnUsersList!()}>Guardar</button>) : null
+                        {fromPage == "SignUp" && logedUser.rol == "" ? 
+                            (<button type="submit" style={styles.button} onClick={() => {setModalRealSignInfo!(true); setIsNewUser!(true)}}>Registrarse</button>) : null
                         }
-                        {logedUser.rol != "VISITANTE"  ?
-                            (<button type="submit" style={styles.regi_button} onClick={() => setModalRealSignInfo!(true)}>Registrarse</button>) : null
+                        {logedUser.rol == "ADMIN" ?
+                            (<button type="submit" style={styles.regi_button} onClick={() => {setModalRealSignInfo!(true); setIsNewUser!(false)}}>Guardar Usuario</button>) : null
                         }
                     </div>
                 )}

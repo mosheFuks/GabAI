@@ -3,9 +3,9 @@ import { colors } from "../../../../assets/colors";
 import { esp_strings } from "../../../../assets/strings";
 import { VisitorUser, Son, Aniversary } from '../../../../structs/structs';
 import { NavigationButtonSignUp } from "./NavigationButtonsSignUp";
-import { FormPersonalInfoData } from "./UserComponents/Forms/FormPersonalInfoData";
-import { FormKehilaInfoData } from "./UserComponents/Forms/FormKehilaInfoData";
-import { FormFamilyInfoData } from "./UserComponents/Forms/FormFamilyInfoData";
+import { FormPersonalInfoData } from "./UserComponents/SignUpForms/FormPersonalInfoData";
+import { FormKehilaInfoData } from "./UserComponents/SignUpForms/FormKehilaInfoData";
+import { FormFamilyInfoData } from "./UserComponents/SignUpForms/FormFamilyInfoData";
 import { CreateAniversaryModalComponent } from "./AniversaryComponents/AniversaryModal";
 import { CreateNormalUserSignInfoModal } from "./UserComponents/CreateNormalUserSignInfoModal";
 import { CreateChildModalComponent } from "./ChildComponents/ChildModal";
@@ -70,6 +70,7 @@ const NormalUserSignUp = () => {
   const [modalRealSignInfo, setModalRealSignInfo] = useState<boolean>(false);
   const [childSelected, setChildSelected] = useState<Son>({});
   const [aniversarySelected, setAniversarySelected] = useState<Aniversary>();
+  const [isNewUser, setIsNewUser] = useState<boolean>(true);
 
   const showToastSucces = (errorMessage: string) => {
     toast.success(errorMessage, {
@@ -105,6 +106,7 @@ const NormalUserSignUp = () => {
   }
 
   const addVisitorUser = addAVisitorUserInTheKehila();
+
   const saveNewVisitorUserOnUsersList = () => {
     addVisitorUser(logedUser.kehila, user)
     showToastSucces("Usuario agregado")
@@ -124,7 +126,7 @@ const NormalUserSignUp = () => {
         <h2 style={{...styles.title, marginRight: '100px'}}>{esp_strings.btn_create_user}</h2>
         <div></div>
       </div>
-      <NavigationButtonSignUp step={step} setStep={setStep} setModalRealSignInfo={setModalRealSignInfo} fromPage={"SignUp"} saveNewVisitorUserOnUsersList={saveNewVisitorUserOnUsersList}/>
+      <NavigationButtonSignUp step={step} setStep={setStep} setModalRealSignInfo={setModalRealSignInfo} fromPage={"SignUp"}  setIsNewUser={setIsNewUser}/>
       <form style={{ flex: 1, overflow: 'auto', width: '100%' }}>
         {step === 1 && (
           <FormPersonalInfoData 
@@ -193,7 +195,9 @@ const NormalUserSignUp = () => {
       <CreateNormalUserSignInfoModal
        modalRealSignInfo={modalRealSignInfo}
        setModalRealSignInfo={setModalRealSignInfo}
-       user={user} />
+       user={user}
+       isNewUser={isNewUser}
+      />
       :
        null
     }
