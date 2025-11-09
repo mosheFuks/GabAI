@@ -36,12 +36,18 @@ export const Hijos = v.object({
 export const Perasha = v.object({
     aliot: v.array(
         v.object({
-            nombre: v.string(),
-            nombreHebreo: v.string(),
+            nombre: v.optional(v.string()),
+            nombreHebreo: v.optional(v.string()),
             apellido: v.optional(v.string()),
-            alia: v.string(),
-            moneda: v.string(),
-            monto: v.number()
+            alia: v.optional(v.string()),
+            moneda: v.optional(v.string()),
+            monto: v.optional(v.number()),
+            minian: v.optional(v.string()),
+            aniversario: v.optional(v.string()),
+            fechaAniversarioHebreo: v.optional(v.string()),
+            grupo: v.optional(v.string()),
+            perasha: v.optional(v.string()),
+            tipoAlia: v.optional(v.string())
         })
     ),
     nombrePerasha: v.string()

@@ -8,44 +8,50 @@ import { useParams } from 'react-router-dom';
 
 interface DelAllPerashiotModalProps {
   action: "DEL_ALL" | "DEL_PERASHA";
+  typeOfAliotToDelete?: "DONACION" | "ALIA";
   openDeleteModal: boolean;
   setOpenDeleteModal: (openDeleteModal: boolean) => void;
 }
 
-export const DelAllPereashiotInfoModal = ({action, openDeleteModal, setOpenDeleteModal}: DelAllPerashiotModalProps) => {
+export const DelAllPereashiotInfoModal = ({action, typeOfAliotToDelete, openDeleteModal, setOpenDeleteModal}: DelAllPerashiotModalProps) => {
   const { logedUser } = useContext(PageContext) as any
   const { id } = useParams();
-  const deletePerashiotInfo = deleteAllPerashiotInfo()
-  const deleteOnePerashaInfo = deletePerashaInfo()
+  const deleteAllPerashiot = deleteAllPerashiotInfo()
+  const deletePerasha = deletePerashaInfo()
+
+  const showSuccessToast = (message: string) => {
+    toast.success(message, {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      style: { backgroundColor: 'green', color: 'white' },
+    });
+  };
+
+  const deleteInfoOfThePerasha = async () => {
+    try {
+      if (action == "DEL_ALL") {
+        deleteAllPerashiot(logedUser.kehila, typeOfAliotToDelete!)
+        showSuccessToast("Se eliminaron las donaciones de todas las parashiot");
+      } else {
+        deletePerasha(logedUser.kehila, id!, typeOfAliotToDelete!)
+        showSuccessToast("Se eliminó la información de todas las donaciones");
+      }
+    } catch (error) {
+      console.error("Error deleting donations of the perasha:", error);
+      toast.error("Error al eliminar las donaciones de la parashá.");
+    }
+  };
 
   const closeModal = async (deleteInfo: boolean) => {
     if (deleteInfo) {
-      if (action == "DEL_ALL") {
-        deletePerashiotInfo(logedUser.kehila)
-        toast.success("Se eliminó la información de las donaciones de todas las Perashiot", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-          style: { backgroundColor: 'green', color: 'white' },
-        });
-      } else {
-        deleteOnePerashaInfo(logedUser.kehila, id!)
-        toast.success("Se eliminó la información de todas las donaciones", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-          style: { backgroundColor: 'green', color: 'white' },
-        });
+      if (typeOfAliotToDelete == "DONACION") {
+        await deleteInfoOfThePerasha();
       }
     }
     setOpenDeleteModal(false)

@@ -2,7 +2,7 @@ import { CSSProperties, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { DelAllPereashiotInfoModal } from "./DelAllPerashiotInfoModal";
 
-export const OldPerashiotList = ({setStep}: any) => {
+export const DonationPerPersha = ({setStep}: any) => {
   const parashiotByBook = {
     Bereshit: [ 
       "Bereshit",
@@ -102,7 +102,7 @@ export const OldPerashiotList = ({setStep}: any) => {
                 return (
                   <button
                     key={name}
-                    onClick={() => {setSelected(name), navigate(`/perasha-info/${name}`), setStep(2)}}
+                    onClick={() => {setSelected(name), navigate(`/perasha-info/donation/${name}`), setStep(2)}}
                     style={{
                       ...styles.button,
                       fontWeight: isSelected ? "bold" : "normal",

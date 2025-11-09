@@ -72,6 +72,16 @@ export const getVisitorUserInfoOnSignIn = async (convex: any, kehilaName: string
 }
 
 /*-------------POST A NEW ALIA IN TO A PERASHA--------*/
+export const addADonationInAPerasha = () => {
+  const mutation = useMutation(api.kehila.addADonationInAPerasha);
+  return (kehilaName: string, perashaName: string, newAliaInfo: Alia) =>
+    mutation({
+      nombre: kehilaName,
+      nombrePerasha: perashaName,
+      nuevaAlia: newAliaInfo
+    });
+}
+
 export const addAnAliaInAPerasha = () => {
   const mutation = useMutation(api.kehila.addAnAliaInAPerasha);
   return (kehilaName: string, perashaName: string, newAliaInfo: Alia) =>
@@ -182,18 +192,20 @@ export const addAniversaryToVisitorUser = () => {
 /*------DELETE ALL PERASHA INFO OF THE KEHILA------*/
 export const deleteAllPerashiotInfo = () => {
   const mutation = useMutation(api.kehila.deleteAllPerashiotInfo)
-  return (kehilaName: string) =>
+  return (kehilaName: string, aliotTypeToDelete: string) =>
     mutation({
       nombreKehila: kehilaName,
+      aliotTypeToDelete: aliotTypeToDelete,
     });
 }
 
 /*--------DELETE PERASHA INFO OF THE KEHILA--------*/
 export const deletePerashaInfo = () => {
   const mutation = useMutation(api.kehila.deletePerashaInfo)
-  return (kehilaName: string, perashaName: string) =>
+  return (kehilaName: string, perashaName: string, aliotTypeToDelete: string) =>
     mutation({
       nombreKehila: kehilaName,
-      nombrePerasha: perashaName
+      nombrePerasha: perashaName,
+      aliotTypeToDelete: aliotTypeToDelete
     });
 }

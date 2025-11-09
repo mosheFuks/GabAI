@@ -221,7 +221,7 @@ export const getUserOnSignInDirect = query({
 });
 
 /*------------------POST A NEW INFO---------------*/
-export const addAnAliaInAPerasha = mutation({
+export const addADonationInAPerasha = mutation({
   args: {
     nombre: v.string(),
     nombrePerasha: v.string(),
@@ -233,6 +233,52 @@ export const addAnAliaInAPerasha = mutation({
         alia: v.string(),
         moneda: v.string(),
         monto: v.number(),
+        tipoAlia: v.optional(v.string())
+      })
+  },
+  handler: async (ctx, args) => {
+    const kehila = await ctx.db
+      .query("Kehila")
+      .filter((q) => q.eq(q.field("nombre"), args.nombre))
+      .first();
+
+    if (!kehila) {
+      throw new Error("Kehila no encontrada");
+    }
+
+    // Copiamos el array de perashiot
+    const perashiotActualizadas = (kehila.perashiot ?? []).map(perasha => {
+      if (perasha.nombrePerasha === args.nombrePerasha) {
+        return {
+          ...perasha,
+          aliot: [...(perasha.aliot ?? []), args.nuevaAlia]
+        };
+      }
+      return perasha;
+    });
+
+    await ctx.db.patch(kehila._id, {
+      perashiot: perashiotActualizadas,
+    });
+  },
+});
+
+export const addAnAliaInAPerasha = mutation({
+  args: {
+    nombre: v.string(),
+    nombrePerasha: v.string(),
+    nuevaAlia: 
+      v.object({
+        nombre: v.string(),
+        nombreHebreo: v.string(),
+        apellido: v.optional(v.string()),
+        alia: v.string(), 
+        minian: v.optional(v.string()),
+        aniversario: v.optional(v.string()),
+        fechaAniversarioHebreo: v.optional(v.string()),
+        grupo: v.optional(v.string()),
+        perasha: v.optional(v.string()),
+        tipoAlia: v.optional(v.string())
       })
   },
   handler: async (ctx, args) => {
@@ -653,7 +699,8 @@ export const addAniversaryToVisitorUser = mutation({
 /*------DELETE ALL PERASHA INFO OF THE KEHILA------*/
 export const deleteAllPerashiotInfo = mutation({
   args: {
-    nombreKehila: v.string()
+    nombreKehila: v.string(),
+    aliotTypeToDelete: v.string(),
   },
 
   handler: async (ctx, args) => {
@@ -667,19 +714,32 @@ export const deleteAllPerashiotInfo = mutation({
       throw new Error("Kehila no encontrada");
     }
 
-    // 2. Vaciar el array de perashiot
+    // Paso 2: Recorrer todas las perashiot, eliminar las aliot tipo "Donacion"
+    // y descartar las perashiot que queden vacías
+    const perashiotActualizadas = (kehila.perashiot || [])
+      .map((perasha) => {
+        const aliotFiltradas = (perasha.aliot || []).filter(
+          (alia) => alia.tipoAlia !== args.aliotTypeToDelete
+        );
+        return { ...perasha, aliot: aliotFiltradas };
+      })
+      // Eliminar las perashiot que quedaron sin aliot
+      .filter((perasha) => (perasha.aliot || []).length > 0);
+
+    // Paso 3: Guardar el array actualizado
     await ctx.db.patch(kehila._id, {
-      perashiot: [],
+      perashiot: perashiotActualizadas,
     });
 
     return { success: true };
   },
-})
+});
 
 export const deletePerashaInfo = mutation({
   args: {
     nombreKehila: v.string(),
     nombrePerasha: v.string(),
+    aliotTypeToDelete: v.string(),
   },
 
   handler: async (ctx, args) => {
@@ -693,14 +753,21 @@ export const deletePerashaInfo = mutation({
       throw new Error("Kehila no encontrada");
     }
 
-    // Paso 2: Filtrar el array de perashiot y eliminar la perashá con el nombre dado
-    const perashiotFiltradas = (kehila.perashiot || []).filter(
-      (perasha) => perasha.nombrePerasha !== args.nombrePerasha
-    );
+    // Paso 2: Buscar la perashá correspondiente
+    const perashiotActualizadas = (kehila.perashiot || []).map((perasha) => {
+      if (perasha.nombrePerasha === args.nombrePerasha) {
+        // Filtrar las aliot, quitando las que son tipo "Donacion"
+        const aliotFiltradas = (perasha.aliot || []).filter(
+          (alia) => alia.tipoAlia !== args.aliotTypeToDelete
+        );
+        return { ...perasha, aliot: aliotFiltradas };
+      }
+      return perasha;
+    });
 
-    // Paso 3: Guardar el array actualizado
+    // Paso 3: Guardar los cambios
     await ctx.db.patch(kehila._id, {
-      perashiot: perashiotFiltradas,
+      perashiot: perashiotActualizadas,
     });
 
     return { success: true };

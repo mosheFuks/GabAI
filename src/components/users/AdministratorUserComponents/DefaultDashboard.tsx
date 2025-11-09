@@ -4,11 +4,12 @@ import { VisitorUser } from "../../../structs/structs";
 import { FaArrowAltCircleRight } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { NavigationDashboardButtons } from "./NavigationDahboardButtons";
-import { NextAliot } from "./AdministratorPerashiot/NextAliot";
-import { OldPerashiotList } from "./AdministratorPerashiot/OldPerashiotList";
+import { ThisWeekAniversariesList } from "./AdministratorPerashiot/ThisWeekAniversariesList";
+import { DonationPerPersha } from "./AdministratorPerashiot/DonationPerPerasha";
 
 import { getUsersList } from "../../../apis/requests";
 import { PageContext } from "../../../StoreInfo/page-storage";
+import { AliotPerPersha } from "./AdministratorPerashiot/AliotPerPerasha";
 
 export const AdministratorDefaultDashboard = () => {
   const navigate = useNavigate();
@@ -124,12 +125,20 @@ export const AdministratorDefaultDashboard = () => {
       )}
       {step === 2 && (
         <div style={styles.stepsContainer}>
-          <NextAliot peopleList={peopleList} />
+          <ThisWeekAniversariesList peopleList={peopleList} />
         </div>
       )}
       {step == 3 ? (
         <div style={styles.stepsContainer}>
-          <OldPerashiotList setOldPerashaInfo={setOldPerashaInfo} setStep={setStep}/>
+          <DonationPerPersha setOldPerashaInfo={setOldPerashaInfo} setStep={setStep}/>
+        </div>
+      ) : (
+        null
+      )}
+
+      {step == 4 ? (
+        <div style={styles.stepsContainer}>
+          <AliotPerPersha setOldPerashaInfo={setOldPerashaInfo} setStep={setStep}/>
         </div>
       ) : (
         null

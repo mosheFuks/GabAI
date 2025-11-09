@@ -1,10 +1,11 @@
 import { colors } from "../../../../assets/colors";
 import { CSSProperties, useEffect, useState } from "react";
 import { HDate } from '@hebcal/core';
-import { Grupo, HEBREW_MONTHS, VisitorUser } from "../../../../structs/structs";
-import { FaArrowAltCircleRight, FaFilter } from "react-icons/fa";
+import { Grupo, HEBREW_MONTHS, UserToAddInThePerasha, VisitorUser } from "../../../../structs/structs";
+import { FaArrowAltCircleRight, FaSearch, FaPlus } from "react-icons/fa";
 import { DateToDateAniversary } from "./DateToDateAniversary";
 import { useNavigate } from "react-router-dom";
+import { AddUserToAliaModal } from "./AddUserToPerashaModal";
 
 interface DaysOfThisWeek {
   currentYear: number,
@@ -39,7 +40,7 @@ interface AniversariesList {
   }
 }
 
-export const NextAliot = ({peopleList}: NextAliotProps) => {
+export const ThisWeekAniversariesList = ({peopleList}: NextAliotProps) => {
   const navigate = useNavigate();
   const [thisWeekAniversaries, setThisWeekAniversaries] = useState<AniversariesList[]>([])
   const [filteredAniversaries, setFilteredAniversaries] = useState<AniversariesList[]>([])
@@ -51,8 +52,20 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
     friday: ""
   })
 
+
   const [clicked, setClicked] = useState<boolean>(false)
   const [renderedAniversaries, setRenderedAniversaries] = useState<AniversariesList[]>([]);
+  const [openAddMitpalelToPerashaModal, setOpenAddMitpalelToPerashaModal] = useState<boolean>(false);
+
+  const [userToAddInThePerasha, setUserToAddInThePerasha] = useState<UserToAddInThePerasha>({
+    nombre: "",
+    apellido: "",
+    nombreHebreo: "",
+    aniversario: "",
+    fechaAniversarioHebreo: "",
+    minian: "", 
+    grupo: null as any
+  });
 
   function getNextHebrewMonth(currentMonth: string) {
     const index = HEBREW_MONTHS.indexOf(currentMonth as typeof HEBREW_MONTHS[number]);
@@ -231,6 +244,18 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
     setFilteredAniversaries(filtered);
   };
 
+  const openModal = (open: boolean, nombre: string, apellido: string, nombreHebreo: string, minian: string, aniversario: string, fechaAniversarioHebreo: string, grupo: Grupo) => {
+    setOpenAddMitpalelToPerashaModal(open);
+    setUserToAddInThePerasha({
+      nombre: nombre,
+      apellido: apellido,
+      nombreHebreo: nombreHebreo,
+      minian: minian,
+      aniversario: aniversario,
+      fechaAniversarioHebreo: fechaAniversarioHebreo,
+      grupo: grupo
+    });
+  };
 
   useEffect(() => {
     const thisWeekAniversaries = getThisWeekAniversariesFromAllUsers()
@@ -241,10 +266,10 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
   return (
     <div style={styles.container}>
       <div style={styles.headerButtons}>
-        <DateToDateAniversary peopleList={peopleList!} setFilteredAniversaries={setFilteredAniversaries} daysOfThisWeek={daysOfThisWeek} setRenderedAniversaries={setRenderedAniversaries} />
+        <DateToDateAniversary peopleList={peopleList!} setFilteredAniversaries={setFilteredAniversaries} daysOfThisWeek={daysOfThisWeek} setRenderedAniversaries={setRenderedAniversaries} setThisWeekAniversaries={setThisWeekAniversaries} />
         {thisWeekAniversaries.length > 0 && (
           <div style={styles.searchByMotiveOrMinian}>
-            <FaFilter className="text-orange" />
+            <FaSearch className="text-black" size={30} />
             <input
               type="text"
               placeholder="Busca por motivo o Minian"
@@ -262,6 +287,7 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
             <table style={styles.table}>
               <thead>
                 <tr>
+                  <th style={styles.falseTh}></th>
                   <th style={styles.th}>Motivo</th>
                   <th style={styles.th}>Nombre</th>
                   <th style={styles.th}>Nombre Hebreo</th>
@@ -287,6 +313,13 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
 
                   return (
                     <tr key={index}>
+                      <td 
+                        style={{...styles.td, color: "blue", alignItems: "center", cursor:"pointer", border: "2px solid blue"}}
+                        data-label="AgregarAPerasha"
+                        onClick={() => openModal(true, ani.nombre, ani.apellido, nombreHebreo, minian, motivo, fechaAniHeb, grupo)}
+                      >
+                        <FaPlus className="text-3xl text-gray-500 hover:text-blue-500 transition-colors duration-200" />
+                      </td>
                       <td style={styles.td} data-label="Motivo">{motivo}</td>
                       <td style={styles.td} data-label="Nombre">{nombre}</td>
                       <td style={styles.td} data-label="NombreHebreo">{nombreHebreo}</td>
@@ -317,6 +350,15 @@ export const NextAliot = ({peopleList}: NextAliotProps) => {
           )}
         </div>
       </div>
+
+      {openAddMitpalelToPerashaModal && (
+        <AddUserToAliaModal
+          openModal={openAddMitpalelToPerashaModal}
+          setOpenModal={setOpenAddMitpalelToPerashaModal}
+          userToAddInThePerasha={userToAddInThePerasha}
+          setUserToAddInThePerasha={setUserToAddInThePerasha}
+        />
+      )}
     </div>
 )}
 
@@ -372,7 +414,6 @@ const styles: { [key: string]: CSSProperties }= {
   } as CSSProperties,
   headerButtons: {
     display: "flex",
-    width: '100%',
     marginTop: "20px",
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -440,6 +481,19 @@ const styles: { [key: string]: CSSProperties }= {
     zIndex: 1,
     borderRadius: '8px', // importante
     border: '2px solid #040404ff',
+  } as CSSProperties,
+  falseTh: {
+    padding: '12px 16px',
+    textAlign: 'center',
+    fontWeight: 'bolder ',
+    //background: '#f9f9f9',
+    //color: '#333',
+    fontSize: '1.05rem',
+    position: 'sticky',
+    top: 0,
+    zIndex: 1,
+    borderRadius: '8px', // importante
+    //border: '2px solid #040404ff',
   } as CSSProperties,
   td: {
    padding: '14px 16px',

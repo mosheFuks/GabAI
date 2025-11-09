@@ -40,7 +40,7 @@ export const NavigationButtonSignUp = ({step, setStep, setModalRealSignInfo, fro
                         {fromPage == "SignUp" && logedUser.rol == "" ? 
                             (<button type="submit" style={styles.button} onClick={() => {setModalRealSignInfo!(true); setIsNewUser!(true)}}>Registrarse</button>) : null
                         }
-                        {logedUser.rol == "ADMIN" ?
+                        {logedUser.rol == "ADMIN" && fromPage == "SignUp"?
                             (<button type="submit" style={styles.regi_button} onClick={() => {setModalRealSignInfo!(true); setIsNewUser!(false)}}>Guardar Mitpalel</button>) : null
                         }
                     </div>

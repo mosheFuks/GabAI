@@ -96,8 +96,23 @@ export interface Alia {
   nombre: string,
   apellido?: string,
   nombreHebreo: string,
-  monto: number,
-  moneda: string
+  monto?: number,
+  moneda?: string
+  perasha?: string
+  minian?: string
+  aniversario?: string
+  fechaAniversarioHebreo?: string;
+  grupo?: Grupo
+  tipoAlia?: "DONACION" | "ALIA"
+}
+export interface UserToAddInThePerasha {
+  nombre: string;
+  apellido: string;
+  nombreHebreo: string;
+  aniversario: string;
+  fechaAniversarioHebreo?: string;
+  minian: string,
+  grupo: Grupo
 }
 
 export const HEBREW_MONTHS = [

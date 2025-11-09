@@ -2,7 +2,7 @@ import { CSSProperties, useContext, useState } from 'react';
 import Modal from 'react-modal';
 import { colors } from '../../../../assets/colors'
 import { Alia, Donacion } from '../../../../structs/structs';
-import { addADonationToUser, addAnAliaInAPerasha } from '../../../../apis/requests';
+import { addADonationToUser, addADonationInAPerasha } from '../../../../apis/requests';
 import { PageContext } from '../../../../StoreInfo/page-storage';
 import { toast } from 'react-toastify';
 
@@ -14,7 +14,7 @@ interface AliaModalProps {
   perashaName: string;
 }
 
-export const AliaModal = ({setOpenAliaModal, openAliaModal, setAliotList, aliotList, perashaName}: AliaModalProps) => {
+export const AddDonationToPerashaModal = ({setOpenAliaModal, openAliaModal, setAliotList, aliotList, perashaName}: AliaModalProps) => {
   const {logedUser} = useContext(PageContext) as any;
   const [addDonationToUser, setAddDonationToUser] = useState<boolean>(false);
   const [formAliaData, setFormAliaData] = useState<Alia>({
@@ -23,10 +23,11 @@ export const AliaModal = ({setOpenAliaModal, openAliaModal, setAliotList, aliotL
     nombreHebreo: "",
     apellido: "",
     monto: 0,
-    moneda: ""
+    moneda: "",
+    tipoAlia: "DONACION"
   });
   
-  const addAlia = addAnAliaInAPerasha();
+  const addAlia = addADonationInAPerasha();
   const addDonation = addADonationToUser(); 
 
   const campoIncompleto = Object.entries(formAliaData)

@@ -35,9 +35,10 @@ interface DateToDateProps {
   peopleList: VisitorUser[]
   daysOfThisWeek: DaysOfThisWeek
   setRenderedAniversaries: (thisWeekAniversaries: AniversariesList[]) => void
+  setThisWeekAniversaries: (thisWeekAniversaries: AniversariesList[]) => void
 }
 
-export const DateToDateAniversary = ({ peopleList, setFilteredAniversaries, daysOfThisWeek, setRenderedAniversaries }: DateToDateProps) => {
+export const DateToDateAniversary = ({ peopleList, setFilteredAniversaries, daysOfThisWeek, setRenderedAniversaries, setThisWeekAniversaries }: DateToDateProps) => {
   const [dayStart, setDayStart] = useState<string>('');
   const [monthStart, setMonthStart] = useState<string>("");
   const [dayEnd, setDayEnd] = useState<string>('');
@@ -222,6 +223,7 @@ export const DateToDateAniversary = ({ peopleList, setFilteredAniversaries, days
 
     setFilteredAniversaries(inRange);
     setRenderedAniversaries(inRange);
+    setThisWeekAniversaries(inRange); // Actualiza también los aniversarios de esta semana
   };
   
   return (

@@ -31,13 +31,14 @@ export const NavigationDashboardButtons = ({peopleList, step, setPeopleFilter, s
             <div style={styles.buttonGroup}>
                 {step > 1 ? (
                     <button style={{...styles.button, backgroundColor: "green", color: "white"}} onClick={() => {navigate("/administrator-dashboard"), setStep(1)}}>
-                        <FaArrowLeft className="text-black" /> Lista de usuarios
+                        <FaArrowLeft className="text-black" /> Lista de Mitpalelim
                     </button>
                 ) : (
                     null
                 )}
                 <button style={{...styles.button, backgroundColor: step == 2 ? "white": "green", color: step == 2 ? "green": "white"}} onClick={() =>setStep(2)}>Aniversarios de esta semana</button>
-                <button style={{...styles.button, backgroundColor: step == 3 ? "white": "green", color: step == 3 ? "green": "white"}} onClick={() =>setStep(3)}>Perashiot</button>
+                <button style={{...styles.button, backgroundColor: step == 3 ? "white": "green", color: step == 3 ? "green": "white"}} onClick={() =>{setStep(3)}}>Donaciones</button>
+                <button style={{...styles.button, backgroundColor: step == 4 ? "white": "green", color: step == 4 ? "green": "white"}} onClick={() =>{setStep(4)}}>Aliot</button>
             </div>
             {step == 1 ? (
                 <div style={styles.rightGroup}>

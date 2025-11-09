@@ -1,7 +1,7 @@
 import './App.css'
 
 import { UserDashboard } from './components/users/AdministratorUserComponents/AdministratorUserDashboard/UserDashboard';
-import { OldPerashaInfo } from './components/users/AdministratorUserComponents/AdministratorPerashiot/OldPerashaInfo';
+import { DonationPerPerashaInfo } from './components/users/AdministratorUserComponents/AdministratorPerashiot/DonationPerPerashaInfo';
 import { AdministratorDefaultDashboard } from './components/users/AdministratorUserComponents/DefaultDashboard';
 import { HomeVisitorUserComponent } from './components/users/VisitorUserComponents/HomeVisitorUserCompo';
 import NormalUserSignUp from './components/SignUserOptions/NormalUser/SignUp/NormalUserSignUp';
@@ -18,6 +18,8 @@ import { PageProvider } from './StoreInfo/page-storage';
 import { LogedUserData } from './structs/structs';
 import { useEffect, useState } from 'react';
 import Modal from 'react-modal';
+import { ThisWeekAniversariesList } from './components/users/AdministratorUserComponents/AdministratorPerashiot/ThisWeekAniversariesList';
+import { AliotPerPershaInfo } from './components/users/AdministratorUserComponents/AdministratorPerashiot/AliotPerPerashaInfo';
 
 Modal.setAppElement('#root');
 
@@ -45,12 +47,13 @@ function App() {
           <Navbar />
           <Routes>
             <>
-              <Route path='/' element={logedUser != null && (logedUser!.rol == "ADMIN" || logedUser!.rol == "OPERATOR")? <AdministratorDefaultDashboard /> : <HomePage />} />
+              <Route path='/' element={logedUser !=  null && (logedUser!.rol == "ADMIN" || logedUser!.rol == "OPERATOR")? <AdministratorDefaultDashboard /> : <HomePage />} />
               <Route path='/sign-in' element={<SignIn />} />
               <Route path='/visitor-user-info' element={<HomeVisitorUserComponent />} />
               <Route path='/administrator-dashboard' element={<AdministratorDefaultDashboard />} />
               <Route path='/administrator-user-info/:id' element={<UserDashboard />} />
-              <Route path='/perasha-info/:id' element={<OldPerashaInfo />} />
+              <Route path='/perasha-info/donation/:id' element={<DonationPerPerashaInfo />} />
+              <Route path='/perasha-info/aliot/:id' element={<AliotPerPershaInfo />} />
               <Route path='/create-normal-user' element={<NormalUserSignUp />} />
               <Route path='/create-operator-user' element={<SignUpOperator />}/>
             </>
