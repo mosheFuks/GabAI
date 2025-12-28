@@ -98,8 +98,12 @@ export const AliotPerPershaInfo = () => {
           {id?.replace(/([a-z])([A-Z])/g, '$1 $2')}
         </h2>
         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px'}}>
-          <button style={{...styles.delButton, backgroundColor: aliotList.length > 0 ? "blue" : "gray"}} onClick={handleDownloadPDF} disabled={aliotList.length <= 0}>Descargar</button>
-          <button style={styles.delButton} onClick={() => setOpenDeleteModal(true)}>Eliminar</button>
+          {aliotList!.length > 0 ? (
+            <>
+            <button style={{...styles.delButton, backgroundColor: aliotList.length > 0 ? "blue" : "gray"}} onClick={handleDownloadPDF} disabled={aliotList.length <= 0}>Descargar</button>
+            <button style={styles.delButton} onClick={() => setOpenDeleteModal(true)}>Eliminar</button>
+            </>
+          ) : null}
         </div>
       </div>
       

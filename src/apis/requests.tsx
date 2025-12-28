@@ -157,7 +157,7 @@ export const changeUserVisitorData = () => {
     kehilaName: string,
     nombreUsuario: string,
     apellidoUsuario: string,
-    updatedData: { name: string; value: string; normalName: string }[]
+    updatedData: any
   ) =>
     mutation({
       nombreKehila: kehilaName,

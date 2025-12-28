@@ -537,18 +537,15 @@ export const changeDonationStatus = mutation({
   },
 });
 
-export const changeUserVisitordata = mutation({
+/*export const changeUserVisitordata = mutation({
   args: {
     nombreKehila: v.string(),
     nombreUsuario: v.string(),
     apellidoUsuario: v.string(),
-    updatedData: v.array(
-      v.object({
-        name: v.string(),
-        normalName: v.string(),
-        value: v.string(),
-      })
-    ),
+    updatedData: v.object({
+      name: v.string(),
+      value: v.any(),
+    })
   },
 
   handler: async (ctx, args) => {
@@ -590,6 +587,56 @@ export const changeUserVisitordata = mutation({
     }
 
     // Paso 3: Guardar los usuarios actualizados en la base de datos
+    await ctx.db.patch(kehila._id, {
+      usuarios: usuariosActualizados,
+    });
+
+    return { success: true };
+  },
+});*/
+
+export const changeUserVisitordata = mutation({
+  args: {
+    nombreKehila: v.string(),
+    nombreUsuario: v.string(),
+    apellidoUsuario: v.string(),
+    updatedData: v.object({
+      name: v.string(),   // nombre del campo en la BD
+      value: v.string(),     // nuevo valor
+    })
+  },
+
+  handler: async (ctx, args) => {
+    const kehila = await ctx.db
+      .query("Kehila")
+      .filter(q => q.eq(q.field("nombre"), args.nombreKehila))
+      .first();
+
+    if (!kehila) {
+      throw new Error("Kehila no encontrada");
+    }
+
+    let usuarioFueModificado = false;
+
+    const usuariosActualizados = kehila.usuarios.map(usuario => {
+      if (
+        usuario.nombreEspanol === args.nombreUsuario &&
+        usuario.apellido === args.apellidoUsuario
+      ) {
+        const usuarioActualizado = { ...usuario };
+
+        (usuarioActualizado as any)[args.updatedData.name!] = args.updatedData.value;
+        usuarioFueModificado = true;
+
+        return usuarioActualizado;
+      }  
+      return usuario;
+    });
+
+    if (!usuarioFueModificado) {
+      throw new Error("Mitpalel no encontrado o no se modificó ningún campo.");
+    }
+
     await ctx.db.patch(kehila._id, {
       usuarios: usuariosActualizados,
     });

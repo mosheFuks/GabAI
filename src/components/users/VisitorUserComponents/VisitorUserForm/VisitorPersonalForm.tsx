@@ -1,114 +1,256 @@
-import { CSSProperties } from 'react';
+import { CSSProperties, useEffect, useState } from 'react';
 import { colors } from '../../../../assets/colors';
+import { Pencil } from 'lucide-react';
+import { ClipLoader } from "react-spinners";
+
+import { changeUserVisitorData, getMinianimList } from '../../../../apis/requests';
+import { useConvex } from 'convex/react';
+import { toast } from 'react-toastify';
 
 interface VisitorPersonalDataProps {
   logedVisitorUser: any
+  setUserChangedSomeProperty: (value: boolean) => void;
 }
 
-export const VisitorPersonalForm = ({ logedVisitorUser }: VisitorPersonalDataProps) => {
+export const VisitorPersonalForm = ({ logedVisitorUser, setUserChangedSomeProperty }: VisitorPersonalDataProps) => {
+  const groupList = ["Cohen", "Levi", "Israel"];
+  
+  const convex = useConvex();
+
+  const [editingField, setEditingField] = useState<string | null>(null);
+  const [minianimList, setMinianimList] = useState<any[]>([]);
+  const [changingProperty, setChangingProperty] = useState(false);
+  const [newValueToSave, setNewValueToSave] = useState<string | number>("");
+  
+  const changeVisitorUserPropeties = changeUserVisitorData()
+
+  const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+  const getMinianimFromTheList = async () => {
+    if (!logedVisitorUser.nombreKehila) {
+      return;
+    }
+
+    try {
+      const minianimListFromLogedUserKehila = await getMinianimList(convex, logedVisitorUser.nombreKehila);
+      setMinianimList(minianimListFromLogedUserKehila!);
+    } catch (err) {
+      console.error("Error fetching user:", err);
+    }
+  };
+
+  const updateVisitorUser = async (keyToEdit: string, infoToEdit: string | number) => {
+    try {
+      await changeVisitorUserPropeties(logedVisitorUser?.nombreKehila, logedVisitorUser?.nombreEspanol, logedVisitorUser?.apellido, { name: keyToEdit, value: infoToEdit });
+      toast.success("Se modificó la información correctamente", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored", 
+        style: { backgroundColor: 'green', color: 'white' },
+      });
+      setUserChangedSomeProperty(true);
+    } catch (error) {
+      toast.error("Ocurrió un error al intentar cambiar el valor de las propiedadeas seleccionadas", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored", 
+        style: { backgroundColor: 'red', color: 'white' },
+      });
+      console.error("Error updating user:", error);
+    }
+    setChangingProperty(false);
+  };
+
+  useEffect(() => {
+    getMinianimFromTheList();
+  }, [logedVisitorUser.nombreKehila])
+
+  const saveNewProperty = async (keyToEdit: string, oldValue: string | number) => {
+    console.log("Old Value: ", oldValue, ", New Value: ", newValueToSave);
+    
+    if (newValueToSave === "" || newValueToSave === null || newValueToSave === undefined) {
+      toast.error("El campo no puede estar vacío", {
+        position: "top-right",
+        autoClose: 3000,
+        theme: "colored",
+        style: { backgroundColor: "red", color: "white" }
+      });
+      return;
+    }
+
+    if (newValueToSave === oldValue) {
+      toast.error("No se realizaron cambios en el valor", {
+        position: "top-right",
+        autoClose: 3000,
+        theme: "colored",
+        style: { backgroundColor: "red", color: "white" }
+      });
+      setEditingField(null);
+      return;
+    }
+
+    setChangingProperty(true);
+    await sleep(3000)
+    await updateVisitorUser(keyToEdit, newValueToSave);
+    setNewValueToSave("");
+    setEditingField(null);
+  };
+
+
+  const renderNormalEditableField = (infoToShow: string, key: string) => {
+    return (
+      <input
+        id={key + "Edit"}
+        type="text"
+        defaultValue={infoToShow}
+        style={{ ...styles.input, marginLeft: 10 }}
+        autoFocus={true}
+        onChange={(e) => {
+          setNewValueToSave(e.target.value);
+        }}
+      />
+    );
+  }
+
+  const renderMinianinimListToSelect = () => {
+    return (
+      <select
+        id="minian-select"
+        style={styles.input}
+        defaultValue=""
+        onChange={(e) => {
+          setNewValueToSave(e.target.value);
+        }}
+      >
+        <option value="" disabled>
+          Elegí un Minian
+        </option>
+        {minianimList.map((minian: any, index: number) => (
+          <option key={index} value={minian.value}>
+            {minian}
+          </option>
+        ))}
+      </select>
+    );
+  }
+
+  const renderGroupListToSelect = () => {
+    return (
+      <select
+        id="group-select"
+        style={styles.input}
+        defaultValue=""
+        onChange={(e) => {
+          setNewValueToSave(e.target.value);
+        }}
+      >
+        <option value="" disabled>
+          Selecciona tu Grupo Halájico
+        </option>
+        {groupList.map((state, index) => (
+          <option key={index} value={state}>
+            {state}
+          </option>
+        ))}
+      </select>
+    );
+  }
+
+  const showUserInfoDates = (label: string, key:string, dayInfo: string, dayKey: string, monthInfo: string, monthKey: string, yearInfo: string, yearKey: string) => {
+    return (
+      <>
+      <label htmlFor={key} style={{ display: "block", fontWeight: 'bold'}}>{label}</label>
+      <div style={{ display: "flex", flexDirection: "row"}}>
+        <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
+          <label htmlFor={dayKey} style={{ display: "block", fontWeight: 'bold', marginRight: 10}}>Día</label>
+          <h5 id={dayKey} style={styles.input}>
+            {dayInfo}
+          </h5>
+        </div>
+        <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
+          <label htmlFor={monthKey} style={{ display: "block", fontWeight: 'bold', marginRight: 10, marginLeft: 10}}>Mes</label>
+          <h5 id={monthKey} style={styles.input}>
+            {monthInfo}
+          </h5>
+        </div>
+        <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
+          <label htmlFor={yearKey} style={{ display: "block", fontWeight: 'bold', marginRight: 10, marginLeft: 10}}>Año</label>
+          <h5 id={yearKey} style={styles.input}>
+            {yearInfo}
+          </h5>
+        </div>
+      </div>
+      </>
+    )
+  }
+  
+  const showUserInfoData = (label: string, infoToShow: string, key: string, inputLabel: "MINIAN" | "DEFAULT" | "STATUS" = "DEFAULT", canEditProperty: boolean = true) => {
+    const isEditing = editingField === key;
+    return (
+      <>
+        <label htmlFor={key} style={{ display: "block", fontWeight: 'bold' }}>{label}</label>
+        <div style={{ display: 'flex', flexDirection: "row", alignItems: 'center' }}>
+          {isEditing ? (
+            inputLabel === "MINIAN" ? renderMinianinimListToSelect() : 
+            inputLabel === "STATUS" ? renderGroupListToSelect() : 
+            renderNormalEditableField(infoToShow, key)
+          ) : (
+            <h5 id={key} style={styles.input}>{infoToShow}</h5>
+          )}
+
+          { canEditProperty && (
+            <button
+              type="button"
+              style={isEditing ? {...styles.icon, backgroundColor: colors.btn_background, fontSize: "1rem"} : styles.icon}
+              onClick={() => isEditing ? saveNewProperty(key, infoToShow) : setEditingField(key)}
+            >
+              {isEditing ? changingProperty ? <ClipLoader color="white" loading={true} size={35} /> : <b>GUARDAR</b> : <Pencil size={20} color='red' />}
+            </button>
+          ) }
+        </div>
+      </>
+    );
+  };
+
+  
+
+
   return (
     <div style={{ flex: 1, overflowY: "auto", padding: "10px", borderRadius: "5px", minHeight: 0 }}>
       <div>
-        <label htmlFor="userKehilaName" style={{ display: "block", fontWeight: 'bold' }}>Nombre Kehila</label>
-        <h5 id="userKehilaName" style={styles.input}>
-          {logedVisitorUser.nombreKehila}
-        </h5>
+        {showUserInfoData("Nombre Kehila", logedVisitorUser.nombreKehila, "nombreKehila", "DEFAULT", false)}
+        
+        {showUserInfoData("Minian", logedVisitorUser.minian, "minian", "MINIAN")}
 
-        <label htmlFor="userMinian" style={{ display: "block", fontWeight: 'bold'}}>Minian</label>
-        <h5 id="userMinian" style={styles.input}>
-          {logedVisitorUser.minian}
-        </h5>
-
-        <label htmlFor="userApellido"style={{ display: "block", fontWeight: 'bold'}}>Apellido</label>
-        <h5 id="userApellido" style={styles.input}>
-          {logedVisitorUser.apellido}
-        </h5>
+        {showUserInfoData("Apellido", logedVisitorUser.apellido, "apellido", "DEFAULT")}
           
-        <label htmlFor="userNombreEspanol" style={{ display: "block", fontWeight: 'bold'}}>Nombre Español</label>
-        <h5 id="userNombreEspanol" style={styles.input}>
-          {logedVisitorUser.nombreEspanol}
-        </h5>
+        {showUserInfoData("Nombre Español", logedVisitorUser.nombreEspanol, "nombreEspanol", "DEFAULT")}
         
-        <label htmlFor="userNombreHebreo" style={{ display: "block", fontWeight: 'bold'}}>Nombre Hebreo</label>
-        <h5 id="userNombreHebreo" style={styles.input}>
-          {logedVisitorUser.nombreHebreo}
-        </h5>
+        {showUserInfoData("Nombre Hebreo", logedVisitorUser.nombreHebreo, "nombreHebreo", "DEFAULT")}
 
-        <label htmlFor="userFechaNacGreg" style={{ display: "block", fontWeight: 'bold'}}>Fecha Nacimiento Gregoriano</label>
-        <div style={{ display: "flex", flexDirection: "row"}}>
-          <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-            <label htmlFor="userFechaNacGregDia" style={{ display: "block", fontWeight: 'bold', marginRight: 10}}>Día</label>
-            <h5 id="userFechaNacGregDia" style={styles.input}>
-              {logedVisitorUser.fechaNacimientoGregoriano?.dia}
-            </h5>
-          </div>
-          <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-            <label htmlFor="userFechaNacGregMes" style={{ display: "block", fontWeight: 'bold', marginRight: 10, marginLeft: 10}}>Mes</label>
-            <h5 id="userFechaNacGregDia" style={styles.input}>
-              {logedVisitorUser.fechaNacimientoGregoriano?.mes}
-            </h5>
-          </div>
-          <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-            <label htmlFor="userFechaNacGregAno" style={{ display: "block", fontWeight: 'bold', marginRight: 10, marginLeft: 10}}>Año</label>
-            <h5 id="userFechaNacGregDia" style={styles.input}>
-              {logedVisitorUser.fechaNacimientoGregoriano?.ano}
-            </h5>
-          </div>
-        </div>
+        {showUserInfoDates("Fecha Nacimiento Gregoriano", "fechaNacimientoGregoriano", logedVisitorUser.fechaNacimientoGregoriano?.dia, "userFechaNacGregDia", logedVisitorUser.fechaNacimientoGregoriano?.mes, "userFechaNacGregMes", logedVisitorUser.fechaNacimientoGregoriano?.ano, "userFechaNacGregAno")}
         
-        <label htmlFor="userFechaNacHeb" style={{ display: "block", fontWeight: 'bold'}}>Fecha Nacimiento Hebreo</label>
-        <div style={styles.calculateDateBtnContainer}>
-          <div style={{ display: "flex", flexDirection: "row"}}>
-            <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-              <label htmlFor="userFechaNacHebDia" style={{ display: "block", fontWeight: 'bold', marginRight: 10}}>Día</label>
-              <h5 id="userFechaNacHebDia" style={styles.input}>
-                {logedVisitorUser.fechaNacimientoHebreo?.dia}
-              </h5>
-            </div>
-            <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-              <label htmlFor="userFechaNacHebMes" style={{ display: "block", fontWeight: 'bold', marginRight: 10, marginLeft: 10}}>Mes</label>
-              <h5 id="userFechaNacHebMes" style={styles.input}>
-                {logedVisitorUser.fechaNacimientoHebreo?.mes}
-              </h5>
-            </div>
-            <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
-              <label htmlFor="userFechaNacHebAno" style={{ display: "block", fontWeight: 'bold', marginRight: 10, marginLeft: 10}}>Año</label>
-              <h5 id="userFechaNacHebAno" style={styles.input}>
-                {logedVisitorUser.fechaNacimientoHebreo?.ano}
-              </h5>
-            </div>
-          </div>
-        </div>
+        {showUserInfoDates("Fecha Nacimiento Hebreo", "fechaNacimientoHebreo", logedVisitorUser.fechaNacimientoHebreo?.dia, "userFechaNacHebDia", logedVisitorUser.fechaNacimientoHebreo?.mes, "userFechaNacHebMes", logedVisitorUser.fechaNacimientoHebreo?.ano, "userFechaNacHebAno")}
+        
+        {showUserInfoData("Email Comercial", logedVisitorUser.emailComercial, "emailComercial", "DEFAULT") }
+        
+        {showUserInfoData("Teléfono", logedVisitorUser.telefono, "telefono") }
+        
+        {showUserInfoData("Dirección", logedVisitorUser.direccion, "direccion") }
+        
+        {showUserInfoData("Numero Socio", logedVisitorUser.numeroSocio, "numeroSocio") }
 
-        <label htmlFor="userEmailPers" style={{ display: "block", fontWeight: 'bold'}}>Email Personal</label>
-        <h5 id="userEmailPers" style={styles.input}>
-          {logedVisitorUser.emailPersonal}
-        </h5>
-        
-        <label htmlFor="userEmailCom" style={{ display: "block", fontWeight: 'bold'}}>Email Comercial</label>
-        <h5 id="userEmailCom" style={styles.input}>
-          {logedVisitorUser.emailComercial}
-        </h5>
-        
-        <label htmlFor="userPhone" style={{ display: "block", fontWeight: 'bold'}}>Teléfono</label>
-        <h5 id="userPhone" style={styles.input}>
-          {logedVisitorUser.telefono}
-        </h5>
-        
-        <label htmlFor="userDirection" style={{ display: "block", fontWeight: 'bold'}}>Dirección</label>
-        <h5 id="userDirection" style={styles.input}>
-          {logedVisitorUser.direccion}
-        </h5>
-        
-        <label htmlFor="userAsosiateNum" style={{ display: "block", fontWeight: 'bold'}}>Numero Socio</label>
-        <h5 id="userAsosiateNum" style={styles.input}>
-          {logedVisitorUser.numeroSocio}
-        </h5>
-        
-        <label htmlFor="userGroup" style={{ display: "block", fontWeight: 'bold' }}>Estatus Halájico</label>
-        <h5 id="userGroup" style={styles.input}>
-          {logedVisitorUser.grupo}
-        </h5>
+        {showUserInfoData("Estatus Halájico", logedVisitorUser.grupo, "grupo", "STATUS") }
       </div>
     </div>
   )
@@ -172,4 +314,16 @@ const styles: { [key: string]: CSSProperties }= {
     marginTop: "10px", 
     flexWrap: "wrap"
   },
+  icon: {
+    marginRight: "10px", 
+    //color: 'red',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: colors.main_background,
+    borderRadius: 15,
+    padding: 10,
+    marginLeft: 10,
+    cursor: 'pointer',
+    border: 'none',
+  } as CSSProperties,
 };

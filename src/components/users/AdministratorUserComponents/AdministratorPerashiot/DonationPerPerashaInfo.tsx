@@ -56,6 +56,9 @@ export const DonationPerPerashaInfo = () => {
     }
   }, [alia, addNewPerToKehila]);
 
+  {console.log("Aliot list: ", aliotList);
+        }
+
 
   return (
     <>
@@ -67,8 +70,11 @@ export const DonationPerPerashaInfo = () => {
         <h2 style={{...styles.title, marginRight: '100px'}}>
           {id?.replace(/([a-z])([A-Z])/g, '$1 $2')}
         </h2>
+        
         <div style={{ display: 'flex', justifyContent: 'flex-end'}}>
-          <button style={styles.delButton} onClick={() => setOpenDeleteModal(true)}>Eliminar</button>
+          {aliotList!.length > 0 ? (
+            <button style={styles.delButton} onClick={() => setOpenDeleteModal(true)}>Eliminar</button>
+          ) : null}
         </div>
       </div>
       <div style={{ display: 'flex', justifyContent: 'space-between', width: '90%', marginTop: '10px', marginBottom: '10px'}}>

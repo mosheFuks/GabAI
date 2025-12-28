@@ -5,9 +5,10 @@ import { colors } from '../../../../assets/colors';
 
 interface FormPersonalDataProps {
   logedVisitorUser: any
+  setUserChangedSomeProperty: (value: boolean) => void;
 }
 
-export const VisitorAccountForm = ({ logedVisitorUser }: FormPersonalDataProps) => {
+export const VisitorAccountForm = ({ logedVisitorUser, setUserChangedSomeProperty }: FormPersonalDataProps) => {
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
   const [arsPendingDonations, setArsPendingDonations] = useState<number>(0);
   const [usdPendingDonations, setUsdPendingDonations] = useState<number>(0);
