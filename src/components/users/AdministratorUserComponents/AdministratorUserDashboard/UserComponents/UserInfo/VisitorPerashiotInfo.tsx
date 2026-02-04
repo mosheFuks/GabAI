@@ -10,6 +10,8 @@ interface FormPersonalDataProps {
 }
 
 export const VisitorPerashiotInfo = ({ logedVisitorUser }: FormPersonalDataProps) => {
+  console.log("Loged Visitor user: ");
+  
   const [completeIortzaiList, setCompleteIortzaiList] = useState<any[]>([]);
   const [notIortzaiAniversaryList, setNotIortzaiAniversaryList] = useState<any>({
     aniversariesList: [],
@@ -30,7 +32,7 @@ export const VisitorPerashiotInfo = ({ logedVisitorUser }: FormPersonalDataProps
   };
 
   const getAllIortzaiAniversaries = () => {
-    return logedVisitorUser.aniversarios.filter((ani: Aniversary) => ani.motivo == "Yortzait")
+    return logedVisitorUser.aniversarios.filter((ani: Aniversary) => ani.motivo == "Yortzait");
   }
 
   const getAllNotIortzaiAniversaries = () => {
@@ -75,6 +77,9 @@ export const VisitorPerashiotInfo = ({ logedVisitorUser }: FormPersonalDataProps
     const notIortzaiAniversaries = getAllNotIortzaiAniversaries()
     setCompleteIortzaiList(justIortzai)
     setNotIortzaiAniversaryList(notIortzaiAniversaries)
+
+    console.log("Iortzai List: ", completeIortzaiList.length);
+    
   }, []);
   
   
