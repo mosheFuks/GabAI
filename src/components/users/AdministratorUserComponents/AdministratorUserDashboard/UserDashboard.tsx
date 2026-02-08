@@ -35,42 +35,51 @@ export const UserDashboard = () => {
         </h2>
         <div style={{...styles.button, backgroundColor: colors.main_background, color: colors.main_background, cursor: '-moz-grab'}}></div>
       </div>
-      <NavigationButtonSignUp step={step} setStep={setStep} fromPage="userDashboardPage"/>
-      <div style={{ flex: 1, overflow: 'auto', width: '100%' }}>
-        {user != undefined ? (
-          <form style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
-            {step === 1 && (
-              <VisitorPersonalInfo 
-                logedVisitorUser={user}
-              />
-            )}
-            {step === 2 && (
-              <VisitorKehilaInfo 
-                logedVisitorUser={user}
-              />
-            )}
-            {step === 3 && ( 
-              <VisitorFamilyInfo
-                logedVisitorUser={user} 
-              />
-            )}
-            {step === 4 && (    
-              <VisitorAccountInfo 
-                logedVisitorUser={user} 
-              />
-            )}
-            {step === 5 && (    
-              <VisitorPerashiotInfo 
-                logedVisitorUser={user} 
-              />
-            )}
-          </form>
-        ) : (
-          <div style={{ textAlign: 'center', marginTop: '20px', fontSize: '3rem' }}>
-            <h5 style={{ color: colors.btn_background }}>No se encontro información de ese Mitpalel</h5>
+
+      {user != undefined ? (
+        <>
+          <NavigationButtonSignUp step={step} setStep={setStep} fromPage="userDashboardPage"/>
+          <div style={{ flex: 1, overflow: 'auto', width: '100%' }}>
+            <form style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
+              {step === 1 && (
+                <VisitorPersonalInfo 
+                  logedVisitorUser={user}
+                />
+              )}
+              {step === 2 && (
+                <VisitorKehilaInfo 
+                  logedVisitorUser={user}
+                />
+              )}
+              {step === 3 && ( 
+                <VisitorFamilyInfo
+                  logedVisitorUser={user} 
+                />
+              )}
+              {step === 4 && (    
+                <VisitorAccountInfo 
+                  logedVisitorUser={user} 
+                />
+              )}
+              {step === 5 && (    
+                <VisitorPerashiotInfo 
+                  logedVisitorUser={user} 
+                />
+              )}
+            </form>
           </div>
-        )}
-      </div>
+        </>
+      ) : (
+        <div style={styles.errorContainer}>
+          <h2 style={{ color: colors.btn_background, fontSize: '2rem', marginBottom: '20px' }}>Usuario no encontrado</h2>
+          <p style={{ color: colors.btn_background, fontSize: '1.2rem', marginBottom: '30px' }}>
+            No se encontró información para el usuario {userName} {userSurname}
+          </p>
+          <button style={{...styles.button, backgroundColor: "blue"}} onClick={() => navigate("/administrator-dashboard")}>
+            Volver a la lista de usuarios
+          </button>
+        </div>
+      )}
     </div>
     </>
   );
@@ -128,4 +137,12 @@ const styles: { [key: string]: CSSProperties }= {
     color: "white",
     fontSize: "16px",
   },
+  errorContainer: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    flex: 1,
+    padding: "40px 20px",
+  } as CSSProperties,
 };

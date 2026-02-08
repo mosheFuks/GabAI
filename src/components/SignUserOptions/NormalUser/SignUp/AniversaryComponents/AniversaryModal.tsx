@@ -2,7 +2,7 @@ import { CSSProperties, useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import { colors } from '../../../../../assets/colors';
 import { HDate } from "@hebcal/core";
-import { Aniversary, CustomDate, GREG_MONTHS, HEBREW_MONTHS, VisitorUser } from '../../../../../structs/structs';
+import { Aniversary, CustomDate, GREG_MONTHS, HEBREW_MONTHS, Motivo, VisitorUser } from '../../../../../structs/structs';
  
 interface AniversaryModalProps {
   modalAniversaryIsOpen: boolean;
@@ -27,7 +27,7 @@ export const CreateAniversaryModalComponent = ({modalAniversaryIsOpen, setModalA
       mes:  aniversarySelected?.fechaHebreo?.mes != null ? aniversarySelected.fechaHebreo.mes : "",
       ano:  aniversarySelected?.fechaHebreo?.ano != null ? aniversarySelected.fechaHebreo.ano : "",
     },
-    motivo: aniversarySelected?.motivo != null ? aniversarySelected?.motivo : "",
+    motivo: aniversarySelected?.motivo ?? ("" as unknown as Motivo),
     nombreDelAniversario: aniversarySelected?.nombreDelAniversario != null ? aniversarySelected?.nombreDelAniversario : "",
   });
 
@@ -46,7 +46,7 @@ export const CreateAniversaryModalComponent = ({modalAniversaryIsOpen, setModalA
   const closeModal = () => {
     setModalAniversaryIsOpen(false);
     
-    if (formUserAniversaryData?.motivo != "") {
+    if (formUserAniversaryData?.motivo) {
       const childIsAlreadySavedOnUserChildList = user.aniversarios?.some(ani => ani.id === aniversarySelected?.id);
       childIsAlreadySavedOnUserChildList ? updateUserAniversaryData() : addUserAniversaryData()
       setAniversarySelected({})
@@ -172,10 +172,10 @@ export const CreateAniversaryModalComponent = ({modalAniversaryIsOpen, setModalA
           <select id="userAniversaryMotive" name="motivo" onChange={(e) => { 
             handleChangeAniversaryData(e);
           }} style={styles.input}>
-            <option value="" disabled selected>{formUserAniversaryData.motivo != "" ? formUserAniversaryData.motivo : 'Selecciona el motivo'}</option>
-            <option value="Yortzait">Yortzait</option>
-            <option value="Jupa">Jupa</option>
-            <option value="Otro">Otro</option>
+            <option value="" disabled selected>{formUserAniversaryData.motivo ? formUserAniversaryData.motivo : 'Selecciona el motivo'}</option>
+            {Object.values(Motivo).map((motivo) => (
+              <option key={motivo} value={motivo}>{motivo}</option>
+            ))} 
           </select>
 
           <label htmlFor="userAniversaryPerName" style={{ display: "block", fontWeight: 'bold'}}>Nombre de la persona</label>

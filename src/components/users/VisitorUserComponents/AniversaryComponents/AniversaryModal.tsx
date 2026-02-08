@@ -1,6 +1,6 @@
 import { CSSProperties, useContext, useState } from 'react';
 import Modal from 'react-modal';
-import { Aniversary, CustomDate, GREG_MONTHS, HEBREW_MONTHS } from '../../../../structs/structs';
+import { Aniversary, CustomDate, GREG_MONTHS, HEBREW_MONTHS, Motivo } from '../../../../structs/structs';
 import { colors } from '../../../../assets/colors';
 import { PageContext } from '../../../../StoreInfo/page-storage';
 import { toast } from 'react-toastify';
@@ -38,8 +38,8 @@ export const CreateAniversaryModalComponent = ({modalAniversaryIsOpen, setModalA
       mes:  isAniversarySelected ? aniversary!.fechaHebreo!.mes : "",
       ano:  isAniversarySelected ? aniversary!.fechaHebreo!.ano : "",
     },
-    motivo: isAniversarySelected ? aniversary?.motivo : "",
-    nombreDelAniversario: isAniversarySelected ? aniversary?.nombreDelAniversario : "",
+    motivo: isAniversarySelected ? (aniversary?.motivo ?? undefined) : undefined,
+    nombreDelAniversario: isAniversarySelected ? (aniversary?.nombreDelAniversario ?? undefined) : undefined,
   });
 
   const addAniversaryLogedVisitorUser = addAniversaryToVisitorUser()
@@ -173,10 +173,10 @@ export const CreateAniversaryModalComponent = ({modalAniversaryIsOpen, setModalA
             <select id="userAniversaryMotive" name="motivo" onChange={(e) => {
               handleChangeAniversaryData(e);
             }} style={styles.input}>
-              <option value="" disabled selected>{formUserAniversaryData.motivo != "" ? formUserAniversaryData.motivo : 'Selecciona el motivo'}</option>
-              <option value="Yortzait">Yortzait</option>
-              <option value="Jupa">Jupa</option>
-              <option value="Otro">Otro</option>
+              <option value="" disabled selected>{(formUserAniversaryData.motivo as string) != "" ? formUserAniversaryData.motivo : 'Selecciona el motivo'}</option>
+              {Object.values(Motivo).map((motivo) => (
+                <option key={motivo} value={motivo}>{motivo}</option>
+              ))}
             </select>
           )}
 

@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Aniversary, Son, CustomDate } from "../../../../../../structs/structs";
+import { Aniversary, Son, CustomDate, Motivo } from "../../../../../../structs/structs";
 import { HDate } from "@hebcal/core";
 
 interface UseVisitorAniversariesResult {
@@ -38,7 +38,7 @@ export const useVisitorAniversaries = (
   const yortzait = useMemo(
     () =>
       (logedVisitorUser?.aniversarios || []).filter(
-        (a: Aniversary) => a.motivo === "Yortzait"
+        (a: Aniversary) => a.motivo === Motivo.Yortzait
       ),
     [logedVisitorUser]
   );

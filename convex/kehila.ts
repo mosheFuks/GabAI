@@ -64,26 +64,23 @@ export const getVisitorUser = query({
     apellidoUsuario: v.string(),
   },
   handler: async (ctx, args) => {
+    let usuario = null;
     const kehila = await ctx.db
       .query("Kehila")
       .filter((q) => q.eq(q.field("nombre"), args.nombreKehila))
       .first();
 
     if (!kehila) {
-      throw new Error("Kehila no encontrada");
+      return null;
     }
     
-    const usuario = kehila.usuarios.find(
+    usuario = kehila.usuarios.find(
       (usu) =>
         usu.nombreEspanol == args.nombreUsuario &&
         usu.apellido == args.apellidoUsuario
     );
 
-    if (!usuario) {
-      throw new Error(`Mitpalel no encontrado: ${args.nombreUsuario}, ${args.apellidoUsuario}`);
-    }
-
-    return usuario;
+    return usuario ?? null;
   },
 });
 
@@ -815,6 +812,45 @@ export const deletePerashaInfo = mutation({
     // Paso 3: Guardar los cambios
     await ctx.db.patch(kehila._id, {
       perashiot: perashiotActualizadas,
+    });
+
+    return { success: true };
+  },
+});
+
+/*--------DELETE VISITOR USER FROM KEHILA--------*/
+export const deleteVisitorUser = mutation({
+  args: {
+    nombreKehila: v.string(),
+    nombreUsuario: v.string(),
+    apellidoUsuario: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const kehila = await ctx.db
+      .query("Kehila")
+      .filter((q) => q.eq(q.field("nombre"), args.nombreKehila))
+      .first();
+
+    if (!kehila) {
+      throw new Error("Kehila no encontrada");
+    }
+
+    let usuarioEncontrado = false;
+
+    const usuariosActualizados = kehila.usuarios.filter((usuario) => {
+      if (usuario.nombreEspanol === args.nombreUsuario && usuario.apellido === args.apellidoUsuario) {
+        usuarioEncontrado = true;
+        return false; // Remove this user
+      }
+      return true;
+    });
+
+    if (!usuarioEncontrado) {
+      throw new Error("Mitpalel no encontrado");
+    }
+
+    await ctx.db.patch(kehila._id, {
+      usuarios: usuariosActualizados,
     });
 
     return { success: true };

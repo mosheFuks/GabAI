@@ -48,7 +48,7 @@ export interface Aniversary {
     id?: string,
     fecha?: CustomDate,
     fechaHebreo?: CustomDate,
-    motivo?: string,
+    motivo?: Motivo,
     nombreDelAniversario?: string
 }
 
@@ -90,6 +90,15 @@ export interface LogedUserData {
 export type Ability = "Leer Torah" | "Jazan" | "Leer Haftara" | "Leer Meguila";
 
 export type Grupo = "Cohen" | "Levi" | "Israel";
+
+export enum Motivo {
+  Yortzait = "Yortzait",
+  Cumpleaños = "Cumpleaños",
+  BarMitzva = "Bar Mitzva",
+  BatMitzva = "Bat Mitzva",
+  Casamiento = "Casamiento",
+  Otro = "Otro"
+}
 
 export interface Alia {
   alia: string,

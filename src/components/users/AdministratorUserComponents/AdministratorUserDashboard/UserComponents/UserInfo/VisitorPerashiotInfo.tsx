@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { CSSProperties } from 'react';
-
-import { Aniversary, CustomDate, Son } from '../../../../../../structs/structs';
+import { Aniversary, CustomDate, Motivo, Son } from '../../../../../../structs/structs';
 import { HDate } from '@hebcal/core';
 import { colors } from '../../../../../../assets/colors';
 
@@ -32,7 +31,7 @@ export const VisitorPerashiotInfo = ({ logedVisitorUser }: FormPersonalDataProps
   };
 
   const getAllIortzaiAniversaries = () => {
-    return logedVisitorUser.aniversarios.filter((ani: Aniversary) => ani.motivo == "Yortzait");
+    return logedVisitorUser.aniversarios.filter((ani: Aniversary) => ani.motivo === Motivo.Yortzait);
   }
 
   const getAllNotIortzaiAniversaries = () => {
@@ -48,7 +47,7 @@ export const VisitorPerashiotInfo = ({ logedVisitorUser }: FormPersonalDataProps
       barMitzvaDateHeb: logedVisitorUser.fechaBarMitzvaHebreo
     }
     notIortzaiAniversaries.userImportantDatesList = userImportantDates
-    notIortzaiAniversaries.aniversariesList.push(logedVisitorUser.aniversarios.filter((ani: Aniversary) => ani.motivo != "Yortzait"))
+    notIortzaiAniversaries.aniversariesList.push(logedVisitorUser.aniversarios.filter((ani: Aniversary) => ani.motivo !== Motivo.Yortzait))
     logedVisitorUser.hijos.length > 0 ? notIortzaiAniversaries.sonList.push(logedVisitorUser.hijos.filter((son: Son) => son.genero == "Masculino")) : null
 
     return notIortzaiAniversaries

@@ -209,3 +209,14 @@ export const deletePerashaInfo = () => {
       aliotTypeToDelete: aliotTypeToDelete
     });
 }
+
+/*--------DELETE VISITOR USER FROM KEHILA--------*/
+export const deleteVisitorUser = () => {
+  const mutation = useMutation(api.kehila.deleteVisitorUser)
+  return (kehilaName: string, userName: string, userSurname: string) =>
+    mutation({
+      nombreKehila: kehilaName,
+      nombreUsuario: userName,
+      apellidoUsuario: userSurname
+    });
+}

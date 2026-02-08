@@ -2,6 +2,7 @@ import { CSSProperties } from "react";
 import { Aniversary } from "../../../../../structs/structs";
 import {Icon, House, CalendarRange, Trash2 } from "lucide-react";
 import {candlestickBigLit, } from '@lucide/lab';
+import { Motivo } from "../../../../../structs/structs";
 
 interface AniversaryCardProps {
   setModalAniversaryIsOpen: (modalIsOpen: boolean) => void;
@@ -33,9 +34,9 @@ export const AniversaryCard = ({
         <Trash2 size={16} color="white" />
       </button>
       <div style={styles.iconContainer}>
-        {aniversario.motivo == "Yortzait" ? <Icon iconNode={candlestickBigLit} size={25} color="white"/> : null}
-        {aniversario.motivo == "Jupa" ? <House size={25} color="white" /> : null}
-        {aniversario.motivo == "Otro" ? <CalendarRange size={25} color="white" /> : null}
+        {aniversario.motivo == Motivo.Yortzait ? <Icon iconNode={candlestickBigLit} size={25} color="white"/> : null}
+        {aniversario.motivo == Motivo.Casamiento ? <House size={25} color="white" /> : null}
+        {aniversario.motivo == Motivo.Otro ? <CalendarRange size={25} color="white" /> : null}
       </div>
       <div style={{ flexDirection: 'row' }}>
         <h3 style={styles.title}>{aniversario.motivo}</h3>

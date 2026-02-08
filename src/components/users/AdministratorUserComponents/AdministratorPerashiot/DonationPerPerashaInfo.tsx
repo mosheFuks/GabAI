@@ -9,6 +9,9 @@ import { AddDonationToPerashaModal } from "./AddDonationToPerashaModal";
 import { addPerashaToKehila, getPerashaInfo } from "../../../../apis/requests";
 import { PageContext } from "../../../../StoreInfo/page-storage";
 import { DelAllPereashiotInfoModal } from "./DelAllPerashiotInfoModal";
+import { ClipLoader } from "react-spinners";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 
 export const DonationPerPerashaInfo = () => {
   const { logedUser } = useContext(PageContext) as any;
@@ -46,6 +49,62 @@ export const DonationPerPerashaInfo = () => {
       setUsdDonation(usdTotal);
     }
   }
+
+  const handleDownloadPDF = () => {
+    if (!aliotList || aliotList.length === 0) {
+      alert("No hay información para descargar.");
+      return;
+    }
+
+    const doc = new jsPDF({
+      orientation: "landscape",
+      unit: "pt",
+      format: "a4",
+    });
+
+    // Título centrado
+    doc.setFontSize(20);
+    doc.text(perashaName || "Parashá", doc.internal.pageSize.getWidth() / 2, 50, { align: "center" });
+
+    // Encabezados de la tabla
+    const headers = [
+      ["Alia", "Nombre", "Apellido", "Nombre Hebreo", "Monto", "Moneda"]
+    ];
+
+    // Datos
+    const data = aliotList.filter((alia) => alia.tipoAlia === "DONACION").map((alia) => [
+      alia.alia,
+      alia.nombre,
+      alia.apellido,
+      alia.nombreHebreo,
+      alia.monto,
+      alia.moneda,
+    ]);
+
+    autoTable(doc, {
+      head: headers,
+      body: data,
+      startY: 80,
+      styles: {
+        fontSize: 10,
+        halign: "center",
+        valign: "middle",
+        lineColor: [0, 0, 0],
+        lineWidth: 0.1,
+      },
+      headStyles: {
+        fillColor: [240, 240, 240],
+        textColor: [0, 0, 0],
+        fontStyle: "bold",
+      },
+      bodyStyles: {
+        fillColor: [255, 255, 255],
+      },
+    });
+
+    // Guardar
+    doc.save(`Donaciones_${perashaName}.pdf`);
+  }
   
   useEffect(() => {
     if (alia === "NOT FOUND") {
@@ -56,9 +115,23 @@ export const DonationPerPerashaInfo = () => {
     }
   }, [alia, addNewPerToKehila]);
 
-  {console.log("Aliot list: ", aliotList);
-        }
+  {console.log("Aliot list: ", aliotList)}
 
+
+  if (aliotList === undefined) {
+    
+  }
+
+  const loader = () => {
+    return (
+      <div style={styles.container}>
+        <div style={styles.loaderContainer}>
+          <ClipLoader color="blue" loading={true} size={35} />
+          <h2 style={{ color: colors.btn_background, marginTop: '20px' }}>Cargando información...</h2>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -72,88 +145,104 @@ export const DonationPerPerashaInfo = () => {
         </h2>
         
         <div style={{ display: 'flex', justifyContent: 'flex-end'}}>
-          {aliotList!.length > 0 ? (
+          {aliotList && aliotList.length > 0 ? (
             <button style={styles.delButton} onClick={() => setOpenDeleteModal(true)}>Eliminar</button>
           ) : null}
         </div>
       </div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', width: '90%', marginTop: '10px', marginBottom: '10px'}}>
-        <div style={{ display: "flex", flexDirection: "row", gap: '10px' }}>
-          <div style={styles.pendingCard}>
-            <div style={{ fontSize: '1rem', fontWeight: 'bold' }}>
-              {`Monto recaudado en pesos:`}
+
+      {aliotList === undefined ? loader() : 
+      <>
+        <div style={{ display: 'flex', justifyContent: 'space-between', width: '90%', marginTop: '10px', marginBottom: '10px'}}>
+          <div style={{ display: "flex", flexDirection: "row", gap: '10px' }}>
+            <div style={styles.pendingCard}>
+              <div style={{ fontSize: '1rem', fontWeight: 'bold' }}>
+                {`Monto recaudado en pesos:`}
+              </div>
+              <div style={{ fontSize: '1rem', fontWeight: 'bold', color: 'orange' }}>
+                ${arsDonation}
+              </div>
             </div>
-            <div style={{ fontSize: '1rem', fontWeight: 'bold', color: 'orange' }}>
-              ${arsDonation}
-            </div>
+
+            <div style={styles.pendingCard}>
+              <div style={{ fontSize: '1rem', fontWeight: 'bold' }}>
+                {`Monto recaudado en dolares:`}
+              </div>
+              <div style={{ fontSize: '1rem', fontWeight: 'bold', color: 'orange' }}>
+                USD {usdDonation} 
+              </div>
+            </div> 
           </div>
 
-          <div style={styles.pendingCard}>
-            <div style={{ fontSize: '1rem', fontWeight: 'bold' }}>
-              {`Monto recaudado en dolares:`}
-            </div>
-            <div style={{ fontSize: '1rem', fontWeight: 'bold', color: 'orange' }}>
-              USD {usdDonation} 
-            </div>
-          </div> 
-        </div>
-        <button style={{...styles.button, backgroundColor: "orange"}} onClick={() => setOpenAliaModal(true)}>
-          Agregar Donacion
-        </button>
-      </div>
-      <div style={{ flex: 1, height: "400px", overflowY: "auto", borderRadius: "5px" }}>
-        <div>
-            {aliotList ? (
-              aliotList.filter(a => a.tipoAlia === "DONACION").length > 0 ? (
-                <table style={styles.table}>
-                  <thead>
-                    <tr>
-                      <th style={styles.th}>Alia</th>
-                      <th style={styles.th}>Nombre</th>
-                      <th style={styles.th}>Apellido</th>
-                      <th style={styles.th}>Nombre Hebreo</th>
-                      <th style={styles.th}>Monto</th>
-                      <th style={styles.th}>Moneda</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {aliotList
-                      .filter((alia: Alia) => alia.tipoAlia === "DONACION")
-                      .map((alia: Alia, index: number) => {
-                      const nomAlia = alia.alia;
-                      const nombre = alia.nombre;
-                      const apellido = alia.apellido;
-                      const nombreHebreo = alia.nombreHebreo;
-                      const monto = alia.monto
-                      const moneda = alia.moneda
-
-                      return (
-                        <tr key={index}>
-                          <td style={styles.td} data-label="NomAlia">{nomAlia}</td>
-                          <td style={styles.td} data-label="Nombre">{nombre}</td>
-                          <td style={styles.td} data-label="Apellido">{apellido}</td>
-                          <td style={styles.td} data-label="NombreHebreo">{nombreHebreo}</td>
-                          <td style={styles.td} data-label="Monto">{monto}</td>
-                          <td style={styles.td} data-label="Moneda">{moneda}</td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              ) : (
-                <div style={{ textAlign: 'center', marginTop: '20px', fontSize: '3rem' }}>
-                  <h5 style={{ color: colors.btn_background }}>No hay donaciones realizadas</h5>
-                </div>
-              )
-            )
-            : 
-            (
-              <div style={{ textAlign: 'center', marginTop: '20px', fontSize: '3rem' }}>
-                <h5 style={{ color: colors.btn_background }}>No hay información disponible</h5>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px'}}>
+            <button style={{...styles.button, backgroundColor: "orange"}} onClick={() => setOpenAliaModal(true)}>
+              Agregar Donacion
+            </button>
+            {aliotList && aliotList.length > 0 ? (
+              <div style={{ display: 'flex', justifyContent: 'flex-end'}}>
+                <button style={{...styles.button, backgroundColor: "#4CAF50"}} onClick={handleDownloadPDF} disabled={!aliotList || aliotList.filter(a => a.tipoAlia === "DONACION").length === 0}>
+                  Descargar
+                </button>
               </div>
-            )}
+            ) : null}
+          </div>
         </div>
-      </div>
+        
+        <div style={{ flex: 1, height: "400px", overflowY: "auto", borderRadius: "5px" }}>
+          <div>
+              {aliotList ? (
+                aliotList.filter(a => a.tipoAlia === "DONACION").length > 0 ? (
+                  <table style={styles.table}>
+                    <thead>
+                      <tr>
+                        <th style={styles.th}>Alia</th>
+                        <th style={styles.th}>Nombre</th>
+                        <th style={styles.th}>Apellido</th>
+                        <th style={styles.th}>Nombre Hebreo</th>
+                        <th style={styles.th}>Monto</th>
+                        <th style={styles.th}>Moneda</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {aliotList
+                        .filter((alia: Alia) => alia.tipoAlia === "DONACION")
+                        .map((alia: Alia, index: number) => {
+                        const nomAlia = alia.alia;
+                        const nombre = alia.nombre;
+                        const apellido = alia.apellido;
+                        const nombreHebreo = alia.nombreHebreo;
+                        const monto = alia.monto
+                        const moneda = alia.moneda
+
+                        return (
+                          <tr key={index}>
+                            <td style={styles.td} data-label="NomAlia">{nomAlia}</td>
+                            <td style={styles.td} data-label="Nombre">{nombre}</td>
+                            <td style={styles.td} data-label="Apellido">{apellido}</td>
+                            <td style={styles.td} data-label="NombreHebreo">{nombreHebreo}</td>
+                            <td style={styles.td} data-label="Monto">{monto}</td>
+                            <td style={styles.td} data-label="Moneda">{moneda}</td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                ) : (
+                  <div style={{ textAlign: 'center', marginTop: '20px', fontSize: '3rem' }}>
+                    <h5 style={{ color: colors.btn_background }}>No hay donaciones realizadas</h5>
+                  </div>
+                )
+              )
+              : 
+              (
+                <div style={{ textAlign: 'center', marginTop: '20px', fontSize: '3rem' }}>
+                  <h5 style={{ color: colors.btn_background }}>No hay información disponible</h5>
+                </div>
+              )}
+          </div>
+        </div>
+      </>
+      }
 
       {openAliaModal ? (
         <AddDonationToPerashaModal
@@ -318,5 +407,13 @@ const styles: { [key: string]: CSSProperties }= {
     cursor: "pointer",
     color: "white",
     fontSize: "16px",
+  } as CSSProperties,
+  loaderContainer: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    height: "100%",
+    minHeight: "75vh",
   } as CSSProperties,
 };

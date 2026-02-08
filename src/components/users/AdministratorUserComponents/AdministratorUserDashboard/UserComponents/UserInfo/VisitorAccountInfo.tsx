@@ -129,6 +129,7 @@ export const VisitorAccountInfo = ({ logedVisitorUser }: FormPersonalDataProps) 
               <thead>
                 <tr>
                   <th style={styles.th}>Fecha</th>
+                  <th style={styles.th}>Perasha</th>
                   <th style={styles.th}>Motivo</th>
                   <th style={styles.th}>Monto</th>
                   <th style={styles.th}>Moneda</th>
@@ -145,6 +146,9 @@ export const VisitorAccountInfo = ({ logedVisitorUser }: FormPersonalDataProps) 
                     <tr key={index}>
                       <td style={styles.td} data-label="Fecha">
                         {formatDate(donacion.fecha)}
+                      </td>
+                      <td style={styles.td} data-label="Perasha">
+                        {donacion.perasha || '-'}
                       </td>
                       <td style={styles.td} data-label="Motivo">
                         {esOtro ? (

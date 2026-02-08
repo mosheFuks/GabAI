@@ -28,6 +28,10 @@ export const DonationModal = ({modalAniversaryIsOpen, setModalAniversaryIsOpen, 
 
   const closeModal = () => {
     setModalAniversaryIsOpen(false);
+  }
+
+  const saveUserDonationData = () => {
+    setModalAniversaryIsOpen(false);
     addDonation(logedUser.kehila, logedVisitorUser.nombreEspanol!, logedVisitorUser.apellido!, formUserDonationData)
     formUserDonationData.monto != 0 && setCompleteDonationsList((prev: Donacion[]) => [...prev, formUserDonationData]);
   }
@@ -144,7 +148,7 @@ export const DonationModal = ({modalAniversaryIsOpen, setModalAniversaryIsOpen, 
             <option value="PAGADA">Pagada</option>
           </select>
 
-          <button onClick={closeModal} style={{...styles.button, backgroundColor: formUserDonationData.motivo == "" ? 'gray' : colors.btn_background}} disabled={formUserDonationData.motivo == ""}>
+          <button onClick={saveUserDonationData} style={{...styles.button, backgroundColor: formUserDonationData.motivo == "" ? 'gray' : colors.btn_background}} disabled={formUserDonationData.motivo == ""}>
             Guardar
           </button>
         </div>
