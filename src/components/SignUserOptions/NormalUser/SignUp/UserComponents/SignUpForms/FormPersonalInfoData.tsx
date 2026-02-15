@@ -153,11 +153,6 @@ export const FormPersonalInfoData = ({handleChangePersonalData, user, setFormUse
     getMinianimFromTheList(logedUser.kehila);
   }, [logedUser]);
 
-  const renderError = (campo: string) =>
-    camposCriticos.includes(campo) ? (
-      <span style={{ color: 'red', fontSize: '0.9rem'}}>Campo obligatorio</span>
-    ) : null;
-
   const renderCamposCriticos = (htmlAndId: string, campo: string, name: string, value: string, placeholder: string = "") => {
     return (
       <div>

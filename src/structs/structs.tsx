@@ -105,7 +105,7 @@ export interface Alia {
   nombre: string,
   apellido?: string,
   nombreHebreo: string,
-  monto?: number,
+  monto: number,
   moneda?: string
   perasha?: string
   minian?: string

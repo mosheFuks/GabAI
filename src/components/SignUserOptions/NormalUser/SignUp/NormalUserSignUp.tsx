@@ -105,12 +105,12 @@ const NormalUserSignUp = () => {
     showToastSucces("Aniversario eliminado");
   }
 
-  const addVisitorUser = addAVisitorUserInTheKehila();
+  /*const addVisitorUser = addAVisitorUserInTheKehila();
 
   const saveNewVisitorUserOnUsersList = () => {
     addVisitorUser(logedUser.kehila, user)
     showToastSucces("Mitpalel agregado")
-  }
+  }*/
 
   const navigateRule = () => {
     logedUser.rol == "" ?  navigate("/sign-in") : navigate("/administrator-dashboard")

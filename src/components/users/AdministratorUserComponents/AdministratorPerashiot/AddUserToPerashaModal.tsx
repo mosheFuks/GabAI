@@ -5,7 +5,6 @@ import { addPerashaToKehila, addAnAliaInAPerasha, getPerashaInfo } from '../../.
 import { PageContext } from '../../../../StoreInfo/page-storage';
 import { toast } from 'react-toastify';
 import { Alia, UserToAddInThePerasha } from '../../../../structs/structs';
-import { HebrewCalendar } from '@hebcal/core';
 
 interface AddUserToAliaModalProps {
   openModal: boolean;
@@ -32,7 +31,8 @@ export const AddUserToAliaModal = ({openModal, setOpenModal, userToAddInThePeras
     perasha: "",
     alia: "",
     grupo: userToAddInThePerasha?.grupo!,
-    tipoAlia: "ALIA"
+    tipoAlia: "ALIA",
+    monto: 0,
   });
   const perashaInfo = getPerashaInfo(logedUser.kehila, formAliaData.perasha!);
 

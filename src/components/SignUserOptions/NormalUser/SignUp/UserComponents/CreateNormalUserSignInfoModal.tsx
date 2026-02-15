@@ -16,7 +16,7 @@ interface RealSignModalProps {
   isNewUser: boolean;
 }
 
-export const CreateNormalUserSignInfoModal = ({modalRealSignInfo, setModalRealSignInfo, user, isNewUser, saveNewVisitorUserOnUsersList}: RealSignModalProps) => {
+export const CreateNormalUserSignInfoModal = ({modalRealSignInfo, setModalRealSignInfo, user, isNewUser}: RealSignModalProps) => {
   const { logedUser } = useContext(PageContext) as any;
   console.log("Loged User:", logedUser);
   

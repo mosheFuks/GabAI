@@ -18,7 +18,6 @@ import { PageProvider } from './StoreInfo/page-storage';
 import { LogedUserData } from './structs/structs';
 import { useEffect, useState } from 'react';
 import Modal from 'react-modal';
-import { ThisWeekAniversariesList } from './components/users/AdministratorUserComponents/AdministratorPerashiot/ThisWeekAniversariesList';
 import { AliotPerPershaInfo } from './components/users/AdministratorUserComponents/AdministratorPerashiot/AliotPerPerashaInfo';
 
 Modal.setAppElement('#root');

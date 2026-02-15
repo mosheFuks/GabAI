@@ -243,7 +243,7 @@ export const CreateAniversaryModalComponent = ({modalAniversaryIsOpen, setModalA
             </div>
           </div>
 
-          <button onClick={closeModal} style={{...styles.button, backgroundColor: formUserAniversaryData.motivo == "" ? 'gray' : colors.btn_background}} disabled={formUserAniversaryData.motivo == ""}>
+          <button onClick={closeModal} style={{...styles.button, backgroundColor: !formUserAniversaryData.motivo ? 'gray' : colors.btn_background}} disabled={formUserAniversaryData.motivo == ""}>
             Guardar
           </button>
         </div>
