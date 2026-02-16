@@ -73,12 +73,12 @@ export const DonationPerPerashaInfo = () => {
 
     // Datos
     const data = aliotList.filter((alia) => alia.tipoAlia === "DONACION").map((alia) => [
-      alia.alia,
-      alia.nombre,
-      alia.apellido,
-      alia.nombreHebreo,
-      alia.monto,
-      alia.moneda,
+      alia.alia!,
+      alia.nombre!,
+      alia.apellido!,
+      alia.nombreHebreo!,
+      alia.monto!,
+      alia.moneda!,
     ]);
 
     autoTable(doc, {

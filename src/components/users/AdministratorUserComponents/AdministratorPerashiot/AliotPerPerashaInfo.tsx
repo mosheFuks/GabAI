@@ -62,13 +62,13 @@ export const AliotPerPershaInfo = () => {
 
     // Datos
     const data = aliotList != "NOT FOUND" ? aliotList.filter((alia: Alia) => alia.tipoAlia === "ALIA").map((alia: Alia) => [
-      alia.alia,
-      alia.nombre,
-      alia.apellido,
-      alia.nombreHebreo,
-      alia.aniversario,
-      alia.fechaAniversarioHebreo,
-      alia.minian,
+      alia.alia!,
+      alia.nombre!,
+      alia.apellido!,
+      alia.nombreHebreo!,
+      alia.aniversario!,
+      alia.fechaAniversarioHebreo!,
+      alia.minian!,
     ])  : [];
 
     autoTable(doc, {

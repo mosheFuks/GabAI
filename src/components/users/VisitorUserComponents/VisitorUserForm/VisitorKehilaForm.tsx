@@ -21,7 +21,7 @@ export const VisitorKehilaForm = ({logedVisitorUser, setUserChangedSomeProperty}
   const [newValueToSave, setNewValueToSave] = useState<string | number>("");  
   const [habilidad, setHabilidad] = useState<Ability[]>([]) 
 
-  const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+  const sleep = (ms: any) => new Promise(resolve => setTimeout(resolve, ms));
                
   const updateVisitorUser = async (keyToEdit: string, infoToEdit: string | number) => {
     try {
@@ -141,7 +141,7 @@ export const VisitorKehilaForm = ({logedVisitorUser, setUserChangedSomeProperty}
                 type="checkbox"
                 value={role}
                 checked={habilidad.includes(role as Ability)}
-                onChange={(e) => {
+                onChange={() => {
                   setHabilidad((prev) => {
                     if (prev.includes(role as Ability)) {
                       return prev.filter((r) => r !== role);

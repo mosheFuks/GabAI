@@ -24,7 +24,7 @@ export const VisitorPersonalForm = ({ logedVisitorUser, setUserChangedSomeProper
   
   const changeVisitorUserPropeties = changeUserVisitorData()
 
-  const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+  const sleep = (ms: any) => new Promise(resolve => setTimeout(resolve, ms));
 
   const getMinianimFromTheList = async () => {
     if (!logedVisitorUser.nombreKehila) {
