@@ -7,15 +7,6 @@ export const CustomDate = v.object({
     ano: v.union(v.string(), v.number())
 })
 
-enum Motivo {
-  Yortzait = "Yortzait",
-  Cumpleaños = "Cumpleaños",
-  BarMitzva = "Bar Mitzva",
-  BatMitzva = "Bat Mitzva",
-  Casamiento = "Casamiento",
-  Otro = "Otro"
-}
-
 export const Cuenta = v.object({
     monto: v.optional(v.number()),
     tipoMoneda: v.optional(v.string()),
@@ -45,18 +36,18 @@ export const Hijos = v.object({
 export const Perasha = v.object({
     aliot: v.array(
         v.object({
-            nombre: v.optional(v.string()),
-            nombreHebreo: v.optional(v.string()),
+            alia: v.string(),
+            nombre: v.string(),
             apellido: v.optional(v.string()),
-            alia: v.optional(v.string()),
-            moneda: v.optional(v.string()),
-            monto: v.optional(v.number()),
+            nombreHebreo: v.string(),
+            monto: v.number(),
+            moneda: v.string(),
+            perasha: v.optional(v.string()),
             minian: v.optional(v.string()),
             aniversario: v.optional(v.string()),
             fechaAniversarioHebreo: v.optional(v.string()),
-            grupo: v.optional(v.string()),
-            perasha: v.optional(v.string()),
-            tipoAlia: v.optional(v.string())
+            grupo: v.optional(v.union(v.literal("Cohen"), v.literal("Levi"), v.literal("Israel"))),
+            tipoAlia: v.optional(v.union(v.literal("DONACION"), v.literal("ALIA")))
         })
     ),
     nombrePerasha: v.string()
@@ -66,7 +57,14 @@ export const Aniversary = v.object({
     id: v.optional(v.string()),
     fecha: CustomDate,
     fechaHebreo: CustomDate,
-    motivo: Motivo,
+    motivo: v.union(
+        v.literal("Yortzait"),
+        v.literal("Cumpleaños"),
+        v.literal("Bar Mitzva"),
+        v.literal("Bat Mitzva"),
+        v.literal("Casamiento"),
+        v.literal("Otro")
+    ),
     nombreDelAniversario: v.string()
 })
 

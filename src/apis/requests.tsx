@@ -76,7 +76,7 @@ export const addADonationInAPerasha = () => {
   const mutation = useMutation(api.kehila.addADonationInAPerasha);
   return (kehilaName: string, perashaName: string, newAliaInfo: Alia) =>
     mutation({
-      nombre: kehilaName,
+      nombre: kehilaName, 
       nombrePerasha: perashaName,
       nuevaAlia: newAliaInfo
     });
