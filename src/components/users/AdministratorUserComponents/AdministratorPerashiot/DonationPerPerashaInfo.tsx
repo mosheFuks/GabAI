@@ -107,7 +107,7 @@ export const DonationPerPerashaInfo = () => {
   }
   
   useEffect(() => {
-    if (alia === "NOT FOUND") {
+    if (alia === undefined) {
       addNewPerToKehila(logedUser.kehila, perashaName);
     } else {
       alia != undefined ? alia.aliot !== undefined ? setAliotList(alia.aliot!) : null : null;

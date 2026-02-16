@@ -48,7 +48,7 @@ export interface Aniversary {
     id?: string,
     fecha?: CustomDate,
     fechaHebreo?: CustomDate,
-    motivo?: Motivo,
+    motivo?: Motivo | string,
     nombreDelAniversario?: string
 }
 

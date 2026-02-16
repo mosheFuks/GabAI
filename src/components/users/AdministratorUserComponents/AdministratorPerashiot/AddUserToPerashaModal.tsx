@@ -106,7 +106,7 @@ export const AddUserToAliaModal = ({openAliaModal, setOpenAliaModal, userToAddIn
   const closeModal = async () => {
     console.log("Form Alia Data: ", formAliaData);
 
-    if (perashaInfo === "NOT FOUND") {
+    if (perashaInfo === undefined) {
       await addPerasha(logedUser.kehila, formAliaData.perasha!);
     }
     await addAliaInAPerasha(logedUser.kehila, formAliaData.perasha!, formAliaData);

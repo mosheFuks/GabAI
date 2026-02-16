@@ -57,15 +57,7 @@ export const Aniversary = v.object({
     id: v.optional(v.string()),
     fecha: CustomDate,
     fechaHebreo: CustomDate,
-    motivo: v.union(
-        v.literal("Yortzait"),
-        v.literal("Cumpleaños"),
-        v.literal("Bar Mitzva"),
-        v.literal("Bat Mitzva"),
-        v.literal("Casamiento"),
-        v.literal("Aliá"),
-        v.literal("Otro")
-    ),
+    motivo: v.string(),
     nombreDelAniversario: v.string()
 })
 

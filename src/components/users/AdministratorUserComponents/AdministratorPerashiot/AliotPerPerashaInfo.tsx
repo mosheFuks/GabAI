@@ -6,7 +6,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import {FaArrowLeft } from "react-icons/fa";
 import { colors } from "../../../../assets/colors";
 import { AddUserToAliaModal } from "./AddUserToPerashaModal";
-import { getPerashaInfo } from "../../../../apis/requests";
 import { PageContext } from "../../../../StoreInfo/page-storage";
 import { DelAllPereashiotInfoModal } from "./DelAllPerashiotInfoModal";
 import jsPDF from "jspdf";
@@ -25,6 +24,20 @@ export const AliotPerPershaInfo = () => {
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false)
 
   const navigate = useNavigate();
+
+  const perashaName = id?.replace(/([a-z])([A-Z])/g, '$1 $2') ?? "";
+  console.log("Perasha Name: ", perashaName);
+  
+  const perasha = useQuery(api.kehila.getKehilaPerashaInfo, {
+    nombre: logedUser.kehila,
+    nombrePerasha: perashaName
+  });
+
+  console.log("Perasha info info: ", perasha);
+  
+
+  const aliotList = perasha === undefined ? "NOT FOUND" : perasha.aliot;
+  console.log("Aliot list: ", aliotList);
 
   const handleDownloadPDF = () => {
     if (!aliotList || aliotList.length === 0) {
@@ -48,7 +61,7 @@ export const AliotPerPershaInfo = () => {
     ];
 
     // Datos
-    const data = aliotList.filter((alia) => alia.tipoAlia === "ALIA").map((alia) => [
+    const data = aliotList != "NOT FOUND" ? aliotList.filter((alia: Alia) => alia.tipoAlia === "ALIA").map((alia: Alia) => [
       alia.alia,
       alia.nombre,
       alia.apellido,
@@ -56,7 +69,7 @@ export const AliotPerPershaInfo = () => {
       alia.aniversario,
       alia.fechaAniversarioHebreo,
       alia.minian,
-    ]);
+    ])  : [];
 
     autoTable(doc, {
       head: headers,
@@ -82,20 +95,6 @@ export const AliotPerPershaInfo = () => {
     // Guardar
     doc.save(`Aliot_${perashaName}.pdf`);
   };
-
-  const perashaName = id?.replace(/([a-z])([A-Z])/g, '$1 $2') ?? "";
-  console.log("Perasha Name: ", perashaName);
-  
-  const perasha = useQuery(api.kehila.getKehilaPerashaInfo, {
-    nombre: logedUser.kehila,
-    nombrePerasha: perashaName
-  });
-
-  console.log("Perasha info info: ", perasha);
-  
-
-  const aliotList = perasha === undefined ? "NOT FOUND" : perasha.aliot;
-  console.log("Aliot list: ", aliotList);
 
   
   return (
