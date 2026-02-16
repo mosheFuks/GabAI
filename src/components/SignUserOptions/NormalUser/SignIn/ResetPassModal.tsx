@@ -3,6 +3,7 @@ import Modal from 'react-modal';
 import { colors } from '../../../../assets/colors'
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../../../../firebase-config';
+import { toast } from 'react-toastify';
 
 interface ResetPassModal {
   resetPassModal: boolean;
@@ -12,14 +13,56 @@ interface ResetPassModal {
 export const ResetPassModal = ({resetPassModal, setResetPassModal}: ResetPassModal) => {
   const [email, setEmail] = useState<string>()
 
-  const resetPass = () => {
-    sendPasswordResetEmail(auth, email!)
-        .then(() => {
-            setResetPassModal(false)
-        })
-        .catch((error) => {
-            console.error("Error al enviar correo:", error.message);
-        });
+  const resetPass = async () => {
+    if (!email) {
+      toast.error("Por favor ingresa tu email");
+      return;
+    }
+
+    try {
+      // Configure action code settings
+      const actionCodeSettings = {
+        url: `${window.location.origin}/signin`, // Redirect to signin after reset
+        handleCodeInApp: true,
+      };
+
+      await sendPasswordResetEmail(auth, email, actionCodeSettings);
+      
+      toast.success("Se ha enviado un email de recuperación. Revisa tu bandeja de entrada.", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "colored",
+        style: { backgroundColor: 'green', color: 'white' },
+      });
+      
+      setResetPassModal(false);
+    } catch (error: any) {
+      console.error("Error al enviar correo:", error);
+      
+      let errorMessage = "Error al enviar email de recuperación";
+      if (error.code === 'auth/user-not-found') {
+        errorMessage = "No existe usuario con este email";
+      } else if (error.code === 'auth/invalid-email') {
+        errorMessage = "El email no es válido";
+      } else if (error.code === 'auth/too-many-requests') {
+        errorMessage = "Demasiados intentos. Intenta más tarde";
+      }
+      
+      toast.error(errorMessage, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "colored",
+        style: { backgroundColor: 'red', color: 'white' },
+      });
+    }
   }
 
   const closeModal = async () => {

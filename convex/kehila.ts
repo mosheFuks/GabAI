@@ -275,7 +275,8 @@ export const addAnAliaInAPerasha = mutation({
         fechaAniversarioHebreo: v.optional(v.string()),
         grupo: v.optional(v.string()),
         perasha: v.optional(v.string()),
-        tipoAlia: v.optional(v.string())
+        tipoAlia: v.optional(v.string()),
+        monto: v.number()
       })
   },
   handler: async (ctx, args) => {
@@ -388,6 +389,14 @@ export const addVisitorUser = mutation({
         throw new Error("Kehila no encontrada");
       }
 
+      const usuarioExistente = kehila.usuarios.find(
+        (u) => u.emailPersonal === args.nuevoUsuario.emailPersonal
+      );
+
+      if (usuarioExistente) {
+        throw new Error("El usuario con este email ya existe en la lista");
+      }
+
       const nuevosUsuarios = [...kehila.usuarios, args.nuevoUsuario];
 
       await ctx.db.patch(kehila._id, {
@@ -411,6 +420,16 @@ export const addUserToUsuariosList = mutation({
     }),
   },
   handler: async (ctx, args) => {
+    // Verificar si el usuario ya existe por email
+    const usuarioExistente = await ctx.db
+      .query("Usuarios")
+      .filter((q) => q.eq(q.field("email"), args.nuevoUsuario.email))
+      .first();
+
+    if (usuarioExistente) {
+      throw new Error("El usuario con este email ya existe en la lista");
+    }
+
     // Insertamos directamente un nuevo usuario en la colección "Usuarios"
     const id = await ctx.db.insert("Usuarios", {
       nombre: args.nuevoUsuario.nombre,

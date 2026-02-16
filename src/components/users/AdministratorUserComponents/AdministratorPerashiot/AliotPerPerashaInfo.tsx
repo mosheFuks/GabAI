@@ -94,13 +94,14 @@ export const AliotPerPershaInfo = () => {
         <button style={{...styles.button, backgroundColor: "green"}} onClick={() => navigate("/administrator-dashboard")}>
           <FaArrowLeft className="text-black" /> Lista de Perashiot
         </button>
-        <h2 style={{...styles.title, marginRight: '100px'}}>
+        <h2 style={{...styles.title}}>
           {id?.replace(/([a-z])([A-Z])/g, '$1 $2')}
         </h2>
         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px'}}>
           {aliotList!.length > 0 ? (
             <>
             <button style={{...styles.delButton, backgroundColor: aliotList.length > 0 ? "blue" : "gray"}} onClick={handleDownloadPDF} disabled={aliotList.length <= 0}>Descargar</button>
+            <button style={{...styles.delButton, backgroundColor: "orange"}} onClick={() => navigate(`/perasha-info/donation/${id}`)}>Agregar Donaciones</button>
             <button style={styles.delButton} onClick={() => setOpenDeleteModal(true)}>Eliminar</button>
             </>
           ) : null}

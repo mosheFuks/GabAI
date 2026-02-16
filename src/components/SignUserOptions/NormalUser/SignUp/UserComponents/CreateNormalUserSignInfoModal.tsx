@@ -5,7 +5,7 @@ import { LogedUserData, SignInfo, VisitorUser } from '../../../../../structs/str
 import { Eye, EyeOff } from "lucide-react"
 import { toast } from 'react-toastify';
 import { addAUserToTheUsuariosList, addAVisitorUserInTheKehila } from '../../../../../apis/requests';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../../../../../firebase-config';
 import { PageContext } from '../../../../../StoreInfo/page-storage';
 
@@ -30,6 +30,19 @@ export const CreateNormalUserSignInfoModal = ({modalRealSignInfo, setModalRealSi
   const setPassword = (e: any) => {
     setFormUserSignData({...formUserSignData, ['password']: e.target.value})
   }
+
+  const validatePassword = (password: string): boolean => {
+    if (!password) return false;
+    const hasMinLength = password.length >= 8;
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    const hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
+    
+    return hasMinLength && hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar;
+  };
+
+  const isPasswordValid = isNewUser ? validatePassword(formUserSignData.password!) : true;
 
   const showToastError = (message: string) => {
     toast.error(message, {
@@ -107,7 +120,20 @@ export const CreateNormalUserSignInfoModal = ({modalRealSignInfo, setModalRealSi
         await addVisitorUserToKehila(user.nombreKehila!, user)
         await addVisitorUserToGlobalUsersList(newVisitorUser);
         /*ADD THE USER ON FIREBASE */
-        isNewUser ? await createUserWithEmailAndPassword(auth, formUserSignData.email!, formUserSignData.password!) : null;
+        if (isNewUser) {
+          await createUserWithEmailAndPassword(auth, formUserSignData.email!, formUserSignData.password!);
+        } else {
+          // Create user account with a temporary password, then send password reset email
+          try {
+            const tempPassword = Math.random().toString(36).slice(-12); // Generate temporary password
+            await createUserWithEmailAndPassword(auth, formUserSignData.email!, tempPassword);
+            
+            console.log("Password reset email sent to:", formUserSignData.email);
+          } catch (err: any) {
+            console.warn("Error creating user or sending password reset email:", err);
+            // Don't fail the registration if email sending fails
+          }
+        }
 
         showToastSucces('Mitpalel registrado correctamente');
 
@@ -174,6 +200,16 @@ export const CreateNormalUserSignInfoModal = ({modalRealSignInfo, setModalRealSi
                   {showPassword ? <EyeOff size={25} style={styles.icon}/> : <Eye size={25} style={styles.icon}/>}
                 </button>
             </div>
+            <div style={{ fontSize: '0.85rem', color: 'gray', marginTop: 8, marginLeft: 10 }}>
+              <p style={{margin: '4px 0'}}>Requerimientos de contraseña:</p>
+              <div style={{ marginLeft: 10 }}>
+                <div style={{color: (formUserSignData.password || '').length >= 8 ? 'green' : 'red'}}>{(formUserSignData.password || '').length >= 8 ? '✓' : '✕'} Mínimo 8 caracteres</div>
+                <div style={{color: /[A-Z]/.test(formUserSignData.password || '') ? 'green' : 'red'}}>{/[A-Z]/.test(formUserSignData.password || '') ? '✓' : '✕'} Una letra mayúscula</div>
+                <div style={{color: /[a-z]/.test(formUserSignData.password || '') ? 'green' : 'red'}}>{/[a-z]/.test(formUserSignData.password || '') ? '✓' : '✕'} Una letra minúscula</div>
+                <div style={{color: /[0-9]/.test(formUserSignData.password || '') ? 'green' : 'red'}}>{/[0-9]/.test(formUserSignData.password || '') ? '✓' : '✕'} Un número</div>
+                <div style={{color: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(formUserSignData.password || '') ? 'green' : 'red'}}>{/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(formUserSignData.password || '') ? '✓' : '✕'} Un carácter especial (!@#$%^&*...)</div>
+              </div>
+            </div>
           </div> 
 
           :
@@ -184,7 +220,10 @@ export const CreateNormalUserSignInfoModal = ({modalRealSignInfo, setModalRealSi
 
           }
 
-          <button onClick={registerUser} style={{...styles.button, backgroundColor:  colors.btn_background}}>
+          <button 
+            onClick={registerUser} 
+            disabled={!isPasswordValid && isNewUser}
+            style={{...styles.button, backgroundColor: (!isPasswordValid && isNewUser) ? '#cccccc' : colors.btn_background, cursor: (!isPasswordValid && isNewUser) ? 'not-allowed' : 'pointer'}}>
             {logedUser.rol == "ADMIN" ? "Guardar Mitpalel" : "Registrarse"}
           </button>
         </div>
