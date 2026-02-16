@@ -11,22 +11,17 @@ import { PageContext } from "../../../../StoreInfo/page-storage";
 import { DelAllPereashiotInfoModal } from "./DelAllPerashiotInfoModal";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import { useQuery } from "convex/react";
+import { api } from "../../../../../convex/_generated/api";
 
 export const AliotPerPershaInfo = () => {
   const { logedUser } = useContext(PageContext) as any;
   const { id } = useParams();
-
-  const perashaName = id?.replace(/([a-z])([A-Z])/g, '$1 $2') ?? "";
   
   //const agregarPerasha = addPerashaToKehila();
 
   const [openAliaModal, setOpenAliaModal] = useState<boolean>(false)
   //const [addUserAliaModal, setOpenAddUserAliaModal] = useState<boolean>(false)
-  const perasha = getPerashaInfo(logedUser.kehila, perashaName);
-  console.log("Perasha info: ", perasha);
-  
-  const aliotList: Alia[] = (perasha != "NOT FOUND" ? perasha!.aliot : []) as Alia[];
-  console.log("Alia", aliotList);
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false)
 
   const navigate = useNavigate();
@@ -88,6 +83,20 @@ export const AliotPerPershaInfo = () => {
     doc.save(`Aliot_${perashaName}.pdf`);
   };
 
+  const perashaName = id?.replace(/([a-z])([A-Z])/g, '$1 $2') ?? "";
+  console.log("Perasha Name: ", perashaName);
+  
+  const perasha = useQuery(api.kehila.getKehilaPerashaInfo, {
+    nombre: logedUser.kehila,
+    nombrePerasha: perashaName
+  });
+
+  console.log("Perasha info info: ", perasha);
+  
+
+  const aliotList = perasha === undefined ? "NOT FOUND" : perasha.aliot;
+  console.log("Aliot list: ", aliotList);
+
   
   return (
     <>
@@ -100,11 +109,11 @@ export const AliotPerPershaInfo = () => {
           {id?.replace(/([a-z])([A-Z])/g, '$1 $2')}
         </h2>
         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px'}}>
-          {aliotList!.length > 0 ? (
+          {aliotList !== "NOT FOUND" && aliotList.length > 0 ? (
             <>
-            <button style={{...styles.delButton, backgroundColor: aliotList.length > 0 ? "blue" : "gray"}} onClick={handleDownloadPDF} disabled={aliotList.length <= 0}>Descargar</button>
-            <button style={{...styles.delButton, backgroundColor: "orange"}} onClick={() => navigate(`/perasha-info/donation/${id}`)}>Agregar Donaciones</button>
-            <button style={styles.delButton} onClick={() => setOpenDeleteModal(true)}>Eliminar</button>
+              <button style={{...styles.delButton, backgroundColor: aliotList.length > 0 ? "blue" : "gray"}} onClick={handleDownloadPDF} disabled={aliotList.length <= 0}>Descargar</button>
+              <button style={{...styles.delButton, backgroundColor: "orange"}} onClick={() => navigate(`/perasha-info/donation/${id}`)}>Agregar Donaciones</button>
+              <button style={styles.delButton} onClick={() => setOpenDeleteModal(true)}>Eliminar</button>
             </>
           ) : null}
         </div>
@@ -112,7 +121,7 @@ export const AliotPerPershaInfo = () => {
       
       <div style={{ flex: 1, height: "400px", overflowY: "auto", borderRadius: "5px" }}>
         <div>
-            {aliotList ? (
+            {aliotList !== "NOT FOUND" && aliotList.length > 0 ? (
               aliotList.filter(a => a.tipoAlia === "ALIA").length > 0 ? (
                 <table style={styles.table}>
                   <thead>

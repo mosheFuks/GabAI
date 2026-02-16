@@ -35,6 +35,7 @@ export const getKehilaPerashaInfo = query({
     nombrePerasha: v.string()
   },
   handler: async (ctx, args) => {
+    
     const kehila = await ctx.db
       .query("Kehila")
       .filter((q) => q.eq(q.field("nombre"), args.nombre))
@@ -48,9 +49,9 @@ export const getKehilaPerashaInfo = query({
       (per) =>
         per.nombrePerasha == args.nombrePerasha
     );
-
-    if (!perasha) {
-      return "NOT FOUND"
+    
+    if (perasha === undefined) {
+      throw new Error("Buscando:" + args.nombrePerasha + "Disponibles:" + kehila.perashiot.map(p => p.nombrePerasha));
     }
 
     return perasha;
@@ -226,10 +227,10 @@ export const addADonationInAPerasha = mutation({
       v.object({
         nombre: v.string(),
         apellido: v.optional(v.string()),
-        nombreHebreo: v.string(),
+        nombreHebreo: v.optional(v.string()),
         alia: v.string(),
-        moneda: v.string(),
-        monto: v.number(),
+        moneda: v.optional(v.string()),
+        monto: v.optional(v.number()),
         tipoAlia: v.optional(v.union(v.literal("DONACION"), v.literal("ALIA")))
       })
   },

@@ -1,7 +1,7 @@
 import { colors } from "../../../../assets/colors";
 import { CSSProperties, useEffect, useState } from "react";
 import { HDate } from '@hebcal/core';
-import { Grupo, HEBREW_MONTHS, UserToAddInThePerasha, VisitorUser } from "../../../../structs/structs";
+import { Grupo, HEBREW_MONTHS, Motivo, UserToAddInThePerasha, VisitorUser } from "../../../../structs/structs";
 import { FaArrowAltCircleRight, FaSearch, FaPlus } from "react-icons/fa";
 import { DateToDateAniversary } from "./DateToDateAniversary";
 import { useNavigate } from "react-router-dom";
@@ -151,7 +151,7 @@ export const ThisWeekAniversariesList = ({peopleList}: NextAliotProps) => {
     const monthBirthdates = peopleList!
       .filter(persona => persona.fechaNacimientoHebreo?.mes === currentMonth || persona.fechaNacimientoHebreo!.mes === nextMonth)
       .map(per => ({
-        motivo: "Cumpleaños",
+        motivo: Motivo.Cumpleaños,
         nombre: per.nombreEspanol,
         apellido: per.apellido,
         nombreHebreo: per.nombreHebreo,
@@ -353,10 +353,9 @@ export const ThisWeekAniversariesList = ({peopleList}: NextAliotProps) => {
 
       {openAddMitpalelToPerashaModal && (
         <AddUserToAliaModal
-          openModal={openAddMitpalelToPerashaModal}
-          setOpenModal={setOpenAddMitpalelToPerashaModal}
+          openAliaModal={openAddMitpalelToPerashaModal}
+          setOpenAliaModal={setOpenAddMitpalelToPerashaModal}
           userToAddInThePerasha={userToAddInThePerasha}
-          setUserToAddInThePerasha={setUserToAddInThePerasha}
         />
       )}
     </div>

@@ -5,7 +5,7 @@ import { LogedUserData, SignInfo, VisitorUser } from '../../../../../structs/str
 import { Eye, EyeOff } from "lucide-react"
 import { toast } from 'react-toastify';
 import { addAUserToTheUsuariosList, addAVisitorUserInTheKehila } from '../../../../../apis/requests';
-import { createUserWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../../../../firebase-config';
 import { PageContext } from '../../../../../StoreInfo/page-storage';
 

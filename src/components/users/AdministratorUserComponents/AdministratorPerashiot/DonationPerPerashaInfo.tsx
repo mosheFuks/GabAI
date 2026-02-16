@@ -9,9 +9,9 @@ import { AddDonationToPerashaModal } from "./AddDonationToPerashaModal";
 import { addPerashaToKehila, getPerashaInfo } from "../../../../apis/requests";
 import { PageContext } from "../../../../StoreInfo/page-storage";
 import { DelAllPereashiotInfoModal } from "./DelAllPerashiotInfoModal";
-import { ClipLoader } from "react-spinners";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import { LoaderComponent } from "../../../../assets/loader";
 
 export const DonationPerPerashaInfo = () => {
   const { logedUser } = useContext(PageContext) as any;
@@ -115,23 +115,7 @@ export const DonationPerPerashaInfo = () => {
     }
   }, [alia, addNewPerToKehila]);
 
-  {console.log("Aliot list: ", aliotList)}
-
-
-  if (aliotList === undefined) {
-    
-  }
-
-  const loader = () => {
-    return (
-      <div style={styles.container}>
-        <div style={styles.loaderContainer}>
-          <ClipLoader color="blue" loading={true} size={35} />
-          <h2 style={{ color: colors.btn_background, marginTop: '20px' }}>Cargando información...</h2>
-        </div>
-      </div>
-    );
-  }
+  {console.log("Aliot list: ", aliotList)}  
 
   return (
     <>
@@ -151,7 +135,7 @@ export const DonationPerPerashaInfo = () => {
         </div>
       </div>
 
-      {aliotList === undefined ? loader() : 
+      {aliotList === undefined ? LoaderComponent() : 
       <>
         <div style={{ display: 'flex', justifyContent: 'space-between', width: '90%', marginTop: '10px', marginBottom: '10px'}}>
           <div style={{ display: "flex", flexDirection: "row", gap: '10px' }}>
@@ -407,13 +391,5 @@ const styles: { [key: string]: CSSProperties }= {
     cursor: "pointer",
     color: "white",
     fontSize: "16px",
-  } as CSSProperties,
-  loaderContainer: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    height: "100%",
-    minHeight: "75vh",
   } as CSSProperties,
 };

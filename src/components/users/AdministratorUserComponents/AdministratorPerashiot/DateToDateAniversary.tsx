@@ -1,5 +1,5 @@
 import { CSSProperties, useEffect, useState } from "react";
-import { Grupo, HEBREW_MONTHS, VisitorUser } from "../../../../structs/structs";
+import { Grupo, HEBREW_MONTHS, VisitorUser, Motivo} from "../../../../structs/structs";
 
 interface AniversariesList {
   motivo: string,
@@ -101,7 +101,7 @@ export const DateToDateAniversary = ({ peopleList, setFilteredAniversaries, days
         monthsToInclude.includes(persona.fechaNacimientoHebreo?.mes as typeof HEBREW_MONTHS[number])
       )
       .map(per => ({
-        motivo: "Cumpleaños",
+        motivo: Motivo.Cumpleaños,
         nombre: per.nombreEspanol,
         apellido: per.apellido,
         nombreHebreo: per.nombreHebreo,
@@ -126,7 +126,7 @@ export const DateToDateAniversary = ({ peopleList, setFilteredAniversaries, days
         monthsToInclude.includes(persona.fechaBarMitzvaHebreo?.mes as typeof HEBREW_MONTHS[number])
       )
       .map(per => ({
-        motivo: "Bar Mitzva",
+        motivo: Motivo.BarMitzva,
         nombre: per.nombreEspanol,
         apellido: per.apellido,
         nombreHebreo: per.nombreHebreo,

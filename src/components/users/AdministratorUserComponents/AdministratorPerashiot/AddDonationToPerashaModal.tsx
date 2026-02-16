@@ -143,6 +143,20 @@ export const AddDonationToPerashaModal = ({setOpenAliaModal, openAliaModal, setA
             style={styles.input}
           />
 
+          {formAliaData.nombre.length >= 2 && formAliaData.apellido!.length >= 2 && (
+            <div style={styles.switchContainer}>
+              <label style={{ display: "block", fontWeight: 'bold'}}>
+                ¿Querés agregar esta donación a la lista de donaciones de {formAliaData.nombre} {formAliaData.apellido}?
+              </label>
+              <input
+                type="checkbox"
+                checked={addDonationToUser}
+                onChange={(e) => setAddDonationToUser(e.target.checked)}
+                style={styles.switch}
+              />
+            </div>
+          )}
+
           <label htmlFor="aliaNombreHebreo" style={{ display: "block", fontWeight: 'bold'}}>Nombre Hebreo</label>
           <input
             type="text"
@@ -172,18 +186,6 @@ export const AddDonationToPerashaModal = ({setOpenAliaModal, openAliaModal, setA
             <option value="USD">USD</option>
             <option value="ARS">ARS</option>
           </select>
-
-          <div style={styles.switchContainer}>
-            <label style={{ display: "block", fontWeight: 'bold'}}>
-              ¿Querés agregar esta donación a la lista de donaciones de {formAliaData.nombre}?
-            </label>
-            <input
-              type="checkbox"
-              checked={addDonationToUser}
-              onChange={(e) => setAddDonationToUser(e.target.checked)}
-              style={styles.switch}
-            />
-          </div>
 
           <button onClick={closeModal} style={{...styles.button, backgroundColor: formAliaData.moneda == "" ? 'gray' : colors.btn_background}} disabled={formAliaData.moneda == ""}>
             Guardar
@@ -234,6 +236,9 @@ const styles = {
     //justifyContent: "center",
     marginTop: "20px",
     marginBottom: "20px",
+    border: "1px solid orange",
+    borderRadius: "10px",
+    padding: "10px",
   } as CSSProperties,
   switch: {
     width: "25px",

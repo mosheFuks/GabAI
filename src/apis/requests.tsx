@@ -50,6 +50,8 @@ export const getUserOnSignInDirect = async (convex: any, email: string) => {
 };
 
 export const getPerashaInfo = (kehilaName: string, perashaName: string) => {
+  console.log("Enter on the requested request");
+  
   return useQuery(api.kehila.getKehilaPerashaInfo, {
     nombre: kehilaName,
     nombrePerasha: perashaName
