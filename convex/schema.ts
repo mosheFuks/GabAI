@@ -39,9 +39,9 @@ export const Perasha = v.object({
             alia: v.string(),
             nombre: v.string(),
             apellido: v.optional(v.string()),
-            nombreHebreo: v.string(),
-            monto: v.number(),
-            moneda: v.string(),
+            nombreHebreo: v.optional(v.string()),
+            monto: v.optional(v.number()),
+            moneda: v.optional(v.string()),
             perasha: v.optional(v.string()),
             minian: v.optional(v.string()),
             aniversario: v.optional(v.string()),
@@ -63,6 +63,7 @@ export const Aniversary = v.object({
         v.literal("Bar Mitzva"),
         v.literal("Bat Mitzva"),
         v.literal("Casamiento"),
+        v.literal("Aliá"),
         v.literal("Otro")
     ),
     nombreDelAniversario: v.string()

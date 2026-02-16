@@ -97,6 +97,7 @@ export enum Motivo {
   BarMitzva = "Bar Mitzva",
   BatMitzva = "Bat Mitzva",
   Casamiento = "Casamiento",
+  Alia = "Aliá",
   Otro = "Otro"
 }
 
@@ -104,9 +105,9 @@ export interface Alia {
   alia: string,
   nombre: string,
   apellido?: string,
-  nombreHebreo: string,
-  monto: number,
-  moneda: string
+  nombreHebreo?: string,
+  monto?: number,
+  moneda?: string
   perasha?: string
   minian?: string
   aniversario?: string

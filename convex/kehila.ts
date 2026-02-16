@@ -230,7 +230,7 @@ export const addADonationInAPerasha = mutation({
         alia: v.string(),
         moneda: v.string(),
         monto: v.number(),
-        tipoAlia: v.optional(v.string())
+        tipoAlia: v.optional(v.union(v.literal("DONACION"), v.literal("ALIA")))
       })
   },
   handler: async (ctx, args) => {
@@ -266,17 +266,18 @@ export const addAnAliaInAPerasha = mutation({
     nombrePerasha: v.string(),
     nuevaAlia: 
       v.object({
+        alia: v.string(),
         nombre: v.string(),
-        nombreHebreo: v.string(),
         apellido: v.optional(v.string()),
-        alia: v.string(), 
+        nombreHebreo: v.optional(v.string()),
+        monto: v.optional(v.number()),
+        moneda: v.optional(v.string()),
+        perasha: v.optional(v.string()),
         minian: v.optional(v.string()),
         aniversario: v.optional(v.string()),
         fechaAniversarioHebreo: v.optional(v.string()),
-        grupo: v.optional(v.string()),
-        perasha: v.optional(v.string()),
-        tipoAlia: v.optional(v.string()),
-        monto: v.number()
+        grupo: v.optional(v.union(v.literal("Cohen"), v.literal("Levi"), v.literal("Israel"))),
+        tipoAlia: v.optional(v.union(v.literal("DONACION"), v.literal("ALIA")))
       })
   },
   handler: async (ctx, args) => {
