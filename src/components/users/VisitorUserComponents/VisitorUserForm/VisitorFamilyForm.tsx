@@ -29,7 +29,7 @@ export const VisitorFamilyForm = ({logedVisitorUser, setUserChangedSomeProperty}
     const [newValueToSave, setNewValueToSave] = useState<string | number>("");
     const changeVisitorUserPropeties = changeUserVisitorData()
 
-    const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+    const sleep = (ms:any) => new Promise(resolve => setTimeout(resolve, ms));
 
     const statusList = ["Soltero", "Casado", "Divorciado", "Viudo"];
 

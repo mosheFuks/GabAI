@@ -1,5 +1,5 @@
 import { CSSProperties, useState } from "react";
-import { FaArrowLeft, FaFilter, FaSearch } from "react-icons/fa";
+import { FaArrowLeft, FaSearch } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { VisitorUser } from "../../../structs/structs";
 

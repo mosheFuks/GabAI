@@ -79,7 +79,6 @@ export const HomeVisitorUserComponent = () => {
               {step === 4 && (    
                 <VisitorAccountForm 
                   logedVisitorUser={logedVisitorUser} 
-                  setUserChangedSomeProperty={setUserChangedSomeProperty}
                 />
               )}
 

@@ -22,9 +22,11 @@ export const AliotPerPershaInfo = () => {
 
   const [openAliaModal, setOpenAliaModal] = useState<boolean>(false)
   //const [addUserAliaModal, setOpenAddUserAliaModal] = useState<boolean>(false)
-  const alia = getPerashaInfo(logedUser.kehila, perashaName);
-  const aliotList: Alia[] = alia?.aliot ?? [];
-  console.log("Alia", alia);
+  const perasha = getPerashaInfo(logedUser.kehila, perashaName);
+  console.log("Perasha info: ", perasha);
+  
+  const aliotList: Alia[] = (perasha != "NOT FOUND" ? perasha!.aliot : []) as Alia[];
+  console.log("Alia", aliotList);
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false)
 
   const navigate = useNavigate();
@@ -171,9 +173,7 @@ export const AliotPerPershaInfo = () => {
         <AddUserToAliaModal 
           setOpenAliaModal={setOpenAliaModal}
           openAliaModal={openAliaModal}
-          setAliotList={setAliotList}
-          aliotList={aliotList!}
-          perashaName={id!.replace(/([a-z])([A-Z])/g, '$1 $2')}
+          userToAddInThePerasha={logedUser}
         />
       ) : (
         null

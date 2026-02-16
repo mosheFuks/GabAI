@@ -9,7 +9,6 @@ import { FormFamilyInfoData } from "./UserComponents/SignUpForms/FormFamilyInfoD
 import { CreateAniversaryModalComponent } from "./AniversaryComponents/AniversaryModal";
 import { CreateNormalUserSignInfoModal } from "./UserComponents/CreateNormalUserSignInfoModal";
 import { CreateChildModalComponent } from "./ChildComponents/ChildModal";
-import { addAVisitorUserInTheKehila } from "../../../../apis/requests";
 import { PageContext } from "../../../../StoreInfo/page-storage";
 import { toast } from "react-toastify";
 import { FaArrowLeft } from "react-icons/fa";

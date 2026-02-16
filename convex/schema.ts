@@ -7,6 +7,15 @@ export const CustomDate = v.object({
     ano: v.union(v.string(), v.number())
 })
 
+enum Motivo {
+  Yortzait = "Yortzait",
+  Cumpleaños = "Cumpleaños",
+  BarMitzva = "Bar Mitzva",
+  BatMitzva = "Bat Mitzva",
+  Casamiento = "Casamiento",
+  Otro = "Otro"
+}
+
 export const Cuenta = v.object({
     monto: v.optional(v.number()),
     tipoMoneda: v.optional(v.string()),
@@ -57,7 +66,7 @@ export const Aniversary = v.object({
     id: v.optional(v.string()),
     fecha: CustomDate,
     fechaHebreo: CustomDate,
-    motivo: v.string(),
+    motivo: Motivo,
     nombreDelAniversario: v.string()
 })
 

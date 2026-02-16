@@ -103,16 +103,16 @@ export enum Motivo {
 export interface Alia {
   alia: string,
   nombre: string,
-  apellido?: string,
+  apellido: string,
   nombreHebreo: string,
   monto: number,
-  moneda?: string
-  perasha?: string
-  minian?: string
-  aniversario?: string
-  fechaAniversarioHebreo?: string;
-  grupo?: Grupo
-  tipoAlia?: "DONACION" | "ALIA"
+  moneda: string
+  perasha: string
+  minian: string
+  aniversario: string
+  fechaAniversarioHebreo: string;
+  grupo: Grupo
+  tipoAlia: "DONACION" | "ALIA"
 }
 export interface UserToAddInThePerasha {
   nombre: string;

@@ -7,13 +7,12 @@ import { toast } from 'react-toastify';
 import { Alia, UserToAddInThePerasha } from '../../../../structs/structs';
 
 interface AddUserToAliaModalProps {
-  openModal: boolean;
-  setOpenModal: (openModal: boolean) => void;
+  openAliaModal: boolean;
+  setOpenAliaModal: (openAliaModal: boolean) => void;
   userToAddInThePerasha?: UserToAddInThePerasha;
-  setUserToAddInThePerasha?: (userToAddInThePerasha: UserToAddInThePerasha) => void;
 }
 
-export const AddUserToAliaModal = ({openModal, setOpenModal, userToAddInThePerasha}: AddUserToAliaModalProps) => {
+export const AddUserToAliaModal = ({openAliaModal, setOpenAliaModal, userToAddInThePerasha}: AddUserToAliaModalProps) => {
   const { logedUser } = useContext(PageContext) as any
 
   const addPerasha = addPerashaToKehila();
@@ -33,6 +32,7 @@ export const AddUserToAliaModal = ({openModal, setOpenModal, userToAddInThePeras
     grupo: userToAddInThePerasha?.grupo!,
     tipoAlia: "ALIA",
     monto: 0,
+    moneda: "",
   });
   const perashaInfo = getPerashaInfo(logedUser.kehila, formAliaData.perasha!);
 
@@ -121,7 +121,7 @@ export const AddUserToAliaModal = ({openModal, setOpenModal, userToAddInThePeras
         theme: "colored",
         style: { backgroundColor: 'green', color: 'white' },
     });
-    setOpenModal(false)
+    setOpenAliaModal(false)
   }
 
   const parashaSelector = () => {
@@ -194,8 +194,8 @@ export const AddUserToAliaModal = ({openModal, setOpenModal, userToAddInThePeras
   return (
     <div>
       <Modal
-        isOpen={openModal}
-        onRequestClose={() => setOpenModal(false)}
+        isOpen={openAliaModal}
+        onRequestClose={() => setOpenAliaModal(false)}
         style={{
           content: styles.container,
           overlay: {
