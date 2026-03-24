@@ -3,7 +3,6 @@ import { CSSProperties } from 'react';
 
 import { DonationModal } from '../NewDonationModal/DonationModal';
 import { CustomDate, VisitorUser } from '../../../../../../structs/structs';
-import { colors } from '../../../../../../assets/colors';
 import { changeDonationStatus } from '../../../../../../apis/requests';
 
 interface FormPersonalDataProps {
@@ -65,168 +64,185 @@ export const VisitorAccountInfo = ({ logedVisitorUser }: FormPersonalDataProps) 
   }, [statusFilter])
   
   return (
-    <div style={{ flex: 1, overflowY: "auto", padding: "10px", borderRadius: "5px", minHeight: 0 }}>
-        <div>
-          <div style={styles.headerButtons}>
-            {logedVisitorUser.cuenta!.length > 0 && (
-              <div style={{ display: "flex", flexDirection: "row", gap: '10px' }}>
-                <div style={styles.pendingCard}>
-                  <div style={{ fontSize: '1rem', fontWeight: 'bold' }}>
-                    {`Pago pendiente en pesos:`}
-                  </div>
-                  <div style={{ fontSize: '1rem', fontWeight: 'bold', color: 'orange' }}>
-                    ${arsPendingDonations}
-                  </div>
-                </div>
-
-                <div style={styles.pendingCard}>
-                  <div style={{ fontSize: '1rem', fontWeight: 'bold' }}>
-                    {`Pago pendiente en dolares:`}
-                  </div>
-                  <div style={{ fontSize: '1rem', fontWeight: 'bold', color: 'orange' }}>
-                    USD {usdPendingDonations} 
-                  </div>
-                </div> 
-              </div>
-            )}
-            {logedVisitorUser.cuenta!.length > 0 ? (
-              <div style={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
-                <button type='button' style={{...styles.statusBadge, fontWeight: "bold", border: 'none',
-                  backgroundColor: statusFilter === "All" ? "#60A5FA" : '#f9f9f9',
-                  color: statusFilter === "All" ? "white" : "black"
-                }} onClick={() => setStatusFilter("All")}>
-                  {`Todas`}
-                </button>
-
-                <button type='button' style={{...styles.statusBadge, fontWeight:"bold", border: 'none',
-                  backgroundColor: statusFilter === "PAGADA" ? "#34D399" : '#f9f9f9',            
-                  color: statusFilter === "PAGADA" ? "white" : "black"  
-                }} onClick={() => setStatusFilter("PAGADA")}>
-                  {`Pagadas`}
-                </button>
-
-                <button type='button' style={{...styles.statusBadge, fontWeight: "bold",  border: 'none',
-                  backgroundColor: statusFilter === "PENDIENTE" ? "#FDE68A" :  '#f9f9f9',            
-                  color: statusFilter === "PENDIENTE" ? "white" : "black"    
-                }} onClick={() => setStatusFilter("PENDIENTE")}>
-                  {`Pendientes`}
-                </button>
-
-                <button type='button' style={styles.button} onClick={() => setIsDonationModalOpen(true)}>
-                  Agregar Donación
-                </button>
-              </div>
-            ) : (
-              <div style={{ display: 'flex', flexDirection: 'row', gap: '10px', justifyContent: 'flex-end', width: '100%' }}>
-                <button type='button' style={styles.button} onClick={() => setIsDonationModalOpen(true)}>
-                  Agregar Donación
-                </button>
-              </div>
-            )}
+    <div style={styles.container}>
+      {/* Pending Donations Summary */}
+      {logedVisitorUser.cuenta!.length > 0 && (
+        <div style={styles.summarySection}>
+          <div style={styles.pendingCard}>
+            <div style={styles.cardLabel}>Pago pendiente en pesos</div>
+            <div style={styles.cardAmount}>${arsPendingDonations}</div>
           </div>
-          {filteredDonations.length > 0 ? (
-            <table style={styles.table}>
-              <thead>
-                <tr>
-                  <th style={styles.th}>Fecha</th>
-                  <th style={styles.th}>Perasha</th>
-                  <th style={styles.th}>Motivo</th>
-                  <th style={styles.th}>Monto</th>
-                  <th style={styles.th}>Moneda</th>
-                  <th style={styles.th}>Estado</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredDonations.map((donacion, index) => {
-                  const monto = donacion.monto;
-                  const moneda = donacion.tipoMoneda;
-                  const esOtro = donacion.aclaracion != '';
+          <div style={styles.pendingCard}>
+            <div style={styles.cardLabel}>Pago pendiente en dólares</div>
+            <div style={styles.cardAmount}>USD {usdPendingDonations}</div>
+          </div>
+        </div>
+      )}
 
-                  return (
-                    <tr key={index}>
-                      <td style={styles.td} data-label="Fecha">
-                        {formatDate(donacion.fecha)}
-                      </td>
-                      <td style={styles.td} data-label="Perasha">
-                        {donacion.perasha || '-'}
-                      </td>
-                      <td style={styles.td} data-label="Motivo">
-                        {esOtro ? (
-                          <span
-                            style={styles.cellPopover}
-                            onClick={() =>
-                              setExpandedIndex(expandedIndex === index ? null : index)
-                            }
-                          >
-                            {donacion.motivo} <span style={{ marginLeft: '5px' }}>&#9660;</span>
-                            {expandedIndex === index && donacion.aclaracion && (
-                              <div style={styles.popover}>{donacion.aclaracion}</div>
-                            )}
-                          </span>
-                        ) : (
-                          donacion.motivo || '-'
-                        )}
-                      </td>
-                      <td style={styles.td} data-label="Monto">{monto}</td>
-                      <td style={styles.td} data-label="Moneda">{moneda}</td>
-                      <td style={styles.td} data-label="EstadoCuenta">
-                          <span style={{
-                            ...styles.statusBadge,
-                            backgroundColor: donacion.status === "PENDIENTE" ? "#fef3c7" :
-                                            donacion.status === "PAGADA" ? "#d1fae5" :
-                                            "#e0e7ff",
-                            color: donacion.status === "PENDIENTE" ? "#92400e" :
-                                  donacion.status === "PAGADA" ? "#065f46" :
-                                  "#3730a3"
-                          }}>
-                            {donacion.status || '-'}
-                          </span>
-                        </td>
-                      {donacion.status === 'PENDIENTE' && (
-                        <div style={{ display: 'flex', justifyContent: 'center', padding: '14px 16px',}}>
-                          <button
-                            type="button"
-                            style={{...styles.button, backgroundColor: donacion.status === 'PENDIENTE' ? 'green' : 'orange'}}
-                            onClick={() => {
-                              modDonationStatus(
-                                logedVisitorUser.nombreKehila!,
-                                logedVisitorUser.nombreEspanol!,
-                                logedVisitorUser.apellido!,
-                                donacion.fecha,
-                                donacion.status === 'PENDIENTE' ? "PAGADA" : "PENDIENTE",
-                                donacion.monto
-                              )
-                              if (donacion.status === 'PENDIENTE') {
-                                donacion.status = 'PAGADA';
-                              } else {
-                                donacion.status = 'PENDIENTE';
-                              }
-                              setCompleteDonationsList([...completeDonationsList]);
-                              filterDonations();
-                            }}
-                          >
-                            Confirmar Pago
-                          </button>
-                        </div>
-                      )}
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          ) : (
-            <div style={{ textAlign: 'center', marginTop: '20px', fontSize: '3rem' }}>
-              <h5 style={{ color: colors.btn_background }}>No hay donaciones registradas</h5>
-            </div>
+      {/* Filters and Actions */}
+      <div style={styles.controlsSection}>
+        <div style={styles.filterButtons}>
+          {logedVisitorUser.cuenta!.length > 0 && (
+            <>
+              <button
+                type="button"
+                style={{
+                  ...styles.filterBtn,
+                  backgroundColor: statusFilter === "All" ? "#3b82f6" : "#f3f4f6",
+                  color: statusFilter === "All" ? "#ffffff" : "#6b7280",
+                  border: "1.5px solid #3b82f6",
+                }}
+                onClick={() => setStatusFilter("All")}
+              >
+                Todas
+              </button>
+              <button
+                type="button"
+                style={{
+                  ...styles.filterBtn,
+                  backgroundColor: statusFilter === "PAGADA" ? "#10b981" : "#f3f4f6",
+                  color: statusFilter === "PAGADA" ? "#ffffff" : "#6b7280",
+                  border: "1.5px solid #059669",
+                }}
+                onClick={() => setStatusFilter("PAGADA")}
+              >
+                Pagadas
+              </button>
+              <button
+                type="button"
+                style={{
+                  ...styles.filterBtn,
+                  backgroundColor: statusFilter === "PENDIENTE" ? "#f59e0b" : "#f3f4f6",
+                  color: statusFilter === "PENDIENTE" ? "#ffffff" : "#6b7280",
+                  border: "1.5px solid #f59e0b",
+                }}
+                onClick={() => setStatusFilter("PENDIENTE")}
+              >
+                Pendientes
+              </button>
+            </>
           )}
+        </div>
+        <button
+          type="button"
+          style={styles.addBtn}
+          onClick={() => setIsDonationModalOpen(true)}
+        >
+          + Agregar Donación
+        </button>
       </div>
+
+      {/* Table */}
+      {filteredDonations.length > 0 ? (
+        <div style={styles.tableWrapper}>
+          <table style={styles.table}>
+            <thead>
+              <tr>
+                <th style={styles.th}>Fecha</th>
+                <th style={styles.th}>Perasha</th>
+                <th style={styles.th}>Motivo</th>
+                <th style={styles.th}>Monto</th>
+                <th style={styles.th}>Moneda</th>
+                <th style={styles.th}>Estado</th>
+                <th style={styles.th}>Acción</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredDonations.map((donacion, index) => {
+                const monto = donacion.monto;
+                const moneda = donacion.tipoMoneda;
+                const esOtro = donacion.aclaracion != '';
+
+                return (
+                  <tr key={index}>
+                    <td style={styles.td}>{formatDate(donacion.fecha)}</td>
+                    <td style={styles.td}>{donacion.perasha || '-'}</td>
+                    <td style={styles.td}>
+                      {esOtro ? (
+                        <span
+                          style={styles.cellPopover}
+                          onClick={() =>
+                            setExpandedIndex(expandedIndex === index ? null : index)
+                          }
+                        >
+                          {donacion.motivo}
+                          {expandedIndex === index && donacion.aclaracion && (
+                            <div style={styles.popover}>{donacion.aclaracion}</div>
+                          )}
+                        </span>
+                      ) : (
+                        donacion.motivo || '-'
+                      )}
+                    </td>
+                    <td style={styles.td}>{monto}</td>
+                    <td style={styles.td}>{moneda}</td>
+                    <td style={styles.td}>
+                      <span
+                        style={{
+                          ...styles.statusBadge,
+                          backgroundColor:
+                            donacion.status === "PENDIENTE"
+                              ? "#fef3c7"
+                              : donacion.status === "PAGADA"
+                              ? "#d1fae5"
+                              : "#e0e7ff",
+                          color:
+                            donacion.status === "PENDIENTE"
+                              ? "#b45309"
+                              : donacion.status === "PAGADA"
+                              ? "#065f46"
+                              : "#3730a3",
+                        }}
+                      >
+                        {donacion.status || '-'}
+                      </span>
+                    </td>
+                    <td style={{...styles.td, textAlign: "center"}}>
+                      {donacion.status === 'PENDIENTE' && (
+                        <button
+                          type="button"
+                          style={styles.confirmBtn}
+                          onClick={() => {
+                            modDonationStatus(
+                              logedVisitorUser.nombreKehila!,
+                              logedVisitorUser.nombreEspanol!,
+                              logedVisitorUser.apellido!,
+                              donacion.fecha,
+                              donacion.status === 'PENDIENTE' ? "PAGADA" : "PENDIENTE",
+                              donacion.monto
+                            );
+                            if (donacion.status === 'PENDIENTE') {
+                              donacion.status = 'PAGADA';
+                            } else {
+                              donacion.status = 'PENDIENTE';
+                            }
+                            setCompleteDonationsList([...completeDonationsList]);
+                            filterDonations();
+                          }}
+                        >
+                          Confirmar
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <div style={styles.emptyState}>
+          <h3 style={styles.emptyStateText}>No hay donaciones registradas</h3>
+        </div>
+      )}
 
       {isDonationModalOpen && (
         <DonationModal
-          modalAniversaryIsOpen={isDonationModalOpen} 
+          modalAniversaryIsOpen={isDonationModalOpen}
           setModalAniversaryIsOpen={setIsDonationModalOpen}
           setCompleteDonationsList={setCompleteDonationsList}
-          logedVisitorUser={logedVisitorUser}/>
+          logedVisitorUser={logedVisitorUser}
+        />
       )}
     </div>
   );
@@ -248,17 +264,17 @@ export const VisitorAccountInfo = ({ logedVisitorUser }: FormPersonalDataProps) 
     tr {
       display: block;
       margin-bottom: 15px;
-      border: 1px solid #ccc;
+      border: 1px solid #e5e7eb;
       padding: 10px;
       border-radius: 8px;
-      background: #f9f9f9;
+      background: #ffffff;
     }
     td {
       display: flex;
       justify-content: space-between;
       padding: 5px 10px;
       border: none;
-      border-bottom: 1px solid #eee;
+      border-bottom: 1px solid #f3f4f6;
     }
     td::before {
       content: attr(data-label);
@@ -271,97 +287,137 @@ export const VisitorAccountInfo = ({ logedVisitorUser }: FormPersonalDataProps) 
 
 const styles = {
   container: {
-    height: 'auto',
-    overflowY: 'auto',
-    padding: '10px',
-    borderRadius: '5px',
+    flex: 1,
+    overflowY: "auto",
+    display: "flex",
+    flexDirection: "column",
+    gap: "24px",
   } as CSSProperties,
-  table: {
-    borderCollapse: 'separate',
-    borderSpacing: '10px 12px', // espacio vertical entre filas
-    width: '100%',
-  } as CSSProperties,
-  th: {
-    padding: '12px 16px',
-    textAlign: 'center',
-    fontWeight: 'bolder ',
-    background: '#f9f9f9',
-    color: '#333',
-    fontSize: '1.05rem',
-    position: 'sticky',
-    top: 0,
-    zIndex: 1,
-    borderRadius: '8px', // importante
-    border: '2px solid #040404ff',
-  } as CSSProperties,
-  td: {
-    padding: '14px 16px',
-    background: '#fff',
-    fontSize: '1.05rem',
-    color: '#333',
-    borderRadius: '8px', // importante
-    border: '2px solid #cbbabaff',
-    boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
-    textAlign: 'center'
-  } as CSSProperties,
-  statusBadge: {
-    display: 'inline-block',
-    padding: '4px 10px',
-    borderRadius: '20px',
-    fontWeight: 'bold',
-    fontSize: '0.8rem',
-    textTransform: 'uppercase',
+  summarySection: {
+    display: "flex",
+    gap: "16px",
   } as CSSProperties,
   pendingCard: {
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: '10px',
-    border: '3px solid orange',
-    borderRadius: '20px',
-    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
-    backgroundColor: '#f9f9f9'
+    flex: 1,
+    padding: "16px 20px",
+    backgroundColor: "#ffffff",
+    border: "1px solid #e5e7eb",
+    borderRadius: "8px",
+    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.05)",
+  } as CSSProperties,
+  cardLabel: {
+    fontSize: "14px",
+    color: "#6b7280",
+    fontWeight: "500",
+    marginBottom: "8px",
+  } as CSSProperties,
+  cardAmount: {
+    fontSize: "24px",
+    fontWeight: "700",
+    color: "#f59e0b",
+  } as CSSProperties,
+  controlsSection: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: "16px",
+  } as CSSProperties,
+  filterButtons: {
+    display: "flex",
+    gap: "8px",
+  } as CSSProperties,
+  filterBtn: {
+    padding: "8px 16px",
+    border: "none",
+    borderRadius: "6px",
+    fontSize: "14px",
+    fontWeight: "600",
+    cursor: "pointer",
+    transition: "all 0.2s",
+  } as CSSProperties,
+  addBtn: {
+    padding: "10px 18px",
+    backgroundColor: "#3b82f6",
+    color: "#ffffff",
+    border: "none",
+    borderRadius: "6px",
+    fontSize: "14px",
+    fontWeight: "600",
+    cursor: "pointer",
+    transition: "background-color 0.2s",
+  } as CSSProperties,
+  tableWrapper: {
+    backgroundColor: "#ffffff",
+    borderRadius: "8px",
+    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.05)",
+    overflow: "hidden",
+  } as CSSProperties,
+  table: {
+    width: "100%",
+    borderCollapse: "collapse",
+  } as CSSProperties,
+  th: {
+    padding: "12px 16px",
+    textAlign: "left",
+    fontWeight: "600",
+    backgroundColor: "#f9fafb",
+    color: "#374151",
+    fontSize: "14px",
+    borderBottom: "1px solid #e5e7eb",
+  } as CSSProperties,
+  td: {
+    padding: "12px 16px",
+    borderBottom: "1px solid #e5e7eb",
+    color: "#374151",
+    fontSize: "14px",
+  } as CSSProperties,
+  statusBadge: {
+    display: "inline-block",
+    padding: "4px 12px",
+    borderRadius: "4px",
+    fontWeight: "600",
+    fontSize: "12px",
   } as CSSProperties,
   cellPopover: {
-    position: 'relative',
-    display: 'inline-block',
-    cursor: 'pointer',
-    justifyContent: 'space-between',
-    width: '100%',
+    position: "relative",
+    display: "inline-block",
+    cursor: "pointer",
   } as CSSProperties,
   popover: {
-    position: 'absolute',
-    top: '100%',
+    position: "absolute",
+    top: "100%",
     left: 0,
-    backgroundColor: 'white',
-    border: '1px solid #ccc',
-    padding: '5px',
+    backgroundColor: "#ffffff",
+    border: "1px solid #e5e7eb",
+    borderRadius: "6px",
+    padding: "8px 12px",
     zIndex: 1000,
-    whiteSpace: 'nowrap',
+    whiteSpace: "nowrap",
+    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
   } as CSSProperties,
-  headerButtons: {
-    display: "flex",
-    gap: '10px',
-    marginBottom: '20px',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  filterButton: {
-    border: "1px solid orange",
-    color: 'black',
-    padding: '10px 15px',
-    borderRadius: '20px',
-    cursor: 'pointer',
-    fontSize: '1rem',
-    backgroundColor: colors.main_background
-  } as CSSProperties,
-  button: {
+  confirmBtn: {
+    padding: "6px 12px",
+    backgroundColor: "#10b981",
+    color: "#ffffff",
     border: "none",
-    color: 'white',
-    padding: '10px 15px',
-    borderRadius: '20px',
-    cursor: 'pointer',
-    fontSize: '1rem',
-    backgroundColor: 'orange',
-    fontWeight: 'bold'
+    borderRadius: "4px",
+    fontSize: "13px",
+    fontWeight: "600",
+    cursor: "pointer",
+    transition: "background-color 0.2s",
+  } as CSSProperties,
+  emptyState: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "60px 20px",
+    backgroundColor: "#ffffff",
+    borderRadius: "8px",
+    textAlign: "center",
+  } as CSSProperties,
+  emptyStateText: {
+    fontSize: "16px",
+    color: "#6b7280",
+    margin: 0,
   } as CSSProperties,
 };

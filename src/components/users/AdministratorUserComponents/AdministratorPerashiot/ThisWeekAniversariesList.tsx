@@ -1,4 +1,3 @@
-import { colors } from "../../../../assets/colors";
 import { CSSProperties, useEffect, useState } from "react";
 import { HDate } from '@hebcal/core';
 import { Grupo, HEBREW_MONTHS, Motivo, UserToAddInThePerasha, VisitorUser } from "../../../../structs/structs";
@@ -265,15 +264,16 @@ export const ThisWeekAniversariesList = ({peopleList}: NextAliotProps) => {
 
   return (
     <div style={styles.container}>
-      <div style={styles.headerButtons}>
+      {/* Header Section */}
+      <div style={styles.headerSection}>
         <DateToDateAniversary peopleList={peopleList!} setFilteredAniversaries={setFilteredAniversaries} daysOfThisWeek={daysOfThisWeek} setRenderedAniversaries={setRenderedAniversaries} setThisWeekAniversaries={setThisWeekAniversaries} />
         {thisWeekAniversaries.length > 0 && (
-          <div style={styles.searchByMotiveOrMinian}>
-            <FaSearch className="text-black" size={30} />
+          <div style={styles.searchContainer}>
+            <FaSearch style={styles.searchIcon} />
             <input
               type="text"
               placeholder="Busca por motivo o Minian"
-              style={{...styles.input, borderColor: clicked ? "orange" : "#ccc"}}
+              style={{...styles.searchInput, borderColor: clicked ? "#3b82f6" : "#e5e7eb"}}
               onChange={(e) => searchAniByMotiveOrMinian(e.target.value)}
               onClick={() => setClicked(true)}
               onBlur={() => setClicked(false)}
@@ -281,13 +281,15 @@ export const ThisWeekAniversariesList = ({peopleList}: NextAliotProps) => {
           </div>
         )}
       </div>
-      <div style={{ flex: 1, overflowY: "auto", padding: "10px", borderRadius: "5px" }}>
-        <div>
-          {filteredAniversaries.length > 0 ? (
+
+      {/* Table Section */}
+      <div style={styles.tableSection}>
+        {filteredAniversaries.length > 0 ? (
+          <div style={styles.tableWrapper}>
             <table style={styles.table}>
               <thead>
                 <tr>
-                  <th style={styles.falseTh}></th>
+                  <th style={styles.actionTh}></th>
                   <th style={styles.th}>Motivo</th>
                   <th style={styles.th}>Nombre</th>
                   <th style={styles.th}>Nombre Hebreo</th>
@@ -314,11 +316,11 @@ export const ThisWeekAniversariesList = ({peopleList}: NextAliotProps) => {
                   return (
                     <tr key={index}>
                       <td 
-                        style={{...styles.td, color: "blue", alignItems: "center", cursor:"pointer", border: "2px solid blue"}}
-                        data-label="AgregarAPerasha"
+                        style={styles.actionTd}
+                        data-label="Agregar"
                         onClick={() => openModal(true, ani.nombre, ani.apellido, nombreHebreo, minian, motivo, fechaAniHeb, grupo)}
                       >
-                        <FaPlus className="text-3xl text-gray-500 hover:text-blue-500 transition-colors duration-200" />
+                        <FaPlus style={styles.actionIcon} />
                       </td>
                       <td style={styles.td} data-label="Motivo">{motivo}</td>
                       <td style={styles.td} data-label="Nombre">{nombre}</td>
@@ -330,25 +332,23 @@ export const ThisWeekAniversariesList = ({peopleList}: NextAliotProps) => {
                       <td style={styles.td} data-label="FechaNacimientoGreg">{fechaAniGreg}</td>
                       <td style={styles.td} data-label="FechaNacimientoHeb">{fechaAniHeb}</td>
                       <td 
-                        style={{...styles.td, color: "green", alignItems: "center", cursor:"pointer", border: "2px solid green"}}
-                        data-label="EstadoCuenta"
+                        style={styles.actionTd}
+                        data-label="Ver"
                         onClick={() => navigate(`/administrator-user-info/${ani.nombre}-${ani.apellido}`)}
                       >
-                        <FaArrowAltCircleRight className="text-3xl text-gray-500 hover:text-blue-500 transition-colors duration-200" />
+                        <FaArrowAltCircleRight style={styles.actionIcon} />
                       </td>
                     </tr>
                   );
                 })}
               </tbody>
             </table>
-          )
-          : 
-          (
-            <div style={{ textAlign: 'center', marginTop: '20px', fontSize: '3rem' }}>
-              <h5 style={{ color: colors.btn_background }}>No hay aniversarios registrados en estas fechas</h5>
-            </div>
-          )}
-        </div>
+          </div>
+        ) : (
+          <div style={styles.emptyState}>
+            <h3 style={styles.emptyStateText}>No hay aniversarios registrados en estas fechas</h3>
+          </div>
+        )}
       </div>
 
       {openAddMitpalelToPerashaModal && (
@@ -377,17 +377,17 @@ export const ThisWeekAniversariesList = ({peopleList}: NextAliotProps) => {
     tr {
       display: block;
       margin-bottom: 15px;
-      border: 1px solid #ccc;
+      border: 1px solid #e5e7eb;
       padding: 10px;
       border-radius: 8px;
-      background: #f9f9f9;
+      background: #ffffff;
     }
     td {
       display: flex;
       justify-content: space-between;
       padding: 5px 10px;
       border: none;
-      border-bottom: 1px solid #eee;
+      border-bottom: 1px solid #f3f4f6;
     }
     td::before {
       content: attr(data-label);
@@ -398,126 +398,108 @@ export const ThisWeekAniversariesList = ({peopleList}: NextAliotProps) => {
 `}
 </style>
 
-
-const styles: { [key: string]: CSSProperties }= {
+const styles: { [key: string]: CSSProperties } = {
   container: {
     display: "flex",
     flexDirection: "column",
-    gap: "20px",
-    justifyContent: "center",
-    textAlign: "center",
-    alignContent: "center",
-    overflowY: "auto", // CAMBIAR ESTO
-    minHeight: "100%",    // IMPORTANTE: asegurás que se estire al tamaño del padre
-    width: "100%",     // que ocupe toda el área del contenedor gris
-  } as CSSProperties,
-  headerButtons: {
-    display: "flex",
-    marginTop: "20px",
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: '0px 20px',
-  } as CSSProperties,
-  filterButton: {
-    border: "1px solid blue",
-    color: 'black',
-    padding: '10px 15px',
-    borderRadius: '20px',
-    cursor: 'pointer',
-    fontSize: '1rem',
-    backgroundColor: colors.main_background
-  } as CSSProperties,
-  title: {
-    fontSize: "2rem",
-    fontWeight: "bold",
-    border: `2px solid ${colors.btn_background}`,
-    borderColor: colors.btn_background,
-    borderRadius: 20,
-    paddingLeft: 10,
-    paddingRight: 10
-  } as CSSProperties,
-  icon: {
-    fontSize: "20px",
-    cursor: "pointer",
-  } as CSSProperties,
-  input: {
-    backgroundColor: "white",
-    padding: "10px 16px",
-    borderRadius: "8px",
-    fontWeight: "bold",
-    border: "2px solid",
-    outline: "none",
+    gap: "24px",
+    overflowY: "auto",
+    minHeight: "100%",
     width: "100%",
-    color: "black",
-    fontSize: "16px",
+    padding: "20px",
   } as CSSProperties,
-  tableContainer: {
-    flex: 1,
-    overflowY: 'auto',
-    padding: '10px',
-    borderRadius: '5px',
-    maxHeight: '100%',
+  headerSection: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: "16px",
   } as CSSProperties,
-  searchByMotiveOrMinian: {
+  searchContainer: {
     display: "flex",
     alignItems: "center",
-    gap: "10px"
+    gap: "8px",
+    backgroundColor: "#ffffff",
+    border: "1px solid #e5e7eb",
+    borderRadius: "6px",
+    padding: "8px 12px",
+    minWidth: "240px",
+  } as CSSProperties,
+  searchIcon: {
+    color: "#9ca3af",
+    fontSize: "16px",
+  } as CSSProperties,
+  searchInput: {
+    border: "none",
+    outline: "none",
+    backgroundColor: "transparent",
+    fontSize: "14px",
+    flex: 1,
+  } as CSSProperties,
+  tableSection: {
+    flex: 1,
+    overflowY: "auto",
+  } as CSSProperties,
+  tableWrapper: {
+    backgroundColor: "#ffffff",
+    borderRadius: "8px",
+    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.05)",
+    overflow: "hidden",
   } as CSSProperties,
   table: {
-    borderCollapse: 'separate',
-    borderSpacing: '10px 12px', // espacio vertical entre filas
-    width: '100%',
+    width: "100%",
+    borderCollapse: "collapse",
   } as CSSProperties,
   th: {
-    padding: '12px 16px',
-    textAlign: 'center',
-    fontWeight: 'bolder ',
-    background: '#f9f9f9',
-    color: '#333',
-    fontSize: '1.05rem',
-    position: 'sticky',
-    top: 0,
-    zIndex: 1,
-    borderRadius: '8px', // importante
-    border: '2px solid #040404ff',
+    padding: "14px 16px",
+    textAlign: "left",
+    fontWeight: "600",
+    backgroundColor: "#3b82f6",
+    color: "#ffffff",
+    fontSize: "14px",
+    borderBottom: "none",
+    borderRadius: "6px",
   } as CSSProperties,
-  falseTh: {
-    padding: '12px 16px',
-    textAlign: 'center',
-    fontWeight: 'bolder ',
-    //background: '#f9f9f9',
-    //color: '#333',
-    fontSize: '1.05rem',
-    position: 'sticky',
-    top: 0,
-    zIndex: 1,
-    borderRadius: '8px', // importante
-    //border: '2px solid #040404ff',
+  actionTh: {
+    padding: "14px 16px",
+    textAlign: "center",
+    fontWeight: "600",
+    backgroundColor: "#3b82f6",
+    color: "#ffffff",
+    fontSize: "14px",
+    borderBottom: "none",
+    borderRadius: "6px",
+    width: "50px",
   } as CSSProperties,
   td: {
-   padding: '14px 16px',
-    background: '#fff',
-    fontSize: '1.05rem',
-    color: '#333',
-    borderRadius: '8px', // importante
-    border: '2px solid #cbbabaff',
-    boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+    padding: "12px 16px",
+    borderBottom: "1px solid #e5e7eb",
+    color: "#374151",
+    fontSize: "14px",
   } as CSSProperties,
-  cellPopover: {
-    position: 'relative',
-    display: 'inline-block',
-    cursor: 'pointer',
-    justifyContent: 'space-between',
-    width: '100%',
+  actionTd: {
+    padding: "12px 16px",
+    borderBottom: "1px solid #e5e7eb",
+    textAlign: "center",
+    cursor: "pointer",
+    width: "50px",
   } as CSSProperties,
-  popover: {
-    position: 'absolute',
-    top: '100%',
-    left: 0,
-    backgroundColor: 'white',
-    border: '1px solid #ccc',
-    padding: '5px',
-    zIndex: 1000,
-    whiteSpace: 'nowrap',
-  } as CSSProperties
+  actionIcon: {
+    fontSize: "18px",
+    color: "#3b82f6",
+    transition: "color 0.2s",
+  } as CSSProperties,
+  emptyState: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "60px 20px",
+    backgroundColor: "#ffffff",
+    borderRadius: "8px",
+    textAlign: "center",
+  } as CSSProperties,
+  emptyStateText: {
+    fontSize: "16px",
+    color: "#6b7280",
+    margin: 0,
+  } as CSSProperties,
 };

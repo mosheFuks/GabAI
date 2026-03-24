@@ -1,5 +1,6 @@
-import { CSSProperties, useState } from "react";
+  import { CSSProperties, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { FaBook, FaSearch } from "react-icons/fa";
 import { DelAllPereashiotInfoModal } from "./DelAllPerashiotInfoModal";
 
 export const DonationPerPersha = ({setStep}: any) => {
@@ -72,31 +73,48 @@ export const DonationPerPersha = ({setStep}: any) => {
 
   const [selected, setSelected] = useState<string | null>(null)
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false)
+  const [searchTerm, setSearchTerm] = useState<string>("")
   
   const navigate = useNavigate()
 
+  // Filtrar las perashás por término de búsqueda
+  const filteredBooks = Object.entries(parashiotByBook).reduce((acc, [book, parashiot]) => {
+    const filtered = parashiot.filter(p => p.toLowerCase().includes(searchTerm.toLowerCase()))
+    if (filtered.length > 0 || searchTerm === "") {
+      (acc as any)[book] = searchTerm === "" ? parashiot : filtered
+    }
+    return acc
+  }, {} as Record<string, typeof parashiotByBook[keyof typeof parashiotByBook]>)
+
   return (
     <div style={styles.container}>
-      <div style={{ display: "flex",
-                    //flex: 1,
-                    //width: '100%',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    padding: '0px 20px',
-                    //height: '30px',
-                    /*backgroundColor: 'white'*/}}>
-        <div></div>
-        <h2 style={styles.title}>Seleccione una perasha para ver sus donaciones</h2>
-        <div >
-          <button style={styles.delButton} onClick={() =>setOpenDeleteModal(true)}>Eliminar</button>
+      <div style={styles.header}>
+        <h2 style={styles.title}>Donaciones por Parashá</h2>
+        <div style={styles.headerRight}>
+          <div style={styles.searchBox}>
+            <FaSearch style={styles.searchIcon} />
+            <input
+              type="text"
+              placeholder="Buscar Parashá..."
+              style={styles.searchInput}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+          <button style={styles.delButton} onClick={() => setOpenDeleteModal(true)}>Eliminar</button>
         </div>
       </div>
 
-      <div style={{ flex: 1 }}>
-        {Object.entries(parashiotByBook).map(([book, parashiot]) => (
-          <div key={book}>
-            <div style={styles.bookTitle}>{book}</div>
-            <div style={styles.buttonGroup}>
+      <div style={styles.description}>Seleccione una Parashá para ver los aportes</div>
+
+      <div style={styles.cardsContainer}>
+        {Object.entries(filteredBooks).map(([book, parashiot]) => (
+          <div key={book} style={styles.card}>
+            <div style={styles.cardHeader}>
+              <FaBook style={styles.bookIcon} />
+              <h3 style={styles.cardTitle}>{book}</h3>
+            </div>
+            <div style={styles.tagsContainer}>
               {parashiot.map((name) => {
                 const isSelected = selected === name
                 return (
@@ -104,11 +122,12 @@ export const DonationPerPersha = ({setStep}: any) => {
                     key={name}
                     onClick={() => {setSelected(name), navigate(`/perasha-info/donation/${name}`), setStep(2)}}
                     style={{
-                      ...styles.button,
-                      fontWeight: isSelected ? "bold" : "normal",
-                      background: isSelected ? "linear-gradient(to right, orange, #ff6ec4)" : "white",
+                      ...styles.tag,
+                      backgroundColor: isSelected ? "#3b82f6" : "#e0e7ff",
+                      color: isSelected ? "white" : "#3b82f6",
+                      border: isSelected ? "1px solid #3b82f6" : "1px solid #c7d2fe",
                     }}
-                    onMouseDown={(e) => e.preventDefault()} // evita estilo de focus/fondo
+                    onMouseDown={(e) => e.preventDefault()}
                   >
                     {name}
                   </button>
@@ -134,58 +153,111 @@ const styles = {
   container: {
     display: "flex",
     flexDirection: "column" as const,
-    gap: "20px",
-    justifyContent: "center",
-    textAlign: "center",
-    alignContent: "center"
+    gap: "24px",
+    padding: "24px",
+    flex: 1,
+    overflow: "auto",
   } as CSSProperties,
-  bookTitle: {
+  header: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: "20px",
+    flexWrap: "wrap" as const,
+  } as CSSProperties,
+  title: {
+    fontSize: "28px",
     fontWeight: "bold",
+    color: "#1f2937",
+    margin: 0,
+  } as CSSProperties,
+  description: {
+    fontSize: "14px",
+    color: "#6b7280",
+    marginTop: "-16px",
+  } as CSSProperties,
+  headerRight: {
+    display: "flex",
+    gap: "12px",
+    alignItems: "center",
+  } as CSSProperties,
+  searchBox: {
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+    backgroundColor: "#ffffff",
+    border: "1px solid #e5e7eb",
+    borderRadius: "6px",
+    padding: "8px 12px",
+    minWidth: "240px",
+  } as CSSProperties,
+  searchIcon: {
+    color: "#9ca3af",
+    fontSize: "16px",
+  } as CSSProperties,
+  searchInput: {
+    border: "none",
+    outline: "none",
+    backgroundColor: "transparent",
+    fontSize: "14px",
+    flex: 1,
+  } as CSSProperties,
+  cardsContainer: {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+    gap: "20px",
+  } as CSSProperties,
+  card: {
+    backgroundColor: "#ffffff",
+    border: "1px solid #e5e7eb",
+    borderRadius: "8px",
+    padding: "20px",
+    boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+  } as CSSProperties,
+  cardHeader: {
+    display: "flex",
+    alignItems: "center",
+    gap: "12px",
+    marginBottom: "16px",
+    paddingBottom: "12px",
+    borderBottom: "2px solid #f3f4f6",
+  } as CSSProperties,
+  bookIcon: {
+    fontSize: "24px",
+    color: "#f59e0b",
+  } as CSSProperties,
+  cardTitle: {
     fontSize: "18px",
-    marginBottom: "8px",
-  }as CSSProperties,
-  buttonGroup: {
+    fontWeight: "bold",
+    color: "#1f2937",
+    margin: 0,
+  } as CSSProperties,
+  tagsContainer: {
     display: "flex",
     flexWrap: "wrap" as const,
     gap: "8px",
-    justifyContent: "center",
-    textAlign: "center",
-    alignContent: "center",
-    marginBottom: "10px",
   } as CSSProperties,
-  title: {
-    fontSize: "1.5rem",
-    fontWeight: "bold",
-    textDecorationLine: 'underline', 
-    textDecorationColor: 'orange',
-    /*borderRadius: 20,
-    paddingLeft: 10,
-    paddingRight: 10,
-    marginRight: 100,
-    marginLeft: 200,*/
-    //backgroundColor: 'orange'
-  }as CSSProperties,
-  button: {
-    border: "1px solid orange",
-    borderRadius: "9999px",
-    padding: "6px 16px",
-    fontSize: "14px",
-    fontWeight: 500,
-    color: "black",
+  tag: {
+    padding: "8px 12px",
+    borderRadius: "6px",
+    border: "1px solid #c7d2fe",
+    backgroundColor: "#e0e7ff",
+    color: "#3b82f6",
     cursor: "pointer",
-    transition: "all 0.3s ease",
+    fontSize: "13px",
+    fontWeight: 500,
+    transition: "all 0.2s",
     outline: "none",
-    appearance: "none" as const,
-    WebkitTapHighlightColor: "transparent"
-  },
+  } as CSSProperties,
   delButton: {
-    backgroundColor: "red",
+    backgroundColor: "#ef4444",
     padding: "10px 16px",
-    borderRadius: "8px",
-    fontWeight: "bold",
-    border: "1px solid green",
+    borderRadius: "6px",
+    fontWeight: "600",
+    border: "none",
     cursor: "pointer",
     color: "white",
-    fontSize: "16px",
-  },
+    fontSize: "14px",
+    transition: "background-color 0.2s",
+  } as CSSProperties,
 }

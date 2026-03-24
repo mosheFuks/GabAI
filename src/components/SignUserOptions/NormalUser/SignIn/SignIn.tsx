@@ -212,20 +212,21 @@ const styles: { [key: string]: CSSProperties } = {
   },
   inputContainer: { 
     width: "400px",
-    minWidth: "320px",          // evita encogerse demasiado
+    minWidth: "320px",
     height: "50px",
     marginTop: "10px",
     marginBottom: "20px",
     padding: "8px", 
-    border: "1px solid #ccc", 
-    borderRadius: "50px",
-    backgroundColor: colors.btn_txt,
+    border: "1px solid #e5e7eb", 
+    borderRadius: "8px",
+    backgroundColor: "#ffffff",
     color: colors.form_txt,
     display: "flex", 
     flexDirection: "row", 
     justifyContent: "space-between", 
     alignItems: "center",
-    boxSizing: "border-box"
+    boxSizing: "border-box",
+    boxShadow: "0 1px 2px rgba(0, 0, 0, 0.02)",
   },
   input: {
     flex: "1 1 auto",         // que se ajuste al espacio

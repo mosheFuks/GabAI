@@ -77,8 +77,8 @@ export const SignUpOperator = (/*{modalRealSignInfo, setModalRealSignInfo, user}
     <div style={styles.container}>
        {logedUser.rol != "VISITANTE" ? (
           <div style={{ display: "flex", marginTop: '10px',flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%", height: "70px" }}>
-            <button style={{...styles.button, backgroundColor: "green"}} onClick={() => navigate("/administrator-dashboard")}>
-              <FaArrowLeft className="text-black" /> Lista de usuarios
+            <button style={{...styles.button, backgroundColor: "#10b981"}} onClick={() => navigate("/administrator-dashboard")}>
+              <FaArrowLeft /> Lista de usuarios
             </button>
             <h2 style={{...styles.title, marginRight: '100px'}}>Agrega un usuario operador</h2>
             <div></div>
@@ -86,7 +86,7 @@ export const SignUpOperator = (/*{modalRealSignInfo, setModalRealSignInfo, user}
         ) : (
           <h2 style={styles.title}>Agrega un usuario operador</h2>
         )}
-      <div style={{ width: '100%', marginBottom: '190px', paddingLeft: "30px"}}>
+      <div style={{ width: '100%', marginBottom: '190px', paddingLeft: "30px" }}>
         <label htmlFor="kehilaName" style={{ display: "block"}}>Kehila</label>
         <h5 id="kehilaName" style={styles.input}>
           {logedUser.kehila}
@@ -125,7 +125,7 @@ export const SignUpOperator = (/*{modalRealSignInfo, setModalRealSignInfo, user}
           </div>
         </div>
 
-        <button style={{...styles.button, backgroundColor: formUserSignData.password == "" ? 'gray' : colors.btn_background}} disabled={formUserSignData.password == ""} onClick={handleSubmit}>
+        <button style={{...styles.button, backgroundColor: formUserSignData.password == "" ? '#d1d5db' : colors.btn_background}} disabled={formUserSignData.password == ""} onClick={handleSubmit}>
           Registrarse
         </button>
       </div>
@@ -136,65 +136,67 @@ export const SignUpOperator = (/*{modalRealSignInfo, setModalRealSignInfo, user}
 const styles = {
   container: {
     backgroundColor: colors.main_background,
-    padding: "10px",
-    borderRadius: "25px",
+    padding: "20px",
+    borderRadius: "12px",
     width: "95%",
     minWidth: "720px",
-    height: "79vh", // altura fija
+    minHeight: "79vh",
     display: "flex" as const,
     flexDirection: "column" as const,
     alignItems: "center" as const,
-    //justifyContent: "space-between" as const,
     margin: "20px auto 0 auto",
-    paddingLeft: "20px",
-    paddingRight: "20px",
+    paddingLeft: "30px",
+    paddingRight: "30px",
   },
   title: {
-    fontSize: "2rem",
-    fontWeight: "bold",
-    border: `2px solid ${colors.btn_background}`,
-    borderColor: colors.btn_background,
-    borderRadius: 20,
-    paddingLeft: 10,
-    paddingRight: 10
+    fontSize: "24px",
+    fontWeight: "700",
+    color: "#1f2937",
+    borderBottom: "2px solid #3b82f6",
+    paddingBottom: "12px",
+    marginBottom: "20px",
   },
   pass_container: {
-    position: "relative",  // ← Importante para posicionar el botón
+    position: "relative",
     display: "inline-block"
   },
   input: {
     width: "80%",
-    padding: "10px",
-    margin: "10px 0", 
-    borderRadius: "5px",
-    border: "1px solid #ccc",
-    fontSize: "1rem",
-    backgroundColor: "white",
-    color: "black",
+    padding: "10px 12px",
+    margin: "8px 0", 
+    borderRadius: "6px",
+    border: "1px solid #e5e7eb",
+    fontSize: "14px",
+    backgroundColor: "#ffffff",
+    color: "#1f2937",
+    boxShadow: "0 1px 2px rgba(0, 0, 0, 0.02)",
   },
   button: {
-    display: "block",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "8px",
     color: "white",
-    padding: "10px 15px",
-    margin: "10px",
-    borderRadius: "20px",
+    padding: "10px 16px",
+    margin: "10px 0",
+    borderRadius: "6px",
     cursor: "pointer",
-    fontSize: "1rem",
+    fontSize: "14px",
+    fontWeight: "600",
     border: "none",
+    transition: "all 0.2s ease",
   },
   toggleButton: {
-    //position: "absolute",
-    top: "50%",
-    right: "10px",
-    transform: "translateY(-50%)",
     background: "none",
     border: "none",
     cursor: "pointer",
-    fontSize: "1.2rem",
-    marginTop: 35
+    padding: "8px",
+    marginTop: "8px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
   icon: {
-    marginRight: "10px", 
-    color: 'black'
+    color: '#6b7280'
   },
 };

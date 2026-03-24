@@ -10,6 +10,25 @@ export const getAllKehilot = query({
   },
 });
 
+export const getAllPerashiotList = query({
+  args: {
+    nombreKehila: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const kehila = await ctx.db
+      .query("Kehila")
+      .filter((q) => q.eq(q.field("nombre"), args.nombreKehila))
+      .first();
+
+    if (!kehila) {
+      throw new Error("Kehila no encontrada");
+    }
+
+    return kehila.perashiot;
+  }
+
+});
+
 /*--------------GET INFO OF ONE THING------------*/
 export const getKehilaName = query({
   args: {
@@ -51,7 +70,7 @@ export const getKehilaPerashaInfo = query({
     );
     
     if (perasha === undefined) {
-      throw new Error("Buscando:" + args.nombrePerasha + "Disponibles:" + kehila.perashiot.map(p => p.nombrePerasha));
+      throw new Error("No se encontro informacion de la perasha " + args.nombrePerasha);
     }
 
     return perasha;

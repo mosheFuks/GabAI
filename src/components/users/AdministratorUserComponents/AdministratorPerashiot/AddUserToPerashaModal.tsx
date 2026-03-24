@@ -1,27 +1,30 @@
 import { CSSProperties, useContext, useState } from 'react';
 import Modal from 'react-modal';
 import { colors } from '../../../../assets/colors'
-import { addPerashaToKehila, addAnAliaInAPerasha, getPerashaInfo } from '../../../../apis/requests';
+import { addAnAliaInAPerasha } from '../../../../apis/requests';
 import { PageContext } from '../../../../StoreInfo/page-storage';
 import { toast } from 'react-toastify';
-import { Alia, UserToAddInThePerasha } from '../../../../structs/structs';
+import { Alia } from '../../../../structs/structs';
 
 interface AddUserToAliaModalProps {
   openAliaModal: boolean;
   setOpenAliaModal: (openAliaModal: boolean) => void;
-  userToAddInThePerasha?: UserToAddInThePerasha;
+  userToAddInThePerasha?: any;
+  isFromUserDashboard?: boolean;
 }
 
-export const AddUserToAliaModal = ({openAliaModal, setOpenAliaModal, userToAddInThePerasha}: AddUserToAliaModalProps) => {
+export const AddUserToAliaModal = ({openAliaModal, setOpenAliaModal, userToAddInThePerasha, isFromUserDashboard}: AddUserToAliaModalProps) => {
   const { logedUser } = useContext(PageContext) as any
+  console.log("User to Add in Perasha: ", userToAddInThePerasha);
+  
 
-  const addPerasha = addPerashaToKehila();
+  //const addPerasha = addPerashaToKehila();
   const addAliaInAPerasha = addAnAliaInAPerasha();
   
   //const deletePerashiotInfo = deleteAllPerashiotInfo()
   //const deleteOnePerashaInfo = deletePerashaInfo()
   const [formAliaData, setFormAliaData] = useState<Alia>({
-    nombre: userToAddInThePerasha?.nombre!,
+    nombre: userToAddInThePerasha?.nombre! || userToAddInThePerasha?.nombreEspanol!,
     apellido: userToAddInThePerasha?.apellido!,
     nombreHebreo: userToAddInThePerasha?.nombreHebreo!,
     aniversario: userToAddInThePerasha?.aniversario!,
@@ -34,7 +37,7 @@ export const AddUserToAliaModal = ({openAliaModal, setOpenAliaModal, userToAddIn
     monto: 0,
     moneda: "",
   });
-  const perashaInfo = getPerashaInfo(logedUser.kehila, formAliaData.perasha!);
+  //const perashaInfo = getPerashaInfo(logedUser.kehila, formAliaData.perasha!);
 
   const parashiotByBook = {
     Bereshit: [ 
@@ -105,10 +108,6 @@ export const AddUserToAliaModal = ({openAliaModal, setOpenAliaModal, userToAddIn
   
   const closeModal = async () => {
     console.log("Form Alia Data: ", formAliaData);
-
-    if (perashaInfo === undefined) {
-      await addPerasha(logedUser.kehila, formAliaData.perasha!);
-    }
     await addAliaInAPerasha(logedUser.kehila, formAliaData.perasha!, formAliaData);
     toast.success("Se agregó un nuevo Mitpalel a la Parashá", {
         position: "top-right",
@@ -206,35 +205,39 @@ export const AddUserToAliaModal = ({openAliaModal, setOpenAliaModal, userToAddIn
         contentLabel="Perashiot Info Modal"
       >
         <h2 style={{ textAlign: 'center', color: 'blue'}}>
-          Selecciona una Alia para {formAliaData.nombre} {formAliaData.apellido}
+          Selecciona una Alia para {formAliaData.nombre } {formAliaData.apellido}
         </h2>
-        <div>    
-            <label htmlFor="userMinian" style={{ display: "block", fontWeight: 'bold'}}>Minian</label>
-            <input
-              type="text"
-              id="userMinian"
-              value={formAliaData.minian}
-              style={styles.input}
-              disabled={true}
-            />
+        <div> 
+          {isFromUserDashboard && (
+            <>
+              <label htmlFor="userMinian" style={{ display: "block", fontWeight: 'bold'}}>Minian</label>
+              <input
+                type="text"
+                id="userMinian"
+                value={formAliaData.minian}
+                style={styles.input}
+                disabled={true}
+              />
 
-            <label htmlFor="userAniv" style={{ display: "block", fontWeight: 'bold'}}>Aniversario</label>
-            <input
-              type="text"
-              id="userAniv"
-              value={formAliaData.aniversario}
-              style={styles.input}
-              disabled={true}
-            />
+              <label htmlFor="userAniv" style={{ display: "block", fontWeight: 'bold'}}>Aniversario</label>
+              <input
+                type="text"
+                id="userAniv"
+                value={formAliaData.aniversario}
+                style={styles.input}
+                disabled={true}
+              />
 
-            <label htmlFor="userAnivHebreo" style={{ display: "block", fontWeight: 'bold'}}>Fecha Aniversario Hebreo</label>
-            <input
-              type="text"
-              id="userAnivHebreo"
-              value={formAliaData.fechaAniversarioHebreo}
-              style={styles.input}
-              disabled={true}
-            />
+              <label htmlFor="userAnivHebreo" style={{ display: "block", fontWeight: 'bold'}}>Fecha Aniversario Hebreo</label>
+              <input
+                type="text"
+                id="userAnivHebreo"
+                value={formAliaData.fechaAniversarioHebreo}
+                style={styles.input}
+                disabled={true}
+              />
+              </>
+          )}
 
             <label htmlFor="userGrupo" style={{ display: "block", fontWeight: 'bold'}}>Status Halajico</label>
             <input

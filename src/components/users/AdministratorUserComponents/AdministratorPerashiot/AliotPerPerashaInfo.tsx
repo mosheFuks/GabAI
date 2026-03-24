@@ -1,10 +1,7 @@
 import { CSSProperties, useContext, useState } from "react";
 import { Alia } from '../../../../structs/structs';
-
 import { useNavigate, useParams } from "react-router-dom";
-
-import {FaArrowLeft } from "react-icons/fa";
-import { colors } from "../../../../assets/colors";
+import { FaArrowLeft, FaSearch, FaDownload } from "react-icons/fa";
 import { AddUserToAliaModal } from "./AddUserToPerashaModal";
 import { PageContext } from "../../../../StoreInfo/page-storage";
 import { DelAllPereashiotInfoModal } from "./DelAllPerashiotInfoModal";
@@ -12,6 +9,7 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { useQuery } from "convex/react";
 import { api } from "../../../../../convex/_generated/api";
+import { colors } from "../../../../assets/colors";
 
 export const AliotPerPershaInfo = () => {
   const { logedUser } = useContext(PageContext) as any;
@@ -22,6 +20,8 @@ export const AliotPerPershaInfo = () => {
   const [openAliaModal, setOpenAliaModal] = useState<boolean>(false)
   //const [addUserAliaModal, setOpenAddUserAliaModal] = useState<boolean>(false)
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false)
+  const [searchMinian, setSearchMinian] = useState<string>("")
+  const [clicked, setClicked] = useState<boolean>(false)
 
   const navigate = useNavigate();
 
@@ -32,6 +32,9 @@ export const AliotPerPershaInfo = () => {
     nombre: logedUser.kehila,
     nombrePerasha: perashaName
   });
+
+  console.log("Info os the current Perasha: ", perasha);
+  
 
   console.log("Perasha info info: ", perasha);
   
@@ -96,58 +99,81 @@ export const AliotPerPershaInfo = () => {
     doc.save(`Aliot_${perashaName}.pdf`);
   };
 
-  
+  const searchAliaByMinian = (key: string) => {
+    setSearchMinian(key);
+  };
+
   return (
     <>
-    <div style={styles.container}>
-      <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%", height: "70px", marginBottom: '20px'}}>
-        <button style={{...styles.button, backgroundColor: "green"}} onClick={() => navigate("/administrator-dashboard")}>
-          <FaArrowLeft className="text-black" /> Lista de Perashiot
-        </button>
-        <h2 style={{...styles.title}}>
-          {id?.replace(/([a-z])([A-Z])/g, '$1 $2')}
-        </h2>
-        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px'}}>
-          {aliotList !== "NOT FOUND" && aliotList.length > 0 ? (
-            <>
-              <button style={{...styles.delButton, backgroundColor: aliotList.length > 0 ? "blue" : "gray"}} onClick={handleDownloadPDF} disabled={aliotList.length <= 0}>Descargar</button>
-              <button style={{...styles.delButton, backgroundColor: "orange"}} onClick={() => navigate(`/perasha-info/donation/${id}`)}>Agregar Donaciones</button>
-              <button style={styles.delButton} onClick={() => setOpenDeleteModal(true)}>Eliminar</button>
-            </>
-          ) : null}
+      <div style={styles.container}>
+        {/* Header */}
+        <div style={styles.header}>
+          <div style={styles.headerLeft}>
+            <button style={styles.backBtn} onClick={() => navigate("/administrator-dashboard")}>
+              <FaArrowLeft /> Volver
+            </button>
+          </div>
+          <div style={styles.headerRight}>
+            {aliotList !== "NOT FOUND" && aliotList.length > 0 && (
+              <>
+                <button style={styles.downloadBtn} onClick={handleDownloadPDF} title="Descargar PDF">
+                  <FaDownload /> Descargar
+                </button>
+              </>
+            )}
+            {aliotList !== "NOT FOUND" && aliotList.length > 0 && (
+              <>
+                <button style={styles.actionBtn} onClick={() => navigate(`/perasha-info/donation/${id}`)}>+ Donaciones</button>
+                <button style={{...styles.actionBtn, backgroundColor: "#ef4444"}} onClick={() => setOpenDeleteModal(true)}>Eliminar</button>
+              </>
+            )}
+          </div>
         </div>
-      </div>
-      
-      <div style={{ flex: 1, height: "400px", overflowY: "auto", borderRadius: "5px" }}>
-        <div>
-            {aliotList !== "NOT FOUND" && aliotList.length > 0 ? (
-              aliotList.filter(a => a.tipoAlia === "ALIA").length > 0 ? (
-                <table style={styles.table}>
-                  <thead>
-                    <tr>
-                      <th style={styles.th}>Alia</th>
-                      <th style={styles.th}>Nombre</th>
-                      <th style={styles.th}>Apellido</th>
-                      <th style={styles.th}>Nombre Hebreo</th>
-                      <th style={styles.th}>Aniversario</th>
-                      <th style={styles.th}>Fecha Aniversario en Hebreo</th>
-                      <th style={styles.th}>Minian</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {aliotList
-                      .filter((alia: Alia) => alia.tipoAlia === "ALIA")
-                      .map((alia: Alia, index: number) => {
-                        const {
-                          alia: nomAlia,
-                          nombre,
-                          apellido,
-                          nombreHebreo,
-                          aniversario: anive,
-                          fechaAniversarioHebreo: fechaAnivHeb,
-                          minian
-                        } = alia;
+        <div style={{...styles.headerRight, justifyContent: "space-between", marginTop: "40px", marginBottom: "20px"}}>
+          <h1 style={styles.title}>Aliot de {id?.replace(/([a-z])([A-Z])/g, '$1 $2')}</h1>
+          <div style={styles.searchContainer}>
+            <FaSearch style={styles.searchIcon} />
+            <input
+              type="text"
+              placeholder="Busca por Minian"
+              style={{...styles.searchInput, borderColor: clicked ? "#3b82f6" : "#e5e7eb"}}
+              value={searchMinian}
+              onChange={(e) => searchAliaByMinian(e.target.value)}
+              onClick={() => setClicked(true)}
+              onBlur={() => setClicked(false)}
+            />
+          </div>
+        </div>
 
+        {/* Content */}
+        <div style={styles.content}>
+          {aliotList !== "NOT FOUND" && aliotList.length > 0 ? (
+            (() => {
+              const filteredAlias = aliotList
+                .filter((alia: Alia) => alia.tipoAlia === "ALIA")
+                .filter((alia: Alia) => {
+                  const keySearch = searchMinian.trim().toLowerCase();
+                  if (keySearch === "") return true;
+                  return alia.minian?.toLowerCase().startsWith(keySearch);
+                });
+
+              return filteredAlias.length > 0 ? (
+                <div style={styles.tableWrapper}>
+                  <table style={styles.table}>
+                    <thead>
+                      <tr>
+                        <th style={styles.th}>Alia</th>
+                        <th style={styles.th}>Nombre</th>
+                        <th style={styles.th}>Apellido</th>
+                        <th style={styles.th}>Nombre Hebreo</th>
+                        <th style={styles.th}>Aniversario</th>
+                        <th style={styles.th}>Fecha Hebrea</th>
+                        <th style={styles.th}>Minian</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredAlias.map((alia: Alia, index: number) => {
+                        const { alia: nomAlia, nombre, apellido, nombreHebreo, aniversario: anive, fechaAniversarioHebreo: fechaAnivHeb, minian } = alia;
                         return (
                           <tr key={index}>
                             <td style={styles.td} data-label="NomAlia">{nomAlia}</td>
@@ -160,183 +186,201 @@ export const AliotPerPershaInfo = () => {
                           </tr>
                         );
                       })}
-                  </tbody>
-                </table>
+                    </tbody>
+                  </table>
+                </div>
               ) : (
-                <div style={{ textAlign: 'center', marginTop: '20px', fontSize: '3rem' }}>
-                  <h5 style={{ color: colors.btn_background }}>
-                    No hay información de las aliot para esta perasha
-                  </h5>
+                <div style={styles.emptyState}>
+                  <h3 style={styles.emptyStateText}>No se seleccionaron Mitpalelim para el Minian seleccionado</h3>
                 </div>
               )
-            ) : (
-              <div style={{ textAlign: 'center', marginTop: '20px', fontSize: '3rem' }}>
-                <h5 style={{ color: colors.btn_background }}>No hay información disponible</h5>
-              </div>
-            )}
+            })()
+          ) : (
+            <div style={styles.emptyState}>
+              <h3 style={styles.emptyStateText}>No hay información de las aliot para esta perasha</h3>
+              <p style={styles.emptyStateSubtext}>Para agregar información, haz click en el botón "+" al seleccionar un Mitpalel</p>
+            </div>
+          )}
         </div>
       </div>
 
-      {openAliaModal ? (
-        <AddUserToAliaModal 
+      {openAliaModal && (
+        <AddUserToAliaModal
           setOpenAliaModal={setOpenAliaModal}
           openAliaModal={openAliaModal}
           userToAddInThePerasha={logedUser}
         />
-      ) : (
-        null
       )}
 
-      {
-        <DelAllPereashiotInfoModal
-          action={"DEL_PERASHA"}
-          openDeleteModal={openDeleteModal}
-          setOpenDeleteModal={setOpenDeleteModal}
-          typeOfAliotToDelete={"ALIA"}
-        />
-      }
-
-    </div>
+      <DelAllPereashiotInfoModal
+        action={"DEL_PERASHA"}
+        openDeleteModal={openDeleteModal}
+        setOpenDeleteModal={setOpenDeleteModal}
+        typeOfAliotToDelete={"ALIA"}
+      />
     </>
   );
 };
 
-<style>
-{`
-  @media (max-width: 768px) {
-    table {
-      display: block;
-      width: 100%;
-    }
-    thead {
-      display: none;
-    }
-    tbody {
-      display: block;
-    }
-    tr {
-      display: block;
-      margin-bottom: 15px;
-      border: 1px solid #ccc;
-      padding: 10px;
-      border-radius: 8px;
-      background: #f9f9f9;
-    }
-    td {
-      display: flex;
-      justify-content: space-between;
-      padding: 5px 10px;
-      border: none;
-      border-bottom: 1px solid #eee;
-    }
-    td::before {
-      content: attr(data-label);
-      font-weight: bold;
-      flex-basis: 50%;
-    }
-  }
-`}
-</style>
-
-const styles: { [key: string]: CSSProperties }= {
+const styles: { [key: string]: CSSProperties } = {
   container: {
     backgroundColor: colors.main_background,
-    padding: "10px",
+    //marginBottom: '200px',
+    padding: "15px",
     borderRadius: "25px",
-    width: "95%",
-    minHeight: "75vh",
-    maxHeight: "90vh",
+    width: "95%", // CAMBIO AQUÍ
+    minWidth: "720px",
+    //minHeight: "100%", // CAMBIO AQUÍ (antes 75vh)
+    height: '85vh',
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
-    //justifyContent: "space-between",
+    //alignItems: "center",
     margin: "20px auto 0 auto",
-    paddingLeft: "20px",
-    paddingRight: "20px",
-  },
-  title: {
-    fontSize: "2rem",
-    fontWeight: "bold",
-    border: `2px solid ${colors.btn_background}`,
-    borderColor: colors.btn_background,
-    borderRadius: 20,
-    paddingLeft: 10,
-    paddingRight: 10,
-    //marginRight: 100
-  },
-  button: {
-    backgroundColor: colors.btn_background,
-    color: "white",
-    padding: "10px 15px",
-    margin: "10px",
-    borderRadius: "20px",
-    cursor: "pointer",
-    fontSize: "1rem",
-    border: "none",
-    justifyContent: "center",
-    fontWeight: 'bold'
-  },
-  rightGroup: {
+    //textAlign: "center"
+  } as CSSProperties,
+  header: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: "20px",
+    flexWrap: "wrap" as const,
+  } as CSSProperties,
+  headerLeft: {
     display: "flex",
     alignItems: "center",
-    gap: "10px",
-  },
-  input: {
-    backgroundColor: colors.btn_background,
+    gap: "20px",
+  } as CSSProperties,
+  backBtn: {
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+    backgroundColor: "#6366f1",
+    color: "#ffffff",
+    border: "none",
     padding: "10px 16px",
-    borderRadius: "8px",
+    borderRadius: "6px",
+    fontSize: "14px",
+    fontWeight: "600",
+    cursor: "pointer",
+    transition: "background-color 0.2s",
+  } as CSSProperties,
+  title: {
+    fontSize: "28px",
     fontWeight: "bold",
+    color: "#1f2937",
+    margin: 0,
+  } as CSSProperties,
+  headerRight: {
+    display: "flex",
+    gap: "12px",
+    alignItems: "center",
+    flexWrap: "wrap" as const,
+  } as CSSProperties,
+  searchContainer: {
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+    backgroundColor: "#ffffff",
+    border: "1px solid #e5e7eb",
+    borderRadius: "6px",
+    padding: "8px 12px",
+    minWidth: "240px",
+  } as CSSProperties,
+  searchIcon: {
+    color: "#9ca3af",
+    fontSize: "16px",
+  } as CSSProperties,
+  searchInput: {
     border: "none",
     outline: "none",
-    width: "180px",
-    color: "white",
-    fontSize: "16px",
-  },
+    backgroundColor: "transparent",
+    fontSize: "14px",
+    flex: 1,
+    color: "#374151",
+    transition: "border-color 0.2s",
+  } as CSSProperties,
+  downloadBtn: {
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+    backgroundColor: "#10b981",
+    color: "#ffffff",
+    border: "none",
+    padding: "10px 16px",
+    borderRadius: "6px",
+    fontSize: "14px",
+    fontWeight: "600",
+    cursor: "pointer",
+    transition: "background-color 0.2s",
+  } as CSSProperties,
+  actionBtn: {
+    backgroundColor: "#3b82f6",
+    color: "#ffffff",
+    border: "none",
+    padding: "10px 16px",
+    borderRadius: "6px",
+    fontSize: "14px",
+    fontWeight: "600",
+    cursor: "pointer",
+    transition: "background-color 0.2s",
+  } as CSSProperties,
+  content: {
+    flex: 1,
+    overflowY: "auto",
+  } as CSSProperties,
+  tableWrapper: {
+    height: 'auto',
+    overflowY: 'auto',
+    padding: '10px',
+    borderRadius: '5px',
+  } as CSSProperties,
   table: {
     borderCollapse: 'separate',
-    borderSpacing: '10px 12px', // espacio vertical entre filas
+    borderSpacing: '10px 12px',
+    minWidth: '800px', // ✅ clave para habilitar el scroll horizontal
     width: '100%',
-  },
+  } as CSSProperties,
   th: {
     padding: '12px 16px',
     textAlign: 'center',
-    fontWeight: 'bolder ',
-    background: '#f9f9f9',
-    color: '#333',
-    fontSize: '1.05rem',
+    fontWeight: '700',
+    background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
+    color: '#ffffff',
+    fontSize: '0.95rem',
     position: 'sticky',
     top: 0,
     zIndex: 1,
-    borderRadius: '8px', // importante
-    border: '2px solid #040404ff',
-  },
+    borderRadius: '8px',
+    border: '1px solid #1e40af',
+  } as CSSProperties,
   td: {
     padding: '14px 16px',
-    background: '#fff',
-    fontSize: '1.05rem',
-    color: '#333',
-    borderRadius: '8px', // importante
-    border: '2px solid #cbbabaff',
+    background: '#ffffff',
+    fontSize: '0.95rem',
+    color: '#1f2937',
+    borderRadius: '8px',
+    border: '1px solid #e5e7eb',
     boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
-    textAlign: 'center',
-  },
-  pendingCard: {
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: '10px',
-    border: '3px solid orange',
-    borderRadius: '20px',
-    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
-    backgroundColor: '#f9f9f9'
+    transition: 'all 0.2s ease',
   } as CSSProperties,
-  delButton: {
-    backgroundColor: "red",
-    padding: "10px 16px",
+  emptyState: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "60px 20px",
+    backgroundColor: "#ffffff",
     borderRadius: "8px",
-    fontWeight: "bold",
-    border: "1px solid green",
-    cursor: "pointer",
-    color: "white",
+    textAlign: "center",
+  } as CSSProperties,
+  emptyStateText: {
     fontSize: "16px",
+    color: "#6b7280",
+    margin: "0 0 8px 0",
+  } as CSSProperties,
+  emptyStateSubtext: {
+    fontSize: "14px",
+    color: "#9ca3af",
+    margin: 0,
   } as CSSProperties,
 };

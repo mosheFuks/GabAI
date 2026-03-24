@@ -1,7 +1,7 @@
 import { CSSProperties, useContext, useEffect, useState } from "react";
 import { colors } from "../../../assets/colors";
 import { VisitorUser } from "../../../structs/structs";
-import { FaArrowAltCircleRight } from "react-icons/fa";
+import { FaArrowAltCircleRight, FaSearch } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { NavigationDashboardButtons } from "./NavigationDahboardButtons";
 import { ThisWeekAniversariesList } from "./AdministratorPerashiot/ThisWeekAniversariesList";
@@ -42,17 +42,34 @@ export const AdministratorDefaultDashboard = () => {
   
   return (
     <div style={styles.container}>     
-      <NavigationDashboardButtons 
-        peopleList={peopleList} 
-        setPeopleFilter={setPeopleFilter} 
-        peopleFilter={peopleFilter} 
+      <NavigationDashboardButtons
         setStep={setStep}
         step={step}  />
 
       {step == 1 ? (
         <div style={styles.stepsContainer}>
-          <div style={{ fontSize: '2rem', fontWeight: 'bold', textDecorationLine: 'underline', textDecorationColor: 'orange', marginTop: '10px', marginBottom: '10px'}}>
-            {`Lista de Mitpalelim de la Kehila`}
+          <div style={styles.header}>
+            <h2 style={styles.pageTitle}>Lista de Mitpalelim de la Kehila</h2>
+            <div style={styles.headerRight}>
+              <div style={styles.searchBox}>
+                <FaSearch style={{ fontSize: "18px", color: "#6b7280" }} />
+                <input
+                  type="text"
+                  placeholder="Buscar por nombre"
+                  style={styles.searchInput}
+                  onChange={(e) => {
+                    let keySearch = e.target.value.toLowerCase();
+                    let people_filtered: any = [];
+                    if (peopleList!.length > 0) {
+                      people_filtered = peopleList!.filter(
+                        peop => peop.nombreEspanol!.toLowerCase().startsWith(keySearch) || peop.apellido!.toLowerCase().startsWith(keySearch)
+                      );
+                    }
+                    setPeopleFilter(people_filtered);
+                  }}
+                />
+              </div>
+            </div>
           </div>
           <div style={{ flex: 1, overflowY: "auto", padding: "10px", borderRadius: "5px" }}>
             {peopleFilter != undefined && peopleFilter!.length > 0 ? (
@@ -171,6 +188,43 @@ const styles: {  [key: string]: CSSProperties }= {
     overflowY: 'auto', // en vez de 'hidden'
     overflowX: "auto"
   },
+  header: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: "20px",
+    flexWrap: "wrap" as const,
+    marginBottom: "20px",
+  },
+  pageTitle: {
+    fontSize: "28px",
+    fontWeight: "bold",
+    color: "#1f2937",
+    margin: 0,
+  },
+  headerRight: {
+    display: "flex",
+    alignItems: "center",
+    gap: "12px",
+  },
+  searchBox: {
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+    backgroundColor: "#ffffff",
+    border: "1px solid #e5e7eb",
+    borderRadius: "6px",
+    padding: "8px 12px",
+    minWidth: "240px",
+  },
+  searchInput: {
+    border: "none",
+    outline: "none",
+    backgroundColor: "transparent",
+    fontSize: "14px",
+    flex: 1,
+    color: "#1f2937",
+  },
   title: {
     fontSize: "2rem",
     fontWeight: "bold",
@@ -201,10 +255,12 @@ const styles: {  [key: string]: CSSProperties }= {
     padding: "10px 16px",
     borderRadius: "8px",
     fontWeight: "bold",
-    border: "1px solid green",
+    border: "2px solid #059669",
     cursor: "pointer",
     color: "white",
     fontSize: "16px",
+    boxShadow: '0 4px 12px rgba(16, 185, 129, 0.2)',
+    transition: 'all 0.2s ease',
   },
   rightGroup: {
     display: "flex",
@@ -241,32 +297,34 @@ const styles: {  [key: string]: CSSProperties }= {
   th: {
     padding: '12px 16px',
     textAlign: 'center',
-    fontWeight: 'bolder ',
-    background: '#f9f9f9',
-    color: '#333',
-    fontSize: '1.05rem',
+    fontWeight: '700',
+    background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
+    color: '#ffffff',
+    fontSize: '0.95rem',
     position: 'sticky',
     top: 0,
     zIndex: 1,
-    borderRadius: '8px', // importante
-    border: '2px solid #040404ff',
+    borderRadius: '8px',
+    border: '1px solid #1e40af',
   },
   td: {
     padding: '14px 16px',
-    background: '#fff',
-    fontSize: '1.05rem',
-    color: '#333',
-    borderRadius: '8px', // importante
-    border: '2px solid #cbbabaff',
+    background: '#ffffff',
+    fontSize: '0.95rem',
+    color: '#1f2937',
+    borderRadius: '8px',
+    border: '1px solid #e5e7eb',
     boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+    transition: 'all 0.2s ease',
   },
   statusBadge: {
     display: 'inline-block',
-    padding: '4px 10px',
+    padding: '6px 14px',
     borderRadius: '20px',
-    fontWeight: 'bold',
-    fontSize: '0.8rem',
+    fontWeight: '700',
+    fontSize: '0.85rem',
     textTransform: 'uppercase',
+    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.12)',
   },
   cellPopover: {
     position: 'relative',
@@ -291,7 +349,7 @@ const styles: {  [key: string]: CSSProperties }= {
     marginBottom: '20px',
     justifyContent: 'space-between',
     alignItems: 'center'
-  },
+  } as CSSProperties,
   filterButton: {
     border: "1px solid blue",
     color: 'black',

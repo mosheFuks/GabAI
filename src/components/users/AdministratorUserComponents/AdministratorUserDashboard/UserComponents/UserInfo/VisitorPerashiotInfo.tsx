@@ -83,25 +83,25 @@ export const VisitorPerashiotInfo = ({ logedVisitorUser }: FormPersonalDataProps
   
   
   return (
-    <div style={{ flex: 1, overflowY: "auto", padding: "10px", borderRadius: "5px", minHeight: 0 }}>
+    <div style={{ flex: 1, overflowY: "auto", padding: "20px", borderRadius: "12px", minHeight: 0, backgroundColor: "#ffffff" }}>
       {completeIortzaiList.length > 0 ? (
         <div>
           <div style={styles.headerButtons}>
-            <div style={{ display: "flex", flexDirection: "row", border: '2px solid orange', borderRadius: '50px', paddingLeft: '10px', paddingRight: '10px', justifyContent: 'center', gap: '20px'}}>
+            <div style={{ display: "flex", flexDirection: "row", border: '1px solid #e5e7eb', borderRadius: '8px', paddingLeft: '12px', paddingRight: '12px', justifyContent: 'center', gap: '20px', backgroundColor: '#ffffff', boxShadow: '0 1px 2px rgba(0, 0, 0, 0.02)'}}>
               <div>
-                <h3 onClick={() => setStep(1)} style={{...styles.sectionTitle, color: step === 1 ? "orange" : "black", textDecoration: step === 1 ? "underline" : "none"}}>Proximos Yortzait</h3>
+                <h3 onClick={() => setStep(1)} style={{...styles.sectionTitle, color: step === 1 ? "#3b82f6" : "#6b7280", textDecoration: step === 1 ? "underline" : "none", paddingBottom: step === 1 ? "8px" : "0", borderBottom: step === 1 ? "2px solid #3b82f6" : "none"}}>Proximos Yortzait</h3>
               </div>
 
               <div>
                 <div style={{ display: 'flex'}}>
-                  <h3 onClick={() => setStep(2)} style={{...styles.sectionTitle, color: step === 2 ? "orange" : "black", textDecoration: step === 2 ? "underline" : "none"}}>Aniversarios Personales</h3>
+                  <h3 onClick={() => setStep(2)} style={{...styles.sectionTitle, color: step === 2 ? "#3b82f6" : "#6b7280", textDecoration: step === 2 ? "underline" : "none", paddingBottom: step === 2 ? "8px" : "0", borderBottom: step === 2 ? "2px solid #3b82f6" : "none"}}>Aniversarios Personales</h3>
                 </div>
               </div>
 
               {logedVisitorUser.hijos.length > 0 && (
                 <div>
                   <div style={{ display: 'flex', marginRight: '20px'}}>
-                    <h3 onClick={() => setStep(3)} style={{...styles.sectionTitle, color: step === 3 ? "orange" : "black", textDecoration: step === 3 ? "underline" : "none"}}>Aniversarios de sus hijos</h3>
+                    <h3 onClick={() => setStep(3)} style={{...styles.sectionTitle, color: step === 3 ? "#3b82f6" : "#6b7280", textDecoration: step === 3 ? "underline" : "none", paddingBottom: step === 3 ? "8px" : "0", borderBottom: step === 3 ? "2px solid #3b82f6" : "none"}}>Aniversarios de sus hijos</h3>
                   </div>
                 </div>
               )}
@@ -290,24 +290,24 @@ const styles = {
   th: {
     padding: '12px 16px',
     textAlign: 'center',
-    fontWeight: 'bolder ',
-    background: '#f9f9f9',
-    color: '#333',
-    fontSize: '1.05rem',
+    fontWeight: '600',
+    backgroundColor: '#f9fafb',
+    color: '#374151',
+    fontSize: '14px',
     position: 'sticky',
     top: 0,
     zIndex: 1,
-    borderRadius: '8px', // importante
-    border: '2px solid #040404ff',
+    borderRadius: '6px',
+    border: '1px solid #e5e7eb',
   } as CSSProperties,
   td: {
-   padding: '14px 16px',
-    background: '#fff',
-    fontSize: '1.05rem',
-    color: '#333',
-    borderRadius: '8px', // importante
-    border: '2px solid #cbbabaff',
-    boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+    padding: '12px 16px',
+    background: '#ffffff',
+    fontSize: '14px',
+    color: '#374151',
+    borderRadius: '6px',
+    border: '1px solid #e5e7eb',
+    boxShadow: '0 1px 2px rgba(0, 0, 0, 0.02)',
     textAlign: "center"
   } as CSSProperties,
   cellPopover: {
@@ -335,22 +335,26 @@ const styles = {
     alignItems: 'center'
   },
   filterButton: {
-    border: "1px solid blue",
-    color: 'black',
-    padding: '10px 15px',
-    borderRadius: '20px',
+    border: "none",
+    color: '#374151',
+    padding: '8px 16px',
+    borderRadius: '6px',
     cursor: 'pointer',
-    fontSize: '1rem',
-    backgroundColor: colors.main_background
+    fontSize: '14px',
+    fontWeight: '600',
+    backgroundColor: '#f3f4f6',
+    transition: 'all 0.2s ease',
   } as CSSProperties,
   button: {
     border: "none",
     color: 'white',
-    padding: '10px 15px',
-    borderRadius: '20px',
+    padding: '10px 16px',
+    borderRadius: '6px',
     cursor: 'pointer',
-    fontSize: '1rem',
-    backgroundColor: colors.btn_background
+    fontSize: '14px',
+    fontWeight: '600',
+    backgroundColor: colors.btn_background,
+    transition: 'background-color 0.2s',
   } as CSSProperties,
   sectionTitle: {
     cursor: "pointer", 

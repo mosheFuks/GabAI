@@ -263,7 +263,12 @@ export const DateToDateAniversary = ({ peopleList, setFilteredAniversaries, days
       </select>
 
       <button
-        style={{ ...styles.button, backgroundColor: dayStart == "" || dayEnd == "" ? "gray" : "blue", borderColor: clicked ? "orange" : "#ccc" }}
+        style={{ 
+          ...styles.button, 
+          backgroundColor: dayStart == "" || dayEnd == "" ? "#d1d5db" : "#3b82f6",
+          borderColor: dayStart == "" || dayEnd == "" ? "#d1d5db" : "#2563eb",
+          boxShadow: dayStart == "" || dayEnd == "" ? "none" : "0 4px 12px rgba(59, 130, 246, 0.3)",
+        }}
         onClick={handleBuscar}
         disabled={dayStart == "" || dayEnd == ""}
         onFocus={() => setClicked(true)}
@@ -279,42 +284,51 @@ const styles = {
   container: {
     display: 'flex',
     alignItems: 'center',
-    gap: '8px',
+    gap: '12px',
     fontFamily: 'sans-serif',
-    fontSize: '14px'
+    fontSize: '14px',
+    flexWrap: 'wrap' as const,
   } as CSSProperties,
   label: {
-    marginRight: '4px',
+    marginRight: '0px',
+    fontWeight: '500',
+    color: '#6b7280',
   } as CSSProperties,
   input: {
-    width: "10%",
-    padding: "10px",
-    margin: "10px 0", 
-    borderRadius: "5px",
-    border: "1px solid #ccc",
-    fontSize: "1rem",
+    width: "70px",
+    padding: "10px 12px",
+    margin: "0", 
+    borderRadius: "6px",
+    border: "1px solid #e5e7eb",
+    fontSize: "14px",
     backgroundColor: "white",
-    color: "black",
+    color: "#1f2937",
+    fontWeight: '500',
+    transition: 'all 0.2s ease',
   } as CSSProperties,
   select: {
-    width: "20%",
-    padding: "10px",
-    margin: "10px 0", 
-    borderRadius: "5px",
-    border: "1px solid #ccc",
-    fontSize: "1rem",
+    width: "140px",
+    padding: "10px 12px",
+    margin: "0", 
+    borderRadius: "6px",
+    border: "1px solid #e5e7eb",
+    fontSize: "14px",
     backgroundColor: "white",
-    color: "black", 
+    color: "#1f2937",
+    fontWeight: '500',
+    cursor: 'pointer',
+    transition: 'all 0.2s ease',
   } as CSSProperties,
   button: {
-    display: "block",
+    display: "inline-flex",
     color: "white",
-    padding: "10px 15px",
-    margin: "10px",
-    borderRadius: "20px",
+    padding: "10px 20px",
+    margin: "0",
+    borderRadius: "6px",
     cursor: "pointer",
-    fontSize: "1rem",
-    border: "none",
-    fontWeight: "bold"
+    fontSize: "14px",
+    border: "1.5px solid transparent",
+    fontWeight: "600",
+    transition: "all 0.2s ease",
   } as CSSProperties,
 };

@@ -19,11 +19,11 @@ export const NavigationButtonSignUp = ({step, setStep, setModalRealSignInfo, fro
     return (
         <div style={{ display: "flex", justifyContent: "space-between", width: "100%", flexDirection: "row", alignItems: "center"}}>,
             <div style={{ display: "flex", flexDirection: "row", width: "100%", alignContent: "center", justifyContent: "center" }}>
-                <h3 onClick={() => setStep(1)} style={{...styles.sectionTitle, color: step === 1 ? colors.btn_background : "black", textDecoration: step === 1 ? "underline" : "none"}}>Datos Personales</h3>
-                <h3 onClick={() => setStep(2)} style={{...styles.sectionTitle, color: step === 2 ? colors.btn_background : "black", textDecoration: step === 2 ? "underline" : "none"}}>Datos de Kehila</h3>
-                <h3 onClick={() => setStep(3)} style={{...styles.sectionTitle, color: step === 3 ? colors.btn_background : "black", textDecoration: step === 3 ? "underline" : "none"}}>Datos de Familia</h3>
-                {fromPage == "homeVisitorUser" || fromPage == "userDashboardPage" ? (<h3 onClick={() => setStep(4)} style={{...styles.sectionTitle, color: step === 4 ? colors.btn_background : "black", textDecoration: step === 4 ? "underline" : "none"}}>Cuenta</h3>) : null}
-                {fromPage == "userDashboardPage" ? (<h3 onClick={() => setStep(5)} style={{...styles.sectionTitle, color: step === 5 ? colors.btn_background : "black", textDecoration: step === 5 ? "underline" : "none"}}>Proximas Aliot</h3>) : null}
+                <h3 onClick={() => setStep(1)} style={{...styles.sectionTitle, color: step === 1 ? "#3b82f6" : "#6b7280", borderBottom: step === 1 ? "2px solid #3b82f6" : "none", paddingBottom: step === 1 ? "8px" : "0"}}>Datos Personales</h3>
+                <h3 onClick={() => setStep(2)} style={{...styles.sectionTitle, color: step === 2 ? "#3b82f6" : "#6b7280", borderBottom: step === 2 ? "2px solid #3b82f6" : "none", paddingBottom: step === 2 ? "8px" : "0"}}>Datos de Kehila</h3>
+                <h3 onClick={() => setStep(3)} style={{...styles.sectionTitle, color: step === 3 ? "#3b82f6" : "#6b7280", borderBottom: step === 3 ? "2px solid #3b82f6" : "none", paddingBottom: step === 3 ? "8px" : "0"}}>Datos de Familia</h3>
+                {fromPage == "homeVisitorUser" || fromPage == "userDashboardPage" ? (<h3 onClick={() => setStep(4)} style={{...styles.sectionTitle, color: step === 4 ? "#3b82f6" : "#6b7280", borderBottom: step === 4 ? "2px solid #3b82f6" : "none", paddingBottom: step === 4 ? "8px" : "0"}}>Cuenta</h3>) : null}
+                {fromPage == "userDashboardPage" ? (<h3 onClick={() => setStep(5)} style={{...styles.sectionTitle, color: step === 5 ? "#3b82f6" : "#6b7280", borderBottom: step === 5 ? "2px solid #3b82f6" : "none", paddingBottom: step === 5 ? "8px" : "0"}}>Proximas Aliot</h3>) : null}
             </div>
             <div style={{ display: "flex", flexDirection: "row", width: "100%", alignContent: "center", justifyContent: "flex-end" }}>
                 {step === 1 && (<button type="button" onClick={nextStep} style={styles.button}>Siguiente</button>)}
@@ -66,27 +66,33 @@ const styles: { [key: string]: CSSProperties }= {
     cursor: "pointer", 
     alignSelf: "center",
     textAlign: 'center', 
-    marginRight: 20
+    marginRight: 20,
+    fontSize: "15px",
+    fontWeight: "600",
+    transition: "all 0.2s ease",
   },
   button: {
     backgroundColor: colors.btn_background,
     color: "white",
-    padding: "10px 15px",
+    padding: "10px 16px",
     margin: "10px",
-    borderRadius: "20px",
+    borderRadius: "6px",
     cursor: "pointer",
-    fontSize: "1rem",
+    fontSize: "14px",
+    fontWeight: "600",
     border: "none",
+    transition: "all 0.2s ease",
   },
   regi_button: {
     backgroundColor: "white",
     color: colors.btn_background,
-    padding: "10px 15px",
+    padding: "10px 16px",
     margin: "10px",
-    borderRadius: "20px",
+    borderRadius: "6px",
     cursor: "pointer",
-    fontSize: "1rem",
-    border: "none",
-    fontWeight: 'bolder'
+    fontSize: "14px",
+    fontWeight: "600",
+    border: `1px solid ${colors.btn_background}`,
+    transition: "all 0.2s ease",
   } 
 };

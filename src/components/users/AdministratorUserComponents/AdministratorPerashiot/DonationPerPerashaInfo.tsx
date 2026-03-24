@@ -1,57 +1,59 @@
-import { CSSProperties, useContext, useEffect, useState } from "react";
+import { CSSProperties, useContext, useEffect, useMemo, useState, useCallback } from "react";
 import { Alia } from '../../../../structs/structs';
-
 import { useNavigate, useParams } from "react-router-dom";
-
-import {FaArrowLeft } from "react-icons/fa";
-import { colors } from "../../../../assets/colors";
+import { FaArrowLeft, FaDownload } from "react-icons/fa";
 import { AddDonationToPerashaModal } from "./AddDonationToPerashaModal";
-import { addPerashaToKehila, getPerashaInfo } from "../../../../apis/requests";
+import { getPerashaInfo } from "../../../../apis/requests";
 import { PageContext } from "../../../../StoreInfo/page-storage";
 import { DelAllPereashiotInfoModal } from "./DelAllPerashiotInfoModal";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import { LoaderComponent } from "../../../../assets/loader";
+import { colors } from "../../../../assets/colors";
 
 export const DonationPerPerashaInfo = () => {
   const { logedUser } = useContext(PageContext) as any;
   const { id } = useParams();
-
-  const perashaName = id?.replace(/([a-z])([A-Z])/g, '$1 $2') ?? "";
-  let alia = getPerashaInfo(logedUser.kehila, perashaName);
-  
-  const addNewPerToKehila = addPerashaToKehila();
-
-  const [openAliaModal, setOpenAliaModal] = useState<boolean>(false)
-  //const [addUserDonationModal, setOpenAddUserDonationModal] = useState<boolean>(false)
-  const [aliotList, setAliotList] = useState<Alia[]>()
-  const [arsDonation, setArsDonation] = useState<number>(0)
-  const [usdDonation, setUsdDonation] = useState<number>(0)
-  const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false)
-
   const navigate = useNavigate();
 
-  const getAllPendingDonations = () => {
-    if (aliotList && aliotList.length > 0) {
-       const arsTotal = aliotList!.reduce((total, alia) => {
-        if (alia.moneda === 'ARS') {
-          return total + (alia.monto || 0);
-        }
-        return total;
-      }, 0);
-      const usdTotal = aliotList!.reduce((total, alia) => {
-        if (alia.moneda === 'USD') {
-          return total + (alia.monto || 0);
-        }
-        return total;
-      }, 0);
-      setArsDonation(arsTotal);
-      setUsdDonation(usdTotal);
-    }
-  }
+  const perashaName = id?.replace(/([a-z])([A-Z])/g, '$1 $2') ?? "";
 
-  const handleDownloadPDF = () => {
-    if (!aliotList || aliotList.length === 0) {
+  //const addNewPerToKehila = addPerashaToKehila();
+
+  const [openAliaModal, setOpenAliaModal] = useState(false);
+  const [aliotList, setAliotList] = useState<Alia[]>();
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+
+  // ✅ HOOK usado correctamente (SIN useMemo)
+  const alia = getPerashaInfo(logedUser.kehila, perashaName);
+
+  // ✅ useEffect corregido
+  useEffect(() => {
+    if (alia?.aliot) {
+      setAliotList(alia.aliot);
+    }
+  }, [alia, perashaName, logedUser.kehila]);
+
+  // ✅ Filtrado memoizado
+  const donationAliot = useMemo(() => {
+    return aliotList?.filter(a => a.tipoAlia === "DONACION") || [];
+  }, [aliotList]);
+
+  // ✅ Totales derivados (sin useState)
+  const { arsTotal, usdTotal } = useMemo(() => {
+    return donationAliot.reduce(
+      (acc, alia) => {
+        if (alia.moneda === "ARS") acc.arsTotal += alia.monto || 0;
+        if (alia.moneda === "USD") acc.usdTotal += alia.monto || 0;
+        return acc;
+      },
+      { arsTotal: 0, usdTotal: 0 }
+    );
+  }, [donationAliot]);
+
+  // ✅ PDF optimizado
+  const handleDownloadPDF = useCallback(() => {
+    if (donationAliot.length === 0) {
       alert("No hay información para descargar.");
       return;
     }
@@ -62,17 +64,12 @@ export const DonationPerPerashaInfo = () => {
       format: "a4",
     });
 
-    // Título centrado
     doc.setFontSize(20);
     doc.text(perashaName || "Parashá", doc.internal.pageSize.getWidth() / 2, 50, { align: "center" });
 
-    // Encabezados de la tabla
-    const headers = [
-      ["Alia", "Nombre", "Apellido", "Nombre Hebreo", "Monto", "Moneda"]
-    ];
+    const headers = [["Alia", "Nombre", "Apellido", "Nombre Hebreo", "Monto", "Moneda"]];
 
-    // Datos
-    const data = aliotList.filter((alia) => alia.tipoAlia === "DONACION").map((alia) => [
+    const data = donationAliot.map((alia) => [
       alia.alia!,
       alia.nombre!,
       alia.apellido!,
@@ -85,97 +82,76 @@ export const DonationPerPerashaInfo = () => {
       head: headers,
       body: data,
       startY: 80,
-      styles: {
-        fontSize: 10,
-        halign: "center",
-        valign: "middle",
-        lineColor: [0, 0, 0],
-        lineWidth: 0.1,
-      },
-      headStyles: {
-        fillColor: [240, 240, 240],
-        textColor: [0, 0, 0],
-        fontStyle: "bold",
-      },
-      bodyStyles: {
-        fillColor: [255, 255, 255],
-      },
     });
 
-    // Guardar
     doc.save(`Donaciones_${perashaName}.pdf`);
-  }
-  
-  useEffect(() => {
-    if (alia === undefined) {
-      addNewPerToKehila(logedUser.kehila, perashaName);
-    } else {
-      alia != undefined ? alia.aliot !== undefined ? setAliotList(alia.aliot!) : null : null;
-      getAllPendingDonations()
-    }
-  }, [alia, addNewPerToKehila]);
-
-  {console.log("Aliot list: ", aliotList)}  
+  }, [donationAliot, perashaName]);
 
   return (
     <>
-    <div style={styles.container}>
-      <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%", height: "70px", marginBottom: '20px'}}>
-        <button style={{...styles.button, backgroundColor: "green"}} onClick={() => navigate("/administrator-dashboard")}>
-          <FaArrowLeft className="text-black" /> Lista de Perashiot
-        </button>
-        <h2 style={{...styles.title, marginRight: '100px'}}>
-          {id?.replace(/([a-z])([A-Z])/g, '$1 $2')}
-        </h2>
-        
-        <div style={{ display: 'flex', justifyContent: 'flex-end'}}>
-          {aliotList && aliotList.length > 0 ? (
-            <button style={styles.delButton} onClick={() => setOpenDeleteModal(true)}>Eliminar</button>
-          ) : null}
-        </div>
-      </div>
-
-      {aliotList === undefined ? LoaderComponent() : 
-      <>
-        <div style={{ display: 'flex', justifyContent: 'space-between', width: '90%', marginTop: '10px', marginBottom: '10px'}}>
-          <div style={{ display: "flex", flexDirection: "row", gap: '10px' }}>
-            <div style={styles.pendingCard}>
-              <div style={{ fontSize: '1rem', fontWeight: 'bold' }}>
-                {`Monto recaudado en pesos:`}
-              </div>
-              <div style={{ fontSize: '1rem', fontWeight: 'bold', color: 'orange' }}>
-                ${arsDonation}
-              </div>
-            </div>
-
-            <div style={styles.pendingCard}>
-              <div style={{ fontSize: '1rem', fontWeight: 'bold' }}>
-                {`Monto recaudado en dolares:`}
-              </div>
-              <div style={{ fontSize: '1rem', fontWeight: 'bold', color: 'orange' }}>
-                USD {usdDonation} 
-              </div>
-            </div> 
-          </div>
-
-          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px'}}>
-            <button style={{...styles.button, backgroundColor: "orange"}} onClick={() => setOpenAliaModal(true)}>
-              Agregar Donacion
+      <div style={styles.container}>
+        {/* Header - Buttons Row */}
+        <div style={styles.header}>
+          <div style={styles.headerLeft}>
+            <button style={styles.backBtn} onClick={() => navigate("/administrator-dashboard")}>
+              <FaArrowLeft /> Volver
             </button>
-            {aliotList && aliotList.length > 0 ? (
-              <div style={{ display: 'flex', justifyContent: 'flex-end'}}>
-                <button style={{...styles.button, backgroundColor: "#4CAF50"}} onClick={handleDownloadPDF} disabled={!aliotList || aliotList.filter(a => a.tipoAlia === "DONACION").length === 0}>
-                  Descargar
+          </div>
+          <div style={styles.headerRight}>
+            <button style={styles.actionBtn} onClick={() => setOpenAliaModal(true)}>
+              + Agregar Donación
+            </button>
+            {donationAliot.length > 0 && (
+              <>
+                <button style={{...styles.actionBtn, backgroundColor: "#10b981"}} onClick={handleDownloadPDF}>
+                  <FaDownload /> Descargar
+                </button>
+                <button style={{...styles.actionBtn, backgroundColor: "#ef4444"}} onClick={() => setOpenDeleteModal(true)}>
+                  Eliminar
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+
+        {/* Header - Title Row */}
+        <div style={{...styles.headerRight, justifyContent: "space-between", marginTop: "40px", marginBottom: "20px"}}>
+          <h1 style={styles.title}>Donaciones en Perasha {perashaName}</h1>
+          <div></div>
+        </div>
+
+        {/* Content */}
+        {aliotList === undefined ? (
+          LoaderComponent()
+        ) : (
+          <>
+            {/* Summary Cards */}
+            {donationAliot.length > 0 && (
+              <div style={styles.summarySection}>
+                <div style={styles.summaryCard}>
+                  <div style={styles.summaryLabel}>Monto recaudado en pesos</div>
+                  <div style={styles.summaryAmount}>${arsTotal}</div>
+                </div>
+                <div style={styles.summaryCard}>
+                  <div style={styles.summaryLabel}>Monto recaudado en dólares</div>
+                  <div style={styles.summaryAmount}>USD {usdTotal}</div>
+                </div>
+              </div>
+            )}
+
+            {/* Action Buttons */}
+            {donationAliot.length === 0 && (
+              <div style={styles.actionSection}>
+                <button style={styles.actionBtn} onClick={() => setOpenAliaModal(true)}>
+                  + Agregar Donación
                 </button>
               </div>
-            ) : null}
-          </div>
-        </div>
-        
-        <div style={{ flex: 1, height: "400px", overflowY: "auto", borderRadius: "5px" }}>
-          <div>
-              {aliotList ? (
-                aliotList.filter(a => a.tipoAlia === "DONACION").length > 0 ? (
+            )}
+
+            {/* Table */}
+            <div style={styles.content}>
+              {donationAliot.length > 0 ? (
+                <div style={styles.tableWrapper}>
                   <table style={styles.table}>
                     <thead>
                       <tr>
@@ -188,68 +164,45 @@ export const DonationPerPerashaInfo = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {aliotList
-                        .filter((alia: Alia) => alia.tipoAlia === "DONACION")
-                        .map((alia: Alia, index: number) => {
-                        const nomAlia = alia.alia;
-                        const nombre = alia.nombre;
-                        const apellido = alia.apellido;
-                        const nombreHebreo = alia.nombreHebreo;
-                        const monto = alia.monto
-                        const moneda = alia.moneda
-
-                        return (
-                          <tr key={index}>
-                            <td style={styles.td} data-label="NomAlia">{nomAlia}</td>
-                            <td style={styles.td} data-label="Nombre">{nombre}</td>
-                            <td style={styles.td} data-label="Apellido">{apellido}</td>
-                            <td style={styles.td} data-label="NombreHebreo">{nombreHebreo}</td>
-                            <td style={styles.td} data-label="Monto">{monto}</td>
-                            <td style={styles.td} data-label="Moneda">{moneda}</td>
-                          </tr>
-                        );
-                      })}
+                      {donationAliot.map((alia, index) => (
+                        <tr key={index}>
+                          <td style={styles.td} data-label="Alia">{alia.alia}</td>
+                          <td style={styles.td} data-label="Nombre">{alia.nombre}</td>
+                          <td style={styles.td} data-label="Apellido">{alia.apellido}</td>
+                          <td style={styles.td} data-label="NombreHebreo">{alia.nombreHebreo}</td>
+                          <td style={styles.td} data-label="Monto">{alia.monto}</td>
+                          <td style={styles.td} data-label="Moneda">{alia.moneda}</td>
+                        </tr>
+                      ))}
                     </tbody>
                   </table>
-                ) : (
-                  <div style={{ textAlign: 'center', marginTop: '20px', fontSize: '3rem' }}>
-                    <h5 style={{ color: colors.btn_background }}>No hay donaciones realizadas</h5>
-                  </div>
-                )
-              )
-              : 
-              (
-                <div style={{ textAlign: 'center', marginTop: '20px', fontSize: '3rem' }}>
-                  <h5 style={{ color: colors.btn_background }}>No hay información disponible</h5>
+                </div>
+              ) : (
+                <div style={styles.emptyState}>
+                  <h3 style={styles.emptyStateText}>No hay donaciones realizadas</h3>
                 </div>
               )}
-          </div>
-        </div>
-      </>
-      }
+            </div>
+          </>
+        )}
+      </div>
 
-      {openAliaModal ? (
+      {openAliaModal && (
         <AddDonationToPerashaModal
           setOpenAliaModal={setOpenAliaModal}
           openAliaModal={openAliaModal}
           setAliotList={setAliotList}
           aliotList={aliotList!}
-          perashaName={id!.replace(/([a-z])([A-Z])/g, '$1 $2')}
+          perashaName={perashaName}
         />
-      ) : (
-        null
       )}
 
-      {
-        <DelAllPereashiotInfoModal
-          action={"DEL_PERASHA"}
-          openDeleteModal={openDeleteModal}
-          setOpenDeleteModal={setOpenDeleteModal}
-          typeOfAliotToDelete={"DONACION"}
-        />
-      }
-
-    </div>
+      <DelAllPereashiotInfoModal
+        action={"DEL_PERASHA"}
+        openDeleteModal={openDeleteModal}
+        setOpenDeleteModal={setOpenDeleteModal}
+        typeOfAliotToDelete={"DONACION"}
+      />
     </>
   );
 };
@@ -270,17 +223,17 @@ export const DonationPerPerashaInfo = () => {
     tr {
       display: block;
       margin-bottom: 15px;
-      border: 1px solid #ccc;
+      border: 1px solid #e5e7eb;
       padding: 10px;
       border-radius: 8px;
-      background: #f9f9f9;
+      background: #ffffff;
     }
     td {
       display: flex;
       justify-content: space-between;
       padding: 5px 10px;
       border: none;
-      border-bottom: 1px solid #eee;
+      border-bottom: 1px solid #f3f4f6;
     }
     td::before {
       content: attr(data-label);
@@ -291,105 +244,156 @@ export const DonationPerPerashaInfo = () => {
 `}
 </style>
 
-const styles: { [key: string]: CSSProperties }= {
+const styles: { [key: string]: CSSProperties } = {
   container: {
     backgroundColor: colors.main_background,
-    padding: "10px",
+    //marginBottom: '200px',
+    padding: "15px",
     borderRadius: "25px",
-    width: "95%",
-    minHeight: "75vh",
-    maxHeight: "90vh",
+    width: "95%", // CAMBIO AQUÍ
+    minWidth: "720px",
+    //minHeight: "100%", // CAMBIO AQUÍ (antes 75vh)
+    height: '85vh',
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
-    //justifyContent: "space-between",
+    //alignItems: "center",
     margin: "20px auto 0 auto",
-    paddingLeft: "20px",
-    paddingRight: "20px",
-  },
-  title: {
-    fontSize: "2rem",
-    fontWeight: "bold",
-    border: `2px solid ${colors.btn_background}`,
-    borderColor: colors.btn_background,
-    borderRadius: 20,
-    paddingLeft: 10,
-    paddingRight: 10,
-    //marginRight: 100
-  },
-  button: {
-    backgroundColor: colors.btn_background,
-    color: "white",
-    padding: "10px 15px",
-    margin: "10px",
-    borderRadius: "20px",
-    cursor: "pointer",
-    fontSize: "1rem",
-    border: "none",
-    justifyContent: "center",
-    fontWeight: 'bold'
-  },
-  rightGroup: {
+    //textAlign: "center",
+    marginTop: "20px",
+  } as CSSProperties,
+  header: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: "20px",
+    flexWrap: "wrap" as const,
+  } as CSSProperties,
+  headerLeft: {
     display: "flex",
     alignItems: "center",
-    gap: "10px",
-  },
-  input: {
-    backgroundColor: colors.btn_background,
-    padding: "10px 16px",
-    borderRadius: "8px",
-    fontWeight: "bold",
+    gap: "20px",
+  } as CSSProperties,
+  backBtn: {
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+    backgroundColor: "#6366f1",
+    color: "#ffffff",
     border: "none",
-    outline: "none",
-    width: "180px",
-    color: "white",
-    fontSize: "16px",
-  },
+    padding: "10px 16px",
+    borderRadius: "6px",
+    fontSize: "14px",
+    fontWeight: "600",
+    cursor: "pointer",
+    transition: "background-color 0.2s",
+  } as CSSProperties,
+  title: {
+    fontSize: "28px",
+    fontWeight: "bold",
+    color: "#1f2937",
+    margin: 0,
+  } as CSSProperties,
+  headerRight: {
+    display: "flex",
+    gap: "12px",
+    alignItems: "center",
+  } as CSSProperties,
+  summarySection: {
+    display: "flex",
+    gap: "16px",
+    flexWrap: "wrap" as const,
+    marginBottom: "20px",
+  } as CSSProperties,
+  summaryCard: {
+    flex: 1,
+    minWidth: "240px",
+    padding: "16px 20px",
+    backgroundColor: "#ffffff",
+    border: "1px solid #e5e7eb",
+    borderRadius: "8px",
+    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.05)",
+  } as CSSProperties,
+  summaryLabel: {
+    fontSize: "14px",
+    color: "#6b7280",
+    fontWeight: "500",
+    marginBottom: "8px",
+  } as CSSProperties,
+  summaryAmount: {
+    fontSize: "24px",
+    fontWeight: "700",
+    color: "#f59e0b",
+  } as CSSProperties,
+  actionSection: {
+    display: "flex",
+    gap: "12px",
+    flexWrap: "wrap" as const,
+  } as CSSProperties,
+  actionBtn: {
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+    backgroundColor: "#3b82f6",
+    color: "#ffffff",
+    border: "none",
+    padding: "10px 16px",
+    borderRadius: "6px",
+    fontSize: "14px",
+    fontWeight: "600",
+    cursor: "pointer",
+    transition: "background-color 0.2s",
+  } as CSSProperties,
+  content: {
+    flex: 1,
+    overflowY: "auto",
+  } as CSSProperties,
+  tableWrapper: {
+    height: 'auto',
+    overflowY: 'auto',
+    padding: '10px',
+    borderRadius: '5px',
+  } as CSSProperties,
   table: {
     borderCollapse: 'separate',
-    borderSpacing: '10px 12px', // espacio vertical entre filas
+    borderSpacing: '10px 12px',
+    minWidth: '800px', // ✅ clave para habilitar el scroll horizontal
     width: '100%',
-  },
+  } as CSSProperties,
   th: {
     padding: '12px 16px',
     textAlign: 'center',
-    fontWeight: 'bolder ',
-    background: '#f9f9f9',
-    color: '#333',
-    fontSize: '1.05rem',
+    fontWeight: '700',
+    background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
+    color: '#ffffff',
+    fontSize: '0.95rem',
     position: 'sticky',
     top: 0,
     zIndex: 1,
-    borderRadius: '8px', // importante
-    border: '2px solid #040404ff',
-  },
+    borderRadius: '8px',
+    border: '1px solid #1e40af',
+  } as CSSProperties,
   td: {
     padding: '14px 16px',
-    background: '#fff',
-    fontSize: '1.05rem',
-    color: '#333',
-    borderRadius: '8px', // importante
-    border: '2px solid #cbbabaff',
+    background: '#ffffff',
+    fontSize: '0.95rem',
+    color: '#1f2937',
+    borderRadius: '8px',
+    border: '1px solid #e5e7eb',
     boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
-    textAlign: 'center',
-  },
-  pendingCard: {
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: '10px',
-    border: '3px solid orange',
-    borderRadius: '20px',
-    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
-    backgroundColor: '#f9f9f9'
+    transition: 'all 0.2s ease',
   } as CSSProperties,
-  delButton: {
-    backgroundColor: "red",
-    padding: "10px 16px",
+  emptyState: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "60px 20px",
+    backgroundColor: "#ffffff",
     borderRadius: "8px",
-    fontWeight: "bold",
-    border: "1px solid green",
-    cursor: "pointer",
-    color: "white",
+    textAlign: "center",
+  } as CSSProperties,
+  emptyStateText: {
     fontSize: "16px",
+    color: "#6b7280",
+    margin: 0,
   } as CSSProperties,
 };

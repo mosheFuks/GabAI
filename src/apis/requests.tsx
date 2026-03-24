@@ -9,6 +9,12 @@ export const getUsersList = (kehilaName: string) => {
   });
 }
 
+export const getPerashiotList = (kehilaName: string) => {
+  return useQuery(api.kehila.getAllPerashiotList, {
+    nombreKehila: kehilaName,
+  });
+}
+
 export const useUsersList = (kehila: string | undefined) => {
   const usuarios = useQuery(api.kehila.getKehilaUsersList, kehila ? { nombre: kehila } : "skip");
   return usuarios ?? [];
@@ -50,6 +56,9 @@ export const getUserOnSignInDirect = async (convex: any, email: string) => {
 };
 
 export const getPerashaInfo = (kehilaName: string, perashaName: string) => {
+  console.log("Kehila name: ", kehilaName);
+  console.log("Perasha name: ", perashaName);
+
   return useQuery(api.kehila.getKehilaPerashaInfo, {
     nombre: kehilaName,
     nombrePerasha: perashaName
@@ -68,6 +77,13 @@ export const getVisitorUserInfoOnSignIn = async (convex: any, kehilaName: string
   return await convex.query(api.kehila.getVisitorUserOnSignIn, {
     nombreKehila: kehilaName,
     email: email
+  })
+}
+
+export const checkIfPerashaExistsInKehila = (kehilaName: string, perashaName: string) => {
+  return useQuery(api.kehila.checkIfPerashaExistsInKehila, {
+    nombre: kehilaName,
+    nombrePerasha: perashaName
   })
 }
 
@@ -94,6 +110,8 @@ export const addAnAliaInAPerasha = () => {
 
 export const addPerashaToKehila = () => {
   const mutation = useMutation(api.kehila.addPerashaToKehila);
+  console.log("Enter here to create the perashaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+  
   return (kehilaName: string, perashaName: string) =>
     mutation({
       nombre: kehilaName,

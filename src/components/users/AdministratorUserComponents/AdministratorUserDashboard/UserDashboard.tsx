@@ -12,11 +12,13 @@ import { colors } from "../../../../assets/colors";
 import { NavigationButtonSignUp } from "../../../SignUserOptions/NormalUser/SignUp/NavigationButtonsSignUp";
 import { getVisitorUserInfo } from "../../../../apis/requests";
 import { PageContext } from "../../../../StoreInfo/page-storage";
+import { AddUserToAliaModal } from "../AdministratorPerashiot/AddUserToPerashaModal";
 
 export const UserDashboard = () => {
   const { logedUser } = useContext(PageContext) as any;
   const { id } = useParams();
   const [step, setStep] = useState<number>(1);
+  const [openAliaModal, setOpenAliaModal] = useState<boolean>(false)
 
   const [userName, userSurname] = id!.split("-");
   const navigate = useNavigate();
@@ -26,14 +28,17 @@ export const UserDashboard = () => {
   return (
     <>
     <div style={styles.container}>
-      <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%", height: "70px" }}>
-        <button style={{...styles.button, backgroundColor: "green"}} onClick={() => navigate("/administrator-dashboard")}>
-          <FaArrowLeft className="text-black" /> Lista de usuarios
+      <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%", height: "70px", gap: "16px" }}>
+        <button style={{...styles.button, backgroundColor: "#10b981"}} onClick={() => navigate("/administrator-dashboard")}>
+          <FaArrowLeft style={{marginRight: "8px"}} /> Lista de usuarios
         </button>
         <h2 style={styles.title}>
          {userName} {userSurname}
         </h2>
-        <div style={{...styles.button, backgroundColor: colors.main_background, color: colors.main_background, cursor: '-moz-grab'}}></div>
+        <button style={{...styles.button, backgroundColor: colors.btn_background}} onClick={() => setOpenAliaModal(true)}>
+          Agregar Alia a Perasha
+        </button>
+        
       </div>
 
       {user != undefined ? (
@@ -81,7 +86,18 @@ export const UserDashboard = () => {
         </div>
       )}
     </div>
+
+    {openAliaModal ? (
+      <AddUserToAliaModal 
+        setOpenAliaModal={setOpenAliaModal}
+        openAliaModal={openAliaModal}
+        userToAddInThePerasha={user as any}
+      />
+    ) : (
+      null
+    )}
     </>
+    
   );
 };
 
@@ -89,37 +105,40 @@ const styles: { [key: string]: CSSProperties }= {
   container: {
     flex: 1,
     backgroundColor: colors.main_background,
-    borderRadius: "25px",
+    borderRadius: "12px",
     width: "95%",
     minWidth: "720px",
-    minHeight: "79vh", // altura fija
+    minHeight: "79vh",
     display: "flex",
     flexDirection: "column",
     margin: "20px auto 0 auto",
-    padding: "10px 20px",
-    overflow: "hidden", // oculta desbordes
+    padding: "20px",
+    overflow: "hidden",
     marginBottom: "20px",
   },
   title: {
-    fontSize: "2rem",
-    fontWeight: "bold",
-    border: `2px solid ${colors.btn_background}`,
-    borderColor: colors.btn_background,
-    borderRadius: 20,
-    paddingLeft: 10,
-    paddingRight: 10,
-    marginRight: 100
+    fontSize: "24px",
+    fontWeight: "700",
+    color: "#1f2937",
+    borderBottom: "2px solid #3b82f6",
+    paddingBottom: "8px",
+    margin: "0 20px",
+    flex: "1",
+    textAlign: "center",
   },
   button: {
-    backgroundColor: colors.btn_background,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
     color: "white",
-    padding: "10px 15px",
-    margin: "10px",
-    borderRadius: "20px",
+    padding: "10px 16px",
+    borderRadius: "8px",
     cursor: "pointer",
-    fontSize: "1rem",
+    fontSize: "14px",
+    fontWeight: "600",
     border: "none",
-    justifyContent: "center"
+    transition: "all 0.2s ease",
+    whiteSpace: "nowrap",
   },
   rightGroup: {
     display: "flex",

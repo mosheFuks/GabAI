@@ -27,8 +27,8 @@ export const AddDonationToPerashaModal = ({setOpenAliaModal, openAliaModal, setA
     tipoAlia: "DONACION"
   });
   
-  const addAlia = addADonationInAPerasha();
-  const addDonation = addADonationToUser(); 
+  const addNewDonationInPerasha = addADonationInAPerasha();
+  const addDonationToSelectedUser = addADonationToUser(); 
 
   const campoIncompleto = Object.entries(formAliaData)
     .find(([, value]) => {
@@ -47,25 +47,24 @@ export const AddDonationToPerashaModal = ({setOpenAliaModal, openAliaModal, setA
 
   const isFormComplete = !campoIncompleto;
 
-  const closeModal = async () => {
-    let errorAddingDonationToUser = false
+  const saveNewDonation = async () => {
+    const newDonation: Donacion = {
+      monto: formAliaData.monto,
+      tipoMoneda: formAliaData.moneda,
+      motivo: "Alia",
+      fecha: {
+        dia: new Date().getDate().toString(),
+        mes: (new Date().getMonth() + 1).toString(), // Meses en JavaScript son 0-indexados
+        ano: new Date().getFullYear().toString()
+      },
+      perasha: perashaName,
+      aclaracion: `Alia ${formAliaData.alia} en ${perashaName}`,
+      status: "PENDIENTE"
+    };
     if (isFormComplete) {
       if (addDonationToUser) {
         try {
-          const newDonation: Donacion = {
-            monto: formAliaData.monto,
-            tipoMoneda: formAliaData.moneda,
-            motivo: "Alia",
-            fecha: {
-              dia: new Date().getDate().toString(),
-              mes: (new Date().getMonth() + 1).toString(), // Meses en JavaScript son 0-indexados
-              ano: new Date().getFullYear().toString()
-            },
-            perasha: perashaName,
-            aclaracion: `Alia ${formAliaData.alia} en ${perashaName}`,
-            status: "PENDIENTE"
-          };
-          await addDonation(logedUser.kehila, formAliaData.nombre, formAliaData.apellido!, newDonation);
+          await addDonationToSelectedUser(logedUser.kehila, formAliaData.nombre, formAliaData.apellido!, newDonation);
           toast.success(`Donacion agregada al Mitpalel ${formAliaData.nombre} ${formAliaData.apellido}.`, {
             position: "top-right",
             autoClose: 5000,
@@ -89,13 +88,10 @@ export const AddDonationToPerashaModal = ({setOpenAliaModal, openAliaModal, setA
             theme: "colored", 
             style: { backgroundColor: 'red', color: 'white' },
           })
-          errorAddingDonationToUser = true
         }
       }
-      if (errorAddingDonationToUser == false) {
-        await addAlia(logedUser.kehila, perashaName, formAliaData);
-        setAliotList([...aliotList, formAliaData]);
-      }
+      await addNewDonationInPerasha(logedUser.kehila, perashaName, formAliaData);
+      setAliotList([...aliotList, formAliaData]);
     }
     setOpenAliaModal(false)
   }
@@ -187,7 +183,7 @@ export const AddDonationToPerashaModal = ({setOpenAliaModal, openAliaModal, setA
             <option value="ARS">ARS</option>
           </select>
 
-          <button onClick={closeModal} style={{...styles.button, backgroundColor: formAliaData.moneda == "" ? 'gray' : colors.btn_background}} disabled={formAliaData.moneda == ""}>
+          <button onClick={saveNewDonation  } style={{...styles.button, backgroundColor: formAliaData.moneda == "" ? 'gray' : colors.btn_background}} disabled={formAliaData.moneda == ""}>
             Guardar
           </button>
         </div>
@@ -213,23 +209,28 @@ const styles = {
   } as CSSProperties,
   input: {
     width: "80%",
-    padding: "10px",
-    margin: "10px 0", 
-    borderRadius: "5px",
-    border: "1px solid #ccc",
-    fontSize: "1rem",
-    backgroundColor: "white",
-    color: "black",
+    padding: "10px 12px",
+    margin: "8px 0", 
+    borderRadius: "6px",
+    border: "1px solid #e5e7eb",
+    fontSize: "14px",
+    backgroundColor: "#ffffff",
+    color: "#1f2937",
+    boxShadow: "0 1px 2px rgba(0, 0, 0, 0.02)",
   } as CSSProperties,
   button: {
-    display: "block", fontWeight: 'bold',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
     color: "white",
-    padding: "10px 15px",
-    margin: "10px",
-    borderRadius: "20px",
+    padding: "10px 16px",
+    margin: "8px 0",
+    borderRadius: "6px",
     cursor: "pointer",
-    fontSize: "1rem",
+    fontSize: "14px",
+    fontWeight: "600",
     border: "none",
+    transition: "all 0.2s ease",
   } as CSSProperties,
   switchContainer: {
     display: "flex",
