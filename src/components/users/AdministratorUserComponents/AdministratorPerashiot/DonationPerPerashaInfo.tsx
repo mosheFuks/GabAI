@@ -93,7 +93,7 @@ export const DonationPerPerashaInfo = () => {
         {/* Header - Buttons Row */}
         <div style={styles.header}>
           <div style={styles.headerLeft}>
-            <button style={styles.backBtn} onClick={() => navigate("/administrator-dashboard")}>
+            <button style={styles.backBtn} onClick={() => navigate("/perasha-info/donation/")}>
               <FaArrowLeft /> Volver
             </button>
           </div>
@@ -136,15 +136,6 @@ export const DonationPerPerashaInfo = () => {
                   <div style={styles.summaryLabel}>Monto recaudado en dólares</div>
                   <div style={styles.summaryAmount}>USD {usdTotal}</div>
                 </div>
-              </div>
-            )}
-
-            {/* Action Buttons */}
-            {donationAliot.length === 0 && (
-              <div style={styles.actionSection}>
-                <button style={styles.actionBtn} onClick={() => setOpenAliaModal(true)}>
-                  + Agregar Donación
-                </button>
               </div>
             )}
 
@@ -247,19 +238,15 @@ export const DonationPerPerashaInfo = () => {
 const styles: { [key: string]: CSSProperties } = {
   container: {
     backgroundColor: colors.main_background,
-    //marginBottom: '200px',
-    padding: "15px",
-    borderRadius: "25px",
-    width: "95%", // CAMBIO AQUÍ
-    minWidth: "720px",
-    //minHeight: "100%", // CAMBIO AQUÍ (antes 75vh)
-    height: '85vh',
+    padding: "20px",
+    borderRadius: "0",
+    width: "100%",
+    height: "100%",
     display: "flex",
     flexDirection: "column",
-    //alignItems: "center",
-    margin: "20px auto 0 auto",
-    //textAlign: "center",
-    marginTop: "20px",
+    margin: "0",
+    overflow: "hidden",
+    boxSizing: "border-box",
   } as CSSProperties,
   header: {
     display: "flex",
@@ -277,7 +264,7 @@ const styles: { [key: string]: CSSProperties } = {
     display: "flex",
     alignItems: "center",
     gap: "8px",
-    backgroundColor: "#6366f1",
+    backgroundColor: "#07b45b",
     color: "#ffffff",
     border: "none",
     padding: "10px 16px",

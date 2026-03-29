@@ -2,8 +2,9 @@
 import { useNavigate } from "react-router-dom";
 import { FaBook, FaSearch } from "react-icons/fa";
 import { DelAllPereashiotInfoModal } from "./DelAllPerashiotInfoModal";
+import { colors } from "../../../../assets/colors";
 
-export const DonationPerPersha = ({setStep}: any) => {
+export const DonationPerPersha = () => {
   const parashiotByBook = {
     Bereshit: [ 
       "Bereshit",
@@ -116,16 +117,12 @@ export const DonationPerPersha = ({setStep}: any) => {
             </div>
             <div style={styles.tagsContainer}>
               {parashiot.map((name) => {
-                const isSelected = selected === name
                 return (
                   <button
                     key={name}
-                    onClick={() => {setSelected(name), navigate(`/perasha-info/donation/${name}`), setStep(2)}}
+                    onClick={() => {navigate(`/perasha-info/donation/${name}`)}}
                     style={{
                       ...styles.tag,
-                      backgroundColor: isSelected ? "#3b82f6" : "#e0e7ff",
-                      color: isSelected ? "white" : "#3b82f6",
-                      border: isSelected ? "1px solid #3b82f6" : "1px solid #c7d2fe",
                     }}
                     onMouseDown={(e) => e.preventDefault()}
                   >
@@ -151,12 +148,20 @@ export const DonationPerPersha = ({setStep}: any) => {
 
 const styles = {
   container: {
+    backgroundColor: colors.main_background,
+    //borderRadius: "0",
+    //width: "100%",
+    height: "100%",
     display: "flex",
-    flexDirection: "column" as const,
+    flexDirection: "column",
+    flex: 1,
+    //alignItems: "flex-start",
+    margin: "0",
+    //textAlign: "left",
+    overflow: "auto",
+    //boxSizing: "border-box",
     gap: "24px",
     padding: "24px",
-    flex: 1,
-    overflow: "auto",
   } as CSSProperties,
   header: {
     display: "flex",
@@ -172,7 +177,7 @@ const styles = {
     margin: 0,
   } as CSSProperties,
   description: {
-    fontSize: "14px",
+    fontSize: "18px",
     color: "#6b7280",
     marginTop: "-16px",
   } as CSSProperties,

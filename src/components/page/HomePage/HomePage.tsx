@@ -16,7 +16,7 @@ export default function HomePage() {
           <span style={styles.title}>
             {esp_strings.home_title}<span style={{ fontStyle: "italic" }}>AI</span>
           </span>
-          <span style={{...styles.sub_title, fontSize: '1.5rem'}}>La primera plataforma Web que te ayuda a organizar las aliot y donaciones de tu Kehila</span>
+          <span style={{...styles.sub_title, fontSize: '1.5rem'}}>La primera plataforma Web que te ayuda a organizar las aliot y donaciones de los Mitpalelim de tu Kehila</span>
           {/*<div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', marginTop: '10px', marginBottom: '10px', backgroundColor: "red"}}>
             <div style={{ display: "flex", flexDirection: "row", gap: '10px' }}>
               <div style={styles.pendingCard}>
@@ -65,7 +65,7 @@ export default function HomePage() {
         {logedUser.rol == "VISITANTE" ? (
           <div style={styles.container}>
             <h2 style={styles.title}>
-              Bienvendio a Gab<span style={{ fontStyle: "italic" }}>AI</span>, <span style={{ color: colors.btn_background }}>{logedUser.nombre} {logedUser.apellido}</span>
+              Bienvendio a Gab<span style={{ fontStyle: "italic" }}>AI</span>, <span style={{ color: "black" }}>{logedUser.nombre} {logedUser.apellido}</span>
             </h2>
             <span style={styles.sub_title}>Ingresa para ver tu cuenta</span>
             <div style={styles.buttonContainer}>
@@ -99,7 +99,11 @@ const styles: { [key: string]: CSSProperties } = {
     margin: "20px auto 0 auto",
     padding: "24px 16px",
     boxSizing: "border-box",
-    overflow: "hidden" // evita que algo “asome” fuera del gris
+    overflow: "hidden",
+    backgroundImage: "url(/images/landing-illustration.png)",
+    backgroundSize: "cover",
+    backgroundPosition: "center right",
+    backgroundRepeat: "no-repeat",
   } as CSSProperties,
   title: {
     fontSize: "clamp(2rem, 10vw, 5rem)", // escala con el ancho
@@ -143,7 +147,6 @@ const styles: { [key: string]: CSSProperties } = {
   } as CSSProperties,
   regis_button: {
     backgroundColor: colors.btn_txt,
-    border: "none",
     padding: "12px 16px",
     borderRadius: "20px",
     fontWeight: "bold",
@@ -152,7 +155,8 @@ const styles: { [key: string]: CSSProperties } = {
     transition: "transform 0.2s ease-in-out",
     color: colors.btn_background,
     flex: "1 1 220px",
-    maxWidth: "100%"
+    maxWidth: "100%",
+    border: `2px solid ${colors.btn_background}`
   } as CSSProperties,
   buttonHover: {
     transform: "scale(1.1)",

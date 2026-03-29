@@ -37,10 +37,14 @@ export const DelAllPereashiotInfoModal = ({action, typeOfAliotToDelete, openDele
     try {
       if (action == "DEL_ALL") {
         deleteAllPerashiot(logedUser.kehila, typeOfAliotToDelete!)
-        showSuccessToast("Se eliminaron las donaciones de todas las parashiot");
+        showSuccessToast("Se eliminó la información de todas las parashiot");
       } else {
-        deletePerasha(logedUser.kehila, id!, typeOfAliotToDelete!)
-        showSuccessToast("Se eliminó la información de todas las donaciones");
+        deletePerasha(logedUser.kehila, id!, typeOfAliotToDelete!)  
+        if (typeOfAliotToDelete == "DONACION") {
+          showSuccessToast("Se eliminó la información de las donaciones de esta parasha");
+        } else {
+          showSuccessToast("Se eliminó la información de las Aliot de esta parasha");
+        }
       }
     } catch (error) {
       console.error("Error deleting donations of the perasha:", error);
@@ -50,9 +54,7 @@ export const DelAllPereashiotInfoModal = ({action, typeOfAliotToDelete, openDele
 
   const closeModal = async (deleteInfo: boolean) => {
     if (deleteInfo) {
-      if (typeOfAliotToDelete == "DONACION") {
-        await deleteInfoOfThePerasha();
-      }
+      await deleteInfoOfThePerasha();
     }
     setOpenDeleteModal(false)
   }
@@ -73,7 +75,8 @@ export const DelAllPereashiotInfoModal = ({action, typeOfAliotToDelete, openDele
       >
         <h2 style={{ textAlign: 'center', color: 'blue'}}>{action == "DEL_ALL" ? 
           "¿Queres eliminar la información de las Aliot y sus donaciones de todas las perashiot?" : 
-          "¿Queres eliminar la información de las donaciones de esta perasha?" }
+          typeOfAliotToDelete == "DONACION" ? "¿Queres eliminar la información de las donaciones de esta perasha?" :
+          "¿Queres eliminar la información de las Aliot de esta perasha?" }
         </h2>
         <div style={{ display: 'flex', flexDirection: 'row'}}>
           <button onClick={() => closeModal(true)} style={{...styles.button, backgroundColor: 'green'}}>

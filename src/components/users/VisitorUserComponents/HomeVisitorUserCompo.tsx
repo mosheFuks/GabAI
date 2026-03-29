@@ -48,12 +48,15 @@ export const HomeVisitorUserComponent = () => {
     <>
     <div style={styles.container}>
         <>
-          <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%", height: "70px" }}>
-            <div style={{...styles.button, backgroundColor: colors.main_background, color: colors.main_background, cursor: '-moz-grab'}}></div>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", width: "100%", paddingTop: "8px", paddingBottom: "4px" }}>
             <h2 style={styles.title}>
               {logedVisitorUser.nombreEspanol} {logedVisitorUser.apellido}
             </h2>
-            <div style={{...styles.button, backgroundColor: colors.main_background, color: colors.main_background, cursor: '-moz-grab'}}></div>
+            <div style={{ display: "flex", flexDirection: "row", gap: "12px", marginTop: "4px" }}>
+              <span style={styles.badgeKehila}>{logedVisitorUser.nombreKehila}</span>
+              <span style={styles.badgeMinian}>{logedVisitorUser.minian}</span>
+              <span style={styles.badgeGrupo}>{logedVisitorUser.grupo}</span>
+            </div>
           </div>
           <NavigationButtonSignUp step={step} setStep={setStep} fromPage="homeVisitorUser"/>
           <div style={{ flex: 1, overflow: 'auto', width: '100%' }}>
@@ -93,25 +96,50 @@ export const HomeVisitorUserComponent = () => {
 const styles: { [key: string]: CSSProperties }= {
   container: {
     backgroundColor: colors.main_background,
-    borderRadius: "25px",
+    borderRadius: "20px",
     width: "95%",
-    height: "79vh", // altura fija
+    height: "82vh",
     display: "flex",
     flexDirection: "column",
-    margin: "20px auto 0 auto",
-    padding: "10px 20px",
-    overflow: "hidden", // oculta desbordes
-    marginBottom: "20px",
+    margin: "16px auto 0 auto",
+    padding: "24px 32px",
+    overflow: "hidden",
+    boxShadow: "0 4px 24px rgba(0, 0, 0, 0.08)",
+    border: "1px solid #e8ecf4",
   },
   title: {
-    fontSize: "2rem",
-    fontWeight: "bold",
-    border: `2px solid ${colors.btn_background}`,
-    borderColor: colors.btn_background,
-    borderRadius: 20,
-    paddingLeft: 10,
-    paddingRight: 10
+    fontSize: "3rem",
+    fontWeight: "700",
+    color: "#1f2937",
+    margin: 0,
   },
+  badgeKehila: {
+    fontSize: "16px",
+    fontWeight: "500",
+    color: "#1e40af",
+    backgroundColor: "#dbeafe",
+    border: "1px solid #93c5fd",
+    padding: "3px 10px",
+    borderRadius: "12px",
+  } as CSSProperties,
+  badgeMinian: {
+    fontSize: "16px",
+    fontWeight: "500",
+    color: "#065f46",
+    backgroundColor: "#d1fae5",
+    border: "1px solid #6ee7b7",
+    padding: "3px 10px",
+    borderRadius: "12px",
+  } as CSSProperties,
+  badgeGrupo: {
+    fontSize: "16px",
+    fontWeight: "500",
+    color: "#92400e",
+    backgroundColor: "#fef3c7",
+    border: "1px solid #fcd34d",
+    padding: "3px 10px",
+    borderRadius: "12px",
+  } as CSSProperties,
   button: {
     backgroundColor: colors.btn_background,
     color: "white",

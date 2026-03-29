@@ -63,6 +63,17 @@ export const CreateChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen
 
   const [isAfterSunsetSelected, setIsAfterSunsetSelected] = useState<boolean>(false)
 
+  const [perashaQuery, setPerashaQuery] = useState(formUserChildData.perashaBarMitzva || "")
+  const parashiotByBook = {
+    Bereshit: ["Bereshit","Noaj","Lej Lejá","Vayerá","Jayé Sará","Toldot","Vayetze","Vayishlaj","Vayeshev","Miketz","Vayigash","Vayejí"],
+    Shemot: ["Shemot","Vaerá","Bo","Beshalaj","Yitró","Mishpatim","Terumá","Tetzavé","Ki Tisá","Vayakhel","Pekudei"],
+    Vayikrá: ["Vayikrá","Tzav","Shemini","Tazria","Metzorá","Ajarei Mot","Kedoshim","Emor","Behar","Bejukotai"],
+    Bamidbar: ["Bamidbar","Naso","Behaalotejá","Shelaj Lejá","Koraj","Jukat","Balak","Pinjas","Matot","Masei"],
+    Devarim: ["Devarim","Vaetjanan","Ekev","Reé","Shoftim","Ki Tetze","Ki Tavó","Nitzavim","Vayelej","Haazinu","Vezot Haberajá"]
+  } as const;
+  const allParashiot = Object.values(parashiotByBook).flat();
+  const filteredParashiot = allParashiot.filter((p) => p.toLowerCase().includes(perashaQuery.toLowerCase()));
+
   const closeModal = () => {
     setChildModalIsOpen(false);
     
@@ -378,8 +389,29 @@ export const CreateChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen
               </div>
 
               <label htmlFor="userChildPerasha"style={{ display: "block", fontWeight: 'bold'}}>Perasha Bar Mitzva</label>
-              <input id="userChildPerasha" type="text" name="perashaBarMitzva" placeholder="Perasha Bar Mitzva" onChange={handleChangeChildData} style={styles.input} value={formUserChildData.perashaBarMitzva}/>
-
+              <div style={{ position: "relative", width: "80%" }}>
+                <input
+                  id="userChildPerasha"
+                  type="text"
+                  value={perashaQuery}
+                  onChange={(e) => {
+                    setPerashaQuery(e.target.value);
+                    setFormUserChildData((prev: Son) => ({ ...prev, perashaBarMitzva: "" }));
+                  }}
+                  placeholder="Escriba para buscar..."
+                  style={styles.input}
+                />
+                {perashaQuery && filteredParashiot.length > 0 && !formUserChildData.perashaBarMitzva && (
+                  <ul style={{ listStyle: "none", margin: 0, padding: 0, position: "absolute", zIndex: 10, background: "white", width: "100%", border: "1px solid #ddd", maxHeight: 150, overflowY: "auto" }}>
+                    {filteredParashiot.map((p, i) => (
+                      <li key={i} onClick={() => { setPerashaQuery(p); setFormUserChildData((prev: Son) => ({ ...prev, perashaBarMitzva: p })); }} style={{ padding: "6px 10px", cursor: "pointer", borderBottom: "1px solid #eee" }}>
+                        {p}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+              
               <label htmlFor="userChildAbilities" style={{ display: "block", fontWeight: 'bold'}}>Conocimientos</label>
               <div style={styles.input}>
                 <div style={{ display: "flex", flexDirection: "column" }}>

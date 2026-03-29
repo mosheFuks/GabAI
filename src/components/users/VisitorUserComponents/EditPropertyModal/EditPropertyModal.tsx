@@ -62,6 +62,18 @@ export const EditPropertyModal = ({setOpenEditPropertyModal, openEditPropertyMod
   const habilidades: Ability[] = ["Leer Torah", "Jazan", "Leer Haftara", "Leer Meguila"];
   const stateList = ["Soltero", "Casado", "Divorciado", "Viudo"];
 
+  const [perashaQuery, setPerashaQuery] = useState("");
+  const parashiotByBook = {
+    Bereshit: ["Bereshit","Noaj","Lej Lejá","Vayerá","Jayé Sará","Toldot","Vayetze","Vayishlaj","Vayeshev","Miketz","Vayigash","Vayejí"],
+    Shemot: ["Shemot","Vaerá","Bo","Beshalaj","Yitró","Mishpatim","Terumá","Tetzavé","Ki Tisá","Vayakhel","Pekudei"],
+    Vayikrá: ["Vayikrá","Tzav","Shemini","Tazria","Metzorá","Ajarei Mot","Kedoshim","Emor","Behar","Bejukotai"],
+    Bamidbar: ["Bamidbar","Naso","Behaalotejá","Shelaj Lejá","Koraj","Jukat","Balak","Pinjas","Matot","Masei"],
+    Devarim: ["Devarim","Vaetjanan","Ekev","Reé","Shoftim","Ki Tetze","Ki Tavó","Nitzavim","Vayelej","Haazinu","Vezot Haberajá"]
+  } as const;
+  const allParashiot = Object.values(parashiotByBook).flat();
+  const filteredParashiot = allParashiot.filter((p) => p.toLowerCase().includes(perashaQuery.toLowerCase()));
+  const [perashaSelected, setPerashaSelected] = useState(false);
+
   const closeModal = () => {
     setOpenEditPropertyModal(false);
   }
@@ -332,6 +344,38 @@ export const EditPropertyModal = ({setOpenEditPropertyModal, openEditPropertyMod
     );
   }
 
+  const showPerashaListToSelect = () => {
+    return (
+      <div style={{ position: "relative", width: "100%" }}>
+        <input
+          type="text"
+          value={perashaQuery}
+          onChange={(e) => {
+            setPerashaQuery(e.target.value);
+            setPerashaSelected(false);
+            setNewValue("");
+          }}
+          placeholder="Escriba para buscar..."
+          style={styles.input}
+        />
+        {perashaQuery && filteredParashiot.length > 0 && !perashaSelected && (
+          <ul style={{ listStyle: "none", margin: 0, padding: 0, position: "absolute", zIndex: 10, background: "white", width: "100%", border: "1px solid #ddd", maxHeight: 150, overflowY: "auto" }}>
+            {filteredParashiot.map((p, i) => (
+              <li key={i} onClick={() => {
+                setPerashaQuery(p);
+                setPerashaSelected(true);
+                setNewValue(p);
+                changeEditPropertyToEditList(propertyToEdit.value, p, propertyToEdit.normalName);
+              }} style={{ padding: "6px 10px", cursor: "pointer", borderBottom: "1px solid #eee" }}>
+                {p}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    );
+  }
+
 
   return (
     <div>
@@ -388,6 +432,8 @@ export const EditPropertyModal = ({setOpenEditPropertyModal, openEditPropertyMod
               showAbilitiesListToSelect()
             ) : propertyToEdit.name === "Estado Civil" ? (
               showStateListToSelect()
+            ) : propertyToEdit.name === "Perasha Bar Mitzva" ? (
+              showPerashaListToSelect()
             ) : (
               <input
                   type="text"

@@ -3,13 +3,10 @@ import { colors } from "../../../assets/colors";
 import { VisitorUser } from "../../../structs/structs";
 import { FaArrowAltCircleRight, FaSearch } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { NavigationDashboardButtons } from "./NavigationDahboardButtons";
-import { ThisWeekAniversariesList } from "./AdministratorPerashiot/ThisWeekAniversariesList";
-import { DonationPerPersha } from "./AdministratorPerashiot/DonationPerPerasha";
 
 import { getUsersList } from "../../../apis/requests";
 import { PageContext } from "../../../StoreInfo/page-storage";
-import { AliotPerPersha } from "./AdministratorPerashiot/AliotPerPerasha";
+import { LoaderComponent } from "../../../assets/loader";
 
 export const AdministratorDefaultDashboard = () => {
   const navigate = useNavigate();
@@ -17,10 +14,9 @@ export const AdministratorDefaultDashboard = () => {
 
   const usuarios = logedUser != undefined ? getUsersList(logedUser.kehila) : []
   
-  const [step, setStep] = useState(1)
-  const [oldPerashaInfo, setOldPerashaInfo] = useState(false)
   const [peopleList, setPeopleList] = useState<VisitorUser[]>();
   const [peopleFilter, setPeopleFilter] = useState(peopleList);
+  const [isLoading, setIsLoading] = useState(true);
 
   const getEstadoDeCuenta = (cuenta: any[]) => {
     let hasPendingDonation;
@@ -34,22 +30,32 @@ export const AdministratorDefaultDashboard = () => {
   }; 
   
   useEffect(() => {
-    setPeopleList(usuarios)
-    setPeopleFilter(usuarios)
-    //console.log("Lista de usuarios: ", peopleFilter);
-    oldPerashaInfo ? setStep(3) : setStep(1)
-  }, [usuarios])
+    const minDelay = new Promise(resolve => setTimeout(resolve, 10));
+
+    if (usuarios && (usuarios as VisitorUser[]).length >= 0) {
+      minDelay.then(() => {
+        setPeopleList(usuarios);
+        setPeopleFilter(usuarios);
+        setIsLoading(false);
+      });
+    }
+  }, [usuarios]);
   
+  if (isLoading) {
+    return <LoaderComponent />;
+  }
+
   return (
     <div style={styles.container}>     
-      <NavigationDashboardButtons
+      {/*<NavigationDashboardButtons
         setStep={setStep}
-        step={step}  />
+        step={step}  /> */}
 
-      {step == 1 ? (
         <div style={styles.stepsContainer}>
           <div style={styles.header}>
-            <h2 style={styles.pageTitle}>Lista de Mitpalelim de la Kehila</h2>
+            <div>
+              <h2 style={styles.pageTitle}>Lista de Mitpalelim de la Kehila</h2>
+            </div>
             <div style={styles.headerRight}>
               <div style={styles.searchBox}>
                 <FaSearch style={{ fontSize: "18px", color: "#6b7280" }} />
@@ -69,6 +75,7 @@ export const AdministratorDefaultDashboard = () => {
                   }}
                 />
               </div>
+
             </div>
           </div>
           <div style={{ flex: 1, overflowY: "auto", padding: "10px", borderRadius: "5px" }}>
@@ -119,7 +126,7 @@ export const AdministratorDefaultDashboard = () => {
                         <td 
                           style={{...styles.td, color: "green", alignItems: "center", cursor:"pointer", border: "2px solid green"}}
                           data-label="InfoUsuario"
-                          onClick={() => navigate(`/administrator-user-info/${persona.nombreEspanol}-${persona.apellido!}`)}
+                          onClick={() => navigate(`/administrator-dashboard/user/${persona.nombreEspanol}-${persona.apellido!}`, { state: { fromPage: "USERS_LIST_PAGE" } })}
                         >
                           <FaArrowAltCircleRight className="text-3xl text-gray-500 hover:text-blue-500 transition-colors duration-200" />
                         </td>
@@ -137,29 +144,12 @@ export const AdministratorDefaultDashboard = () => {
             )}
           </div>
         </div>
-      ) : (
-        null
-      )}
-      {step === 2 && (
-        <div style={styles.stepsContainer}>
+      
+      
+        {/*<div style={styles.stepsContainer}>
           <ThisWeekAniversariesList peopleList={peopleList} />
-        </div>
-      )}
-      {step == 3 ? (
-        <div style={styles.stepsContainer}>
-          <DonationPerPersha setOldPerashaInfo={setOldPerashaInfo} setStep={setStep}/>
-        </div>
-      ) : (
-        null
-      )}
-
-      {step == 4 ? (
-        <div style={styles.stepsContainer}>
-          <AliotPerPersha setOldPerashaInfo={setOldPerashaInfo} setStep={setStep}/>
-        </div>
-      ) : (
-        null
-      )}
+        </div>*/}
+      
     </div>
   );
 }
@@ -167,26 +157,28 @@ export const AdministratorDefaultDashboard = () => {
 const styles: {  [key: string]: CSSProperties }= {
   container: {
     backgroundColor: colors.main_background,
-    //marginBottom: '200px',
-    padding: "15px",
-    borderRadius: "25px",
-    width: "95%", // CAMBIO AQUÍ
-    minWidth: "720px",
-    //minHeight: "100%", // CAMBIO AQUÍ (antes 75vh)
-    height: '85vh',
+    padding: "0",
+    borderRadius: "0",
+    width: "100%",
+    height: "100%",
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
-    margin: "20px auto 0 auto",
-    textAlign: "center"
+    alignItems: "flex-start",
+    margin: "0",
+    textAlign: "left",
+    overflow: "hidden",
+    boxSizing: "border-box",
   },
   stepsContainer: {
     flex: 1,
     display: 'flex',
     flexDirection: 'column',
-    width: '100%', // <--- aseguramos que ocupe 100% del amarillo
-    overflowY: 'auto', // en vez de 'hidden'
-    overflowX: "auto"
+    width: '100%',
+    height: '100%',
+    padding: '20px',
+    overflowY: 'auto',
+    overflowX: 'auto',
+    boxSizing: 'border-box',
   },
   header: {
     display: "flex",
@@ -202,29 +194,49 @@ const styles: {  [key: string]: CSSProperties }= {
     color: "#1f2937",
     margin: 0,
   },
+  description: {
+    fontSize: "18px",
+    color: "#6b7280",
+    marginTop: "4px",
+  },
   headerRight: {
     display: "flex",
     alignItems: "center",
     gap: "12px",
   },
+  delButton: {
+    backgroundColor: "#ef4444",
+    padding: "10px 16px",
+    borderRadius: "6px",
+    fontWeight: "600",
+    border: "none",
+    cursor: "pointer",
+    color: "white",
+    fontSize: "14px",
+    transition: "background-color 0.2s",
+  },
   searchBox: {
     display: "flex",
-    alignItems: "center",
+    //alignItems: "center",
     gap: "8px",
     backgroundColor: "#ffffff",
-    border: "1px solid #e5e7eb",
+    border: "3px solid #07b45b",
     borderRadius: "6px",
-    padding: "8px 12px",
+    padding: "15px",
     minWidth: "240px",
-  },
+  } as CSSProperties,
+  searchIcon: {
+    color: "#07b45b",
+    fontSize: "20px",
+  } as CSSProperties,
   searchInput: {
     border: "none",
     outline: "none",
     backgroundColor: "transparent",
     fontSize: "14px",
     flex: 1,
-    color: "#1f2937",
-  },
+    color: "black"
+  } as CSSProperties,
   title: {
     fontSize: "2rem",
     fontWeight: "bold",

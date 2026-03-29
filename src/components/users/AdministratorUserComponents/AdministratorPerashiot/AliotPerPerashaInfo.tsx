@@ -109,7 +109,7 @@ export const AliotPerPershaInfo = () => {
         {/* Header */}
         <div style={styles.header}>
           <div style={styles.headerLeft}>
-            <button style={styles.backBtn} onClick={() => navigate("/administrator-dashboard")}>
+            <button style={styles.backBtn} onClick={() => navigate("/perasha-info/aliot")}>
               <FaArrowLeft /> Volver
             </button>
           </div>
@@ -225,18 +225,15 @@ export const AliotPerPershaInfo = () => {
 const styles: { [key: string]: CSSProperties } = {
   container: {
     backgroundColor: colors.main_background,
-    //marginBottom: '200px',
-    padding: "15px",
-    borderRadius: "25px",
-    width: "95%", // CAMBIO AQUÍ
-    minWidth: "720px",
-    //minHeight: "100%", // CAMBIO AQUÍ (antes 75vh)
-    height: '85vh',
+    padding: "20px",
+    borderRadius: "0",
+    width: "100%",
+    height: "100%",
     display: "flex",
     flexDirection: "column",
-    //alignItems: "center",
-    margin: "20px auto 0 auto",
-    //textAlign: "center"
+    margin: "0",
+    overflow: "hidden",
+    boxSizing: "border-box",
   } as CSSProperties,
   header: {
     display: "flex",
@@ -254,7 +251,7 @@ const styles: { [key: string]: CSSProperties } = {
     display: "flex",
     alignItems: "center",
     gap: "8px",
-    backgroundColor: "#6366f1",
+    backgroundColor: "#07b45b",
     color: "#ffffff",
     border: "none",
     padding: "10px 16px",

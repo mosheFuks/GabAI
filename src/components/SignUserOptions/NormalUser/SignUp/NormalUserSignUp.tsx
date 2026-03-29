@@ -118,15 +118,19 @@ const NormalUserSignUp = () => {
   return (
     <>
     <div style={styles.container}>
-      <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%", height: "70px" }}>
-        <button style={{...styles.button, backgroundColor: "green"}} onClick={navigateRule}>
-          <FaArrowLeft className="text-black" /> {logedUser.rol != "" ?  "Lista de usuarios" : "Iniciar Sesion"}
+      <div style={styles.header}>
+        <div>
+          <h2 style={styles.pageTitle}>{esp_strings.btn_create_user}</h2>
+          <div style={styles.description}>Completa los datos para crear tu usuario</div>
+        </div>
+        <button style={styles.backBtn} onClick={navigateRule}>
+          <FaArrowLeft /> {logedUser.rol != "" ?  "Volver" : "Iniciar Sesión"}
         </button>
-        <h2 style={{...styles.title, marginRight: '100px'}}>{esp_strings.btn_create_user}</h2>
-        <div></div>
       </div>
+
       <NavigationButtonSignUp step={step} setStep={setStep} setModalRealSignInfo={setModalRealSignInfo} fromPage={"SignUp"}  setIsNewUser={setIsNewUser}/>
-      <form style={{ flex: 1, overflow: 'auto', width: '100%' }}>
+      
+      <form style={{ flex: 1, overflow: 'auto', width: '100%', padding: '20px' }}>
         {step === 1 && (
           <FormPersonalInfoData 
             handleChangePersonalData={handleChangePersonalData}
@@ -208,17 +212,49 @@ const NormalUserSignUp = () => {
 const styles: { [key: string]: CSSProperties }= {
   container: {
     backgroundColor: colors.main_background,
-    borderRadius: "25px",
-    width: "95%",
-    minWidth: "720px",
-    height: "79vh", // altura fija
-    //minHeight: "150vh",
+    borderRadius: "0",
+    width: "100%",
+    height: "100%",
     display: "flex",
     flexDirection: "column",
-    margin: "20px auto 0 auto",
-    padding: "10px 20px",
-    overflow: "hidden", // oculta desbordes
-    marginBottom: "20px",
+    margin: "0",
+    padding: "0",
+    overflow: "hidden",
+    boxSizing: "border-box",
+  },
+  header: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: "20px",
+    flexWrap: "wrap" as const,
+    padding: "20px",
+    borderBottom: "1px solid #e5e7eb",
+  },
+  pageTitle: {
+    fontSize: "40px",
+    fontWeight: "bold",
+    color: "#1f2937",
+    margin: 0,
+  },
+  description: {
+    fontSize: "18px",
+    color: "#6b7280",
+    marginTop: "4px",
+  },
+  backBtn: {
+    backgroundColor: "#07b45b",
+    color: "white",
+    padding: "10px 16px",
+    borderRadius: "8px",
+    cursor: "pointer",
+    fontSize: "14px",
+    fontWeight: "600",
+    border: "none",
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+    transition: "background-color 0.2s",
   },
   title: {
     fontSize: "2rem",

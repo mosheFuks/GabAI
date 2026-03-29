@@ -12,6 +12,9 @@ interface PageContextType {
   setLogedVisitorUser: (logedVisitorUser: VisitorUser) => void;
   updateVisitorUserInfo: (logedVisitorUser: VisitorUser) => void;
   signOut: () => void
+  isAuthLoading: boolean;
+  step: number;
+  setStep: (step: number) => void;
 }
 
 export const PageContext = createContext<PageContextType | undefined>(undefined);
@@ -28,6 +31,8 @@ export const PageProvider: React.FC<PageProviderProps> = ({ children }) => {
     rol: '',
     kehila: ''
   });
+  const [isAuthLoading, setIsAuthLoading] = useState<boolean>(true);
+  const [step, setStep] = useState<number>(1);
   const [logedVisitorUser, setLogedVisitorUser] = useState<VisitorUser>({
     nombreKehila: "",
     nombreEspanol: "",
@@ -79,8 +84,6 @@ export const PageProvider: React.FC<PageProviderProps> = ({ children }) => {
   });
 
   useEffect(() => {
-    console.log("Also enter here");
-    
     const storedLogedUser = localStorage.getItem('logedUser');
     const storedLogedVisitorUser = localStorage.getItem('logedVisitorUser');
 
@@ -91,6 +94,8 @@ export const PageProvider: React.FC<PageProviderProps> = ({ children }) => {
     if (storedLogedVisitorUser) {
       setLogedVisitorUser(JSON.parse(storedLogedVisitorUser));
     }
+
+    setIsAuthLoading(false);
   }, []);
 
   const updateLocalUser = (logedUser: LogedUserData) => {
@@ -174,6 +179,8 @@ export const PageProvider: React.FC<PageProviderProps> = ({ children }) => {
         logedUser, setLogedUser,
         updateVisitorUserInfo,
         logedVisitorUser, setLogedVisitorUser,
+        isAuthLoading,
+        step, setStep,
         signOut
       }}
     >

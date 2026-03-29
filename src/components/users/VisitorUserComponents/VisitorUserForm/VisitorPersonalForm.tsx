@@ -226,7 +226,7 @@ export const VisitorPersonalForm = ({ logedVisitorUser, setUserChangedSomeProper
 
 
   return (
-    <div style={{ flex: 1, overflowY: "auto", padding: "10px", borderRadius: "5px", minHeight: 0 }}>
+    <div style={styles.formContainer}>
       <div>
         {showUserInfoData("Nombre Kehila", logedVisitorUser.nombreKehila, "nombreKehila", "DEFAULT", false)}
         
@@ -257,10 +257,18 @@ export const VisitorPersonalForm = ({ logedVisitorUser, setUserChangedSomeProper
 }
 
 const styles: { [key: string]: CSSProperties }= {
+  formContainer: {
+    flex: 1,
+    overflowY: "auto",
+    padding: "20px 16px",
+    borderRadius: "12px",
+    minHeight: 0,
+    backgroundColor: "#f9fafb",
+  },
   container: {
-    backgroundColor: colors.main_background,
+    backgroundColor: "#ffffff",
     padding: "10px",
-    borderRadius: "25px",
+    borderRadius: "16px",
     width: "80%",
     minHeight: "75vh",
     maxHeight: "80vh",
@@ -271,6 +279,7 @@ const styles: { [key: string]: CSSProperties }= {
     margin: "20px auto 0 auto",
     paddingLeft: "20px",
     paddingRight: "20px",
+    boxShadow: "0 2px 12px rgba(0, 0, 0, 0.06)",
   },
   sectionTitle: {
     cursor: "pointer", 
@@ -279,26 +288,28 @@ const styles: { [key: string]: CSSProperties }= {
     marginRight: 20
   },
   title: {
-    fontSize: "2rem",
-    fontWeight: "bold",
+    fontSize: "1.5rem",
+    fontWeight: "700",
+    color: "#1f2937",
   },
   input: {
     width: "80%",
-    padding: "10px 12px",
-    margin: "8px 0",
-    borderRadius: "6px",
+    padding: "12px 16px",
+    margin: "6px 0",
+    borderRadius: "10px",
     border: "1px solid #e5e7eb",
     fontSize: "14px",
     backgroundColor: "#ffffff",
-    color: "#1f2937",
-    boxShadow: "0 1px 2px rgba(0, 0, 0, 0.02)",
+    color: "#374151",
+    boxShadow: "0 1px 2px rgba(0, 0, 0, 0.04)",
+    transition: "border-color 0.2s ease",
   },
   button: {
     backgroundColor: colors.btn_background,
     color: "white",
-    padding: "10px 16px",
+    padding: "10px 20px",
     margin: "8px 0",
-    borderRadius: "6px",
+    borderRadius: "8px",
     cursor: "pointer",
     fontSize: "14px",
     fontWeight: "600",
@@ -318,15 +329,17 @@ const styles: { [key: string]: CSSProperties }= {
     flexWrap: "wrap"
   },
   icon: {
-    marginRight: "10px", 
-    //color: 'red',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.main_background,
-    borderRadius: 15,
-    padding: 10,
+    backgroundColor: "#ffffff",
+    borderRadius: "8px",
+    padding: "8px 16px",
     marginLeft: 10,
     cursor: 'pointer',
-    border: 'none',
+    border: '1px solid #d1d5db',
+    color: "#374151",
+    fontSize: "13px",
+    fontWeight: "500",
+    transition: "all 0.2s ease",
   } as CSSProperties,
 };

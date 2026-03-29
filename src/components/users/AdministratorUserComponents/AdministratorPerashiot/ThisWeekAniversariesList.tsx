@@ -1,10 +1,15 @@
-import { CSSProperties, useEffect, useState } from "react";
+import { CSSProperties, useContext, useEffect, useState } from "react";
 import { HDate } from '@hebcal/core';
-import { Grupo, HEBREW_MONTHS, Motivo, UserToAddInThePerasha, VisitorUser } from "../../../../structs/structs";
+import { Grupo, HEBREW_MONTHS, Motivo, UserToAddInThePerasha } from "../../../../structs/structs";
 import { FaArrowAltCircleRight, FaSearch, FaPlus } from "react-icons/fa";
 import { DateToDateAniversary } from "./DateToDateAniversary";
 import { useNavigate } from "react-router-dom";
 import { AddUserToAliaModal } from "./AddUserToPerashaModal";
+import { getUsersList } from "../../../../apis/requests";
+import { PageContext } from "../../../../StoreInfo/page-storage";
+import { colors } from "../../../../assets/colors";
+import { ClipLoader } from "react-spinners";
+import { LoaderComponent } from "../../../../assets/loader";
 
 interface DaysOfThisWeek {
   currentYear: number,
@@ -12,10 +17,6 @@ interface DaysOfThisWeek {
   nextMonth: string,
   sunday: string,
   friday: string
-}
-
-interface NextAliotProps {
-  peopleList?: VisitorUser[]
 }
 
 interface AniversariesList {
@@ -39,8 +40,9 @@ interface AniversariesList {
   }
 }
 
-export const ThisWeekAniversariesList = ({peopleList}: NextAliotProps) => {
+export const ThisWeekAniversariesList = () => {
   const navigate = useNavigate();
+  const { logedUser } = useContext(PageContext) as any;
   const [thisWeekAniversaries, setThisWeekAniversaries] = useState<AniversariesList[]>([])
   const [filteredAniversaries, setFilteredAniversaries] = useState<AniversariesList[]>([])
   const [daysOfThisWeek, setDaysOfThisWeek] = useState<DaysOfThisWeek>({
@@ -51,8 +53,9 @@ export const ThisWeekAniversariesList = ({peopleList}: NextAliotProps) => {
     friday: ""
   })
 
+  const peopleList = logedUser != undefined ? getUsersList(logedUser.kehila) : []
+  const [isPeopleLoading, setIsPeopleLoading] = useState(true);
 
-  const [clicked, setClicked] = useState<boolean>(false)
   const [renderedAniversaries, setRenderedAniversaries] = useState<AniversariesList[]>([]);
   const [openAddMitpalelToPerashaModal, setOpenAddMitpalelToPerashaModal] = useState<boolean>(false);
 
@@ -257,39 +260,53 @@ export const ThisWeekAniversariesList = ({peopleList}: NextAliotProps) => {
   };
 
   useEffect(() => {
-    const thisWeekAniversaries = getThisWeekAniversariesFromAllUsers()
-    setThisWeekAniversaries(thisWeekAniversaries)
-    setFilteredAniversaries(thisWeekAniversaries)
-  }, [])
+    if (!peopleList || (peopleList as any[]).length === 0) return;
+
+    const timer = setTimeout(() => {
+      const thisWeekAniversaries = getThisWeekAniversariesFromAllUsers();
+      setThisWeekAniversaries(thisWeekAniversaries);
+      setFilteredAniversaries(thisWeekAniversaries);
+      setIsPeopleLoading(false);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [peopleList])
 
   return (
     <div style={styles.container}>
       {/* Header Section */}
-      <div style={styles.headerSection}>
-        <DateToDateAniversary peopleList={peopleList!} setFilteredAniversaries={setFilteredAniversaries} daysOfThisWeek={daysOfThisWeek} setRenderedAniversaries={setRenderedAniversaries} setThisWeekAniversaries={setThisWeekAniversaries} />
-        {thisWeekAniversaries.length > 0 && (
-          <div style={styles.searchContainer}>
-            <FaSearch style={styles.searchIcon} />
-            <input
-              type="text"
-              placeholder="Busca por motivo o Minian"
-              style={{...styles.searchInput, borderColor: clicked ? "#3b82f6" : "#e5e7eb"}}
-              onChange={(e) => searchAniByMotiveOrMinian(e.target.value)}
-              onClick={() => setClicked(true)}
-              onBlur={() => setClicked(false)}
-            />
-          </div>
-        )}
+      <div style={styles.header}>
+        <div>
+          <h2 style={styles.title}>Aniversarios de esta semana</h2>
+          <div style={styles.description}>Mira los aniversarios de esta semana y gestiona la información correspondiente.</div>
+        </div>
       </div>
+
+      <div style={styles.headerRight}>
+          <DateToDateAniversary peopleList={peopleList!} setFilteredAniversaries={setFilteredAniversaries} daysOfThisWeek={daysOfThisWeek} setRenderedAniversaries={setRenderedAniversaries} setThisWeekAniversaries={setThisWeekAniversaries} />
+          {thisWeekAniversaries.length > 0 && (
+            <div style={styles.searchBox}>
+              <FaSearch style={styles.searchIcon} />
+              <input
+                type="text"
+                placeholder="Busca por motivo o Minian"
+                style={styles.searchInput}
+                onChange={(e) => searchAniByMotiveOrMinian(e.target.value)}
+              />
+            </div>
+          )}
+        </div>
 
       {/* Table Section */}
       <div style={styles.tableSection}>
-        {filteredAniversaries.length > 0 ? (
+        {isPeopleLoading ? (
+          <LoaderComponent />
+        ) : filteredAniversaries.length > 0 ? (
           <div style={styles.tableWrapper}>
             <table style={styles.table}>
               <thead>
                 <tr>
-                  <th style={styles.actionTh}></th>
+                  <th style={styles.th}>Agregar a Perasha</th>
                   <th style={styles.th}>Motivo</th>
                   <th style={styles.th}>Nombre</th>
                   <th style={styles.th}>Nombre Hebreo</th>
@@ -332,11 +349,11 @@ export const ThisWeekAniversariesList = ({peopleList}: NextAliotProps) => {
                       <td style={styles.td} data-label="FechaNacimientoGreg">{fechaAniGreg}</td>
                       <td style={styles.td} data-label="FechaNacimientoHeb">{fechaAniHeb}</td>
                       <td 
-                        style={styles.actionTd}
+                        style={{...styles.td, color: "green", alignItems: "center", cursor:"pointer", border: "2px solid green"}}
                         data-label="Ver"
-                        onClick={() => navigate(`/administrator-user-info/${ani.nombre}-${ani.apellido}`)}
+                        onClick={() => navigate(`/aniversaries/user/${ani.nombre}-${ani.apellido}`, { state: { fromPage: "ANIVERSARIES_PAGE" } })}
                       >
-                        <FaArrowAltCircleRight style={styles.actionIcon} />
+                        <FaArrowAltCircleRight className="text-3xl text-gray-500 hover:text-blue-500 transition-colors duration-200" />
                       </td>
                     </tr>
                   );
@@ -400,33 +417,58 @@ export const ThisWeekAniversariesList = ({peopleList}: NextAliotProps) => {
 
 const styles: { [key: string]: CSSProperties } = {
   container: {
+    backgroundColor: colors.main_background,
+    //borderRadius: "0",
+    //width: "100%",
+    height: "100%",
     display: "flex",
     flexDirection: "column",
+    flex: 1,
+    //alignItems: "flex-start",
+    margin: "0",
+    //textAlign: "left",  
+    overflow: "auto",
+    //boxSizing: "border-box",
     gap: "24px",
-    overflowY: "auto",
-    minHeight: "100%",
-    width: "100%",
-    padding: "20px",
+    padding: "24px",  
   } as CSSProperties,
-  headerSection: {
+  header: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    gap: "16px",
+    gap: "20px",
+    flexWrap: "wrap" as const,
   } as CSSProperties,
-  searchContainer: {
+  title: {
+    fontSize: "28px",
+    fontWeight: "bold",
+    color: "#1f2937",
+    margin: 0,
+  } as CSSProperties,
+  description: {
+    fontSize: "18px",
+    color: "#6b7280",
+    marginTop: "4px",
+  } as CSSProperties,
+  headerRight: {
     display: "flex",
+    gap: "12px",
     alignItems: "center",
+    justifyContent: "space-between"
+  } as CSSProperties,
+  searchBox: {
+    display: "flex",
+    //alignItems: "center",
     gap: "8px",
     backgroundColor: "#ffffff",
-    border: "1px solid #e5e7eb",
+    border: "3px solid #07b45b",
     borderRadius: "6px",
-    padding: "8px 12px",
+    padding: "15px",
     minWidth: "240px",
   } as CSSProperties,
   searchIcon: {
-    color: "#9ca3af",
-    fontSize: "16px",
+    color: "#07b45b",
+    fontSize: "20px",
   } as CSSProperties,
   searchInput: {
     border: "none",
@@ -434,30 +476,47 @@ const styles: { [key: string]: CSSProperties } = {
     backgroundColor: "transparent",
     fontSize: "14px",
     flex: 1,
+    color: "black"
   } as CSSProperties,
   tableSection: {
     flex: 1,
     overflowY: "auto",
+    marginTop: "0",
   } as CSSProperties,
   tableWrapper: {
-    backgroundColor: "#ffffff",
-    borderRadius: "8px",
-    boxShadow: "0 1px 3px rgba(0, 0, 0, 0.05)",
-    overflow: "hidden",
+    height: 'auto',
+    overflowY: 'auto',
+    padding: '10px',
+    borderRadius: '5px',
   } as CSSProperties,
   table: {
-    width: "100%",
-    borderCollapse: "collapse",
+    borderCollapse: 'separate',
+    borderSpacing: '10px 12px',
+    minWidth: '800px', // ✅ clave para habilitar el scroll horizontal
+    width: '100%',
   } as CSSProperties,
   th: {
-    padding: "14px 16px",
-    textAlign: "left",
-    fontWeight: "600",
-    backgroundColor: "#3b82f6",
-    color: "#ffffff",
-    fontSize: "14px",
-    borderBottom: "none",
-    borderRadius: "6px",
+    padding: '12px 16px',
+    textAlign: 'center',
+    fontWeight: '700',
+    background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
+    color: '#ffffff',
+    fontSize: '0.95rem',
+    position: 'sticky',
+    top: 0,
+    zIndex: 1,
+    borderRadius: '8px',
+    border: '1px solid #1e40af',
+  } as CSSProperties,
+  td: {
+    padding: '14px 16px',
+    background: '#ffffff',
+    fontSize: '0.95rem',
+    color: '#1f2937',
+    borderRadius: '8px',
+    border: '1px solid #e5e7eb',
+    boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+    transition: 'all 0.2s ease',
   } as CSSProperties,
   actionTh: {
     padding: "14px 16px",
@@ -470,26 +529,23 @@ const styles: { [key: string]: CSSProperties } = {
     borderRadius: "6px",
     width: "50px",
   } as CSSProperties,
-  td: {
-    padding: "12px 16px",
-    borderBottom: "1px solid #e5e7eb",
-    color: "#374151",
-    fontSize: "14px",
-  } as CSSProperties,
   actionTd: {
     padding: "12px 16px",
     borderBottom: "1px solid #e5e7eb",
     textAlign: "center",
     cursor: "pointer",
     width: "50px",
+    border: "1px solid #3b82f6",
+    borderRadius: "6px",
   } as CSSProperties,
   actionIcon: {
-    fontSize: "18px",
+    fontSize: "30px",
     color: "#3b82f6",
     transition: "color 0.2s",
   } as CSSProperties,
   emptyState: {
     display: "flex",
+    flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
     padding: "60px 20px",
@@ -498,7 +554,7 @@ const styles: { [key: string]: CSSProperties } = {
     textAlign: "center",
   } as CSSProperties,
   emptyStateText: {
-    fontSize: "16px",
+    fontSize: "24px",
     color: "#6b7280",
     margin: 0,
   } as CSSProperties,
