@@ -93,13 +93,6 @@ export const Navbar = ({ breadcrumbs, additionalButtons }: NavbarProps) => {
               >
                 {esp_strings.btn_close_sesion}
               </button>
-              <button
-                style={{...styles.button, borderRadius: '50px'}}
-                onMouseOver={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = (styles.iconButtonHover.transform as string) || "scale(1.1)")}
-                onMouseOut={(e) => ((e.currentTarget as HTMLButtonElement).style.transform = "scale(1)")}
-              >
-                <FaUser className="text-orange" />
-              </button>
             </>
         ) : null }
       </div>
@@ -172,14 +165,14 @@ const styles = {
     } as CSSProperties,
     close_ses_button: {
       backgroundColor: "#ffffff",
-      border: `1.5px solid ${colors.btn_background}`,
+      border: `1.5px solid red`,
       padding: "10px 18px",
       borderRadius: "8px",
       fontWeight: "600",
       fontSize: "14px",
       cursor: "pointer",
       transition: "all 0.2s ease-in-out",
-      color: colors.btn_background,
+      color: "red",
     } as CSSProperties,
     buttonHover: {
       transform: "scale(1.05)",
