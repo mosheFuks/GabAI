@@ -229,7 +229,7 @@ const styles = {
   } as CSSProperties,
   bookIcon: {
     fontSize: "24px",
-    color: "#f59e0b",
+    color: colors.donation,
   } as CSSProperties,
   cardTitle: {
     fontSize: "18px",

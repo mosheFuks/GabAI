@@ -228,7 +228,7 @@ const styles = {
   } as CSSProperties,
   bookIcon: {
     fontSize: "24px",
-    color: "#f59e0b",
+    color: colors.aliot,
   } as CSSProperties,
   cardTitle: {
     fontSize: "18px",

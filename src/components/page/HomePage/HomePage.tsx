@@ -14,7 +14,7 @@ export default function HomePage() {
       return (
         <div style={styles.container}>
           <span style={styles.title}>
-            {esp_strings.home_title}<span style={{ fontStyle: "italic" }}>AI</span>
+            Bienvenido a <span style={{ color: colors.home_gabai_tittle }}>Gab</span><span style={{ fontStyle: "italic", color: colors.home_gabai_tittle }}>AI</span>
           </span>
           <span style={{...styles.sub_title, fontSize: '1.5rem'}}>La primera plataforma Web que te ayuda a organizar las aliot y donaciones de los Mitpalelim de tu Kehila</span>
           {/*<div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', marginTop: '10px', marginBottom: '10px', backgroundColor: "red"}}>
@@ -65,7 +65,7 @@ export default function HomePage() {
         {logedUser.rol == "VISITANTE" ? (
           <div style={styles.container}>
             <h2 style={styles.title}>
-              Bienvendio a Gab<span style={{ fontStyle: "italic" }}>AI</span>, <span style={{ color: "black" }}>{logedUser.nombre} {logedUser.apellido}</span>
+              Bienvendio a <span style={{ color: colors.home_gabai_tittle }}>Gab</span><span style={{ fontStyle: "italic", color: colors.home_gabai_tittle }}>AI</span>, <span style={{ color: "black" }}>{logedUser.nombre} {logedUser.apellido}</span>
             </h2>
             <span style={styles.sub_title}>Ingresa para ver tu cuenta</span>
             <div style={styles.buttonContainer}>
@@ -113,7 +113,7 @@ const styles: { [key: string]: CSSProperties } = {
     maxWidth: "100%",
     wordBreak: "break-word",
     overflowWrap: "anywhere",
-    fontWeight: "bold"
+    fontWeight: "bold",
   } as CSSProperties,
   sub_title: {
     fontWeight: "bold",

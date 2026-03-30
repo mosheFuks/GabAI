@@ -1,5 +1,6 @@
 import { CSSProperties, useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { colors } from "../../../assets/colors";
 
 export const Sidebar = () => {  
   const navigate = useNavigate();
@@ -34,24 +35,32 @@ export const Sidebar = () => {
       label: "Usuarios",
       icon: "👥",
       path: "/administrator-dashboard/",
+      color: colors.users,
+      bgActive: "#e0e7ff",
     },
     {
       id: 3,
       label: "Aniversarios",
       icon: "ℹ️",
       path: "/aniversaries",
+      color: colors.aniversaries,
+      bgActive: "#ede9fe",
     },
     {
       id: 4,
       label: "Aliot",
       icon: "📜",
       path: "/perasha-info/aliot/",
+      color: colors.aliot,
+      bgActive: "#d1fae5",
     },
     {
       id: 2,
       label: "Donaciones",
       icon: "🎁",
       path: "/perasha-info/donation/",
+      color: colors.donation,
+      bgActive: "#fef3c7",
     }
   ];
 
@@ -63,14 +72,14 @@ export const Sidebar = () => {
             key={item.id}
             style={{
               ...styles.sidebarBtn,
-              backgroundColor: isActive(item.path) ? "#e0e7ff" : "transparent",
-              borderLeft: isActive(item.path) ? "4px solid #3b82f6" : "4px solid transparent",
-              color: isActive(item.path) ? "#3b82f6" : "#6b7280",
+              backgroundColor: isActive(item.path) ? item.bgActive : "transparent",
+              borderLeft: isActive(item.path) ? `4px solid ${item.color}` : "4px solid transparent",
+              color: isActive(item.path) ? item.color : "#6b7280",
             }}
             onClick={() => handleNavClick(item.path)}
           >
             <span style={styles.icon}>{item.icon}</span>
-            <span>{item.label}</span>
+            <span style={{ fontWeight: "bold"}}>{item.label}</span>
           </button>
         ))}
       </nav>

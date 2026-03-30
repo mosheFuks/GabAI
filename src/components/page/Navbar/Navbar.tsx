@@ -140,7 +140,7 @@ const styles = {
       fontWeight: "800",
       fontSize: "32px",
       marginLeft: "5px",
-      color: colors.btn_background,
+      color: colors.home_gabai_tittle,
     } as CSSProperties,
     breadcrumbs: {
       display: "flex",

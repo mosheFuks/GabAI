@@ -58,7 +58,7 @@ export const AdministratorDefaultDashboard = () => {
             </div>
             <div style={styles.headerRight}>
               <div style={styles.searchBox}>
-                <FaSearch style={{ fontSize: "18px", color: "#6b7280" }} />
+                <FaSearch style={{ fontSize: "18px", color: colors.users }} />
                 <input
                   type="text"
                   placeholder="Buscar por nombre"
@@ -113,12 +113,12 @@ export const AdministratorDefaultDashboard = () => {
                         <td style={styles.td} data-label="EstadoCuenta">
                           <span style={{
                             ...styles.statusBadge,
-                            backgroundColor: estadoCuenta === "PENDIENTE" ? "#fef3c7" :
-                                            estadoCuenta === "PAGADA" ? "#d1fae5" :
-                                            "#e0e7ff",
+                            backgroundColor: estadoCuenta === "PENDIENTE" ? "#f59e0b" :
+                                            estadoCuenta === "PAGADA" ? "#10b981" :
+                                            "#5752a3",
                             color: estadoCuenta === "PENDIENTE" ? "#92400e" :
                                   estadoCuenta === "PAGADA" ? "#065f46" :
-                                  "#3730a3"
+                                  "#ffffff",
                           }}>
                             {estadoCuenta}
                           </span>
@@ -220,7 +220,7 @@ const styles: {  [key: string]: CSSProperties }= {
     //alignItems: "center",
     gap: "8px",
     backgroundColor: "#ffffff",
-    border: "3px solid #07b45b",
+    border: `3px solid ${colors.users}`,
     borderRadius: "6px",
     padding: "15px",
     minWidth: "240px",

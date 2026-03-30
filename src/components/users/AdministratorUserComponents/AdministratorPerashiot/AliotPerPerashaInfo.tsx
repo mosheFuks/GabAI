@@ -10,6 +10,9 @@ import autoTable from "jspdf-autotable";
 import { useQuery } from "convex/react";
 import { api } from "../../../../../convex/_generated/api";
 import { colors } from "../../../../assets/colors";
+import { ClipLoader } from "react-spinners";
+import { Loader } from "lucide-react";
+import { LoaderComponent } from "../../../../assets/loader";
 
 export const AliotPerPershaInfo = () => {
   const { logedUser } = useContext(PageContext) as any;
@@ -38,8 +41,8 @@ export const AliotPerPershaInfo = () => {
 
   console.log("Perasha info info: ", perasha);
   
-
-  const aliotList = perasha === undefined ? "NOT FOUND" : perasha.aliot;
+  const isLoading = perasha === undefined;
+  const aliotList = isLoading ? [] : (perasha?.aliot ?? []);
   console.log("Aliot list: ", aliotList);
 
   const handleDownloadPDF = () => {
@@ -64,7 +67,7 @@ export const AliotPerPershaInfo = () => {
     ];
 
     // Datos
-    const data = aliotList != "NOT FOUND" ? aliotList.filter((alia: Alia) => alia.tipoAlia === "ALIA").map((alia: Alia) => [
+    const data = aliotList.filter((alia: Alia) => alia.tipoAlia === "ALIA").map((alia: Alia) => [
       alia.alia!,
       alia.nombre!,
       alia.apellido!,
@@ -72,7 +75,7 @@ export const AliotPerPershaInfo = () => {
       alia.aniversario!,
       alia.fechaAniversarioHebreo!,
       alia.minian!,
-    ])  : [];
+    ]);
 
     autoTable(doc, {
       head: headers,
@@ -114,14 +117,14 @@ export const AliotPerPershaInfo = () => {
             </button>
           </div>
           <div style={styles.headerRight}>
-            {aliotList !== "NOT FOUND" && aliotList.length > 0 && (
+            {!isLoading && aliotList.length > 0 && (
               <>
                 <button style={styles.downloadBtn} onClick={handleDownloadPDF} title="Descargar PDF">
                   <FaDownload /> Descargar
                 </button>
               </>
             )}
-            {aliotList !== "NOT FOUND" && aliotList.length > 0 && (
+            {!isLoading && aliotList.length > 0 && (
               <>
                 <button style={styles.actionBtn} onClick={() => navigate(`/perasha-info/donation/${id}`)}>+ Donaciones</button>
                 <button style={{...styles.actionBtn, backgroundColor: "#ef4444"}} onClick={() => setOpenDeleteModal(true)}>Eliminar</button>
@@ -147,7 +150,9 @@ export const AliotPerPershaInfo = () => {
 
         {/* Content */}
         <div style={styles.content}>
-          {aliotList !== "NOT FOUND" && aliotList.length > 0 ? (
+          {isLoading ? (
+            <LoaderComponent />
+          ) : aliotList.length > 0 ? (
             (() => {
               const filteredAlias = aliotList
                 .filter((alia: Alia) => alia.tipoAlia === "ALIA")

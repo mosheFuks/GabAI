@@ -461,13 +461,13 @@ const styles: { [key: string]: CSSProperties } = {
     //alignItems: "center",
     gap: "8px",
     backgroundColor: "#ffffff",
-    border: "3px solid #07b45b",
+    border: `3px solid ${colors.aniversaries}`,
     borderRadius: "6px",
     padding: "15px",
     minWidth: "240px",
   } as CSSProperties,
   searchIcon: {
-    color: "#07b45b",
+    color: colors.aniversaries,
     fontSize: "20px",
   } as CSSProperties,
   searchInput: {

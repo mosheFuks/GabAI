@@ -265,14 +265,12 @@ export const DateToDateAniversary = ({ peopleList, setFilteredAniversaries, days
       <button
         style={{ 
           ...styles.button, 
-          backgroundColor: dayStart == "" || dayEnd == "" ? "#d1d5db" : "#3b82f6",
-          borderColor: dayStart == "" || dayEnd == "" ? "#d1d5db" : "#2563eb",
+          backgroundColor: dayStart == "" || dayEnd == "" ? "#d1d5db" : "#8b5cf6",
+          borderColor: dayStart == "" || dayEnd == "" ? "#d1d5db" : "#8b5cf6",
           boxShadow: dayStart == "" || dayEnd == "" ? "none" : "0 4px 12px rgba(59, 130, 246, 0.3)",
         }}
         onClick={handleBuscar}
         disabled={dayStart == "" || dayEnd == ""}
-        onFocus={() => setClicked(true)}
-        onBlur={() => setClicked(false)}
       >
         Buscar
       </button>
