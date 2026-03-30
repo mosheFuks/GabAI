@@ -161,7 +161,7 @@ const styles = {
     //boxSizing: "border-box",
     gap: "24px",
     padding: "24px",
-  },
+  } as CSSProperties,
   header: {
     display: "flex",
     justifyContent: "space-between",

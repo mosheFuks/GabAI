@@ -8,7 +8,6 @@ import { AddUserToAliaModal } from "./AddUserToPerashaModal";
 import { getUsersList } from "../../../../apis/requests";
 import { PageContext } from "../../../../StoreInfo/page-storage";
 import { colors } from "../../../../assets/colors";
-import { ClipLoader } from "react-spinners";
 import { LoaderComponent } from "../../../../assets/loader";
 
 interface DaysOfThisWeek {

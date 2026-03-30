@@ -80,13 +80,6 @@ export const getVisitorUserInfoOnSignIn = async (convex: any, kehilaName: string
   })
 }
 
-export const checkIfPerashaExistsInKehila = (kehilaName: string, perashaName: string) => {
-  return useQuery(api.kehila.checkIfPerashaExistsInKehila, {
-    nombre: kehilaName,
-    nombrePerasha: perashaName
-  })
-}
-
 /*-------------POST A NEW ALIA IN TO A PERASHA--------*/
 export const addADonationInAPerasha = () => {
   const mutation = useMutation(api.kehila.addADonationInAPerasha);

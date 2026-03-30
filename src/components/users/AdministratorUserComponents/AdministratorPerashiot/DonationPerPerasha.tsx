@@ -72,7 +72,6 @@ export const DonationPerPersha = () => {
     ]
   } as const;
 
-  const [selected, setSelected] = useState<string | null>(null)
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false)
   const [searchTerm, setSearchTerm] = useState<string>("")
   

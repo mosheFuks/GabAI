@@ -43,7 +43,6 @@ export const DateToDateAniversary = ({ peopleList, setFilteredAniversaries, days
   const [monthStart, setMonthStart] = useState<string>("");
   const [dayEnd, setDayEnd] = useState<string>('');
   const [monthEnd, setMonthEnd] = useState<string>("");
-  const [clicked, setClicked] = useState<boolean>(false);
 
   console.log("DateToDateAniversary props:", { peopleList, setFilteredAniversaries, daysOfThisWeek, setRenderedAniversaries });
   /*useEffect(() => {

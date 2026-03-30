@@ -10,8 +10,6 @@ import autoTable from "jspdf-autotable";
 import { useQuery } from "convex/react";
 import { api } from "../../../../../convex/_generated/api";
 import { colors } from "../../../../assets/colors";
-import { ClipLoader } from "react-spinners";
-import { Loader } from "lucide-react";
 import { LoaderComponent } from "../../../../assets/loader";
 
 export const AliotPerPershaInfo = () => {

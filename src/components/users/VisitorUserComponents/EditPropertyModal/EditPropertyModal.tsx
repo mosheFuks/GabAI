@@ -1,6 +1,5 @@
 import React, { CSSProperties, useContext, useState } from 'react';
 import Modal from 'react-modal';
-import { colors } from '../../../../assets/colors';
 import { Ability, GREG_MONTHS, HEBREW_MONTHS } from '../../../../structs/structs';
 import { PageContext } from '../../../../StoreInfo/page-storage';
 import { changeUserVisitorData, getMinianimList } from '../../../../apis/requests';
