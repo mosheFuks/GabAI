@@ -3,7 +3,6 @@ import { useContext, useState, CSSProperties } from "react";
 import { useNavigate } from 'react-router-dom';
 import { esp_strings } from "../../../assets/strings";
 import { colors } from "../../../assets/colors";
-import { FaUser } from "react-icons/fa";
 import { PageContext } from "../../../StoreInfo/page-storage";
 
 interface BreadcrumbItem {
