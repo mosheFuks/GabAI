@@ -156,3 +156,12 @@ export const GREG_MONTHS = [
     {nombre: "Noviembre", numero: 10},
     {nombre: "Diciembre", numero: 11}
 ] as const;
+
+export const parashiotByBook = {
+    Bereshit: ["Bereshit","Noaj","Lej Lejá","Vayerá","Jayé Sará","Toldot","Vayetze","Vayishlaj","Vayeshev","Miketz","Vayigash","Vayejí"],
+    Shemot: ["Shemot","Vaerá","Bo","Beshalaj","Yitró","Mishpatim","Terumá","Tetzavé","Ki Tisá","Vayakhel","Pekudei", "Vayakhel-Pekudei"],
+    Vayikrá: ["Vayikrá","Tzav","Shemini","Tazria","Metzorá", "Tazria-Metzorá","Ajarei Mot","Kedoshim", "Ajarei Mot-Kedoshim","Emor","Behar","Bejukotai", "Behar-Bejukotai"],
+    Bamidbar: ["Bamidbar","Naso","Behaalotejá","Shelaj Lejá","Koraj","Jukat","Balak","Jukat-Balak","Pinjas","Matot","Masei", "Matot-Masei"],
+    Devarim: ["Devarim","Vaetjanan","Ekev","Reé","Shoftim","Ki Tetze","Ki Tavó","Nitzavim","Vayelej","Nitzavim-Vayelej","Haazinu","Vezot Haberajá"]
+} as const;
+

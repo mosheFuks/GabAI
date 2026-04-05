@@ -3,74 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { FaBook, FaSearch } from "react-icons/fa";
 import { DelAllPereashiotInfoModal } from "./DelAllPerashiotInfoModal";
 import { colors } from "../../../../assets/colors";
+import { parashiotByBook } from "../../../../structs/structs";
 
 export const DonationPerPersha = () => {
-  const parashiotByBook = {
-    Bereshit: [ 
-      "Bereshit",
-      "Noaj",
-      "Lej Lejá",
-      "Vayerá",
-      "Jayé Sará",
-      "Toldot",
-      "Vayetze",
-      "Vayishlaj",
-      "Vayeshev",
-      "Miketz",
-      "Vayigash",
-      "Vayejí"
-    ],
-    Shemot: [
-      "Shemot",
-      "Vaerá",
-      "Bo",
-      "Beshalaj",
-      "Yitró",
-      "Mishpatim",
-      "Terumá",
-      "Tetzavé",
-      "Ki Tisá",
-      "Vayakhel",
-      "Pekudei"
-    ],
-    Vayikrá: [
-      "Vayikrá",
-      "Tzav",
-      "Shemini",
-      "Tazria",
-      "Metzorá",
-      "Ajarei Mot",
-      "Kedoshim",
-      "Emor",
-      "Behar",
-      "Bejukotai"
-    ],
-    Bamidbar: [
-      "Bamidbar",
-      "Naso",
-      "Behaalotejá",
-      "Shelaj Lejá",
-      "Koraj",
-      "Jukat",
-      "Balak",
-      "Pinjas",
-      "Matot",
-      "Masei"
-    ],
-    Devarim: [
-      "Devarim",
-      "Vaetjanan",
-      "Ekev",
-      "Reé",
-      "Shoftim",
-      "Ki Tetze",
-      "Ki Tavó",
-      "Nitzavim",
-      "Vayelej",
-      "Haazinu",
-      "Vezot Haberajá"
-    ]
-  } as const;
 
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false)
   const [searchTerm, setSearchTerm] = useState<string>("")

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { CSSProperties, useState } from 'react';
 import { HDate } from '@hebcal/core';
-import { Ability, GREG_MONTHS, HEBREW_MONTHS, VisitorUser } from '../../../../../../structs/structs';
+import { Ability, GREG_MONTHS, HEBREW_MONTHS, parashiotByBook, VisitorUser } from '../../../../../../structs/structs';
 import { colors } from '../../../../../../assets/colors';
 
 interface FormPersonalDataProps {
@@ -17,13 +17,7 @@ export const FormKehilaInfoData = ({handleChangePersonalData, user, setFormUserP
   const [habilidad, setHabilidad] = useState<Ability[]>([])
 
   const [perashaQuery, setPerashaQuery] = useState(user.perashaBarMitzva || "")
-  const parashiotByBook = {
-    Bereshit: ["Bereshit","Noaj","Lej Lejá","Vayerá","Jayé Sará","Toldot","Vayetze","Vayishlaj","Vayeshev","Miketz","Vayigash","Vayejí"],
-    Shemot: ["Shemot","Vaerá","Bo","Beshalaj","Yitró","Mishpatim","Terumá","Tetzavé","Ki Tisá","Vayakhel","Pekudei"],
-    Vayikrá: ["Vayikrá","Tzav","Shemini","Tazria","Metzorá","Ajarei Mot","Kedoshim","Emor","Behar","Bejukotai"],
-    Bamidbar: ["Bamidbar","Naso","Behaalotejá","Shelaj Lejá","Koraj","Jukat","Balak","Pinjas","Matot","Masei"],
-    Devarim: ["Devarim","Vaetjanan","Ekev","Reé","Shoftim","Ki Tetze","Ki Tavó","Nitzavim","Vayelej","Haazinu","Vezot Haberajá"]
-  } as const;
+  
   const allParashiot = Object.values(parashiotByBook).flat();
   const filteredParashiot = allParashiot.filter((p) => p.toLowerCase().includes(perashaQuery.toLowerCase()));
 

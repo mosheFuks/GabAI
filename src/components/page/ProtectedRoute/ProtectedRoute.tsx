@@ -13,11 +13,11 @@ export const ProtectedRoute = ({ allowedRoles }: ProtectedRouteProps) => {
     return null;
   }
 
-  if (!logedUser || !logedUser.rol) {
+  /*if (!logedUser || !logedUser.rol) {
     return <Navigate to="/sign-in" replace />;
-  }
+  }*/
 
-  if (!allowedRoles.includes(logedUser.rol)) {
+  if (!logedUser || !logedUser.rol ||!allowedRoles.includes(logedUser.rol)) {
     return <Navigate to="/" replace />;
   }
 

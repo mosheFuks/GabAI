@@ -1,6 +1,6 @@
 import React, { CSSProperties, useContext, useState } from 'react';
 import Modal from 'react-modal';
-import { Ability, GREG_MONTHS, HEBREW_MONTHS } from '../../../../structs/structs';
+import { Ability, GREG_MONTHS, HEBREW_MONTHS, parashiotByBook } from '../../../../structs/structs';
 import { PageContext } from '../../../../StoreInfo/page-storage';
 import { changeUserVisitorData, getMinianimList } from '../../../../apis/requests';
 import { useConvex } from 'convex/react';
@@ -62,13 +62,7 @@ export const EditPropertyModal = ({setOpenEditPropertyModal, openEditPropertyMod
   const stateList = ["Soltero", "Casado", "Divorciado", "Viudo"];
 
   const [perashaQuery, setPerashaQuery] = useState("");
-  const parashiotByBook = {
-    Bereshit: ["Bereshit","Noaj","Lej Lejá","Vayerá","Jayé Sará","Toldot","Vayetze","Vayishlaj","Vayeshev","Miketz","Vayigash","Vayejí"],
-    Shemot: ["Shemot","Vaerá","Bo","Beshalaj","Yitró","Mishpatim","Terumá","Tetzavé","Ki Tisá","Vayakhel","Pekudei"],
-    Vayikrá: ["Vayikrá","Tzav","Shemini","Tazria","Metzorá","Ajarei Mot","Kedoshim","Emor","Behar","Bejukotai"],
-    Bamidbar: ["Bamidbar","Naso","Behaalotejá","Shelaj Lejá","Koraj","Jukat","Balak","Pinjas","Matot","Masei"],
-    Devarim: ["Devarim","Vaetjanan","Ekev","Reé","Shoftim","Ki Tetze","Ki Tavó","Nitzavim","Vayelej","Haazinu","Vezot Haberajá"]
-  } as const;
+
   const allParashiot = Object.values(parashiotByBook).flat();
   const filteredParashiot = allParashiot.filter((p) => p.toLowerCase().includes(perashaQuery.toLowerCase()));
   const [perashaSelected, setPerashaSelected] = useState(false);

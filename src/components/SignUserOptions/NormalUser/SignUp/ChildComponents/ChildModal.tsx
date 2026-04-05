@@ -2,7 +2,7 @@ import React, { CSSProperties, useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import { colors } from '../../../../../assets/colors';
 import { HDate } from "@hebcal/core";
-import { Ability, CustomDate, GREG_MONTHS, HEBREW_MONTHS, Son, VisitorUser } from '../../../../../structs/structs';
+import { Ability, CustomDate, GREG_MONTHS, HEBREW_MONTHS, parashiotByBook, Son, VisitorUser } from '../../../../../structs/structs';
 import { AfterSunsetSwitch } from '../../../../../assets/AfterSunsetSwitch';
 
 interface ChildModalProps {
@@ -64,13 +64,7 @@ export const CreateChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen
   const [isAfterSunsetSelected, setIsAfterSunsetSelected] = useState<boolean>(false)
 
   const [perashaQuery, setPerashaQuery] = useState(formUserChildData.perashaBarMitzva || "")
-  const parashiotByBook = {
-    Bereshit: ["Bereshit","Noaj","Lej Lejá","Vayerá","Jayé Sará","Toldot","Vayetze","Vayishlaj","Vayeshev","Miketz","Vayigash","Vayejí"],
-    Shemot: ["Shemot","Vaerá","Bo","Beshalaj","Yitró","Mishpatim","Terumá","Tetzavé","Ki Tisá","Vayakhel","Pekudei"],
-    Vayikrá: ["Vayikrá","Tzav","Shemini","Tazria","Metzorá","Ajarei Mot","Kedoshim","Emor","Behar","Bejukotai"],
-    Bamidbar: ["Bamidbar","Naso","Behaalotejá","Shelaj Lejá","Koraj","Jukat","Balak","Pinjas","Matot","Masei"],
-    Devarim: ["Devarim","Vaetjanan","Ekev","Reé","Shoftim","Ki Tetze","Ki Tavó","Nitzavim","Vayelej","Haazinu","Vezot Haberajá"]
-  } as const;
+
   const allParashiot = Object.values(parashiotByBook).flat();
   const filteredParashiot = allParashiot.filter((p) => p.toLowerCase().includes(perashaQuery.toLowerCase()));
 
