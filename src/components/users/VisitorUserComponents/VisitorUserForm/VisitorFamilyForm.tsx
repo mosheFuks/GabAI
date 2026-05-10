@@ -9,7 +9,7 @@ import { CreateAniversaryModalComponent } from '../AniversaryComponents/Aniversa
 import { toast } from 'react-toastify';
 import { ClipLoader } from 'react-spinners';
 import { Pencil } from 'lucide-react';
-import { changeUserVisitorData } from '../../../../apis/requests';
+import { changeUserVisitorData, deleteAniversaryFromVisitorUser } from '../../../../apis/requests';
 
 interface FormPersonalDataProps {
   logedVisitorUser: any
@@ -28,6 +28,7 @@ export const VisitorFamilyForm = ({logedVisitorUser, setUserChangedSomeProperty}
     const [changingProperty, setChangingProperty] = useState(false);
     const [newValueToSave, setNewValueToSave] = useState<string | number>("");
     const changeVisitorUserPropeties = changeUserVisitorData()
+    const deleteAniversaryMutation = deleteAniversaryFromVisitorUser()
 
     const sleep = (ms:any) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -204,7 +205,28 @@ export const VisitorFamilyForm = ({logedVisitorUser, setUserChangedSomeProperty}
                         key={index}
                         aniversario={aniversario} 
                         setAniversarySelected={setAniversarySelected}
-                        setIsAniversarySelected={setIsAniversarySelected}
+                        deleteAniversary={async (aniversary: Aniversary) => {
+                          try { 
+                            console.log("Deleting aniversary with id: ", aniversario);
+                            await deleteAniversaryMutation(logedVisitorUser.nombreKehila, logedVisitorUser.nombreEspanol, logedVisitorUser.apellido, aniversary.id!);
+                            toast.success("Aniversario eliminado", {
+                              position: "top-right",
+                              autoClose: 3000,
+                              theme: "colored",
+                              style: { backgroundColor: 'green', color: 'white' },
+                            });
+                            //updateVisitorUser("aniversarios", logedVisitorUser.aniversarios.filter((a: Aniversary) => a.id !== aniversary.id));
+                            setUserChangedSomeProperty(true);
+                          } catch (error) {
+                            toast.error("Error al eliminar el aniversario", {
+                              position: "top-right",
+                              autoClose: 3000,
+                              theme: "colored",
+                              style: { backgroundColor: 'red', color: 'white' },
+                            });
+                            console.error("Error deleting aniversary:", error);
+                          }
+                        }}
                       />
                     ))}
                     <button 

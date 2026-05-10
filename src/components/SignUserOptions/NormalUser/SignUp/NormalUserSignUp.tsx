@@ -163,7 +163,7 @@ const NormalUserSignUp = () => {
       </form>
 
       {step === 3 && (  
-        <div style={{display: "flex", flexDirection: "row", justifyContent: "center"}}>
+        <div style={{display: "flex", flexDirection: "row", justifyContent: "center", marginBottom: 20}}>
           <div>
             <button type={"button"} style={styles.button} onClick={addChild}>Agregar Hijo</button>
           </div>

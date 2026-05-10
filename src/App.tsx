@@ -25,6 +25,7 @@ import { DonationPerPersha } from './components/users/AdministratorUserComponent
 import { AliotPerPersha } from './components/users/AdministratorUserComponents/AdministratorPerashiot/AliotPerPerasha';
 import { ThisWeekAniversariesList } from './components/users/AdministratorUserComponents/AdministratorPerashiot/ThisWeekAniversariesList';
 import { ProtectedRoute } from './components/page/ProtectedRoute/ProtectedRoute';
+import { OperatorsSettings } from './components/users/AdministratorUserComponents/SettingsPage/OperatoresSettings';
 
 Modal.setAppElement('#root');
 
@@ -85,6 +86,11 @@ function AppLayout() {
                 <Route index element={<ThisWeekAniversariesList />} />
                 <Route path='/aniversaries/user/:id' element={<UserDashboard fromPage={location.state?.fromPage || "USERS_LIST_PAGE"} />} />
               </Route>
+            </Route>
+
+            {/*Settings Page - Only for Admin*/}
+            <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
+              <Route path="/configurations" element={<OperatorsSettings />} />
             </Route>
           </>
         </Routes>

@@ -98,7 +98,7 @@ export const VisitorPerashiotInfo = ({ logedVisitorUser }: FormPersonalDataProps
                 </div>
               </div>
 
-              {logedVisitorUser.hijos.length > 0 && (
+              {logedVisitorUser.hijos.length > 0 &&  notIortzaiAniversaryList.sonList[0] > 0 && (
                 <div>
                   <div style={{ display: 'flex', marginRight: '20px'}}>
                     <h3 onClick={() => setStep(3)} style={{...styles.sectionTitle, color: step === 3 ? "#3b82f6" : "#6b7280", textDecoration: step === 3 ? "underline" : "none", paddingBottom: step === 3 ? "8px" : "0", borderBottom: step === 3 ? "2px solid #3b82f6" : "none"}}>Aniversarios de sus hijos</h3>
@@ -180,7 +180,7 @@ export const VisitorPerashiotInfo = ({ logedVisitorUser }: FormPersonalDataProps
             </table>
           )}
 
-          {step == 3 && (
+          {step == 3 && notIortzaiAniversaryList.sonList[0] > 0 && (
             <table style={styles.table}>
               <thead>
                 <tr>
@@ -193,6 +193,7 @@ export const VisitorPerashiotInfo = ({ logedVisitorUser }: FormPersonalDataProps
                 </tr>
               </thead>
               <tbody>
+                {console.log("Hijos anive: ", notIortzaiAniversaryList.sonList[0])}
                 {notIortzaiAniversaryList.sonList[0].map((son: Son, index: any) => {
                   const nombre = `${son.nombre} ${son.apellido}`;
                   const nombreHebreo = son.nombreHebreo;
@@ -224,7 +225,7 @@ export const VisitorPerashiotInfo = ({ logedVisitorUser }: FormPersonalDataProps
       )
       : (
         <div style={{ textAlign: 'center', marginTop: '20px', fontSize: '3rem' }}>
-          <h5 style={{ color: colors.btn_background }}>No hay aniversarios registrados</h5>
+          <h5 style={{ color: colors.aniversaries }}>No hay aniversarios registrados</h5>
         </div>
       )}
 
@@ -353,7 +354,7 @@ const styles = {
     cursor: 'pointer',
     fontSize: '14px',
     fontWeight: '600',
-    backgroundColor: colors.btn_background,
+    backgroundColor: colors.aniversaries,
     transition: 'background-color 0.2s',
   } as CSSProperties,
   sectionTitle: {

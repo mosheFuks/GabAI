@@ -10,6 +10,30 @@ export const getAllKehilot = query({
   },
 });
 
+export const getOperatorUserFromKehila = query({
+  args: {
+    nombreKehila: v.string(),
+    email: v.string()
+  },
+  handler: async (ctx, args) => {
+    const kehila = await ctx.db
+      .query("Kehila")
+      .filter((q) => q.eq(q.field("nombre"), args.nombreKehila))
+      .first();
+
+    if (!kehila) {
+      throw new Error("Kehila no encontrada");
+    }
+
+    const operator = kehila.operadores?.find((op) => op.email === args.email);
+    if (!operator) {
+      throw new Error("Operador no encontrado");
+    }
+
+    return operator;
+  }
+});
+
 export const getAllPerashiotList = query({
   args: {
     nombreKehila: v.string(),
@@ -463,6 +487,46 @@ export const addUserToUsuariosList = mutation({
   },
 });
 
+export const addOperatorToOperadoresList = mutation({
+  args: {
+    nombreKehila: v.string(),
+    nuevoUsuario: v.object({
+      _id: v.string(),
+      nombre: v.string(),
+      apellido: v.string(),
+      email: v.string(),
+      kehila: v.string(),
+      rol: v.string(), // ahora sí está incluido
+    }),
+  },
+  handler: async (ctx, args) => {
+    // Verificar si el usuario ya existe por email
+    const kehila = await ctx.db
+      .query("Kehila")
+      .filter((q) => q.eq(q.field("nombre"), args.nombreKehila))
+      .first();
+
+      if (!kehila) {
+        throw new Error("Kehila no encontrada");
+      }
+
+    const operadorExistente = kehila.operadores?.find(
+      (o) => o._id === args.nuevoUsuario._id
+    );
+
+    if (operadorExistente) {
+      throw new Error("El operador con este email ya existe en la lista");
+    }
+
+    const nuevosOperadores = [...(kehila.operadores ?? []), args.nuevoUsuario];
+
+    await ctx.db.patch(kehila._id, {
+      operadores: nuevosOperadores
+    });
+
+  },
+});
+
 export const addDonationToUser = mutation({
   args: {
     nombreKehila: v.string(),
@@ -480,6 +544,7 @@ export const addDonationToUser = mutation({
       perasha: v.optional(v.string()),
       aclaracion: v.optional(v.string()),
       status: v.optional(v.string()),
+      monto_abonado: v.optional(v.number()),
     }),
   },
   handler: async (ctx, args) => {
@@ -496,7 +561,7 @@ export const addDonationToUser = mutation({
       if (usuario.nombreEspanol === args.nombreUsuario && usuario.apellido === args.apellidoUsuario) {
         usuarioEncontrado = true;
 
-        const nuevasDonaciones = [...(usuario.cuenta ?? []), args.nuevaDonacion];
+        const nuevasDonaciones = [...(usuario.cuenta ?? []), { ...args.nuevaDonacion, monto_abonado: 0 }];
 
         return {
           ...usuario,
@@ -546,10 +611,16 @@ export const changeDonationStatus = mutation({
           if (
             donacion.fecha!.dia === args.fecha.dia &&
             donacion.fecha!.mes === args.fecha.mes &&
-            donacion.fecha!.ano === args.fecha.ano &&
-            donacion.monto === args.monto
+            donacion.fecha!.ano === args.fecha.ano
           ) {
-            return { ...donacion, status: args.nuevoStatus };
+            const nuevoMontoAbonado = (donacion.monto_abonado || 0) + args.monto;
+            const esAbonaTotalidad = nuevoMontoAbonado >= donacion.monto!;
+            
+            return {
+              ...donacion,
+              monto_abonado: nuevoMontoAbonado,
+              status: esAbonaTotalidad ? "PAGADA" : "PENDIENTE"
+            };
           }
           return donacion;
         });
@@ -780,6 +851,47 @@ export const addAniversaryToVisitorUser = mutation({
   },
 });
 
+export const deleteAniversaryFromVisitorUser = mutation({
+  args: {
+    nombreKehila: v.string(),
+    nombreUsuario: v.string(),
+    apellidoUsuario: v.string(),
+    aniversarioId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const kehila = await ctx.db
+      .query("Kehila")
+      .filter((q) => q.eq(q.field("nombre"), args.nombreKehila))
+      .first();
+
+    if (!kehila) {
+      throw new Error("Kehila no encontrada");
+    }
+
+    const usuario = kehila.usuarios.find((u) => u.nombreEspanol === args.nombreUsuario && u.apellido === args.apellidoUsuario);
+
+    if (!usuario) {
+      throw new Error("Mitpalel no encontrado");
+    }
+
+    const nuevosUsuarios = kehila.usuarios.map((u) => {
+      if (u.nombreEspanol === args.nombreUsuario && u.apellido === args.apellidoUsuario) {
+        return {
+          ...u,
+          aniversarios: (u.aniversarios || []).filter((a) => a.id !== args.aniversarioId),
+        };
+      }
+      return u;
+    });
+
+    await ctx.db.patch(kehila._id, {
+      usuarios: nuevosUsuarios,
+    });
+
+    return { success: true };
+  },
+});
+
 /*------DELETE ALL PERASHA INFO OF THE KEHILA------*/
 export const deleteAllPerashiotInfo = mutation({
   args: {
@@ -894,5 +1006,74 @@ export const deleteVisitorUser = mutation({
     });
 
     return { success: true };
+  },
+});
+
+export const deleteOperatorUser = mutation({
+  args: {
+    nombreKehila: v.string(),
+    email: v.string(),
+  },
+    handler: async (ctx, args) => {
+    const kehila = await ctx.db
+      .query("Kehila")
+      .filter((q) => q.eq(q.field("nombre"), args.nombreKehila))
+      .first();
+
+    if (!kehila) {
+      throw new Error("Kehila no encontrada");
+    }
+
+    if (!kehila.operadores || kehila.operadores.length === 0) {
+      throw new Error("No hay operadores en esta Kehila");
+    }
+
+    let operadorEncontrado = false;
+
+    const operadoresActualizados = kehila.operadores.filter((usuario) => {
+      if (usuario.email === args.email) {
+        operadorEncontrado = true;
+        return false; // Remove this user
+      }
+      return true;
+    });
+
+    if (!operadorEncontrado) {
+      throw new Error("Mitpalel no encontrado");
+    }
+
+    // Remove the operator from the global Usuarios collection
+    const usuarioGlobal = await ctx.db
+      .query("Usuarios")
+      .filter((q) => q.eq(q.field("email"), args.email))
+      .first();
+
+    if (usuarioGlobal) {
+      await ctx.db.delete(usuarioGlobal._id);
+    }
+
+    await ctx.db.patch(kehila._id, {
+      operadores: operadoresActualizados,
+    });
+
+    return { success: true };
+  },
+});
+
+export const getKehilaOperatorsList = query({
+  args: {
+    nombreKehila: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const kehila = await ctx.db
+      .query("Kehila")
+      .filter((q) => q.eq(q.field("nombre"), args.nombreKehila))
+      .first();
+
+    if (!kehila) {
+      throw new Error("Kehila no encontrada");
+    }
+
+    return kehila.operadores ?? [];
   },
 });

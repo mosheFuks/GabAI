@@ -124,7 +124,7 @@ export const AliotPerPershaInfo = () => {
             )}
             {!isLoading && aliotList.length > 0 && (
               <>
-                <button style={styles.actionBtn} onClick={() => navigate(`/perasha-info/donation/${id}`)}>+ Donaciones</button>
+                <button style={{...styles.actionBtn, backgroundColor: colors.donation}} onClick={() => navigate(`/perasha-info/donation/${id}`)}>+ Donaciones</button>
                 <button style={{...styles.actionBtn, backgroundColor: "#ef4444"}} onClick={() => setOpenDeleteModal(true)}>Eliminar</button>
               </>
             )}
@@ -281,13 +281,13 @@ const styles: { [key: string]: CSSProperties } = {
     alignItems: "center",
     gap: "8px",
     backgroundColor: "#ffffff",
-    border: "1px solid #e5e7eb",
+    border: `2px solid ${colors.aliot}`,
     borderRadius: "6px",
     padding: "8px 12px",
     minWidth: "240px",
   } as CSSProperties,
   searchIcon: {
-    color: "#9ca3af",
+    color: colors.aliot,
     fontSize: "16px",
   } as CSSProperties,
   searchInput: {
@@ -296,7 +296,7 @@ const styles: { [key: string]: CSSProperties } = {
     backgroundColor: "transparent",
     fontSize: "14px",
     flex: 1,
-    color: "#374151",
+    color: "black",
     transition: "border-color 0.2s",
   } as CSSProperties,
   downloadBtn: {
@@ -374,12 +374,12 @@ const styles: { [key: string]: CSSProperties } = {
     textAlign: "center",
   } as CSSProperties,
   emptyStateText: {
-    fontSize: "16px",
-    color: "#6b7280",
+    fontSize: "24px",
+    color: colors.aliot,
     margin: "0 0 8px 0",
   } as CSSProperties,
   emptyStateSubtext: {
-    fontSize: "14px",
+    fontSize: "18px",
     color: "#9ca3af",
     margin: 0,
   } as CSSProperties,

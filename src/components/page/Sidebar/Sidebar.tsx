@@ -1,10 +1,13 @@
-import { CSSProperties, useState, useEffect } from "react";
+import { CSSProperties, useState, useEffect, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { colors } from "../../../assets/colors";
+import { PageContext } from "../../../StoreInfo/page-storage";
 
 export const Sidebar = () => {  
   const navigate = useNavigate();
   let fullUrl = useLocation();
+  //get sigen user rol info
+ const { logedUser } = useContext(PageContext) as any;
   const [activeNavPath, setActiveNavPath] = useState<string>("/administrator-dashboard");
 
   // Recuperar la última selección guardada al montar
@@ -32,7 +35,7 @@ export const Sidebar = () => {
   const navigationItems = [
     {
       id: 1,
-      label: "Usuarios",
+      label: "Mitpalelim",
       icon: "👥",
       path: "/administrator-dashboard/",
       color: colors.users,
@@ -61,7 +64,7 @@ export const Sidebar = () => {
       path: "/perasha-info/donation/",
       color: colors.donation,
       bgActive: "#fef3c7",
-    }
+    },
   ];
 
   return (
@@ -82,7 +85,48 @@ export const Sidebar = () => {
             <span style={{ fontWeight: "bold"}}>{item.label}</span>
           </button>
         ))}
+
+        {/*
+        //Add one for Configurations with a gear icon
+        {
+          id: 5,
+          label: "Configuraciones",
+          icon: "⚙️",
+          path: "/configurations",
+          color: colors.configurations,
+          bgActive: "#f3f4f6",
+        }, */}
+        {logedUser.rol === "ADMIN" && (
+          <button
+            key={5}
+            style={{
+              ...styles.sidebarBtn,
+              backgroundColor: isActive("/configurations") ? "#f3f4f6" : "transparent",
+              borderLeft: isActive("/configurations") ? `4px solid ${colors.configurations}` : "4px solid transparent",
+              color: isActive("/configurations") ? colors.configurations : "#6b7280",
+            }}
+            onClick={() => handleNavClick("/configurations")}
+          >
+            <span style={styles.icon}>⚙️</span>
+            <span style={{ fontWeight: "bold"}}>Configuracion</span>
+          </button>
+        )}
       </nav>
+      <div style={styles.poweredByContainer}>
+        <div style={styles.poweredByText}>
+          Powered by{" "}
+        </div>
+        <span style={styles.poweredByText}>
+          <a
+            href="https://www.hebcal.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={styles.poweredByLink}
+          >
+            Hebcal Shabbat Times
+          </a>
+        </span>
+      </div>
     </aside>
   );
 };
@@ -126,5 +170,19 @@ const styles: { [key: string]: CSSProperties } = {
     fontSize: "16px",
     display: "flex",
     alignItems: "center",
+  } as CSSProperties,
+  poweredByContainer: {
+    marginTop: "auto",
+    padding: "16px 20px",
+    borderTop: "1px solid #e5e7eb",
+  } as CSSProperties,
+  poweredByText: {
+    fontSize: "11px",
+    color: "#9ca3af",
+  } as CSSProperties,
+  poweredByLink: {
+    color: colors.home_gabai_tittle,
+    textDecoration: "none",
+    fontWeight: "600",
   } as CSSProperties,
 };

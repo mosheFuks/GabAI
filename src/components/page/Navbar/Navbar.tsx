@@ -1,4 +1,4 @@
-import { useContext, useState, CSSProperties } from "react";
+import { useContext, useState, useEffect, CSSProperties } from "react";
 
 import { useNavigate } from 'react-router-dom';
 import { esp_strings } from "../../../assets/strings";
@@ -19,6 +19,34 @@ export const Navbar = ({ breadcrumbs, additionalButtons }: NavbarProps) => {
   const { logedUser, signOut} = useContext(PageContext) as any;
   const navigate = useNavigate();
   const [clicks, setClicks] = useState(0);
+  const [parashaTitle, setParashaTitle] = useState("");
+
+  useEffect(() => {
+    const today = new Date();
+    const dayOfWeek = today.getDay();
+    const friday = new Date(today);
+    friday.setDate(today.getDate() + ((5 - dayOfWeek + 7) % 7));
+    const saturday = new Date(friday);
+    saturday.setDate(friday.getDate() + 1);
+    const start = friday.toISOString().split("T")[0];
+    const end = saturday.toISOString().split("T")[0];
+    console.log("Start: ", start);
+    console.log("End: ", end);
+
+    
+    fetch(
+      `https://www.hebcal.com/hebcal?cfg=json&v=1&s=on&maj=on&hd=on&start=${start}&end=${end}&geo=pos&latitude=-34.6037&longitude=-58.3816&tzid=America/Argentina/Buenos_Aires`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        //search for the item with category "parashat" and get its title, then remove the "Parashat " prefix if it exists
+        const parashaItem = data.items.find((item: any) => item.category === "parashat");
+        if (parashaItem && parashaItem.title) {
+          setParashaTitle(parashaItem.title.replace(/^Parashat\s*/i, ""));
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const handleClick = () => {
     const newCount = clicks + 1;
@@ -36,6 +64,9 @@ export const Navbar = ({ breadcrumbs, additionalButtons }: NavbarProps) => {
         <div style={styles.text} onClick={handleClick}>
           <span style={styles.highlight}>{esp_strings.main_title}<span style={{ fontStyle: "italic" }}>AI</span></span>
         </div>
+        {parashaTitle && (logedUser.rol === "ADMIN" || logedUser.rol === "OPERATOR") && (
+          <span style={styles.parashaText}>Perasha de esta semana: <span style={{ fontWeight: "bold" }}>{parashaTitle}</span></span>
+        )}
         {breadcrumbs && breadcrumbs.length > 0 && (
           <nav style={styles.breadcrumbs}>
             {breadcrumbs.map((item, index) => (
@@ -145,6 +176,13 @@ const styles = {
       display: "flex",
       gap: "12px",
       alignItems: "center",
+    } as CSSProperties,
+    parashaText: {
+      fontWeight: "600",
+      fontSize: "20px",
+      color: colors.home_gabai_tittle,
+      //And an underline 
+      textDecoration: "underline",
     } as CSSProperties,
     buttonContainer: {
       display: "flex",

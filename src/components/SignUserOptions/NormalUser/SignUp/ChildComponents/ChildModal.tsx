@@ -4,6 +4,7 @@ import { colors } from '../../../../../assets/colors';
 import { HDate } from "@hebcal/core";
 import { Ability, CustomDate, GREG_MONTHS, HEBREW_MONTHS, parashiotByBook, Son, VisitorUser } from '../../../../../structs/structs';
 import { AfterSunsetSwitch } from '../../../../../assets/AfterSunsetSwitch';
+import { useBarMitzvaParasha } from '../../../../../hooks/useBarMitzvaParasha';
 
 interface ChildModalProps {
   modalChildIsOpen: boolean;
@@ -65,6 +66,21 @@ export const CreateChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen
 
   const [perashaQuery, setPerashaQuery] = useState(formUserChildData.perashaBarMitzva || "")
 
+  const { loading: parashaLoading, fetchParasha } = useBarMitzvaParasha();
+
+  const handleCalculatePerasha = async () => {
+    const dia = formUserChildData.fechaBarMitzvaHebreo?.dia;
+    const mes = formUserChildData.fechaBarMitzvaHebreo?.mes;
+    const ano = formUserChildData.fechaBarMitzvaHebreo?.ano;
+    if (!dia || !mes || !ano) return;
+
+    const result = await fetchParasha(+dia, String(mes), +ano);
+    if (result) {
+      setPerashaQuery(result);
+      setFormUserChildData((prev: Son) => ({ ...prev, perashaBarMitzva: result }));
+    }
+  };
+
   const allParashiot = Object.values(parashiotByBook).flat();
   const filteredParashiot = allParashiot.filter((p) => p.toLowerCase().includes(perashaQuery.toLowerCase()));
 
@@ -118,7 +134,7 @@ export const CreateChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen
     const month = +date.mes!
     const year = +date.ano!
 
-    const gregorianDate = new Date(year, month - 1, day, 12)
+    const gregorianDate = new Date(year, month, day, 12)
 
     const hebrewDate = isAfterSunsetSelected ? new HDate(gregorianDate).next() : new HDate(gregorianDate);
     const [dayHeb, monthHeb, yearHeb] = hebrewDate.toString().split(" ");
@@ -135,7 +151,7 @@ export const CreateChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen
     const hdate = new HDate(hebDay, hebMonth, hebYear);
     const gregDate: Date = hdate.greg();
     const dayGreg = gregDate.getDate()
-    const monthGreg = gregDate.getMonth() + 1
+    const monthGreg = gregDate.getMonth()
     const yearGreg = gregDate.getFullYear()
 
     saveBirthDateParams("dia", "fechaNacimiento", true, [dayGreg, monthGreg, yearGreg])
@@ -200,7 +216,7 @@ export const CreateChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen
     const hdate = new HDate(hebDay, hebMonth, hebYear);
     const gregDate: Date = hdate.greg();
     const dayGreg = gregDate.getDate()
-    const monthGreg = gregDate.getMonth() + 1
+    const monthGreg = gregDate.getMonth()
     const yearGreg = gregDate.getFullYear()
 
     saveBirthDateParams("dia", "fechaBarMitzva", true, [dayGreg, monthGreg, yearGreg])
@@ -382,7 +398,17 @@ export const CreateChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen
                 </div>
               </div>
 
-              <label htmlFor="userChildPerasha"style={{ display: "block", fontWeight: 'bold'}}>Perasha Bar Mitzva</label>
+              <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginBottom: "5px", gap: "20px"}}>
+                <label htmlFor="userChildPerasha" style={{ display: "block", fontWeight: 'bold'}}>Perasha Bar Mitzva</label>
+                <button
+                  type="button"
+                  style={{...styles.button, backgroundColor: (!formUserChildData.fechaBarMitzvaHebreo?.ano || parashaLoading) ? 'gray' : colors.btn_calculate_date, color: "white"}}
+                  onClick={handleCalculatePerasha}
+                  disabled={!formUserChildData.fechaBarMitzvaHebreo?.ano || parashaLoading}
+                >
+                  {parashaLoading ? "Calculando..." : "Calcular Perasha"}
+                </button>
+              </div>
               <div style={{ position: "relative", width: "80%" }}>
                 <input
                   id="userChildPerasha"

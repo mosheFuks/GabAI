@@ -24,7 +24,7 @@ export const AliotPerPersha = () => {
   return (
     <div style={styles.container}>
       <div style={styles.header}>
-        <h2 style={styles.title}>Aliot por Parashá</h2>
+        <h2 style={styles.title}>📜 Aliot por Parashá</h2>
         <div style={styles.headerRight}>
           <div style={styles.searchBox}>
             <FaSearch style={styles.searchIcon} />
@@ -125,13 +125,13 @@ const styles = {
     alignItems: "center",
     gap: "8px",
     backgroundColor: "#ffffff",
-    border: "1px solid #e5e7eb",
+    border: `3px solid ${colors.aliot}`,
     borderRadius: "6px",
     padding: "8px 12px",
     minWidth: "240px",
   } as CSSProperties,
   searchIcon: {
-    color: "#9ca3af",
+    color: colors.aliot,
     fontSize: "16px",
   } as CSSProperties,
   searchInput: {
@@ -140,6 +140,7 @@ const styles = {
     backgroundColor: "transparent",
     fontSize: "14px",
     flex: 1,
+    color: "black"
   } as CSSProperties,
   cardsContainer: {
     display: "grid",
@@ -179,12 +180,12 @@ const styles = {
   tag: {
     padding: "8px 12px",
     borderRadius: "6px",
-    border: "1px solid #c7d2fe",
-    backgroundColor: "#e0e7ff",
-    color: "#3b82f6",
+    border: `1px solid ${colors.aliot}`,
+    backgroundColor: "#e0ffee",
+    color: colors.aliot,
     cursor: "pointer",
     fontSize: "13px",
-    fontWeight: 500,
+    fontWeight: 700,
     transition: "all 0.2s",
     outline: "none",
   } as CSSProperties,

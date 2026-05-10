@@ -54,6 +54,13 @@ export interface Aniversary {
 
 export interface SignInfo {
     nombre?: string,
+    apellido?: string,
+    email?: string,
+    password?: string
+}
+
+export interface SignOperatorInfo {
+    nombre?: string,
     email?: string,
     password?: string
 }
@@ -77,7 +84,8 @@ export interface Donacion {
     fecha?: CustomDate,
     perasha?: string,
     aclaracion?: string,
-    status?: "PENDIENTE" | "PAGADO" | any,
+    status?: "PENDIENTE" | "PAGADA" | any,
+    monto_abonado?: number
 }
 
 export interface LogedUserData {
@@ -85,6 +93,16 @@ export interface LogedUserData {
   nombre: string;
   rol: string;
   kehila: string;
+}
+
+
+export interface OperatorLogedUserData {
+  email: string;
+  nombre: string;
+  apellido: string;
+  rol: string;
+  kehila: string;
+  _id: string;
 }
 
 export type Ability = "Leer Torah" | "Jazan" | "Leer Haftara" | "Leer Meguila";
@@ -143,18 +161,18 @@ export const HEBREW_MONTHS = [
 ] as const;
 
 export const GREG_MONTHS = [
-    {nombre: "Enero", numero: 0},
-    {nombre: "Febrero", numero: 1},
-    {nombre: "Marzo", numero: 2},
-    {nombre: "Abril", numero: 3},
-    {nombre: "Mayo", numero: 4},
-    {nombre: "Junio", numero: 5},
-    {nombre: "Julio", numero: 6},
-    {nombre: "Agosto", numero: 7},
-    {nombre: "Septiembre", numero: 8},
-    {nombre: "Octubre", numero: 9},
-    {nombre: "Noviembre", numero: 10},
-    {nombre: "Diciembre", numero: 11}
+    {nombre: "Enero", numero: 1},
+    {nombre: "Febrero", numero: 2},
+    {nombre: "Marzo", numero: 3},
+    {nombre: "Abril", numero: 4},
+    {nombre: "Mayo", numero: 5},
+    {nombre: "Junio", numero: 6},
+    {nombre: "Julio", numero: 7},
+    {nombre: "Agosto", numero: 8},
+    {nombre: "Septiembre", numero: 9},
+    {nombre: "Octubre", numero: 10},
+    {nombre: "Noviembre", numero: 11},
+    {nombre: "Diciembre", numero: 12}
 ] as const;
 
 export const parashiotByBook = {

@@ -276,7 +276,7 @@ export const ThisWeekAniversariesList = () => {
       {/* Header Section */}
       <div style={styles.header}>
         <div>
-          <h2 style={styles.title}>Aniversarios de esta semana</h2>
+          <h2 style={styles.title}>ℹ️ Aniversarios de esta semana</h2>
           <div style={styles.description}>Mira los aniversarios de esta semana y gestiona la información correspondiente.</div>
         </div>
       </div>
@@ -554,7 +554,7 @@ const styles: { [key: string]: CSSProperties } = {
   } as CSSProperties,
   emptyStateText: {
     fontSize: "24px",
-    color: "#6b7280",
+    color: colors.aniversaries,
     margin: 0,
   } as CSSProperties,
 };

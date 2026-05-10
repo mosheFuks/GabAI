@@ -3,6 +3,7 @@ import { CSSProperties, useState } from 'react';
 import { HDate } from '@hebcal/core';
 import { Ability, GREG_MONTHS, HEBREW_MONTHS, parashiotByBook, VisitorUser } from '../../../../../../structs/structs';
 import { colors } from '../../../../../../assets/colors';
+import { useBarMitzvaParasha } from '../../../../../../hooks/useBarMitzvaParasha';
 
 interface FormPersonalDataProps {
   handleChangePersonalData: any,
@@ -17,7 +18,22 @@ export const FormKehilaInfoData = ({handleChangePersonalData, user, setFormUserP
   const [habilidad, setHabilidad] = useState<Ability[]>([])
 
   const [perashaQuery, setPerashaQuery] = useState(user.perashaBarMitzva || "")
-  
+
+  const { loading: parashaLoading, fetchParasha } = useBarMitzvaParasha();
+
+  const handleCalculatePerasha = async () => {
+    const dia = user.fechaBarMitzvaHebreo?.dia;
+    const mes = user.fechaBarMitzvaHebreo?.mes;
+    const ano = user.fechaBarMitzvaHebreo?.ano;
+    if (!dia || !mes || !ano) return;
+
+    const result = await fetchParasha(+dia, String(mes), +ano);
+    if (result) {
+      setPerashaQuery(result);
+      setUser({ ...user, perashaBarMitzva: result });
+    }
+  };
+
   const allParashiot = Object.values(parashiotByBook).flat();
   const filteredParashiot = allParashiot.filter((p) => p.toLowerCase().includes(perashaQuery.toLowerCase()));
 
@@ -106,11 +122,13 @@ export const FormKehilaInfoData = ({handleChangePersonalData, user, setFormUserP
       const hdate = new HDate(hebDay, hebMonth, hebYear);
       const gregDate: Date = hdate.greg();
       const dayGreg = gregDate.getDate()
-      const monthGreg = gregDate.getMonth() + 1
+      const monthGreg = gregDate.getMonth()
       const yearGreg = gregDate.getFullYear()
   
       saveBarMitzvaDateParams("dia", "fechaBarMitzvaGregoriano", true, [dayGreg, monthGreg, yearGreg])
     };
+
+
     
     return (
       <div  style={{ flex: 1, overflowY: "auto", padding: "10px", borderRadius: "5px", minHeight: 0 }}>
@@ -187,7 +205,17 @@ export const FormKehilaInfoData = ({handleChangePersonalData, user, setFormUserP
               </div>
             </div>
 
-            <label htmlFor="userPerasha" style={{ display: "block", fontWeight: "bold"}}>Perasha Bar Mitzva</label>
+            <div style={{ display: "flex", flexDirection: "row", alignItems: "center", marginBottom: "5px", gap: "20px"}}>
+              <label htmlFor="userPerasha" style={{ display: "block", fontWeight: "bold"}}>Perasha Bar Mitzva</label>
+              <button
+                type="button"
+                style={{...styles.button, backgroundColor: (!user.fechaBarMitzvaHebreo?.ano || parashaLoading) ? 'gray' : colors.btn_calculate_date, color: "white"}}
+                onClick={handleCalculatePerasha}
+                disabled={!user.fechaBarMitzvaHebreo?.ano || parashaLoading}
+              >
+                {parashaLoading ? "Calculando..." : "Calcular Perasha"}
+              </button>
+            </div>
             <div style={{ position: "relative", width: "80%" }}>
               <input
                 id="userPerasha"

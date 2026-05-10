@@ -40,6 +40,7 @@ export const CreateAniversaryModalComponent = ({modalAniversaryIsOpen, setModalA
     },
     motivo: isAniversarySelected ? (aniversary?.motivo ?? undefined) : undefined,
     nombreDelAniversario: isAniversarySelected ? (aniversary?.nombreDelAniversario ?? undefined) : undefined,
+    id: isAniversarySelected ? aniversary?.id : undefined
   });
 
   const addAniversaryLogedVisitorUser = addAniversaryToVisitorUser()
@@ -123,7 +124,7 @@ export const CreateAniversaryModalComponent = ({modalAniversaryIsOpen, setModalA
     const month = +date.mes!
     const year = +date.ano!
 
-    const gregorianDate = new Date(year, month - 1, day, 12)
+    const gregorianDate = new Date(year, month, day, 12)
 
     const hebrewDate = new HDate(gregorianDate);
     const [dayHeb, monthHeb, yearHeb] = hebrewDate.toString().split(" ");
@@ -140,7 +141,7 @@ export const CreateAniversaryModalComponent = ({modalAniversaryIsOpen, setModalA
     const hdate = new HDate(hebDay, hebMonth, hebYear);
     const gregDate: Date = hdate.greg();
     const dayGreg = gregDate.getDate()
-    const monthGreg = gregDate.getMonth() + 1
+    const monthGreg = gregDate.getMonth()
     const yearGreg = gregDate.getFullYear()
 
     saveBirthDateParams("dia", "fecha", true, [dayGreg, monthGreg, yearGreg])

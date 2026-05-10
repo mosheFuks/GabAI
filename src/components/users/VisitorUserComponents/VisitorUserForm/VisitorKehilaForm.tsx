@@ -1,6 +1,6 @@
 import { CSSProperties, useState } from 'react';
 import { colors } from '../../../../assets/colors';
-import { Ability, VisitorUser } from '../../../../structs/structs';
+import { Ability, parashiotByBook, VisitorUser } from '../../../../structs/structs';
 import { toast } from 'react-toastify';
 import { ClipLoader } from 'react-spinners';
 import { Pencil } from 'lucide-react';
@@ -19,7 +19,12 @@ export const VisitorKehilaForm = ({logedVisitorUser, setUserChangedSomeProperty}
   const [editingField, setEditingField] = useState<string | null>(null);
   const [changingProperty, setChangingProperty] = useState(false);
   const [newValueToSave, setNewValueToSave] = useState<string | number>("");  
-  const [habilidad, setHabilidad] = useState<Ability[]>([]) 
+  const [habilidad, setHabilidad] = useState<Ability[]>([])
+  const [perashaQuery, setPerashaQuery] = useState("");
+  const [perashaSelected, setPerashaSelected] = useState(false);
+
+  const allParashiot = Object.values(parashiotByBook).flat();
+  const filteredParashiot = allParashiot.filter((p) => p.toLowerCase().includes(perashaQuery.toLowerCase()));
 
   const sleep = (ms: any) => new Promise(resolve => setTimeout(resolve, ms));
                
@@ -82,7 +87,6 @@ export const VisitorKehilaForm = ({logedVisitorUser, setUserChangedSomeProperty}
     setChangingProperty(true);
     await sleep(3000)
     await updateVisitorUser(keyToEdit, newValueToSave);
-    updateVisitorUser(keyToEdit, newValueToSave);
     setNewValueToSave("");
     setEditingField(null);
   };
@@ -131,6 +135,38 @@ export const VisitorKehilaForm = ({logedVisitorUser, setUserChangedSomeProperty}
     );
   }
 
+  const renderPerashaListToSelect = () => {
+    return (
+      <div style={{ position: "relative", width: "80%" }}>
+        <input
+          type="text"
+          value={perashaQuery}
+          onChange={(e) => {
+            setPerashaQuery(e.target.value);
+            setPerashaSelected(false);
+            setNewValueToSave("");
+          }}
+          placeholder="Escriba para buscar..."
+          style={styles.input}
+          autoFocus={true}
+        />
+        {perashaQuery && filteredParashiot.length > 0 && !perashaSelected && (
+          <ul style={{ listStyle: "none", margin: 0, padding: 0, position: "absolute", zIndex: 10, background: "white", width: "100%", border: "1px solid #ddd", maxHeight: 150, overflowY: "auto" }}>
+            {filteredParashiot.map((p, i) => (
+              <li key={i} onClick={() => {
+                setPerashaQuery(p);
+                setPerashaSelected(true);
+                setNewValueToSave(p);
+              }} style={{ padding: "6px 10px", cursor: "pointer", borderBottom: "1px solid #eee" }}>
+                {p}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    );
+  }
+
   const renderHabilitiesListToSelect = () => {
     return (
       <div style={styles.input}>
@@ -159,14 +195,15 @@ export const VisitorKehilaForm = ({logedVisitorUser, setUserChangedSomeProperty}
     );
   }
 
-  const showUserInfoData = (label: string, infoToShow: string, key: string, inputLabel: "HABILIDAD" | "DEFAULT"  = "DEFAULT") => {
+  const showUserInfoData = (label: string, infoToShow: string, key: string, inputLabel: "HABILIDAD" | "PERASHA" | "DEFAULT"  = "DEFAULT") => {
     const isEditing = editingField === key;
     return (
       <>
         <label htmlFor={key} style={{ display: "block", fontWeight: 'bold' }}>{label}</label>
         <div style={{ display: 'flex', flexDirection: "row", alignItems: 'center' }}>
           {isEditing ? (
-            inputLabel === "HABILIDAD" ? renderHabilitiesListToSelect() : 
+            inputLabel === "HABILIDAD" ? renderHabilitiesListToSelect() :
+            inputLabel === "PERASHA" ? renderPerashaListToSelect() :
             renderNormalEditableField(infoToShow, key)
           ) : (
             <h5 id={key} style={styles.input}>{infoToShow}</h5>
@@ -183,6 +220,7 @@ export const VisitorKehilaForm = ({logedVisitorUser, setUserChangedSomeProperty}
       </>
     );
   };
+
   
   return (
     <div style={styles.formContainer}>
@@ -233,7 +271,7 @@ export const VisitorKehilaForm = ({logedVisitorUser, setUserChangedSomeProperty}
         </div>*/}
         {showBarMitzvaInfoData("Fecha Bar Mitzva Gregoriano", logedVisitorUser.fechaBarMitzvaGregoriano!.dia!, "userBarMitzvaDateGregDia", logedVisitorUser.fechaBarMitzvaGregoriano!.mes!, "userBarMitzvaDateGregMes", logedVisitorUser.fechaBarMitzvaGregoriano!.ano!, "userBarMitzvaDateGregAno")}
 
-        {showUserInfoData("Perasha Bar Mitzva", logedVisitorUser.perashaBarMitzva!, "perashaBarMitzva")}
+        {showUserInfoData("Perasha Bar Mitzva", logedVisitorUser.perashaBarMitzva!, "perashaBarMitzva", "PERASHA")}
         
         {logedVisitorUser.habilidades!.length > 0 ? (
           <>

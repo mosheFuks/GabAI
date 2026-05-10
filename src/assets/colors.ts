@@ -9,4 +9,5 @@ export const colors = {
     "aliot": "#059669",
     "donation": "#d97706",
     "users": "#084ec0",
+    "configurations": "#6b7280",
 }

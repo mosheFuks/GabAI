@@ -123,7 +123,7 @@ export const UserChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen, 
     const month = +date.mes!
     const year = +date.ano!
 
-    const gregorianDate = new Date(year, month - 1, day, 12)
+    const gregorianDate = new Date(year, month, day, 12)
 
     // Si el usuario indicó "after sunset" sumamos un día en la conversión
     const hd = isAfterSunsetSelected
@@ -150,7 +150,7 @@ export const UserChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen, 
     const hdate = new HDate(hebDay, hebMonth, hebYear);
     const gregDate: Date = hdate.greg();
     const dayGreg = gregDate.getDate()
-    const monthGreg = gregDate.getMonth() + 1
+    const monthGreg = gregDate.getMonth()
     const yearGreg = gregDate.getFullYear()
 
     saveBirthDateParams("dia", "fechaNacimiento", true, [dayGreg, monthGreg, yearGreg])
@@ -215,7 +215,7 @@ export const UserChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen, 
     const hdate = new HDate(hebDay, hebMonth, hebYear);
     const gregDate: Date = hdate.greg();
     const dayGreg = gregDate.getDate()
-    const monthGreg = gregDate.getMonth() + 1
+    const monthGreg = gregDate.getMonth()
     const yearGreg = gregDate.getFullYear()
 
     saveBirthDateParams("dia", "fechaBarMitzva", true, [dayGreg, monthGreg, yearGreg])
@@ -240,11 +240,7 @@ export const UserChildModalComponent = ({modalChildIsOpen, setChildModalIsOpen, 
         }}
         contentLabel="Visitor Child Modal"
       >
-        {isSonSelected ? (
-          <h2 style={{ textAlign: 'center', color: "blue"}}>{formUserChildData.nombre}</h2>
-        ) : (
-          <h2 style={{ textAlign: 'center', color: "blue"}}>Ingresa los datos de tu hijo/a</h2>
-        )}
+        <h2 style={{ textAlign: 'center', color: "blue"}}>{isSonSelected ? formUserChildData.nombre : "Ingresa los datos de tu hijo/a"}</h2>
         <div>
           {!isSonSelected ? (
             <>

@@ -2,8 +2,10 @@ import { CSSProperties, useContext, useState } from 'react';
 import Modal from 'react-modal';
 import { Donacion, GREG_MONTHS, VisitorUser } from '../../../../../../structs/structs';
 import { colors } from '../../../../../../assets/colors';
-import { addADonationToUser } from '../../../../../../apis/requests';
+import { addADonationInAPerasha, addADonationToUser, getPerashiotList } from '../../../../../../apis/requests';
 import { PageContext } from '../../../../../../StoreInfo/page-storage';
+import { AddDonationToPerashaModal } from '../../../AdministratorPerashiot/AddDonationToPerashaModal';
+import { toast } from 'react-toastify';
 
 interface DonationModalProps {
   modalAniversaryIsOpen: boolean;
@@ -14,6 +16,8 @@ interface DonationModalProps {
 
 export const DonationModal = ({modalAniversaryIsOpen, setModalAniversaryIsOpen, setCompleteDonationsList, logedVisitorUser}: DonationModalProps) => {
   const { logedUser } = useContext(PageContext) as any;
+  const perashiotList = getPerashiotList(logedVisitorUser.nombreKehila!);
+  
   const [formUserDonationData, setFormUserDonationData] = useState<Donacion>({
     monto: 0,
     tipoMoneda: undefined,
@@ -23,17 +27,66 @@ export const DonationModal = ({modalAniversaryIsOpen, setModalAniversaryIsOpen, 
     aclaracion: "",
     status: undefined,
   });
+  
+  const [perashaQuery, setPerashaQuery] = useState<string>("");
+  const [showPerashaList, setShowPerashaList] = useState<boolean>(false);
+  const [agregarAPerasha, setAgregarAPerasha] = useState<boolean>(false);
+  const [selectedAlia, setSelectedAlia] = useState<string>("");
 
   const addDonation = addADonationToUser();
+  const addNewDonationInPerasha = addADonationInAPerasha();
+  
+  const filteredPerashiot = perashiotList 
+    ? perashiotList.filter((perasha: any) =>
+        perasha.nombrePerasha.toLowerCase().includes(perashaQuery.toLowerCase())
+      )
+    : [];
 
   const closeModal = () => {
     setModalAniversaryIsOpen(false);
   }
 
-  const saveUserDonationData = () => {
+  const saveUserDonationData = async () => {
     setModalAniversaryIsOpen(false);
-    addDonation(logedUser.kehila, logedVisitorUser.nombreEspanol!, logedVisitorUser.apellido!, formUserDonationData)
-    formUserDonationData.monto != 0 && setCompleteDonationsList((prev: Donacion[]) => [...prev, formUserDonationData]);
+    try {
+      await addDonation(logedUser.kehila, logedVisitorUser.nombreEspanol!, logedVisitorUser.apellido!, formUserDonationData)
+      await addNewDonationInPerasha(
+        logedUser.kehila,
+        formUserDonationData.perasha!,
+        {
+          alia: selectedAlia,
+          nombre: logedVisitorUser.nombreEspanol!,
+          nombreHebreo: logedVisitorUser.nombreHebreo!,
+          apellido: logedVisitorUser.apellido!,
+          monto: formUserDonationData.monto,
+          moneda: formUserDonationData.tipoMoneda,
+          tipoAlia: "DONACION"
+        }
+      );
+      formUserDonationData.monto != 0 && setCompleteDonationsList((prev: Donacion[]) => [...prev, formUserDonationData]);
+      toast.success("Donación agregada correctamente", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "colored",
+        style: { backgroundColor: 'green', color: 'white' },
+      });
+    } catch (error) {
+      console.error("Error al guardar la donación:", error);
+      toast.error("Error al agregar la donación", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "colored",
+        style: { backgroundColor: 'red', color: 'white' },
+      });
+    }
   }
   
   return (
@@ -92,13 +145,61 @@ export const DonationModal = ({modalAniversaryIsOpen, setModalAniversaryIsOpen, 
           />
           
           <label htmlFor="userDonationPerasha" style={{ display: "block", fontWeight: 'bold'}}>Perasha</label>
-          <input
-            type="text"
-            id="userDonationPerasha"
-            value={formUserDonationData.perasha}
-            onChange={(e) => setFormUserDonationData({ ...formUserDonationData, perasha: e.target.value })}
-            style={styles.input}
-          />
+          <div style={{ position: "relative", width: "80%" }}>
+            <input
+              id="userDonationPerasha"
+              type="text"
+              value={perashaQuery}
+              onChange={(e) => {
+                setPerashaQuery(e.target.value);
+                setFormUserDonationData({ ...formUserDonationData, perasha: "" });
+                setShowPerashaList(true);
+              }}
+              onFocus={() => setShowPerashaList(true)}
+              placeholder="Escriba para buscar..."
+              style={styles.input}
+            />
+            {perashaQuery && filteredPerashiot.length > 0 && showPerashaList && (
+              <ul style={{ 
+                listStyle: "none", 
+                margin: 0, 
+                padding: 0, 
+                position: "absolute", 
+                zIndex: 10, 
+                background: "white", 
+                width: "100%", 
+                border: "1px solid #ddd", 
+                maxHeight: 150, 
+                overflowY: "auto",
+                borderRadius: "6px",
+                boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)"
+              }}>
+                {filteredPerashiot.map((perasha: any, i: number) => (
+                  <li 
+                    key={i} 
+                    onClick={() => { 
+                      setPerashaQuery(perasha.nombrePerasha);
+                      setFormUserDonationData({ ...formUserDonationData, perasha: perasha.nombrePerasha }); 
+                      setShowPerashaList(false);
+                    }} 
+                    style={{ 
+                      padding: "10px 12px", 
+                      cursor: "pointer", 
+                      borderBottom: "1px solid #eee",
+                      fontSize: "14px",
+                      color: "#1f2937",
+                      transition: "background-color 0.2s"
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "#f3f4f6"}
+                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "transparent"}
+                  >
+                    {perasha.nombrePerasha}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+
 
           <label htmlFor="userDonationFecha" style={{ display: "block", fontWeight: 'bold'}}>Fecha</label>
           <div style={{ display: "flex", flexDirection: "row"}}>
@@ -147,6 +248,37 @@ export const DonationModal = ({modalAniversaryIsOpen, setModalAniversaryIsOpen, 
             <option value="PENDIENTE">Pendiente</option>
             <option value="PAGADA">Pagada</option>
           </select>
+
+          {/*Add a slecet button that say "Queres agregar esta donacion a la perasha?" */}
+
+          {formUserDonationData.perasha && (
+            <div style={{ display: "flex", alignItems: "center", marginTop: 10 }}>
+            <input
+              type="checkbox"
+              id="userDonationAgregarPerasha"
+              checked={agregarAPerasha}
+              onChange={(e) => setAgregarAPerasha(e.target.checked)}
+              style={{ marginRight: 10 }}
+            />
+              <label htmlFor="userDonationAgregarPerasha" style={{ fontWeight: 'bold' }}>
+                {`Queres agregar esta donacion a la perasha ${formUserDonationData.perasha}?`}
+              </label>
+              {agregarAPerasha && (
+                <div style={{ marginTop: 10 }}>
+                  <label htmlFor="userDonationPerashaAlia" style={{ display: "flex", fontWeight: 'bold' }}>
+                    Indique el nombre de la Alia a la que subio 
+                  </label>
+                  <input
+                    type="text"
+                    id="userDonationPerashaAlia"
+                    value={selectedAlia}
+                    onChange={(e) => setSelectedAlia(e.target.value)}
+                    style={styles.input}
+                  />
+                </div>
+              )}
+            </div>
+          )}
 
           <button onClick={saveUserDonationData} style={{...styles.button, backgroundColor: formUserDonationData.motivo == "" ? 'gray' : colors.btn_background}} disabled={formUserDonationData.motivo == ""}>
             Guardar

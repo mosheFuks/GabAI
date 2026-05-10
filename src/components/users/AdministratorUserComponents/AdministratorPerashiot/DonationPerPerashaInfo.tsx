@@ -98,7 +98,7 @@ export const DonationPerPerashaInfo = () => {
             </button>
           </div>
           <div style={styles.headerRight}>
-            <button style={styles.actionBtn} onClick={() => setOpenAliaModal(true)}>
+            <button style={{...styles.actionBtn, backgroundColor: colors.donation}} onClick={() => setOpenAliaModal(true)}>
               + Agregar Donación
             </button>
             {donationAliot.length > 0 && (
@@ -130,11 +130,11 @@ export const DonationPerPerashaInfo = () => {
               <div style={styles.summarySection}>
                 <div style={styles.summaryCard}>
                   <div style={styles.summaryLabel}>Monto recaudado en pesos</div>
-                  <div style={styles.summaryAmount}>${arsTotal}</div>
+                  <div style={styles.summaryAmount}><i>$</i> {arsTotal}</div>
                 </div>
                 <div style={styles.summaryCard}>
                   <div style={styles.summaryLabel}>Monto recaudado en dólares</div>
-                  <div style={styles.summaryAmount}>USD {usdTotal}</div>
+                  <div style={styles.summaryAmount}><i>U$D</i> {usdTotal}</div>
                 </div>
               </div>
             )}
@@ -379,8 +379,8 @@ const styles: { [key: string]: CSSProperties } = {
     textAlign: "center",
   } as CSSProperties,
   emptyStateText: {
-    fontSize: "16px",
-    color: "#6b7280",
+    fontSize: "24px",
+    color: colors.donation,
     margin: 0,
   } as CSSProperties,
 };

@@ -54,7 +54,7 @@ export const AdministratorDefaultDashboard = () => {
         <div style={styles.stepsContainer}>
           <div style={styles.header}>
             <div>
-              <h2 style={styles.pageTitle}>Lista de Mitpalelim de la Kehila</h2>
+              <h2 style={styles.pageTitle}>👥 Lista de Mitpalelim de la Kehila</h2>
             </div>
             <div style={styles.headerRight}>
               <div style={styles.searchBox}>
@@ -294,12 +294,6 @@ const styles: {  [key: string]: CSSProperties }= {
     color: "black",
     fontSize: "16px",
   },
-  tableContainer: {
-    height: 'auto',
-    overflowY: 'auto',
-    padding: '10px',
-    borderRadius: '5px',
-  } as CSSProperties,
   table: {
     borderCollapse: 'separate',
     borderSpacing: '10px 12px',

@@ -15,7 +15,8 @@ export const Cuenta = v.object({
     perasha: v.optional(v.string()),
     aclaracion: v.optional(v.string()),
     status: v.optional(v.string()),
-    factura: v.optional(v.string())
+    factura: v.optional(v.string()),
+    monto_abonado: v.optional(v.number())
 })
 
 export const Hijos = v.object({
@@ -113,7 +114,19 @@ export default defineSchema({
         kehila: v.string(),
         nombre: v.string(),
         role: v.string()
-    })
+    }),
+    operadores: v.optional(
+        v.array(
+        v.object({
+            _id: v.string(),
+            email: v.string(),
+            kehila: v.string(),
+            nombre: v.string(),
+            apellido: v.string(),
+            rol: v.string()
+        })
+    )
+    )
   }),
 
   Usuarios: defineTable({

@@ -42,7 +42,7 @@ export const UserDashboard = ({ fromPage }: UserDashboardProps) => {
         <h2 style={styles.title}>
          {userName} {userSurname}
         </h2>
-        <button style={{...styles.button, backgroundColor: colors.btn_background}} onClick={() => setOpenAliaModal(true)}>
+        <button style={{...styles.button, backgroundColor: colors.aliot}} onClick={() => setOpenAliaModal(true)}>
           Proxima Alia
         </button>
         

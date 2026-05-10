@@ -4,7 +4,7 @@ import { colors } from '../../../../assets/colors'
 import { addAnAliaInAPerasha } from '../../../../apis/requests';
 import { PageContext } from '../../../../StoreInfo/page-storage';
 import { toast } from 'react-toastify';
-import { Alia } from '../../../../structs/structs';
+import { Alia, parashiotByBook } from '../../../../structs/structs';
 
 interface AddUserToAliaModalProps {
   openAliaModal: boolean;
@@ -38,73 +38,6 @@ export const AddUserToAliaModal = ({openAliaModal, setOpenAliaModal, userToAddIn
     moneda: "",
   });
   //const perashaInfo = getPerashaInfo(logedUser.kehila, formAliaData.perasha!);
-
-  const parashiotByBook = {
-    Bereshit: [ 
-      "Bereshit",
-      "Noaj",
-      "Lej Lejá",
-      "Vayerá",
-      "Jayé Sará",
-      "Toldot",
-      "Vayetze",
-      "Vayishlaj",
-      "Vayeshev",
-      "Miketz",
-      "Vayigash",
-      "Vayejí"
-    ],
-    Shemot: [
-      "Shemot",
-      "Vaerá",
-      "Bo",
-      "Beshalaj",
-      "Yitró",
-      "Mishpatim",
-      "Terumá",
-      "Tetzavé",
-      "Ki Tisá",
-      "Vayakhel",
-      "Pekudei"
-    ],
-    Vayikrá: [
-      "Vayikrá",
-      "Tzav",
-      "Shemini",
-      "Tazria",
-      "Metzorá",
-      "Ajarei Mot",
-      "Kedoshim",
-      "Emor",
-      "Behar",
-      "Bejukotai"
-    ],
-    Bamidbar: [
-      "Bamidbar",
-      "Naso",
-      "Behaalotejá",
-      "Shelaj Lejá",
-      "Koraj",
-      "Jukat",
-      "Balak",
-      "Pinjas",
-      "Matot",
-      "Masei"
-    ],
-    Devarim: [
-      "Devarim",
-      "Vaetjanan",
-      "Ekev",
-      "Reé",
-      "Shoftim",
-      "Ki Tetze",
-      "Ki Tavó",
-      "Nitzavim",
-      "Vayelej",
-      "Haazinu",
-      "Vezot Haberajá"
-    ]
-  } as const;
   
   const closeModal = async () => {
     console.log("Form Alia Data: ", formAliaData);

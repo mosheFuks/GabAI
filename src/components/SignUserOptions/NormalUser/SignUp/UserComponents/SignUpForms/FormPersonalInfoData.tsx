@@ -60,7 +60,7 @@ export const FormPersonalInfoData = ({handleChangePersonalData, user, setFormUse
     const month = +date.mes!
     const year = +date.ano!
 
-    const gregorianDate = new Date(year, month - 1, day, 12)
+    const gregorianDate = new Date(year, month, day, 12)
 
     // Si el usuario indicó "after sunset" sumamos un día en la conversión
     const hd = isAfterSunsetSelected
@@ -88,7 +88,7 @@ export const FormPersonalInfoData = ({handleChangePersonalData, user, setFormUse
     const hdate = new HDate(hebDay, hebMonth, hebYear);
     const gregDate: Date = hdate.greg();
     const dayGreg = gregDate.getDate()
-    const monthGreg = gregDate.getMonth() + 1
+    const monthGreg = gregDate.getMonth()
     const yearGreg = gregDate.getFullYear()
 
     saveBirthDateParams("dia", "fechaNacimientoGregoriano", true, [dayGreg, monthGreg, yearGreg])

@@ -2,8 +2,10 @@ import { useEffect, useState } from 'react'
 import { CSSProperties } from 'react';
 
 import { DonationModal } from '../NewDonationModal/DonationModal';
-import { CustomDate, VisitorUser } from '../../../../../../structs/structs';
+import { PaymentModal } from './PaymentModal';
+import { CustomDate, VisitorUser, Donacion } from '../../../../../../structs/structs';
 import { changeDonationStatus } from '../../../../../../apis/requests';
+import { colors } from '../../../../../../assets/colors';
 
 interface FormPersonalDataProps {
   logedVisitorUser: VisitorUser
@@ -17,6 +19,8 @@ export const VisitorAccountInfo = ({ logedVisitorUser }: FormPersonalDataProps) 
   const [completeDonationsList, setCompleteDonationsList] = useState<any[]>(logedVisitorUser.cuenta!);
   const [filteredDonations, setFilteredDonations] = useState(completeDonationsList);
   const [isDonationModalOpen, setIsDonationModalOpen] = useState(false);
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+  const [selectedDonation, setSelectedDonation] = useState<Donacion | null>(null);
 
   const formatDate = (date?: CustomDate) => {
     if (!date) return '';
@@ -38,13 +42,15 @@ export const VisitorAccountInfo = ({ logedVisitorUser }: FormPersonalDataProps) 
     const pendingDonations = completeDonationsList.filter(donacion => donacion.status === 'PENDIENTE');
     const arsTotal = pendingDonations.reduce((total, donacion) => {
       if (donacion.tipoMoneda === 'ARS') {
-        return total + (donacion.monto || 0);
+        const montoDisponible = (donacion.monto || 0) - (donacion.monto_abonado || 0);
+        return total + montoDisponible;
       }
       return total;
     }, 0);
     const usdTotal = pendingDonations.reduce((total, donacion) => {
       if (donacion.tipoMoneda === 'USD') {
-        return total + (donacion.monto || 0);
+        const montoDisponible = (donacion.monto || 0) - (donacion.monto_abonado || 0);
+        return total + montoDisponible;
       }
       return total;
     }, 0);
@@ -53,6 +59,39 @@ export const VisitorAccountInfo = ({ logedVisitorUser }: FormPersonalDataProps) 
   }
 
   const modDonationStatus = changeDonationStatus()
+
+  const handlePaymentConfirm = (montoAbonado: number) => {
+    if (selectedDonation) {
+      const donacionIndex = completeDonationsList.findIndex(
+        d => d.fecha === selectedDonation.fecha && d.monto === selectedDonation.monto
+      );
+      
+      if (donacionIndex !== -1) {
+        const nuevoMontoAbonado = (completeDonationsList[donacionIndex].monto_abonado || 0) + montoAbonado;
+        const esAbonaTotalidad = nuevoMontoAbonado >= completeDonationsList[donacionIndex].monto;
+        
+        completeDonationsList[donacionIndex].monto_abonado = nuevoMontoAbonado;
+        
+        if (esAbonaTotalidad) {
+          completeDonationsList[donacionIndex].status = 'PAGADA';
+        }
+        
+        modDonationStatus(
+          logedVisitorUser.nombreKehila!,
+          logedVisitorUser.nombreEspanol!,
+          logedVisitorUser.apellido!,
+          selectedDonation.fecha!,
+          esAbonaTotalidad ? "PAGADA" : "PENDIENTE",
+          montoAbonado
+        );
+        
+        setCompleteDonationsList([...completeDonationsList]);
+        filterDonations();
+        setIsPaymentModalOpen(false);
+        setSelectedDonation(null);
+      }
+    }
+  }
 
   useEffect(() => {
     getAllPendingDonations()
@@ -69,12 +108,12 @@ export const VisitorAccountInfo = ({ logedVisitorUser }: FormPersonalDataProps) 
       {logedVisitorUser.cuenta!.length > 0 && (
         <div style={styles.summarySection}>
           <div style={styles.pendingCard}>
-            <div style={styles.cardLabel}>Pago pendiente en pesos</div>
-            <div style={styles.cardAmount}>${arsPendingDonations}</div>
+            <div style={styles.cardLabel}>Pago pendiente en pesos:</div>
+            <div style={styles.cardAmount}><i>$</i> {arsPendingDonations}</div>
           </div>
           <div style={styles.pendingCard}>
-            <div style={styles.cardLabel}>Pago pendiente en dólares</div>
-            <div style={styles.cardAmount}>USD {usdPendingDonations}</div>
+            <div style={styles.cardLabel}>Pago pendiente en dólares:</div>
+            <div style={styles.cardAmount}><i>U$D</i> {usdPendingDonations}</div>
           </div>
         </div>
       )}
@@ -141,9 +180,11 @@ export const VisitorAccountInfo = ({ logedVisitorUser }: FormPersonalDataProps) 
                 <th style={styles.th}>Fecha</th>
                 <th style={styles.th}>Perasha</th>
                 <th style={styles.th}>Motivo</th>
-                <th style={styles.th}>Monto</th>
                 <th style={styles.th}>Moneda</th>
-                <th style={styles.th}>Estado</th>
+                <th style={styles.th}>Monto</th>
+                <th style={styles.th}>Abonado</th>
+                <th style={styles.th}>Deuda</th>
+                <th style={styles.th}>Estado</th> 
                 <th style={styles.th}>Acción</th>
               </tr>
             </thead>
@@ -174,8 +215,18 @@ export const VisitorAccountInfo = ({ logedVisitorUser }: FormPersonalDataProps) 
                         donacion.motivo || '-'
                       )}
                     </td>
-                    <td style={styles.td}>{monto}</td>
                     <td style={styles.td}>{moneda}</td>
+                    <td style={styles.td}>{monto}</td>
+                    <td style={styles.td}>
+                      {donacion.status !== 'PAGADA' && (donacion.monto_abonado || 0) > 0
+                        ? `${donacion.monto_abonado}`
+                        : '-'}
+                    </td>
+                    <td style={styles.td}>
+                      {donacion.status !== 'PAGADA' && (donacion.monto_abonado || 0) > 0
+                        ? `${(donacion.monto || 0) - (donacion.monto_abonado || 0)}`
+                        : '-'}
+                    </td>
                     <td style={styles.td}>
                       <span
                         style={{
@@ -203,24 +254,11 @@ export const VisitorAccountInfo = ({ logedVisitorUser }: FormPersonalDataProps) 
                           type="button"
                           style={styles.confirmBtn}
                           onClick={() => {
-                            modDonationStatus(
-                              logedVisitorUser.nombreKehila!,
-                              logedVisitorUser.nombreEspanol!,
-                              logedVisitorUser.apellido!,
-                              donacion.fecha,
-                              donacion.status === 'PENDIENTE' ? "PAGADA" : "PENDIENTE",
-                              donacion.monto
-                            );
-                            if (donacion.status === 'PENDIENTE') {
-                              donacion.status = 'PAGADA';
-                            } else {
-                              donacion.status = 'PENDIENTE';
-                            }
-                            setCompleteDonationsList([...completeDonationsList]);
-                            filterDonations();
+                            setSelectedDonation(donacion);
+                            setIsPaymentModalOpen(true);
                           }}
                         >
-                          Confirmar
+                          Confirmar Pago
                         </button>
                       )}
                     </td>
@@ -244,6 +282,16 @@ export const VisitorAccountInfo = ({ logedVisitorUser }: FormPersonalDataProps) 
           logedVisitorUser={logedVisitorUser}
         />
       )}
+
+      <PaymentModal
+        isOpen={isPaymentModalOpen}
+        donacion={selectedDonation}
+        onConfirm={handlePaymentConfirm}
+        onCancel={() => {
+          setIsPaymentModalOpen(false);
+          setSelectedDonation(null);
+        }}
+      />
     </div>
   );
 };
@@ -337,7 +385,7 @@ const styles = {
   } as CSSProperties,
   addBtn: {
     padding: "10px 18px",
-    backgroundColor: "#3b82f6",
+    backgroundColor: colors.donation,
     color: "#ffffff",
     border: "none",
     borderRadius: "6px",
@@ -417,7 +465,7 @@ const styles = {
   } as CSSProperties,
   emptyStateText: {
     fontSize: "16px",
-    color: "#6b7280",
+    color: colors.donation,
     margin: 0,
   } as CSSProperties,
 };

@@ -131,6 +131,17 @@ export const addAUserToTheUsuariosList = () => {
     });
 };
 
+
+export const addAnOperatorToOperadoresList = () => {
+  const mutation = useMutation(api.kehila.addOperatorToOperadoresList);
+  return (kehilaName: string, newOperator: any) =>
+    mutation({
+      nombreKehila: kehilaName,
+      nuevoUsuario: newOperator
+    });
+};
+
+
 /*----------POST A NEW DONATION IN TO A USER--------*/
 export const addADonationToUser = () => {
   const mutation = useMutation(api.kehila.addDonationToUser);
@@ -200,6 +211,17 @@ export const addAniversaryToVisitorUser = () => {
     });
 }
 
+export const deleteAniversaryFromVisitorUser = () => {
+  const mutation = useMutation(api.kehila.deleteAniversaryFromVisitorUser);
+  return (kehilaName: string, userName: string, userSurname: string, aniversarioId: string) =>
+    mutation({
+      nombreKehila: kehilaName,
+      nombreUsuario: userName,
+      apellidoUsuario: userSurname,
+      aniversarioId: aniversarioId
+    });
+}
+
 /*------DELETE ALL PERASHA INFO OF THE KEHILA------*/
 export const deleteAllPerashiotInfo = () => {
   const mutation = useMutation(api.kehila.deleteAllPerashiotInfo)
@@ -230,4 +252,27 @@ export const deleteVisitorUser = () => {
       nombreUsuario: userName,
       apellidoUsuario: userSurname
     });
+}
+
+/*--------DELETE OPERATOR USER FROM KEHILA--------*/
+export const deleteOperatorUser = () => {
+  const mutation = useMutation(api.kehila.deleteOperatorUser)
+  return (kehilaName: string, email: string) =>
+    mutation({
+      nombreKehila: kehilaName,
+      email: email
+    });
+}
+
+export const getOperatorsList = (kehilaName: string) => {
+  return useQuery(api.kehila.getKehilaOperatorsList, {
+    nombreKehila: kehilaName,
+  });
+}
+
+export const getOperatorUser = (kehilaName: string, email: string) => {
+  return useQuery(api.kehila.getOperatorUserFromKehila, {
+    nombreKehila: kehilaName,
+    email: email
+  });
 }

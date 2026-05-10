@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { CSSProperties } from 'react';
 import { CustomDate, Donacion } from '../../../../structs/structs';
+import { colors } from '../../../../assets/colors';
 
 interface FormPersonalDataProps {
   logedVisitorUser: any
@@ -333,6 +334,6 @@ const styles = {
   } as CSSProperties,
   emptyStateText: {
     fontSize: "16px",
-    color: "#6b7280",
+    color: colors.donation,
   } as CSSProperties,
 };

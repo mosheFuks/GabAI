@@ -112,7 +112,7 @@ export const AddDonationToPerashaModal = ({setOpenAliaModal, openAliaModal, setA
       >
         <h2 style={{ textAlign: 'center', color: 'blue'}}>Nueva Donación</h2>
         <div>
-          <label htmlFor="aliaAlia" style={{ display: "block", fontWeight: 'bold'}}>Alia</label>
+          <label htmlFor="aliaAlia" style={{ display: "block", fontWeight: 'bold'}}>Alia a la que subio</label>
           <input
             type="text"
             id="aliaAlia"
