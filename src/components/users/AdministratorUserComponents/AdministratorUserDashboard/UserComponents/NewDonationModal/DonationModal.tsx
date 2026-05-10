@@ -4,7 +4,6 @@ import { Donacion, GREG_MONTHS, VisitorUser } from '../../../../../../structs/st
 import { colors } from '../../../../../../assets/colors';
 import { addADonationInAPerasha, addADonationToUser, getPerashiotList } from '../../../../../../apis/requests';
 import { PageContext } from '../../../../../../StoreInfo/page-storage';
-import { AddDonationToPerashaModal } from '../../../AdministratorPerashiot/AddDonationToPerashaModal';
 import { toast } from 'react-toastify';
 
 interface DonationModalProps {

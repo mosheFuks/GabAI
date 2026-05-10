@@ -5,9 +5,8 @@ import { colors } from "../../../../assets/colors";
 import { PageContext } from "../../../../StoreInfo/page-storage";
 import { api } from "../../../../../convex/_generated/api";
 import { useMutation } from "convex/react";
-import { getOperatorsList, getOperatorUser } from '../../../../apis/requests';
+import { getOperatorsList } from '../../../../apis/requests';
 import { LoaderComponent } from '../../../../assets/loader';
-import { deleteUser } from "firebase/auth";
 import { toast } from "react-toastify";
 
 
